@@ -1,6 +1,7 @@
 // <replace with imports>
+import React from 'react';
 
-function Login() {
+export default function Login() {
 
 
 
@@ -12,4 +13,3 @@ function Login() {
     );
 }
 
-export default Login;
