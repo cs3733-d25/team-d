@@ -19,7 +19,7 @@ function Login() {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        // For demo purposes, this is where you'd authenticate the user with a server
+
         console.log('Logging in with:', username, password);
 
         // Save credentials if "Remember Me" is checked
