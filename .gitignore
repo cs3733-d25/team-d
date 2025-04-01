@@ -37,3 +37,5 @@ out
 
 **/.prettiercache
 **/.vite
+
+.pnp.cjs
