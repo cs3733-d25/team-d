@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 /* Login Form Styling */
 .login-container {
     display: flex;
@@ -10,10 +12,10 @@
 .login-form {
     background-color: #fff; /* White */
     padding: 20px;
-    border-radius: 8px;
+    border-radius: 15px;
     border: 1px solid #ffffff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 300px;
+    width: 375px;
     display: flex;
     flex-direction: column; /* Stack form elements vertically */
     align-items: center; /* Center align the inputs */
@@ -26,7 +28,7 @@
     margin-bottom: 20px; /* Space between logo and form */
 }
 .logo {
-    width: 275px; /* Set width to control the size */
+    width: 290px; /* Set width to control the size */
     height: auto; /* Maintain aspect ratio */
 }
 

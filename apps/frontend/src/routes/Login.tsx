@@ -67,12 +67,12 @@ function Login() {
                     />
                 </div>
                 <div className="checkbox-container">
+                    <label>Remember Password</label>
                     <input
                         type="checkbox"
                         checked={rememberMe}
                         onChange={() => setRememberMe(!rememberMe)} // Checkbox toggle method
                     />
-                    <label>Remember me</label>
                 </div>
                 <button type="submit">Login</button>
             </form>
