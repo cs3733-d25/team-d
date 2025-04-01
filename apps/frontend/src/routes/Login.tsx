@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import '../styles/styles.css';
+import '../styles/styles.css';  // Correct path for your styles.css
 
 function Login() {
     const [username, setUsername] = useState<string>('');
@@ -20,13 +20,13 @@ function Login() {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-
+        // For demo purposes, this is where you'd authenticate the user with a server
         console.log('Logging in with:', username, password);
 
         // Save credentials if "Remember Me" is checked
         if (rememberMe) {
             localStorage.setItem('username', username);
-            localStorage.setItem('password', password);
+            localStorage.setItem('password', password); // Saving without encryption for simplicity
         } else {
             // Remove credentials if "Remember Me" is unchecked
             localStorage.removeItem('username');
@@ -61,14 +61,12 @@ function Login() {
                     />
                 </div>
                 <div className="checkbox-container">
-                    <label>
-                        <input
-                            type="checkbox"
-                            checked={rememberMe}
-                            onChange={() => setRememberMe(!rememberMe)} // Checkbox toggle method
-                        />
-                        Remember me
-                    </label>
+                    <label>Remember me</label>
+                    <input
+                        type="checkbox"
+                        checked={rememberMe}
+                        onChange={() => setRememberMe(!rememberMe)} // Checkbox toggle method
+                    />
                 </div>
                 <button type="submit">Login</button>
             </form>
