@@ -14,13 +14,7 @@ router.get('/', async function (req: Request, res: Response) {
     const employees = await PrismaClient.employee.findMany({
         include: {
             TranslatorRequest: true,
-        }
-        // select: {
-        //     assignedEmployee: true
-        // },where: { NOT:[{
-        //     assignedEmployee: null
-        //     }]
-        // }
+        },
     });
     res.json(employees);
 });

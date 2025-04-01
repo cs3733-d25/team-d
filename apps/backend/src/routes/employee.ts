@@ -18,8 +18,6 @@ router.get('/', async function (req: Request, res: Response) {
         res.sendStatus(204); // Send HTTP code 204 (no data)
     } else {
         // Otherwise, send the score
-        console.log(employee);
-        res.sendStatus(200).send(employee); // Send HTTP code 204 (no data)
         res.json(employee);
     }
 });
