@@ -26,7 +26,7 @@ function Login() {
         // Save credentials if "Remember Me" is checked
         if (rememberMe) {
             localStorage.setItem('username', username);
-            localStorage.setItem('password', password); // Saving without encryption for now
+            localStorage.setItem('password', password);
         } else {
             // Remove credentials if "Remember Me" is unchecked
             localStorage.removeItem('username');
