@@ -16,7 +16,7 @@ function Login() {
         }
     }, []);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
 
@@ -36,6 +36,8 @@ function Login() {
         alert('Login successful!');
     };
 
+
+
     return (
         <div id="login">
             <form onSubmit={handleSubmit}>
@@ -45,7 +47,7 @@ function Login() {
                         type="text"
                         id="username"
                         value={username}
-                        onChange={(e) => setUsername(e.target.value)}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}
                         required
                     />
                 </div>
@@ -55,7 +57,7 @@ function Login() {
                         type="password"
                         id="password"
                         value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                         required
                     />
                 </div>
