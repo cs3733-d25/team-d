@@ -31,7 +31,7 @@ app.use(cookieParser()); // Cookie parser
 app.use(API_ROUTES.HEALTHCHECK, healthcheckRouter);
 app.use(API_ROUTES.SCORE, highscoreRouter);
 // TODO: Add more routes here, define them in packages/common/src/constants.ts similar to score and healthcheck
-app.use(API_ROUTES.EMPLOYEES, employeeRouter);
+app.use(API_ROUTES.EMPLOYEE, employeeRouter);
 app.use(API_ROUTES.SERVICEREQS, servicereqsRouter);
 app.use(API_ROUTES.ASSIGNED, assignedRouter);
 /**
