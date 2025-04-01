@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import '../styles/styles.css';
 
 function Login() {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [rememberMe, setRememberMe] = useState(false);
+    const [username, setUsername] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [rememberMe, setRememberMe] = useState<boolean>(false);
 
     // UseEffect to check if credentials are saved in localStorage
     useEffect(() => {
@@ -25,22 +26,20 @@ function Login() {
         // Save credentials if "Remember Me" is checked
         if (rememberMe) {
             localStorage.setItem('username', username);
-            localStorage.setItem('password', password); // Saving without encryption or now
+            localStorage.setItem('password', password); // Saving without encryption for now
         } else {
             // Remove credentials if "Remember Me" is unchecked
             localStorage.removeItem('username');
             localStorage.removeItem('password');
         }
 
-
+        // Proceed with actual login logic (e.g., API call to authenticate)
         alert('Login successful!');
     };
 
-
-
     return (
-        <div id="login">
-            <form onSubmit={handleSubmit}>
+        <div className="login-container">
+            <form onSubmit={handleSubmit} className="login-form">
                 <div>
                     <label htmlFor="username">Username:</label>
                     <input
@@ -61,7 +60,7 @@ function Login() {
                         required
                     />
                 </div>
-                <div>
+                <div className="checkbox-container">
                     <label>
                         <input
                             type="checkbox"
@@ -76,60 +75,5 @@ function Login() {
         </div>
     );
 }
-const styles = {
-    container: {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
-        backgroundColor: '#f1f1f1', // Soft Gray
-    },
-    form: {
-        backgroundColor: '#fff', // White
-        padding: '20px',
-        borderRadius: '8px',
-        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-        width: '300px',
-    },
-    label: {
-        display: 'block',
-        marginBottom: '8px',
-        fontSize: '14px',
-        color: '#333',
-    },
-    input: {
-        width: '100%',
-        padding: '10px',
-        marginBottom: '20px',
-        border: '1px solid #ddd',
-        borderRadius: '4px',
-        fontSize: '14px',
-        backgroundColor: '#f9f9f9', // Light Soft Gray
-    },
-    checkboxContainer: {
-        marginBottom: '20px',
-    },
-    checkboxLabel: {
-        fontSize: '14px',
-        color: '#333',
-    },
-    checkbox: {
-        marginRight: '8px',
-    },
-    button: {
-        width: '100%',
-        padding: '10px',
-        backgroundColor: '#007bff', // Blue
-        color: '#fff', // White text
-        border: 'none',
-        borderRadius: '4px',
-        fontSize: '16px',
-        cursor: 'pointer',
-        transition: 'background-color 0.3s ease',
-    },
-    buttonHover: {
-        backgroundColor: '#0056b3', // Darker Blue on hover
-    },
-};
 
 export default Login;
