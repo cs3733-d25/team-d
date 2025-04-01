@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import '../styles/styles.css';  // Correct path for your styles.css
+import '../styles/styles.css';
+import logo from '../styles/brigham_logo.png';
 
 function Login() {
     const [username, setUsername] = useState<string>('');
@@ -20,13 +21,13 @@ function Login() {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        // For demo purposes, this is where you'd authenticate the user with a server
+
         console.log('Logging in with:', username, password);
 
         // Save credentials if "Remember Me" is checked
         if (rememberMe) {
             localStorage.setItem('username', username);
-            localStorage.setItem('password', password); // Saving without encryption for simplicity
+            localStorage.setItem('password', password); // Saving without encryption for now
         } else {
             // Remove credentials if "Remember Me" is unchecked
             localStorage.removeItem('username');
@@ -40,6 +41,11 @@ function Login() {
     return (
         <div className="login-container">
             <form onSubmit={handleSubmit} className="login-form">
+                {/* Logo at the top */}
+                <div className="logo-container">
+                    <img src={logo} alt="Brigham and Women's Hospital Logo" className="logo" />
+                </div>
+
                 <div>
                     <label htmlFor="username">Username:</label>
                     <input
@@ -61,12 +67,12 @@ function Login() {
                     />
                 </div>
                 <div className="checkbox-container">
-                    <label>Remember me</label>
                     <input
                         type="checkbox"
                         checked={rememberMe}
                         onChange={() => setRememberMe(!rememberMe)} // Checkbox toggle method
                     />
+                    <label>Remember me</label>
                 </div>
                 <button type="submit">Login</button>
             </form>
