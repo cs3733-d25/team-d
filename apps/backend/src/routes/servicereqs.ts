@@ -34,4 +34,12 @@ router.post('/', async function (req: Request, res: Response) {
 // IMPORTANT!! Make sure the path is defined in app.ts!
 // I put a to-do on where to do this.
 
+router.get('/', async function (req: Request, res: Response) {
+    const requests = await PrismaClient.translatorRequest.findMany();
+    console.log(requests);
+    res.send(requests);
+    res.status(200).send(requests);
+    res.json(requests);
+});
+
 export default router;
