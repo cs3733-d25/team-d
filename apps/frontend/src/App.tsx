@@ -1,32 +1,39 @@
 import React from 'react';
-import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
-import ExamplePage from './routes/ExamplePage.tsx';
+import { createBrowserRouter, RouterProvider, Outlet, Link } from 'react-router-dom';
 // This is how we import pages:
-import Login from './routes/Login';
+import Login from './routes/Login.tsx';
+import Map from './routes/Map.tsx';
+import Directory from './routes/Directory.tsx';
+import ServiceRequest from './routes/ServiceRequest.tsx';
 
-function App() {
     const router = createBrowserRouter([
-        // TODO: add paths for files
         {
             path: '/',
             errorElement: <div />,
-            element: <ExamplePage />,
+            element: <Login />,
         },
         // The below is an example
         {
-            path: '/login',
+            path: '/map',
             errorElement: <div />,
-            element: <Login />,
+            element: <Map />,
+        },
+        {
+            path: '/directory',
+            errorElement: <div />,
+            element: <Directory />,
+        },
+        {
+            path: '/servicerequest',
+            errorElement: <div />,
+            element: <ServiceRequest />,
         },
     ]);
 
+    function App() {
     return (
         <>
-            {/*TODO: make navbar*/}
-            {/*This will be on every page; this is probably
-            just temporary until we have a more permanent
-            solution but is good enough for the prototype*/}
-            <p>(replace with navbar)</p>
+
 
             {/*Pages appear here*/}
             <RouterProvider router={router} />
