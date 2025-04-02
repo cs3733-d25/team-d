@@ -1,5 +1,5 @@
 import React from 'react';
-import { createBrowserRouter, RouterProvider, Outlet, Link } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 // This is how we import pages:
 import Login from './routes/Login.tsx';
 import Map from './routes/Map.tsx';
@@ -29,10 +29,15 @@ import ServiceRequest from './routes/ServiceRequest.tsx';
             element: <ServiceRequest />,
         },
     ]);
-
     function App() {
     return (
         <>
+            <nav>
+                <a href="/">Login</a>
+                <a href="/map">Map</a>
+                <a href="/directory">Directory</a>
+                <a href="/servicerequest">Service Request</a>
+            </nav>
 
 
             {/*Pages appear here*/}
