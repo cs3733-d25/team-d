@@ -1,6 +1,7 @@
 // <replace with imports>
+import React from 'react';
 
-function Map() {
+export default function Map() {
 
 
 
@@ -12,4 +13,3 @@ function Map() {
     );
 }
 
-export default Map;
