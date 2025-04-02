@@ -1,22 +1,29 @@
-import { PrismaClient } from '@prisma/client'
-const prisma = new PrismaClient()
-async function main() {
-    const translatorReq1 = await prisma.translatorRequest.upsert({
-        where: {requestId: 1},
-        update: {},
-        create: {
-            languageFrom: 'Vietnamese',
-            languageTo: 'English',
-            roomNumber: '302',
-            startDateTime: '2025-04-01T22:07:00.639Z',
-            endDateTime: '2025-04-01T22:07:45.639Z'
-        }
-    })
+console.log("Hello World");
+import {PrismaClient} from '../.prisma/client';
+const prisma = new PrismaClient();
 
-    const translatorReq2 = await prisma.translatorRequest.upsert({
+async function main() {
+    const translatorRequests = [
+        await prisma.translatorRequest.upsert({
+            where: {requestId: 1},
+            update: {},
+            create: {
+                requestId: 1,
+                languageFrom: 'Vietnamese',
+                languageTo: 'English',
+                roomNumber: '302',
+                startDateTime: '2025-04-01T22:07:00.639Z',
+                endDateTime: '2025-04-01T22:07:45.639Z'
+            }
+        })
+    ];
+
+
+    await prisma.translatorRequest.upsert({
         where: {requestId: 2},
         update: {},
         create: {
+            requestId: 2,
             languageFrom: 'Spanish',
             languageTo: 'English',
             roomNumber: '207',
@@ -26,10 +33,11 @@ async function main() {
         },
     })
 
-    const translatorReq3 = await prisma.translatorRequest.upsert({
+    await prisma.translatorRequest.upsert({
         where: {requestId: 3},
         update: {},
         create: {
+            requestId: 3,
             languageFrom: 'English',
             languageTo: 'Portuguese',
             roomNumber: '119',
@@ -39,10 +47,11 @@ async function main() {
         },
     })
 
-    const translatorReq4 = await prisma.translatorRequest.upsert({
+    await prisma.translatorRequest.upsert({
         where: {requestId: 4},
         update: {},
         create: {
+            requestId: 4,
             languageFrom: 'Chinese',
             languageTo: 'English',
             roomNumber: '222',
@@ -51,10 +60,11 @@ async function main() {
         },
     })
 
-    const translatorReq5 = await prisma.translatorRequest.upsert({
+    await prisma.translatorRequest.upsert({
         where: {requestId: 5},
         update: {},
         create: {
+            requestId: 5,
             languageFrom: 'English',
             languageTo: 'Vietnamese',
             roomNumber: '129',
@@ -63,10 +73,11 @@ async function main() {
         },
     })
 
-    const translatorReq6 = await prisma.translatorRequest.upsert({
+    await prisma.translatorRequest.upsert({
         where: {requestId: 6},
         update: {},
         create: {
+            requestId: 6,
             languageFrom: 'German',
             languageTo: 'Spanish',
             roomNumber: '311',
@@ -75,10 +86,11 @@ async function main() {
         },
     })
 
-    const translatorReq7 = await prisma.translatorRequest.upsert({
+    await prisma.translatorRequest.upsert({
         where: {requestId: 7},
         update: {},
         create: {
+            requestId: 7,
             languageFrom: 'Korean',
             languageTo: 'English',
             roomNumber: '104',
@@ -87,46 +99,49 @@ async function main() {
         },
     })
 
-    const translatorReq8 = await prisma.translatorRequest.upsert({
+    await prisma.translatorRequest.upsert({
         where: {requestId: 8},
         update: {},
         create: {
+            requestId: 8,
             languageFrom: 'English',
             languageTo: 'Russian',
             roomNumber: '333',
             startDateTime: '2025-05-11T22:04:00.639Z',
             endDateTime: '2025-05-11T22:04:45.639Z',
-            employeeId: 3
+            assignedEmployeeId: 3
         },
     })
 
-    const translatorReq9 = await prisma.translatorRequest.upsert({
+    await prisma.translatorRequest.upsert({
         where: {requestId: 9},
         update: {},
         create: {
+            requestId: 9,
             languageFrom: 'French',
             languageTo: 'English',
             roomNumber: '234',
             startDateTime: '2025-04-28T22:07:00.639Z',
             endDateTime: '2025-04-28T22:07:45.639Z',
-            employeeId: 4
+            assignedEmployeeId: 4
         },
     })
 
-    const translatorReq10 = await prisma.translatorRequest.upsert({
+    await prisma.translatorRequest.upsert({
         where: {requestId: 10},
         update: {},
         create: {
+            requestId: 10,
             languageFrom: 'English',
             languageTo: 'Chinese',
             roomNumber: '232',
             startDateTime: '2025-05-29T22:09:00.639Z',
             endDateTime: '2025-05-29T22:10:30.639Z',
-            employeeId: 5
+            assignedEmployeeId: 5
         },
     })
 
-    const translatorReq11 = await prisma.translatorRequest.upsert({
+    await prisma.translatorRequest.upsert({
         where: {requestId: 11},
         update: {},
         create: {
@@ -138,8 +153,8 @@ async function main() {
         },
     })
 
-    console.log({ translatorReq1, translatorReq2, translatorReq3, translatorReq4, translatorReq5, translatorReq6,translatorReq7,translatorReq8,
-        translatorReq9, translatorReq10, translatorReq11})
+    // console.log({ translatorReq1, translatorReq2, translatorReq3, translatorReq4, translatorReq5, translatorReq6,translatorReq7,translatorReq8,
+    //     translatorReq9, translatorReq10, translatorReq11})
 }
 main()
     .then(async () => {
@@ -148,7 +163,7 @@ main()
     .catch(async (e) => {
         console.error(e)
         await prisma.$disconnect()
-        process.exit(1)
+        // process.exit(1)
     })
 
 // console.log("hi");
