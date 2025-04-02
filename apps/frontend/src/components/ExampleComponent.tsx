@@ -74,7 +74,7 @@ const ExampleComponent = () => {
     return (
         <div className="bg-gray-100 rounded-lg shadow-md p-6 w-64">
             <div className="text-2xl font-bold mb-4 text-center py-2 rounded">
-                {loading ? 'Connecting...' : `Score: ${score}`}
+                {loading ? 'Connecting...' : `W Points: ${score}`}
             </div>
             <div className="flex flex-row gap-2">
                 <ExampleButton
