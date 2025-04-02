@@ -6,7 +6,7 @@ import healthcheckRouter from './routes/healthcheck';
 import highscoreRouter from './routes/score.ts';
 import employeeRouter from './routes/employee.ts';
 import assignedRouter from './routes/assigned.ts';
-import servicereqsRouter from './routes/servicereqs.ts';
+import servicereqsRouter from "./routes/servicereqs.ts";
 
 import { API_ROUTES } from 'common/src/constants';
 
