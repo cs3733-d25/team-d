@@ -3,6 +3,71 @@ import {PrismaClient} from '../.prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
+    const employee1 = await prisma.employee.upsert({
+        where: {employeeId: 1},
+        update: {},
+        create: {
+            email: 'jlsmith@gmail.com',
+            password: 'rhe0324!',
+            firstName: 'Jenn',
+            middleName: 'Lopez',
+            lastName: 'Smith',
+            occupation: 'Nurse'
+        }
+    })
+
+    const employee2 = await prisma.employee.upsert({
+        where: {employeeId: 2},
+        update: {},
+        create: {
+            email: 'mkhaven@gmail.com',
+            password: 'ehw2153!',
+            firstName: 'Matthew',
+            middleName: 'King',
+            lastName: 'Haven',
+            occupation: 'Doctor'
+        }
+    })
+
+    const employee3 = await prisma.employee.upsert({
+        where: {employeeId: 3},
+        update: {},
+        create: {
+            email: 'palong@gmail.com',
+            password: 'jye4832!',
+            firstName: 'Piper',
+            middleName: 'Autumn',
+            lastName: 'Long',
+            occupation: 'Nurse'
+        }
+    })
+
+    const employee4 = await prisma.employee.upsert({
+        where: {employeeId: 4},
+        update: {},
+        create: {
+            email: 'nrlee@gmail.com',
+            password: 'gsl9472!',
+            firstName: 'Nicole',
+            middleName: 'Rose',
+            lastName: 'Lee',
+            occupation: 'Administrator'
+        }
+    })
+
+    const employee5 = await prisma.employee.upsert({
+        where: {employeeId: 5},
+        update: {},
+        create: {
+            email: 'kkramos@gmail.com',
+            password: 'dhs9572!',
+            firstName: 'Karina',
+            middleName: 'Knight',
+            lastName: 'Ramos',
+            occupation: 'Doctor'
+        }
+    })
+    
     const translatorRequests = [
         await prisma.translatorRequest.upsert({
             where: {requestId: 1},
@@ -145,6 +210,7 @@ async function main() {
         where: {requestId: 11},
         update: {},
         create: {
+            requestId: 11,
             languageFrom: 'Spanish',
             languageTo: 'French',
             roomNumber: '119',
