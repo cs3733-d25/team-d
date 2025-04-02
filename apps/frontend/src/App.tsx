@@ -1,34 +1,46 @@
 import React from 'react';
-import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
-import ExamplePage from './routes/ExamplePage.tsx';
-// This is how we import pages:
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import EmailInputPage from './routes/EmailInputPage';
 import Login from './routes/Login';
+import ServiceRequest from './routes/ServiceRequest';
+import Map from './routes/Map';
+
+
 
 function App() {
     const router = createBrowserRouter([
-        // TODO: add paths for files
+        // Route for the Email Input Page (first page)
         {
-            path: '/',
+            path: '/emailinputpage',
             errorElement: <div />,
-            element: <ExamplePage />,
+            element: <EmailInputPage />,  // Email input page where the user enters the email
         },
-        // The below is an example
+        // Route for the Login Page (second page for password input)
         {
             path: '/login',
             errorElement: <div />,
-            element: <Login />,
+            element: <Login />,  // Login page where the user enters the password
+        },
+        // Route for ServiceRequest (employees)
+        {
+            path: '/service-request',
+            errorElement: <div />,
+            element: <ServiceRequest />,  // Employee page after successful login
+        },
+        // Route for Map (patients)
+        {
+            path: '/map',
+            errorElement: <div />,
+            element: <Map />,  // Patient page after successful login
         },
     ]);
 
     return (
         <>
-            {/*TODO: make navbar*/}
-            {/*This will be on every page; this is probably
-            just temporary until we have a more permanent
-            solution but is good enough for the prototype*/}
+            {/* Temporary placeholder for navbar (can be updated later) */}
             <p>(replace with navbar)</p>
 
-            {/*Pages appear here*/}
+            {/* This will render the corresponding page based on the current path */}
             <RouterProvider router={router} />
         </>
     );
