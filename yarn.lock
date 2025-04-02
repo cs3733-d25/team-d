@@ -2757,6 +2757,7 @@ __metadata:
     prettier-config-custom: "npm:*"
     prisma: "npm:6.5.0"
     ts-config-custom: "npm:*"
+    ts-node: "npm:^10.9.2"
   languageName: unknown
   linkType: soft
 
