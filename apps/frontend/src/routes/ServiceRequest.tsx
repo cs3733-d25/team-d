@@ -1,6 +1,7 @@
 // <replace with imports>
+import React from 'react';
 
-function ServiceRequest() {
+export default function ServiceRequest() {
 
 
 
@@ -9,7 +10,7 @@ function ServiceRequest() {
             {/*TODO: replace <p> with actual page*/}
             <p>ServiceRequest</p>
         </div>
+
     );
 }
 
-export default ServiceRequest;

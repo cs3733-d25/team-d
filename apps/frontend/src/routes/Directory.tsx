@@ -1,6 +1,6 @@
 // <replace with imports>
 
-function Directory() {
+export default function Directory() {
 
 
 
@@ -12,4 +12,3 @@ function Directory() {
     );
 }
 
-export default Directory;

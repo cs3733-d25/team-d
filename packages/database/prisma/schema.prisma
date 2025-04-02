@@ -17,3 +17,29 @@ model Score {
   time  DateTime
   score Int
 }
+
+model Employee {
+  employeeId        Int                 @id @default(autoincrement())
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  email             String              @unique
+  password          String
+  firstName         String
+  middleName        String
+  lastName          String
+  occupation        String
+  TranslatorRequest TranslatorRequest[]
+}
+
+model TranslatorRequest {
+  requestId          Int       @id @default(autoincrement())
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  languageFrom       String
+  languageTo         String
+  roomNumber         String
+  startDateTime      DateTime
+  endDateTime        DateTime
+  assignedEmployeeId Int?
+  assignedEmployee   Employee? @relation(fields: [assignedEmployeeId], references: [employeeId])
+}
