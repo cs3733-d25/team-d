@@ -37,6 +37,7 @@ router.get('/', async function (req: Request, res: Response) {
         res.sendStatus(204); // Send HTTP code 204 (no data)
     } else {
         // Otherwise, send the score
+        console.log('Successfully saved score');
         res.send(score);
     }
 });

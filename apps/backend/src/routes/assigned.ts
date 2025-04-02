@@ -10,5 +10,13 @@ const router: Router = express.Router();
 
 // IMPORTANT!! Make sure the path is defined in app.ts!
 // I put a to-do on where to do this.
+router.get('/', async function (req: Request, res: Response) {
+    const employees = await PrismaClient.employee.findMany({
+        include: {
+            TranslatorRequest: true,
+        },
+    });
+    res.json(employees);
+});
 
 export default router;
