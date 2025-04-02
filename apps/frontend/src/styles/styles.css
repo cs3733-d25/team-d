@@ -54,7 +54,7 @@
 /* Checkbox Container - Align checkbox and text on the same line */
 .checkbox-container {
     margin-bottom: 20px;
-    display: flex;
+
     align-items: center;  /* Align checkbox and text horizontally */
 }
 
@@ -62,7 +62,7 @@
 .checkbox-container label {
     font-size: 14px;
     color: #333;
-    margin-right: 5px; /* Space between the label and the checkbox */
+    margin-right: 3px; /* Space between the label and the checkbox */
 }
 
 /* Button Styling */

@@ -73,6 +73,7 @@ function Login() {
                         checked={rememberMe}
                         onChange={() => setRememberMe(!rememberMe)} // Checkbox toggle method
                     />
+
                 </div>
                 <button type="submit">Login</button>
             </form>
