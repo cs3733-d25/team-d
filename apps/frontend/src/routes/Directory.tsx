@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../styles/directorystyles.css";
-import hospitalLogo from "../hospital2.png";
+import hospitalLogo from "../public/hospital2.png";
 
 // Directory data for each service
 const directoryData = [
