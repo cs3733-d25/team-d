@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/styles.css';
 import logo from '../styles/brigham_logo.png';
 
-function Login() {
+export default function Login() {
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [rememberMe, setRememberMe] = useState<boolean>(false);
@@ -98,4 +98,3 @@ function Login() {
     );
 }
 
-export default Login;
