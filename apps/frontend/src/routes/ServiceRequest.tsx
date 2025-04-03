@@ -1,122 +1,93 @@
-import React from 'react';
-import z from 'zod';
-import {useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {
-    Form,
-    FormControl,
-    FormDescription,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage
-} from "@/components/ui/form.tsx";
+import React, {FormEvent} from 'react';
 import {
     Card,
     CardContent,
-    CardDescription,
     CardFooter,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
 import {Button} from "@/components/ui/button.tsx";
 import {Input} from "@/components/ui/input.tsx";
+import {Label} from "@/components/ui/label.tsx";
 
-type fieldItem = {
-    name: string;
-    field: 'languageFrom' | 'languageTo' | 'roomNumber' | 'startDateTime' | 'endDateTime';
-};
-
-const fields: fieldItem[] = [
-    {
-        field: 'languageFrom',
-        name: 'Language From',
-    },
-    {
-        field: 'languageTo',
-        name: 'Language To',
-    },
-    {
-        field: 'roomNumber',
-        name: 'Room Number',
-    },
-    {
-        field: 'startDateTime',
-        name: 'Start',
-    },
-    {
-        field: 'endDateTime',
-        name: 'End',
-    },
-];
+type translatorRequestForm = {
+    languageFrom: string;
+    languageTo: string;
+    roomNumber: string;
+    startDateTime: string;
+    endDateTime: string;
+}
 
 export default function ServiceRequest() {
-    const formSchema = z.object({
-        languageFrom: z.string(),
-        languageTo: z.string(),
-        roomNumber: z.string(),
-        startDateTime: z.string(),
-        endDateTime: z.string(),
+
+    const [form, setForm] = React.useState<translatorRequestForm>({
+        languageFrom: '',
+        languageTo: '',
+        roomNumber: '',
+        startDateTime: '',
+        endDateTime: '',
     });
 
-
-
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
-        defaultValues: {
-            languageFrom: '',
-            languageTo: '',
-            roomNumber: '',
-            startDateTime: '',
-            endDateTime: '',
-        },
-    });
-
-    const onSubmit = (data: z.infer<typeof formSchema>) => {
-        console.log(data);
-    };
+    const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        console.log(form);
+    }
 
     return (
-        <>
-            <>
-                <Card className={"w-[400px] place-content-center"}>
-                    <CardHeader>
-                        <CardTitle>Request a Translator</CardTitle>
-                    </CardHeader>
-                    <CardContent >
-                        <Form {...form} >
-                            <form onSubmit={form.handleSubmit(onSubmit)}>
-                                {fields.map((item) => (
-                                    <FormField
-                                        control={form.control}
-                                        name={item.field}
-                                        key={item.field}
-                                        render={({field}) => (
-                                            <FormItem>
-                                                <FormLabel>{item.name}</FormLabel>
-                                                <FormControl>
-                                                    <Input placeholder={""} {...field} />
-                                                </FormControl>
-                                            </FormItem>
-
-                                        )}/>
-                                ))}
-                                <Button type="submit">Submit</Button>
-                            </form>
-                        </Form>
+        <div className="grid place-items-center h-full items-center">
+            <Card className="w-1/3">
+                <CardHeader className="place-content-center">
+                    <CardTitle>Request a Translator</CardTitle>
+                </CardHeader>
+                <form onSubmit={onSubmit}>
+                    <CardContent>
+                        <Label htmlFor="languageFrom">Language From</Label>
+                        <Input
+                            type="text"
+                            id="languageFrom"
+                            onChange={(e) => setForm({
+                                ...form,
+                                languageFrom: e.target.value
+                            })}/>
+                        <Label htmlFor="languageTo">Language To</Label>
+                        <Input
+                            type="text"
+                            id="languageTo"
+                            onChange={(e) => setForm({
+                                ...form,
+                                languageTo: e.target.value
+                            })}/>
+                        <Label htmlFor="roomNumber">Room Number</Label>
+                        <Input
+                            type="text"
+                            id="roomNumber"
+                            onChange={(e) => setForm({
+                                ...form,
+                                roomNumber: e.target.value
+                            })}/>
+                        <Label htmlFor="startDateTime">Start Date and Time</Label>
+                        <Input
+                            type="datetime-local"
+                            id="startDateTime"
+                            onChange={(e) => setForm({
+                                ...form,
+                                startDateTime: e.target.value
+                            })}/>
+                        <Label htmlFor="endDateTime">End Date and Time</Label>
+                        <Input
+                            type="datetime-local"
+                            id="languageFrom"
+                            onChange={(e) => setForm({
+                                ...form,
+                                endDateTime: e.target.value
+                            })}/>
                     </CardContent>
-                </Card>
-
-            </>
-        </>
+                    <CardFooter>
+                        <Button type="submit">Submit</Button>
+                    </CardFooter>
+                </form>
+            </Card>
+        </div>
     );
-
-    // return (
-    //     <div id={"service-request"}>
-    //         {/*TODO: replace <p> with actual page*/}
-    //         <p>ServiceRequest</p>
-    //     </div>
-    //
-    // );
 }
 
