@@ -3,6 +3,8 @@ const prisma = new PrismaClient();
 
 
 async function main() {
+
+    // Seed employees
     console.log('Seeding employees...');
     const employees = [
         await prisma.employee.upsert({
@@ -70,6 +72,8 @@ async function main() {
 
     console.log(employees);
 
+
+    // Seed translator requests
     console.log('Seeding translator requests...');
     const translatorRequests = [
         await prisma.translatorRequest.upsert({
