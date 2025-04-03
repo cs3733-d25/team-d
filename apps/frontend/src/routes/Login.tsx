@@ -42,7 +42,7 @@ export default function Login() {
         // Check if the email ends with @mgb.org (although it's already checked earlier)
         if (username.endsWith('@mgb.org')) {
             // Redirect to ServiceRequest.tsx (for employees)
-            navigate('/service-request');
+            navigate('/servicerequest');
         } else {
             // Redirect to Map.tsx (for patients)
             navigate('/map');
