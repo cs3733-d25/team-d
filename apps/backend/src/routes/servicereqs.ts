@@ -20,7 +20,6 @@ router.post('/', async function (req: Request, res: Response) {
     res.sendStatus(200);
 });
 
-
 // TODO: handle a GET request
 // Use router.get for a GET request, router.post for a POST request, etc.
 // Refer to score.ts.
