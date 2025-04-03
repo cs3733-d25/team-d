@@ -7,7 +7,7 @@ export default function Navbar()  {
             <nav className="side-navbar">
                 <ul className="nav-links">
                     <Link to={`/`}> Home </Link>
-                    <Link to={`/login`}> Login </Link>
+                    <Link to={`/emailinputpage`}> Login </Link>
                     <Link to={`/map`}> Map </Link>
                     <Link to={`/directory`}> Directory </Link>
                     <Link to={`/servicerequest`}> Service Request </Link>

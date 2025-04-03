@@ -5,6 +5,7 @@ import Login from "@/routes/Login.tsx";
 import Directory from "@/routes/Directory.tsx";
 import ServiceRequest from "@/routes/ServiceRequest.tsx";
 import Home from "@/routes/Home.tsx";
+import EmailInputPage from "@/routes/EmailInputPage.tsx";
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 function App() {
@@ -46,6 +47,11 @@ function App() {
                             path="/servicerequest"
                             element={<ServiceRequest />}
                         />
+                        <Route
+                            index={false}
+                            path="/emailinputpage"
+                            element={<EmailInputPage />}
+                            />
 
 
                         {/*<Route path="*" element={<NotFound />} />*/}
