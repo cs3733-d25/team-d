@@ -3780,7 +3780,7 @@ __metadata:
     "@radix-ui/react-label": "npm:^2.1.2"
     "@radix-ui/react-slot": "npm:^1.1.2"
     "@tailwindcss/vite": "npm:^4.0.17"
-    "@types/node": "npm:*"
+    "@types/node": "npm:^22.14.0"
     "@types/prop-types": "npm:^15.7.5"
     "@types/react": "npm:^18.0.37"
     "@types/react-dom": "npm:^18.0.11"
