@@ -111,13 +111,6 @@ const Directory: React.FC = () => {
 
     return (
         <>
-            <header>
-                <img
-                    src={hospitalLogo}
-                    alt="Brigham and Women’s Hospital (Founding Member, Mass General Brigham)"
-                    style={{ height: "50px" }}
-                />
-            </header>
 
             <main>
                 <h1>Find Your Care</h1>
