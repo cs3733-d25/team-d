@@ -1,4 +1,4 @@
-import React, {FormEvent} from 'react';
+import {FormEvent} from 'react';
 import {
     Card,
     CardContent,
@@ -9,7 +9,6 @@ import {
 import {Button} from "@/components/ui/button.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import {Label} from "@/components/ui/label.tsx";
-import RequestStatus from "@/components/RequestStatus.tsx";
 import ReturnRequest from "@/components/ReturnRequest.tsx";
 import {useState} from "react";
 
@@ -23,7 +22,7 @@ type translatorRequestForm = {
 
 export default function ServiceRequest() {
 
-    const [form, setForm] = React.useState<translatorRequestForm>({
+    const [form, setForm] = useState<translatorRequestForm>({
         languageFrom: '',
         languageTo: '',
         roomNumber: '',
@@ -31,18 +30,12 @@ export default function ServiceRequest() {
         endDateTime: '',
     });
 
-    const [submitted, setSubmitted] = React.useState(false);
+    const [submitted, setSubmitted] = useState(false);
 
     const onSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         console.log(form);
         setSubmitted(true);
-    }
-
-    const [showMessage, setShowMessage] = useState(false);
-
-    const whenClicked = () => {
-        setShowMessage(!showMessage);
     }
 
     return (
