@@ -3,7 +3,6 @@ import express, { Express, NextFunction, Request, Response } from 'express';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import healthcheckRouter from './routes/healthcheck';
-import highscoreRouter from './routes/score.ts';
 import employeeRouter from './routes/employee.ts';
 import assignedRouter from './routes/assigned.ts';
 import servicereqsRouter from './routes/servicereqs.ts';
@@ -29,8 +28,6 @@ app.use(cookieParser()); // Cookie parser
 // Setup routers. ALL ROUTERS MUST use /api as a start point, or they
 // won't be reached by the default proxy and prod setup
 app.use(API_ROUTES.HEALTHCHECK, healthcheckRouter);
-app.use(API_ROUTES.SCORE, highscoreRouter);
-// TODO: Add more routes here, define them in packages/common/src/constants.ts similar to score and healthcheck
 app.use(API_ROUTES.EMPLOYEE, employeeRouter);
 app.use(API_ROUTES.SERVICEREQS, servicereqsRouter);
 app.use(API_ROUTES.ASSIGNED, assignedRouter);
