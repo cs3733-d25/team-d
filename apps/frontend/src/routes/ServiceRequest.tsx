@@ -9,6 +9,8 @@ import {
 import {Button} from "@/components/ui/button.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import {Label} from "@/components/ui/label.tsx";
+import RequestStatus from "@/components/RequestStatus.tsx";
+import {useState} from "react";
 
 type translatorRequestForm = {
     languageFrom: string;
@@ -33,6 +35,12 @@ export default function ServiceRequest() {
         console.log(form);
     }
 
+    const [showMessage, setShowMessage] = useState(false);
+
+    const whenClicked = () => {
+        setShowMessage(!showMessage);
+    }
+
     return (
         <div className="grid place-items-center h-full items-center">
             <Card className="w-1/3">
@@ -45,45 +53,65 @@ export default function ServiceRequest() {
                         <Input
                             type="text"
                             id="languageFrom"
-                            onChange={(e) => setForm({
-                                ...form,
-                                languageFrom: e.target.value
-                            })}/>
+                            onChange={(e) =>
+                                setForm({
+                                    ...form,
+                                    languageFrom: e.target.value,
+                                })
+                            }
+                        />
                         <Label htmlFor="languageTo">Language To</Label>
                         <Input
                             type="text"
                             id="languageTo"
-                            onChange={(e) => setForm({
-                                ...form,
-                                languageTo: e.target.value
-                            })}/>
+                            onChange={(e) =>
+                                setForm({
+                                    ...form,
+                                    languageTo: e.target.value,
+                                })
+                            }
+                        />
                         <Label htmlFor="roomNumber">Room Number</Label>
                         <Input
                             type="text"
                             id="roomNumber"
-                            onChange={(e) => setForm({
-                                ...form,
-                                roomNumber: e.target.value
-                            })}/>
+                            onChange={(e) =>
+                                setForm({
+                                    ...form,
+                                    roomNumber: e.target.value,
+                                })
+                            }
+                        />
                         <Label htmlFor="startDateTime">Start Date and Time</Label>
                         <Input
                             type="datetime-local"
                             id="startDateTime"
-                            onChange={(e) => setForm({
-                                ...form,
-                                startDateTime: e.target.value
-                            })}/>
+                            onChange={(e) =>
+                                setForm({
+                                    ...form,
+                                    startDateTime: e.target.value,
+                                })
+                            }
+                        />
                         <Label htmlFor="endDateTime">End Date and Time</Label>
                         <Input
                             type="datetime-local"
                             id="languageFrom"
-                            onChange={(e) => setForm({
-                                ...form,
-                                endDateTime: e.target.value
-                            })}/>
+                            onChange={(e) =>
+                                setForm({
+                                    ...form,
+                                    endDateTime: e.target.value,
+                                })
+                            }
+                        />
                     </CardContent>
                     <CardFooter>
-                        <Button type="submit">Submit</Button>
+                        {!showMessage && (
+                            <Button onClick={whenClicked} type="submit">
+                                Submit
+                            </Button>
+                        )}
+                        {showMessage && <RequestStatus status="message" />}
                     </CardFooter>
                 </form>
             </Card>
