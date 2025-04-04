@@ -3,6 +3,11 @@
 
 @custom-variant dark (&:is(.dark *));
 
+.content {
+    margin-top: 60px;
+}
+
+
 /* Login Form Styling */
 .login-container {
     display: flex;

@@ -51,7 +51,7 @@ function App() {
                             index={false}
                             path="/emailinputpage"
                             element={<EmailInputPage />}
-                            />
+                        />
 
 
                         {/*<Route path="*" element={<NotFound />} />*/}
