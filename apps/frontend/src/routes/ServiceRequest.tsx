@@ -37,7 +37,7 @@ export default function ServiceRequest() {
         <div className="grid place-items-center h-full items-center">
             <Card className="w-1/3">
                 <CardHeader className="place-content-center">
-                    <CardTitle className="text-3xl">Request a Translator</CardTitle>
+                    <CardTitle>Request a Translator</CardTitle>
                 </CardHeader>
                 <form onSubmit={onSubmit}>
                     <CardContent>
