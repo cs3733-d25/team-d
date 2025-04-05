@@ -1,21 +1,9 @@
-const Home = () => {
-    return (
-        <>
-            <h1>hiii</h1>
-            <div className="bg-[url('/hospital_bg.jpg')] "></div>
-            <h1>hi</h1>
-        </>
-    )
-}
-
-export default Home;
 import React from 'react';
 import { Link } from "react-router-dom";
 import {
     Card,
     CardTitle,
 } from "@/components/ui/card"
-
 
 
 export default function Home() {
