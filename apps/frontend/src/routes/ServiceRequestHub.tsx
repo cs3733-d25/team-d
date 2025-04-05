@@ -13,16 +13,42 @@ import {useState} from "react";
 
 const ServiceRequestHub = () => {
     return (
-        <div>
-            <Card>
-                <CardHeader>
-                    <CardTitle className="text-3xl">Testing</CardTitle>
-
-                </CardHeader>
-                <CardContent>
-
-                </CardContent>
-            </Card>
+        <div className="grid grid-rows-1 grid-cols-3">
+            <div>
+                <Card>
+                    <CardHeader className="place-content-center">
+                        <CardTitle className="text-3xl">Request a Translator</CardTitle>
+                    </CardHeader>
+                </Card>
+            </div>
+            <div>
+                <Card>
+                    <CardHeader className="place-content-center">
+                        <CardTitle className="text-3xl">Request a Translator</CardTitle>
+                    </CardHeader>
+                </Card>
+            </div>
+            <div>
+                <Card>
+                    <CardHeader className="place-content-center">
+                        <CardTitle className="text-3xl">Request a Translator</CardTitle>
+                    </CardHeader>
+                </Card>
+            </div>
+            <div>
+                <Card>
+                    <CardHeader className="place-content-center">
+                        <CardTitle className="text-3xl">Request a Translator</CardTitle>
+                    </CardHeader>
+                </Card>
+            </div>
+            <div>
+                <Card>
+                    <CardHeader className="place-content-center">
+                        <CardTitle className="text-3xl">Request a Translator</CardTitle>
+                    </CardHeader>
+                </Card>
+            </div>
         </div>
     )
 }
