@@ -54,7 +54,7 @@ export default function Navbar()  {
 
                             <NavigationMenuItem>
                                 <NavigationMenuLink className=  {"text-base hover:bg-blue-900 hover:text-white"}>
-                                    <Link to={`/servicerequest`}> <b>Request Service</b> </Link>
+                                    <Link to={`/servicerequesthub`}> <b>Request Service</b> </Link>
                                 </NavigationMenuLink>
                             </NavigationMenuItem>
 

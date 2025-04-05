@@ -62,6 +62,7 @@ const RAW_RUNTIME_STATE =
       [null, {\
         "packageLocation": "./",\
         "packageDependencies": [\
+          ["@fortawesome/fontawesome-free", "npm:6.7.2"],\
           ["@types/node", "npm:22.13.13"],\
           ["@vitest/ui", "virtual:3154e7e2502d6821f7eea9434c4cdb00a42b4ad928bf283b9f5a1183af99307a4f66aca3e46a37d196a6c6b81c948321e804193e2cbecf9304b80a7023c19290#npm:3.0.9"],\
           ["@yarnpkg/pnpify", "npm:4.1.4"],\
@@ -823,6 +824,15 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/@fortawesome-fontawesome-common-types-npm-6.7.2-07bf35c518-0785df5605.zip/node_modules/@fortawesome/fontawesome-common-types/",\
         "packageDependencies": [\
           ["@fortawesome/fontawesome-common-types", "npm:6.7.2"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["@fortawesome/fontawesome-free", [\
+      ["npm:6.7.2", {\
+        "packageLocation": "./.yarn/cache/@fortawesome-fontawesome-free-npm-6.7.2-d3f6d6ec6d-e27fb8b846.zip/node_modules/@fortawesome/fontawesome-free/",\
+        "packageDependencies": [\
+          ["@fortawesome/fontawesome-free", "npm:6.7.2"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -7993,6 +8003,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./",\
         "packageDependencies": [\
           ["softeng-startercode-d25", "workspace:."],\
+          ["@fortawesome/fontawesome-free", "npm:6.7.2"],\
           ["@types/node", "npm:22.13.13"],\
           ["@vitest/ui", "virtual:3154e7e2502d6821f7eea9434c4cdb00a42b4ad928bf283b9f5a1183af99307a4f66aca3e46a37d196a6c6b81c948321e804193e2cbecf9304b80a7023c19290#npm:3.0.9"],\
           ["@yarnpkg/pnpify", "npm:4.1.4"],\

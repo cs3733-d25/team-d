@@ -3,7 +3,7 @@ import Navbar from "@/components/Navbar.tsx";
 import Map from "@/routes/Map.tsx";
 import Login from "@/routes/Login.tsx";
 import Directory from "@/routes/Directory.tsx";
-import ServiceRequest from "@/routes/ServiceRequest.tsx";
+import ServiceRequestHub from "@/routes/ServiceRequestHub";
 import Home from "@/routes/Home.tsx";
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
@@ -43,8 +43,8 @@ function App() {
 
                         <Route
                             index={false}
-                            path="/servicerequest"
-                            element={<ServiceRequest />}
+                            path="/servicerequesthub"
+                            element={<ServiceRequestHub />}
                         />
 
 
