@@ -19,6 +19,8 @@ router.get('/', async function (req: Request, res: Response) {
     }
 });
 
+
+// Return an employee with specified id
 router.get('/:id', async function (req: Request, res: Response) {
     // Parse the id param into a variable
     const employeeId: number = Number(req.params.id);
