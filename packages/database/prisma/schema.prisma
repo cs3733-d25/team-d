@@ -12,16 +12,16 @@ datasource db {
 }
 
 model Employee {
-  employeeID        Int                 @id @default(autoincrement())
-  createdAt         DateTime            @default(now())
-  updatedAt         DateTime            @updatedAt
-  email             String              @unique
-  password          String
-  firstName         String
-  middleInitial     String?
-  lastName          String
-  occupation        String
-  serviceRequests   ServiceRequest[]
+  employeeId      Int              @id @default(autoincrement())
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  email           String           @unique
+  password        String
+  firstName       String
+  middleInitial   String?
+  lastName        String
+  occupation      String
+  serviceRequests ServiceRequest[]
 }
 
 /**
@@ -29,25 +29,25 @@ model Employee {
  * Only translator requests for Iteration 1
  */
 model ServiceRequest {
-  requestID         Int                @id @default(autoincrement())
-  createdAt         DateTime           @default(now())
-  updatedAt         DateTime           @updatedAt
+  requestId          Int                 @id @default(autoincrement())
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
   // tables that inherit from ServiceRequest:
-  translatorRequest TranslatorRequest[]
+  translatorRequest  TranslatorRequest[]
   // assigned relationship to Employee:
-  assignedEmployeeID Int?
-  assignedEmployee   Employee?        @relation(fields: [assignedEmployeeID], references: [employeeID])
+  assignedEmployeeId Int?
+  assignedEmployee   Employee?           @relation(fields: [assignedEmployeeId], references: [employeeId])
 }
 
 model TranslatorRequest {
-  languageFrom       String
-  languageTo         String
-  roomNum            String
-  startDateTime      DateTime
-  endDateTime        DateTime
+  languageFrom     String
+  languageTo       String
+  roomNum          String
+  startDateTime    DateTime
+  endDateTime      DateTime
   // link to service request:
-  serviceRequestID   Int              @unique
-  serviceRequest     ServiceRequest   @relation(fields: [serviceRequestID], references: [requestID])
+  serviceRequestId Int            @unique
+  serviceRequest   ServiceRequest @relation(fields: [serviceRequestId], references: [requestId])
 }
 
 enum RequestType {
@@ -55,11 +55,11 @@ enum RequestType {
 }
 
 model Department {
-  departmentID       Int @id @default(autoincrement())
-  name               String
-  floor              Int
-  suite              String         @unique
-  specialtyServices  String
-  hours              String?
-  telephone          String
+  departmentId      Int     @id @default(autoincrement())
+  name              String
+  floor             Int
+  suite             String  @unique
+  specialtyServices String
+  hours             String?
+  telephone         String
 }

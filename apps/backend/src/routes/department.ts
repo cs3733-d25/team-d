@@ -20,7 +20,7 @@ router.get('/', async function (req: Request, res: Response) {
 router.post('/', async function (req: Request, res: Response) {
     const departmentDataAttempt: Prisma.DepartmentCreateInput = req.body;
     try {
-        await PrismaClient.department.create({data: departmentDataAttempt});
+        await PrismaClient.department.create({ data: departmentDataAttempt });
         console.log('Department created');
     } catch (error) {
         console.error(`Unable to create a new department ${departmentDataAttempt}: ${error}`);
@@ -29,6 +29,7 @@ router.post('/', async function (req: Request, res: Response) {
     }
 
     res.sendStatus(200);
-});3
+});
+3;
 
 export default router;
