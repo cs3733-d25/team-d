@@ -6,7 +6,7 @@ const router: Router = express.Router();
 // Returns all translator requests, if any
 router.get('/', async function (req: Request, res: Response) {
     // Query db, store response
-    const requests = await PrismaClient.translatorRequest.findMany();
+    const requests = await PrismaClient.serviceRequest.findMany();
     // If no service requests are found, send 204 and log it
     if (requests == null) {
         console.error('No service requests found in database!');
@@ -39,7 +39,7 @@ router.get('/:id', async function (req: Request, res: Response) {
     // Parse the id param into a variable
     const requestId: number = Number(req.params.id);
     // Find the employee with the id
-    const request = await PrismaClient.translatorRequest.findUnique({
+    const request = await PrismaClient.serviceRequest.findUnique({
         where: { requestId: requestId },
     });
 

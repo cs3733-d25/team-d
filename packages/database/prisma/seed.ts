@@ -206,7 +206,7 @@ async function main() {
             where: {serviceRequestId: serviceRequests[4].requestId},
             update: {},
             create: {
-                serviceRequestId: serviceRequests[4].requestdId,
+                serviceRequestId: serviceRequests[4].requestId,
                 languageFrom: 'English',
                 languageTo: 'Vietnamese',
                 roomNum: '129',
