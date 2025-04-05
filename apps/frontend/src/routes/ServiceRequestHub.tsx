@@ -46,7 +46,7 @@ const ServiceRequestHub = () => {
                 </Card>
             </div>
             <div>
-                <Card className="bg-blue-700/70 hover:bg-blue-700 justify-center h-50 text-white">
+                <Card className="bg-blue-700/70 hover:bg-blue-700 justify-center h-50 text-white border-cream border-10">
                     <CardHeader className="place-content-center">
                         <CardTitle className="text-3xl">Request 5</CardTitle>
                     </CardHeader>
