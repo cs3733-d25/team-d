@@ -5,3 +5,8 @@ export const API_ROUTES = {
     ASSIGNED: '/api/assigned',
 
 };
+
+export type Coordinates = {
+    x: number;
+    y: number;
+}
