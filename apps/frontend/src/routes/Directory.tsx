@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "../styles/directorystyles.css";
 import hospitalLogo from "../public/hospital2.png";
+import {GetDirectory} from "@/database/csv-export.ts";
 
 // Directory data for each service
 const directoryData = [
@@ -132,7 +133,6 @@ const Directory: React.FC = () => {
         }
         setShowDirections(true);
     };
-
     return (
         <>
 
@@ -157,6 +157,7 @@ const Directory: React.FC = () => {
                 </select>
 
                 <button onClick={handleGetDirections}>Get Directions</button>
+                <button onClick={()=> GetDirectory()} value="download">CSV</button>
 
                 {/* Display the detailed info if available */}
                 {showDirections && matchedItem && (
