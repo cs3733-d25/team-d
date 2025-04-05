@@ -1,6 +1,6 @@
 import express, { Router, Request, Response } from 'express';
 import PrismaClient from '../bin/prisma-client';
-
+import { Prisma } from 'database';
 const router: Router = express.Router();
 
 // Returns all translator requests, if any
@@ -18,5 +18,20 @@ router.get('/', async function (req: Request, res: Response) {
         res.json(requests);
     }
 });
+
+// post request to add service requests to the database
+router.post('/', async function (req: Request, res: Response) {
+    const serviceRequestAttempt: Prisma.ServiceRequestCreateInput = req.body;
+    try {
+        await PrismaClient.serviceRequest.create({data: serviceRequestAttempt});
+        console.log('Service request created');
+    } catch (error) {
+        console.error(`Unable to create service request ${serviceRequestAttempt}: ${error}`);
+        res.sendStatus(400);
+        return;
+    }
+
+    res.sendStatus(200);
+})
 
 export default router;

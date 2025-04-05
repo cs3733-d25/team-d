@@ -8,61 +8,61 @@ async function main() {
     console.log('Seeding employees...');
     const employees = [
         await prisma.employee.upsert({
-            where: {employeeId: 1},
+            where: {employeeID: 1},
             update: {},
             create: {
                 email: 'jlsmith@gmail.com',
                 password: 'rhe0324!',
-                firstName: 'Jenn',
-                middleName: 'Lopez',
+                firstName: 'Jen',
+                middleInitial: 'L',
                 lastName: 'Smith',
                 occupation: 'Nurse'
             }
         }),
         await prisma.employee.upsert({
-            where: {employeeId: 2},
+            where: {employeeID: 2},
             update: {},
             create: {
                 email: 'mkhaven@gmail.com',
                 password: 'ehw2153!',
                 firstName: 'Matthew',
-                middleName: 'King',
+                middleInitial: 'K',
                 lastName: 'Haven',
                 occupation: 'Doctor'
             }
         }),
         await prisma.employee.upsert({
-            where: {employeeId: 3},
+            where: {employeeID: 3},
             update: {},
             create: {
                 email: 'palong@gmail.com',
                 password: 'jye4832!',
                 firstName: 'Piper',
-                middleName: 'Autumn',
+                middleInitial: 'A',
                 lastName: 'Long',
                 occupation: 'Nurse'
             }
         }),
         await prisma.employee.upsert({
-            where: {employeeId: 4},
+            where: {employeeID: 4},
             update: {},
             create: {
                 email: 'nrlee@gmail.com',
                 password: 'gsl9472!',
                 firstName: 'Nicole',
-                middleName: 'Rose',
+                middleInitial: 'R',
                 lastName: 'Lee',
                 occupation: 'Administrator'
             }
         }),
         await prisma.employee.upsert({
-            where: {employeeId: 5},
+            where: {employeeID: 5},
             update: {},
             create: {
                 email: 'kkramos@gmail.com',
                 password: 'dhs9572!',
                 firstName: 'Karina',
-                middleName: 'Knight',
+                middleInitial: 'K',
                 lastName: 'Ramos',
                 occupation: 'Doctor'
             }
@@ -72,145 +72,218 @@ async function main() {
 
     console.log(employees);
 
-
     // Seed translator requests
     console.log('Seeding translator requests...');
-    const translatorRequests = [
-        await prisma.translatorRequest.upsert({
-            where: {requestId: 1},
+    const serviceRequests = [
+        await prisma.serviceRequest.upsert({
+            where: { requestID: 1},
             update: {},
             create: {
-                requestId: 1,
+                assignedEmployeeID: null,
+            },
+        }),
+        await prisma.serviceRequest.upsert({
+            where: { requestID: 2},
+            update: {},
+            create: {
+                assignedEmployeeID: 1,
+            },
+        }),
+        await prisma.serviceRequest.upsert({
+            where: { requestID: 3},
+            update: {},
+            create: {
+                assignedEmployeeID: 2,
+            },
+        }),
+        await prisma.serviceRequest.upsert({
+            where: { requestID: 4},
+            update: {},
+            create: {
+                assignedEmployeeID: null,
+            },
+        }),
+        await prisma.serviceRequest.upsert({
+            where: { requestID: 5},
+            update: {},
+            create: {
+                assignedEmployeeID: 3,
+            },
+        }),
+        await prisma.serviceRequest.upsert({
+            where: { requestID: 6},
+            update: {},
+            create: {
+                assignedEmployeeID: null,
+            },
+        }),
+        await prisma.serviceRequest.upsert({
+            where: { requestID: 7},
+            update: {},
+            create: {
+                assignedEmployeeID: 4,
+            },
+        }),
+        await prisma.serviceRequest.upsert({
+            where: { requestID: 8},
+            update: {},
+            create: {
+                assignedEmployeeID: 3,
+            },
+        }),
+        await prisma.serviceRequest.upsert({
+            where: { requestID: 9},
+            update: {},
+            create: {
+                assignedEmployeeID: null,
+            },
+        }),
+        await prisma.serviceRequest.upsert({
+            where: { requestID: 10},
+            update: {},
+            create: {
+                assignedEmployeeID: null,
+            },
+        }),
+        await prisma.serviceRequest.upsert({
+            where: { requestID: 11},
+            update: {},
+            create: {
+                assignedEmployeeID: null,
+            },
+        }),
+    ];
+    const translatorRequests = [
+        await prisma.translatorRequest.upsert({
+            where: {serviceRequestID: serviceRequests[0].requestID},
+            update: {},
+            create: {
+                serviceRequestID: serviceRequests[0].requestID,
                 languageFrom: 'Vietnamese',
                 languageTo: 'English',
-                roomNumber: '302',
-                startDateTime: '2025-04-01T22:07:00.639Z',
-                endDateTime: '2025-04-01T22:07:45.639Z'
+                roomNum: '302',
+                startDateTime: new Date('2025-04-01T22:07:00.639Z'),
+                endDateTime: new Date('2025-04-01T22:07:45.639Z'),
             }
         }),
         await prisma.translatorRequest.upsert({
-            where: {requestId: 2},
+            where: {serviceRequestID: serviceRequests[1].requestID},
             update: {},
             create: {
-                requestId: 2,
+                serviceRequestID: serviceRequests[1].requestID,
                 languageFrom: 'Spanish',
                 languageTo: 'English',
-                roomNumber: '207',
-                startDateTime: '2025-04-11T22:04:30.639Z',
-                endDateTime: '2025-04-11T22:05:00.639Z',
-                assignedEmployeeId: 1
+                roomNum: '207',
+                startDateTime: new Date('2025-04-11T22:04:30.639Z'),
+                endDateTime: new Date('2025-04-11T22:05:00.639Z'),
             },
         }),
         await prisma.translatorRequest.upsert({
-            where: {requestId: 3},
+            where: {serviceRequestID: serviceRequests[2].requestID},
             update: {},
             create: {
-                requestId: 3,
+                serviceRequestID: serviceRequests[2].requestID,
                 languageFrom: 'English',
                 languageTo: 'Portuguese',
-                roomNumber: '119',
-                startDateTime: '2025-04-18T22:05:00.639Z',
-                endDateTime: '2025-04-18T22:05:40.639Z',
-                assignedEmployeeId: 2
+                roomNum: '119',
+                startDateTime: new Date('2025-04-18T22:05:00.639Z'),
+                endDateTime: new Date('2025-04-18T22:05:40.639Z'),
             },
         }),
         await prisma.translatorRequest.upsert({
-            where: {requestId: 4},
+            where: {serviceRequestID: serviceRequests[3].requestID},
             update: {},
             create: {
-                requestId: 4,
+                serviceRequestID: serviceRequests[3].requestID,
                 languageFrom: 'Chinese',
                 languageTo: 'English',
-                roomNumber: '222',
-                startDateTime: '2025-04-02T22:01:15.639Z',
-                endDateTime: '2025-04-02T22:02:00.639Z',
+                roomNum: '222',
+                startDateTime: new Date('2025-04-02T22:01:15.639Z'),
+                endDateTime: new Date('2025-04-02T22:02:00.639Z'),
             },
         }),
         await prisma.translatorRequest.upsert({
-            where: {requestId: 5},
+            where: {serviceRequestID: serviceRequests[4].requestID},
             update: {},
             create: {
-                requestId: 5,
+                serviceRequestID: serviceRequests[4].requestID,
                 languageFrom: 'English',
                 languageTo: 'Vietnamese',
-                roomNumber: '129',
-                startDateTime: '2025-05-27T22:09:00.639Z',
-                endDateTime: '2025-05-27T22:09:45.639Z',
+                roomNum: '129',
+                startDateTime: new Date('2025-05-27T22:09:00.639Z'),
+                endDateTime: new Date('2025-05-27T22:09:45.639Z'),
             },
         }),
         await prisma.translatorRequest.upsert({
-            where: {requestId: 6},
+            where: {serviceRequestID: serviceRequests[5].requestID},
             update: {},
             create: {
-                requestId: 6,
+                serviceRequestID: serviceRequests[5].requestID,
                 languageFrom: 'German',
                 languageTo: 'Spanish',
-                roomNumber: '311',
-                startDateTime: '2025-04-15T22:09:20.639Z',
-                endDateTime: '2025-04-15T22:08:45.639Z',
+                roomNum: '311',
+                startDateTime: new Date('2025-04-15T22:09:20.639Z'),
+                endDateTime: new Date('2025-04-15T22:08:45.639Z'),
             },
         }),
         await prisma.translatorRequest.upsert({
-            where: {requestId: 7},
+            where: {serviceRequestID: serviceRequests[6].requestID},
             update: {},
             create: {
-                requestId: 7,
+                serviceRequestID: serviceRequests[6].requestID,
                 languageFrom: 'Korean',
                 languageTo: 'English',
-                roomNumber: '104',
-                startDateTime: '2025-06-01T22:02:30.639Z',
-                endDateTime: '2025-06-01T22:03:30.639Z',
+                roomNum: '104',
+                startDateTime: new Date('2025-06-01T22:02:30.639Z'),
+                endDateTime: new Date('2025-06-01T22:03:30.639Z'),
             },
         }),
         await prisma.translatorRequest.upsert({
-            where: {requestId: 8},
+            where: {serviceRequestID: serviceRequests[7].requestID},
             update: {},
             create: {
-                requestId: 8,
+                serviceRequestID: serviceRequests[7].requestID,
                 languageFrom: 'English',
                 languageTo: 'Russian',
-                roomNumber: '333',
-                startDateTime: '2025-05-11T22:04:00.639Z',
-                endDateTime: '2025-05-11T22:04:45.639Z',
-                assignedEmployeeId: 3
+                roomNum: '333',
+                startDateTime: new Date('2025-05-11T22:04:00.639Z'),
+                endDateTime: new Date('2025-05-11T22:04:45.639Z'),
             },
         }),
         await prisma.translatorRequest.upsert({
-            where: {requestId: 9},
+            where: {serviceRequestID: serviceRequests[8].requestID},
             update: {},
             create: {
-                requestId: 9,
+                serviceRequestID: serviceRequests[8].requestID,
                 languageFrom: 'French',
                 languageTo: 'English',
-                roomNumber: '234',
-                startDateTime: '2025-04-28T22:07:00.639Z',
-                endDateTime: '2025-04-28T22:07:45.639Z',
-                assignedEmployeeId: 4
+                roomNum: '234',
+                startDateTime: new Date('2025-04-28T22:07:00.639Z'),
+                endDateTime: new Date('2025-04-28T22:07:45.639Z'),
             },
         }),
         await prisma.translatorRequest.upsert({
-            where: {requestId: 10},
+            where: {serviceRequestID: serviceRequests[9].requestID},
             update: {},
             create: {
-                requestId: 10,
+                serviceRequestID: serviceRequests[9].requestID,
                 languageFrom: 'English',
                 languageTo: 'Chinese',
-                roomNumber: '232',
-                startDateTime: '2025-05-29T22:09:00.639Z',
-                endDateTime: '2025-05-29T22:10:30.639Z',
-                assignedEmployeeId: 4
+                roomNum: '232',
+                startDateTime: new Date('2025-05-29T22:09:00.639Z'),
+                endDateTime: new Date('2025-05-29T22:10:30.639Z'),
             },
         }),
         await prisma.translatorRequest.upsert({
-            where: {requestId: 11},
+            where: {serviceRequestID: serviceRequests[10].requestID},
             update: {},
             create: {
-                requestId: 11,
+                serviceRequestID: serviceRequests[10].requestID,
                 languageFrom: 'Spanish',
                 languageTo: 'French',
-                roomNumber: '119',
-                startDateTime: '2025-06-20T22:10:30.639Z',
-                endDateTime: '2025-06-20T22:11:15.639Z',
+                roomNum: '119',
+                startDateTime: new Date('2025-06-20T22:10:30.639Z'),
+                endDateTime: new Date('2025-06-20T22:11:15.639Z'),
             },
         }),
     ];

@@ -3,9 +3,9 @@ import PrismaClient from '../bin/prisma-client';
 
 const router: Router = express.Router();
 
-// Returns all translator requests with an assigned employee, if any
+// Returns all service requests with an assigned employee, if any
 router.get('/', async function (req: Request, res: Response) {
-    const assignedRequests = await PrismaClient.translatorRequest.findMany({
+    const assignedRequests = await PrismaClient.serviceRequest.findMany({
         where: {
             NOT: {
                 assignedEmployee: null,

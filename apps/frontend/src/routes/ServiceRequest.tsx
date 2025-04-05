@@ -25,7 +25,7 @@ export default function ServiceRequest() {
     const [form, setForm] = useState<translatorRequestForm>({
         languageFrom: '',
         languageTo: '',
-        roomNumber: '',
+        roomNum: '',
         startDateTime: '',
         endDateTime: '',
     });
@@ -77,7 +77,7 @@ export default function ServiceRequest() {
                                     onChange={(e) =>
                                         setForm({
                                             ...form,
-                                            roomNumber: e.target.value,
+                                            roomNum: e.target.value,
                                         })
                                     }
                                 />
