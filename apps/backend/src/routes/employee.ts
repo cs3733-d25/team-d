@@ -19,4 +19,24 @@ router.get('/', async function (req: Request, res: Response) {
     }
 });
 
+router.get('/:id', async function (req: Request, res: Response) {
+    // Parse the id param into a variable
+    const employeeId: number = Number(req.params.id);
+    // Find the employee with the id
+    const employee = await PrismaClient.employee.findUnique({
+        where: { employeeId: employeeId },
+    });
+
+    // If no employee with the ID is found, send 204 and log it
+    if (employee == null) {
+        console.error(`The employee with ${employeeId} not found in database!`);
+        res.sendStatus(204);
+    }
+    // Otherwise send 200 and the data
+    else {
+        console.log(employee);
+        res.json(employee);
+    }
+});
+
 export default router;
