@@ -6,6 +6,7 @@ import Directory from "@/routes/Directory.tsx";
 import ServiceRequestHub from "@/routes/ServiceRequestHub";
 import Home from "@/routes/Home.tsx";
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import ServiceRequest from "@/routes/ServiceRequest.tsx";
 
 function App() {
     return (
@@ -39,6 +40,12 @@ function App() {
                             index={false}
                             path="/directory"
                             element={<Directory />}
+                        />
+
+                        <Route
+                            index={false}
+                            path="/servicerequest"
+                            element={<ServiceRequest />}
                         />
 
                         <Route
