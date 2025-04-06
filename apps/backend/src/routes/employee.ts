@@ -55,4 +55,36 @@ router.get('/:id', async function (req: Request, res: Response) {
     }
 });
 
+// Update employee with specified id
+router.put('/:id', async function (req: Request, res: Response) {
+    // parse id into variable
+    const employeeId: number = Number(req.params.id);
+
+    // find employee with id
+    const request = await PrismaClient.employee.findUnique({
+        where: { employeeId: employeeId },
+    });
+
+    // error if no employee with the id is found
+    if (request == null) {
+        console.error(`The request with ${employeeId} not found in database!`);
+        res.status(404);
+    }
+    // success: update specified employee
+    else {
+        try {
+            const updateRequest = await PrismaClient.employee.update({
+                where: { employeeId: employeeId },
+                data: req.body,
+            });
+            // send 200 and updated employee if success
+            res.status(200).json(updateRequest);
+            // send 400 and error message if request cannot be updated
+        } catch (error) {
+            console.error(`Unable to update employee ${employeeId}: ${error}`);
+            res.sendStatus(400);
+        }
+    }
+});
+
 export default router;

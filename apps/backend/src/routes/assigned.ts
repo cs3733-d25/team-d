@@ -11,6 +11,11 @@ router.get('/', async function (req: Request, res: Response) {
                 assignedEmployee: null,
             },
         },
+        // joins service request table with employee and translator request
+        include: {
+            translatorRequest: true,
+            assignedEmployee: true,
+        },
     });
     // If no employees are found, send 204 and log it
     if (assignedRequests == null) {

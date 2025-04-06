@@ -30,6 +30,5 @@ router.post('/', async function (req: Request, res: Response) {
 
     res.sendStatus(200);
 });
-3;
 
 export default router;
