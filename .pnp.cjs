@@ -5184,6 +5184,7 @@ const RAW_RUNTIME_STATE =
           ["@radix-ui/react-navigation-menu", "virtual:d3996bc66f5a97675d735c6457b44af0f25df32a5e5981f61ff7f22e93004839ccc5d56298eff651f971a908820429de35800a3f2669be95e1c0f6bb82e8a700#npm:1.2.5"],\
           ["@radix-ui/react-slot", "virtual:d3996bc66f5a97675d735c6457b44af0f25df32a5e5981f61ff7f22e93004839ccc5d56298eff651f971a908820429de35800a3f2669be95e1c0f6bb82e8a700#npm:1.1.2"],\
           ["@tailwindcss/vite", "virtual:d3996bc66f5a97675d735c6457b44af0f25df32a5e5981f61ff7f22e93004839ccc5d56298eff651f971a908820429de35800a3f2669be95e1c0f6bb82e8a700#npm:4.0.17"],\
+          ["@types/google.maps", "npm:3.58.1"],\
           ["@types/node", "npm:22.13.13"],\
           ["@types/prop-types", "npm:15.7.14"],\
           ["@types/react", "npm:18.3.20"],\

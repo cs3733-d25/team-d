@@ -2,7 +2,7 @@
 import React from 'react';
 
 import GGMap from "@/GoogleMap/GoogleMap.tsx";
-
+import MapComponent from "@/GoogleMap/GoogleMap.tsx";
 export default function Map() {
 
 
