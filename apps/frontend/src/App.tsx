@@ -12,10 +12,10 @@ function App() {
         <div className="h-screen bg-accent flex flex-col parent">
             <BrowserRouter>
                 <Routes>
+                    <Route
+                        index={true}
+                        element={<Home />} />
                     <Route path="/" element={<Navbar />}>
-                        <Route
-                            index={true}
-                            element={<Home />} />
 
                         <Route
                             index={false}
