@@ -1,3 +1,5 @@
+const chesthillID: string = 'ChIJLwkLvP5444kRGTnWxi0zsnM';
+
 class AutocompleteDirectionsHandler {
     map: google.maps.Map;
     originPlaceId: string;
@@ -47,16 +49,21 @@ class AutocompleteDirectionsHandler {
         });
     }
 
-    setupPlaceChangedListener(autocomplete: google.maps.places.Autocomplete, mode: string) {
-        autocomplete.bindTo('bounds', this.map);
-        autocomplete.addListener('place_changed', () => {
+    setupPlaceChangedListener(
+        autocomplete: google.maps.places.Autocomplete,
+        mode: string
+    ) {
+        autocomplete.bindTo("bounds", this.map);
+
+        autocomplete.addListener("place_changed", () => {
             const place = autocomplete.getPlace();
+
             if (!place.place_id) {
-                window.alert('Please select an option from the dropdown list.');
+                window.alert("Please select an option from the dropdown list.");
                 return;
             }
 
-            if (mode === 'ORIG') {
+            if (mode === "ORIG") {
                 this.originPlaceId = place.place_id;
             } else {
                 this.destinationPlaceId = place.place_id;
@@ -72,7 +79,8 @@ class AutocompleteDirectionsHandler {
         this.directionsService.route(
             {
                 origin: { placeId: this.originPlaceId },
-                destination: { placeId: this.destinationPlaceId },
+                destination: { placeId: chesthillID },
+                // destination: { placeId: this.destinationPlaceId },
                 travelMode: this.travelMode,
             },
             (response, status) => {

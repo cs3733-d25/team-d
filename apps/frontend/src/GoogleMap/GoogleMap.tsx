@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 
-const API_KEY = 'rmb to remove api key everytime u push please!!!';
+const API_KEY = 'delete api key';
 
 import AutocompleteDirectionsHandler from "@/GoogleMap/GoogleMapHelper.ts";
 
@@ -50,17 +50,30 @@ const GGMap: React.FC = () => {
             <div style={{ display: 'flex', flexDirection: 'column' }}>
                 <input id="origin-input" type="text" placeholder="Origin" />
                 <input id="destination-input" type="text" placeholder="Destination" />
+                <input id="street-input" type="text" placeholder="Street" />
+
+                <label htmlFor="cars">Choose a car:</label>
+
+                <select name="destination-predefined" id="destination-predefined">
+                    <option value="entrance">Entrance</option>
+                    <option value="parking-lot">Parking lot</option>
+                    <option value="desk">Desk help</option>
+                </select>
+
+                <p>Testing:</p>
                 <select id="mode-selector">
-                    <option value="WALKING" id="changemode-walking">Walking</option>
-                    <option value="TRANSIT" id="changemode-transit">Transit</option>
-                    <option value="DRIVING" id="changemode-driving">Driving</option>
+                    <option value="WALKING" id="changemode-walking">
+                        Walking
+                    </option>
+                    <option value="TRANSIT" id="changemode-transit">
+                        Transit
+                    </option>
+                    <option value="DRIVING" id="changemode-driving">
+                        Driving
+                    </option>
                 </select>
             </div>
-            <div
-                id="map"
-                ref={mapRef}
-                style={{ width: '100vw', height: '100vh' }}
-            ></div>
+            <div id="map" ref={mapRef} style={{ width: '100vw', height: '100vh' }}></div>
         </div>
     );
 };
