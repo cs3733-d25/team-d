@@ -11,35 +11,55 @@ datasource db {
   url      = env("POSTGRES_URL")
 }
 
-// Example table used in the express router example
-model Score {
-  id    Int      @id @default(autoincrement())
-  time  DateTime
-  score Int
+model Employee {
+  employeeId      Int              @id @default(autoincrement())
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  email           String           @unique
+  password        String
+  firstName       String
+  middleInitial   String?
+  lastName        String
+  occupation      String
+  serviceRequests ServiceRequest[]
 }
 
-model Employee {
-  employeeId        Int                 @id @default(autoincrement())
-  createdAt         DateTime            @default(now())
-  updatedAt         DateTime            @updatedAt
-  email             String              @unique
-  password          String
-  firstName         String
-  middleName        String
-  lastName          String
-  occupation        String
-  TranslatorRequest TranslatorRequest[]
+/**
+ * Each type of service request inherits from ServiceRequest
+ * Only translator requests for Iteration 1
+ */
+model ServiceRequest {
+  requestId          Int                 @id @default(autoincrement())
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  // tables that inherit from ServiceRequest:
+  translatorRequest  TranslatorRequest[]
+  // assigned relationship to Employee:
+  assignedEmployeeId Int?
+  assignedEmployee   Employee?           @relation(fields: [assignedEmployeeId], references: [employeeId])
 }
 
 model TranslatorRequest {
-  requestId          Int       @id @default(autoincrement())
-  createdAt          DateTime  @default(now())
-  updatedAt          DateTime  @updatedAt
-  languageFrom       String
-  languageTo         String
-  roomNumber         String
-  startDateTime      DateTime
-  endDateTime        DateTime
-  assignedEmployeeId Int?
-  assignedEmployee   Employee? @relation(fields: [assignedEmployeeId], references: [employeeId])
+  languageFrom     String
+  languageTo       String
+  roomNum          String
+  startDateTime    DateTime
+  endDateTime      DateTime
+  // link to service request:
+  serviceRequestId Int            @unique
+  serviceRequest   ServiceRequest @relation(fields: [serviceRequestId], references: [requestId])
+}
+
+enum RequestType {
+  TranslatorRequest
+}
+
+model Department {
+  departmentId      Int     @id @default(autoincrement())
+  name              String
+  floor             Int
+  suite             String  @unique
+  specialtyServices String
+  hours             String?
+  telephone         String
 }

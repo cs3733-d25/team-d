@@ -1,6 +1,6 @@
 import express, { Router, Request, Response } from 'express';
 import PrismaClient from '../bin/prisma-client';
-
+import { Prisma } from 'database';
 const router: Router = express.Router();
 
 // Returns all employees, if any
@@ -16,6 +16,42 @@ router.get('/', async function (req: Request, res: Response) {
     else {
         console.log(employees);
         res.json(employees);
+    }
+});
+
+// post request to add employees to the database
+router.post('/', async function (req: Request, res: Response) {
+    const employeeDataAttempt: Prisma.EmployeeCreateInput = req.body;
+    try {
+        await PrismaClient.employee.create({ data: employeeDataAttempt });
+        console.log('Employee created');
+    } catch (error) {
+        console.error(`Unable to create a new employee ${employeeDataAttempt}: ${error}`);
+        res.sendStatus(400);
+        return;
+    }
+
+    res.sendStatus(200);
+});
+
+// Return an employee with specified id
+router.get('/:id', async function (req: Request, res: Response) {
+    // Parse the id param into a variable
+    const employeeId: number = Number(req.params.id);
+    // Find the employee with the id
+    const employee = await PrismaClient.employee.findUnique({
+        where: { employeeId: employeeId },
+    });
+
+    // If no employee with the ID is found, send 204 and log it
+    if (employee == null) {
+        console.error(`The employee with ${employeeId} not found in database!`);
+        res.sendStatus(204);
+    }
+    // Otherwise send 200 and the data
+    else {
+        console.log(employee);
+        res.json(employee);
     }
 });
 
