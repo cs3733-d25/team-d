@@ -57,9 +57,15 @@ const GGMap: React.FC = () => {
                 </select>
 
                 <select id="mode-selector">
-                    <option value="WALKING" id="changemode-walking">Walking</option>
-                    <option value="TRANSIT" id="changemode-transit">Transit</option>
-                    <option value="DRIVING" id="changemode-driving">Driving</option>
+                    <option value="WALKING" id="changemode-walking">
+                        Walking
+                    </option>
+                    <option value="TRANSIT" id="changemode-transit">
+                        Transit
+                    </option>
+                    <option value="DRIVING" id="changemode-driving">
+                        Driving
+                    </option>
                 </select>
             </div>
             <div

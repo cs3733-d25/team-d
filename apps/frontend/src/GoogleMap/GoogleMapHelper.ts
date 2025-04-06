@@ -49,9 +49,13 @@ class AutocompleteDirectionsHandler {
         });
     }
 
-    setupPlaceChangedListener(autocomplete: google.maps.places.Autocomplete, mode: string) {
-        autocomplete.bindTo('bounds', this.map);
-        autocomplete.addListener('place_changed', () => {
+    setupPlaceChangedListener(
+        autocomplete: google.maps.places.Autocomplete,
+        mode: string
+    ) {
+        autocomplete.bindTo("bounds", this.map);
+
+        autocomplete.addListener("place_changed", () => {
             const place = autocomplete.getPlace();
             if (!place.place_id) {
                 window.alert('Please select an option from the dropdown list.');
