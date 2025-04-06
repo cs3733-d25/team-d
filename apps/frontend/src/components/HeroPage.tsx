@@ -7,12 +7,12 @@ export default function HeroTextBox(){
     return(
         <>
             <div className="w-2/3 animate-in fade-in zoom-in duration-800">
-                <Card className=" bg-cyan-200/80 text-5xl/17 box-border rounded-none border-0">
-                    <div className={"basis-2/3"}>
+                <Card className="bg-cyan-200/80 text-5xl/17 box-border rounded-none border-0">
+                    <div className={"basis-2/3 "}>
                         <img
                             src={hospitalLogo}
                             alt="Brigham and Women’s Hospital (Founding Member, Mass General Brigham)"
-                            style={{ height: "40px" }}
+                            style={{ height: "40px w-fit" }}
                             className={"mx-4 my-4"}
                         />
                     </div>
