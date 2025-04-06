@@ -9,7 +9,7 @@ import {
 export default function Home() {
     return (
         <>
-            <div className="bg-[url(../public/Hospital.jpg)] bg-no-repeat bg-cover h-screen p-20 ">
+            <div className="bg-[url(../public/Hospital.jpg)] bg-no-repeat bg-cover h-screen p-10 overflow-y-hidden">
                 <Card className="bg-blue-700/70 m-20 ">
                     <CardTitle className="text-6xl text-center text-white ">Welcome!</CardTitle>
                 </Card>
