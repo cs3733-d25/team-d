@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import "../styles/directorystyles.css";
-import hospitalLogo from "../public/hospital2.png";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 
-// Directory data for each service
 const directoryData = [
     {
         service: "Allergy and Clinical Immunology",
@@ -49,19 +48,22 @@ const directoryData = [
     },
     {
         service: "Crohn's and Colitis Center",
-        specialties: "Crohn's disease, inflammatory bowel disease, infusion services, microscopic colitis, pulmonary, rheumatology, ulcerative colitis",
+        specialties:
+            "Crohn's disease, inflammatory bowel disease, infusion services, microscopic colitis, pulmonary, rheumatology, ulcerative colitis",
         floorSuite: "2nd floor, suite 201",
         phone: "(617) 732–6389",
     },
     {
         service: "Endoscopy Center",
-        specialties: "Bacterial overgrowth breath test, colonoscopy, H. Pylori breath test, lactose malabsorption breath test, upper endoscopy",
+        specialties:
+            "Bacterial overgrowth breath test, colonoscopy, H. pylori breath test, lactose malabsorption breath test, upper endoscopy",
         floorSuite: "2nd floor, suite 202",
         phone: "(617) 732–7426",
     },
     {
         service: "Gretchen S. and Edward A. Fish Center for Women's Health",
-        specialties: "Cardiology, Dermatology (cosmetic, medical, and surgical), Endocrinology, Gastroenterology, Gynecology, Hematology, Infectious Diseases, Mental Health (social work), General neurology, Nutrition, Primary care, Pulmonary, Renal, Rheumatology, Sleep medicine, Women's Health (Menopause and Midlife Clinic, Obstetric Internal Medicine)\n",
+        specialties:
+            "Cardiology, Dermatology (cosmetic, medical, and surgical), Endocrinology, Gastroenterology, Gynecology, Hematology, Infectious Diseases, Mental Health (social work), General neurology, Nutrition, Primary care, Pulmonary, Renal, Rheumatology, Sleep medicine, Women's Health (Menopause and Midlife Clinic, Obstetric Internal Medicine)",
         floorSuite: "4th floor, suite 402",
         phone: "(617) 732–9300",
     },
@@ -74,14 +76,14 @@ const directoryData = [
     {
         service: "Multi-Specialty Clinic",
         specialties:
-            "Orthopedic surgery, Vascular surgery, Contact Dermatitis and Occupational Dermatology Program, Pain Medicine and Travel Medicine\n",
+            "Orthopedic surgery, Vascular surgery, Contact Dermatitis and Occupational Dermatology Program, Pain Medicine and Travel Medicine",
         floorSuite: "1st floor, suite 130",
         phone: "(617) 732–9500",
     },
     {
         service: "Osher Clinical Center for Integrative Health",
-        specialties: "Acupuncture, health coaching, chiropractic, craniosacral therapy, integrative medicine, structural massage & movement therapies, neurology (movement disorders and headache), echocardiography, and pulmonary.\n" +
-            "Educational courses: Integrative wellness courses are also offered.\n",
+        specialties:
+            "Acupuncture, health coaching, chiropractic, craniosacral therapy, integrative medicine, structural massage & movement therapies, neurology (movement disorders and headache), echocardiography, and pulmonary. Educational courses: Integrative wellness courses are also offered.",
         floorSuite: "4th floor, suite 422",
         phone: "(617) 732–9700",
     },
@@ -111,42 +113,50 @@ const directoryData = [
     },
     {
         service: "Rehabilitation Services",
-        specialties: "Orthopedic, sports, neurologic and vestibular Physical Therapy, Men's and Women's pelvic floor Physical Therapy. Hand/Occupational, Therapy Speech Language Pathology",
+        specialties:
+            "Orthopedic, sports, neurologic and vestibular Physical Therapy, Men's and Women's pelvic floor Physical Therapy. Hand/Occupational, Therapy Speech Language Pathology",
         floorSuite: "2nd floor, suite 200",
         phone: "(617) 732–9525",
     },
 ];
 
 const Directory: React.FC = () => {
+    const navigate = useNavigate();
     const [selectedService, setSelectedService] = useState("");
-    const [showDirections, setShowDirections] = useState(false);
-
-    const matchedItem = directoryData.find(
-        (item) => item.service === selectedService
-    );
 
     const handleGetDirections = () => {
         if (!selectedService) {
             alert("Please select a service first.");
             return;
         }
-        setShowDirections(true);
+        // Navigate to within-hospital page (could pass service in query if needed)
+        navigate("/within-hospital");
+    };
+
+    const handleGetToChestnutHill = () => {
+        // Navigate to the to-hospital page
+        navigate("/to-hospital");
     };
 
     return (
-        <>
+        <div className="min-h-screen bg-white">
+            <header className="p-4 bg-white border-b border-gray-200 flex items-center justify-center">
+                <h1 className="text-2xl font-bold">Brigham and Women’s Hospital</h1>
+            </header>
 
-            <main>
-                <h1>Find Your Care</h1>
+            <main className="max-w-2xl mx-auto p-6 mt-10 bg-white border rounded-lg shadow">
+                <h2 className="text-center text-2xl text-blue-700 mb-6">
+                    Find Your Care
+                </h2>
 
-                <label htmlFor="service">Select a Service</label>
+                <label htmlFor="service" className="block font-semibold mb-2">
+                    Select a Service
+                </label>
                 <select
                     id="service"
                     value={selectedService}
-                    onChange={(e) => {
-                        setSelectedService(e.target.value);
-                        setShowDirections(false); // reset details if selection changes
-                    }}
+                    onChange={(e) => setSelectedService(e.target.value)}
+                    className="w-full p-3 border border-gray-300 rounded-md text-base mb-4"
                 >
                     <option value="">-- Choose a Service --</option>
                     {directoryData.map((item) => (
@@ -156,27 +166,29 @@ const Directory: React.FC = () => {
                     ))}
                 </select>
 
-                <button onClick={handleGetDirections}>Get Directions</button>
+                <div className="flex flex-col gap-3">
+                    {/* Button to go "within hospital" directions page */}
+                    <Button
+                        onClick={handleGetDirections}
+                        className="bg-black text-white"
+                    >
+                        Get Directions
+                    </Button>
 
-                {/* Display the detailed info if available */}
-                {showDirections && matchedItem && (
-                    <section className="directions-info">
-                        <h2>{matchedItem.service}</h2>
-                        <p>
-                            <strong>Specialties and Services:</strong>{" "}
-                            {matchedItem.specialties}
-                        </p>
-                        <p>
-                            <strong>Floor and Suite:</strong> {matchedItem.floorSuite}
-                        </p>
-                        <p>
-                            <strong>Telephone:</strong> {matchedItem.phone}
-                        </p>
-                    </section>
-                )}
+                    {/* New button to go "to hospital" directions page */}
+                    <Button
+                        onClick={handleGetToChestnutHill}
+                        className="bg-blue-700 text-white"
+                    >
+                        Get to Chestnut Hill
+                    </Button>
+                </div>
             </main>
-        </>
+        </div>
     );
 };
 
 export default Directory;
+
+
+
