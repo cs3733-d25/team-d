@@ -1,3 +1,5 @@
+const chestNutHillId: string = 'ChIJLwkLvP5444kRGTnWxi0zsnM';
+
 class AutocompleteDirectionsHandler {
     map: google.maps.Map;
     originPlaceId: string;
@@ -16,26 +18,26 @@ class AutocompleteDirectionsHandler {
         this.directionsRenderer.setMap(map);
 
         const originInput = document.getElementById('origin-input') as HTMLInputElement;
-        const destinationInput = document.getElementById('destination-input') as HTMLInputElement;
+        // const destinationInput = document.getElementById('destination-input') as HTMLInputElement;
         const modeSelector = document.getElementById('mode-selector') as HTMLSelectElement;
 
         const originAutocomplete = new google.maps.places.Autocomplete(originInput, {
             fields: ['place_id'],
         });
 
-        const destinationAutocomplete = new google.maps.places.Autocomplete(destinationInput, {
-            fields: ['place_id'],
-        });
+        // const destinationAutocomplete = new google.maps.places.Autocomplete(destinationInput, {
+        //     fields: ['place_id'],
+        // });
 
         this.setupClickListener('changemode-walking', google.maps.TravelMode.WALKING);
         this.setupClickListener('changemode-transit', google.maps.TravelMode.TRANSIT);
         this.setupClickListener('changemode-driving', google.maps.TravelMode.DRIVING);
 
         this.setupPlaceChangedListener(originAutocomplete, 'ORIG');
-        this.setupPlaceChangedListener(destinationAutocomplete, 'DEST');
+        // this.setupPlaceChangedListener(destinationAutocomplete, 'DEST');
 
         this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(originInput);
-        this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(destinationInput);
+        // this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(destinationInput);
         this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(modeSelector);
     }
 
@@ -67,12 +69,14 @@ class AutocompleteDirectionsHandler {
     }
 
     route() {
-        if (!this.originPlaceId || !this.destinationPlaceId) return;
+        // if (!this.originPlaceId || !this.destinationPlaceId) return;
+        if (!this.originPlaceId) return;
 
         this.directionsService.route(
             {
                 origin: { placeId: this.originPlaceId },
-                destination: { placeId: this.destinationPlaceId },
+                // destination: { placeId: this.destinationPlaceId },
+                destination: { placeId: chestNutHillId },
                 travelMode: this.travelMode,
             },
             (response, status) => {

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 
-const API_KEY = 'rmb to remove api key everytime u push please!!!';
+const API_KEY = '';
 
 import AutocompleteDirectionsHandler from "@/GoogleMap/GoogleMapHelper.ts";
 
@@ -49,7 +49,13 @@ const GGMap: React.FC = () => {
         <div>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
                 <input id="origin-input" type="text" placeholder="Origin" />
-                <input id="destination-input" type="text" placeholder="Destination" />
+                {/*<input id="destination-input" type="text" placeholder="Destination" />*/}
+                <select id="destination-selector">
+                    <option value="entrance" id="entrance">Entrance</option>
+                    <option value="desk" id="desk">Desk</option>
+                    <option value="parking" id="parking">Parking</option>
+                </select>
+
                 <select id="mode-selector">
                     <option value="WALKING" id="changemode-walking">Walking</option>
                     <option value="TRANSIT" id="changemode-transit">Transit</option>
