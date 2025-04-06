@@ -18,7 +18,7 @@ class AutocompleteDirectionsHandler {
         this.directionsRenderer.setMap(map);
 
         const originInput = document.getElementById('origin-input') as HTMLInputElement;
-        // const destinationInput = document.getElementById('destination-input') as HTMLInputElement;
+        // const destinationInput = document.getElementById('destination-selector') as HTMLInputElement;
         const modeSelector = document.getElementById('mode-selector') as HTMLSelectElement;
 
         const originAutocomplete = new google.maps.places.Autocomplete(originInput, {
@@ -36,9 +36,12 @@ class AutocompleteDirectionsHandler {
         this.setupPlaceChangedListener(originAutocomplete, 'ORIG');
         // this.setupPlaceChangedListener(destinationAutocomplete, 'DEST');
 
-        this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(originInput);
+
+        //This helps to put the search bar/drop down onto the map
+
+        // this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(originInput);
         // this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(destinationInput);
-        this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(modeSelector);
+        // this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(modeSelector);
     }
 
     setupClickListener(id: string, mode: google.maps.TravelMode) {
@@ -64,16 +67,21 @@ class AutocompleteDirectionsHandler {
 
             if (mode === 'ORIG') {
                 this.originPlaceId = place.place_id;
-            } else {
-                this.destinationPlaceId = place.place_id;
             }
+            // } else {
+            //     this.destinationPlaceId = place.place_id;
+            // }
 
             this.route();
         });
     }
 
+
+    // This draws the line between origin and destination
     route() {
+
         // if (!this.originPlaceId || !this.destinationPlaceId) return;
+
         if (!this.originPlaceId) return;
 
         this.directionsService.route(

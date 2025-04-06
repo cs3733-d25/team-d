@@ -50,6 +50,9 @@ const GGMap: React.FC = () => {
             <div style={{ display: 'flex', flexDirection: 'column' }}>
                 <input id="origin-input" type="text" placeholder="Origin" />
                 {/*<input id="destination-input" type="text" placeholder="Destination" />*/}
+
+                {/*This currently is not working because we have yet to implement the path to any of the option*/}
+
                 <select id="destination-selector">
                     <option value="entrance" id="entrance">Entrance</option>
                     <option value="desk" id="desk">Desk</option>
@@ -68,6 +71,7 @@ const GGMap: React.FC = () => {
                     </option>
                 </select>
             </div>
+
             <div
                 id="map"
                 ref={mapRef}
