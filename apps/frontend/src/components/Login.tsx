@@ -53,7 +53,7 @@ export default function Login() {
     }
 
     return (
-        <div>
+        <div className="animate-in fade-in zoom-in duration-800">
             <Card>
                 <CardHeader className="place-content-center">
                     <CardTitle>Login</CardTitle>
