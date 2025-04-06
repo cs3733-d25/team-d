@@ -24,10 +24,10 @@ model Employee {
   serviceRequests ServiceRequest[]
 }
 
-/**
- * Each type of service request inherits from ServiceRequest
- * Only translator requests for Iteration 1
- */
+//**
+ //* Each type of service request inherits from ServiceRequest
+ //* Only translator requests for Iteration 1
+ //*/
 model ServiceRequest {
   requestId          Int                 @id @default(autoincrement())
   createdAt          DateTime            @default(now())
