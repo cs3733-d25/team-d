@@ -15,21 +15,31 @@ const ServiceRequestHub = () => {
     return (
         <div style={{marginTop: '180px'}}>
             <div className="grid grid-rows-1 grid-cols-3 gap-4">
-            <RequestHubCard
-                link="/servicerequest"
-                title={"Request Translator"}/>
                 <RequestHubCard
                     link="/servicerequest"
-                    title={"Request 2"}/>
+                    title="Request Translator"
+                    iconName={faLanguage}
+                />
                 <RequestHubCard
                     link="/servicerequest"
-                    title={"Request 3"}/>
+                    title={"Request 2"}
+                    iconName={faLanguage}
+                />
                 <RequestHubCard
                     link="/servicerequest"
-                    title={"Request 4"}/>
+                    title={"Request 3"}
+                    iconName={faLanguage}
+                />
                 <RequestHubCard
                     link="/servicerequest"
-                    title={"Request 5"}/>
+                    title={"Request 4"}
+                    iconName={faLanguage}
+                />
+                <RequestHubCard
+                    link="/servicerequest"
+                    title={"Request 5"}
+                    iconName={faLanguage}
+                />
             </div>
         </div>
     )
