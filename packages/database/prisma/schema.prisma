@@ -58,7 +58,7 @@ model Department {
   departmentId      Int     @id @default(autoincrement())
   name              String
   floor             Int
-  suite             String  @unique
+  suite             String
   specialtyServices String
   hours             String?
   telephone         String
