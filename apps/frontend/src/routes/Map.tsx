@@ -22,8 +22,6 @@ export default function Map() {
             < img src="src/public/ChestnutHillFloor1Transparent.png" width="1200" alt="Floorplan of floor 1 of Mass General Brigham's Chestnut Hill location"
                   className="flex items-center justify-center w-full"/>
             <div className="flex items-center justify-center w-full">
-                <GGMap></GGMap>
-
             </div>
         </div>
     );
