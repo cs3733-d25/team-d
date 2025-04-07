@@ -34,8 +34,7 @@ class Graph {
         }
     }
 
-
-    bfs(start: string, goal: string): string[] | null {
+    bfs(start: string, goal: string): Coordinates[] | null {
         const startNode = this.nodes.get(start);
         const goalNode = this.nodes.get(goal);
 
@@ -44,7 +43,7 @@ class Graph {
         }
 
         const visited = new Set<string>();
-        const queue: { node: GraphNode; path: string[] }[] = [{ node: startNode, path: [start] }];
+        const queue: { node: GraphNode; path: Coordinates[] }[] = [{ node: startNode, path: [startNode.coords] }];
 
         while (queue.length > 0) {
             const { node, path } = queue.shift()!;
@@ -56,18 +55,18 @@ class Graph {
 
             for (const neighbor of node.getNeighbors()) {
                 if (!visited.has(neighbor.name)) {
-                    queue.push({ node: neighbor, path: [...path, neighbor.name] });
+                    queue.push({ node: neighbor, path: [...path, neighbor.coords] });//switched to returning coords
                 }
             }
         }
 
-        return null; // No path found
+        return null; //if no path is found
     }
 
 }
 
 class GraphNode {
-    private neighbors : GraphNode[];
+    private neighbors: GraphNode[];
     name: string;
     coords: Coordinates;
 
