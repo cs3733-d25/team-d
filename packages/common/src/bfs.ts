@@ -86,3 +86,4 @@ class GraphNode {
 
 }
 
+export { Graph };
