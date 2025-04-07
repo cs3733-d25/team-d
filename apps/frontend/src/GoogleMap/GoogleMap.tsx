@@ -32,8 +32,8 @@ const GGMap: React.FC = () => {
 
             const map = new window.google.maps.Map(mapRef.current, {
                 mapTypeControl: false,
-                center: { lat: -33.8688, lng: 151.2195 },
-                zoom: 13,
+                center: { lat: 42.32610824896946, lng: -71.14955534500426},
+                zoom: 19,
             });
 
             new AutocompleteDirectionsHandler(map);
