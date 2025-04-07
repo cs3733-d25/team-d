@@ -48,34 +48,29 @@ const GGMap: React.FC = () => {
     return (
         <div>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <input id="origin-input" type="text" placeholder="Origin" />
+                {/*<input id="origin-input" type="text" placeholder="Origin" />*/}
                 {/*<input id="destination-input" type="text" placeholder="Destination" />*/}
 
                 {/*This currently is not working because we have yet to implement the path to any of the option*/}
 
-                <select id="destination-selector">
-                    <option value="entrance" id="entrance">Entrance</option>
-                    <option value="desk" id="desk">Desk</option>
-                    <option value="parking" id="parking">Parking</option>
-                </select>
 
-                <select id="mode-selector">
-                    <option value="WALKING" id="changemode-walking">
-                        Walking
-                    </option>
-                    <option value="TRANSIT" id="changemode-transit">
-                        Transit
-                    </option>
-                    <option value="DRIVING" id="changemode-driving">
-                        Driving
-                    </option>
-                </select>
+                {/*<select id="mode-selector">*/}
+                {/*    <option value="WALKING" id="changemode-walking">*/}
+                {/*        Walking*/}
+                {/*    </option>*/}
+                {/*    <option value="TRANSIT" id="changemode-transit">*/}
+                {/*        Transit*/}
+                {/*    </option>*/}
+                {/*    <option value="DRIVING" id="changemode-driving">*/}
+                {/*        Driving*/}
+                {/*    </option>*/}
+                {/*</select>*/}
             </div>
 
             <div
                 id="map"
                 ref={mapRef}
-                style={{ width: '100vw', height: '100vh' }}
+                style={{ width: '65vw', height: '100vh' }}
             ></div>
         </div>
     );

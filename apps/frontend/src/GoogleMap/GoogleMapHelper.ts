@@ -12,7 +12,7 @@ class AutocompleteDirectionsHandler {
         this.map = map;
         this.originPlaceId = '';
         this.destinationPlaceId = '';
-        this.travelMode = google.maps.TravelMode.WALKING;
+        this.travelMode = google.maps.TravelMode.DRIVING;
         this.directionsService = new google.maps.DirectionsService();
         this.directionsRenderer = new google.maps.DirectionsRenderer();
         this.directionsRenderer.setMap(map);
@@ -29,10 +29,19 @@ class AutocompleteDirectionsHandler {
         //     fields: ['place_id'],
         // });
 
-        this.setupClickListener('changemode-walking', google.maps.TravelMode.WALKING);
-        this.setupClickListener('changemode-transit', google.maps.TravelMode.TRANSIT);
-        this.setupClickListener('changemode-driving', google.maps.TravelMode.DRIVING);
 
+        this.setupClickListener(
+            "changemode-walking",
+            google.maps.TravelMode.WALKING
+        );
+        this.setupClickListener(
+            "changemode-transit",
+            google.maps.TravelMode.TRANSIT
+        );
+        this.setupClickListener(
+            "changemode-driving",
+            google.maps.TravelMode.DRIVING
+        )
         this.setupPlaceChangedListener(originAutocomplete, 'ORIG');
         // this.setupPlaceChangedListener(destinationAutocomplete, 'DEST');
 

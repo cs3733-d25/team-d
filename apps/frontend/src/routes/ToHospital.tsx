@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import GGMap from "@/GoogleMap/GoogleMap.tsx";
 
 const ToHospital: React.FC = () => {
     const navigate = useNavigate();
@@ -28,6 +29,7 @@ const ToHospital: React.FC = () => {
                         <div className="mb-4">
                             <label className="block font-semibold mb-1">Start Location</label>
                             <input
+                                id="origin-input"
                                 type="text"
                                 value={startLocation}
                                 onChange={(e) => setStartLocation(e.target.value)}
@@ -47,11 +49,32 @@ const ToHospital: React.FC = () => {
                                 placeholder="Chestnut Hill"
                             />
                         </div>
+
+                        {/* Mode selector */}
+                        <div id="mode-selector" className="controls flex  space-x-4 w-full">
+                            <div>
+                                <input type="radio" name="type" id="changemode-walking"/>
+                                <label htmlFor="changemode-walking">Walking</label>
+                            </div>
+
+                            <div>
+                                <input type="radio" name="type" id="changemode-transit"/>
+                                <label htmlFor="changemode-transit">Transit</label>
+                            </div>
+
+                            <div>
+                                <input type="radio" name="type" id="changemode-driving"/>
+                                <label htmlFor="changemode-driving">Driving</label>
+                            </div>
+
+                        </div>
                     </div>
 
                     {/* Map placeholder */}
-                    <div className="col-span-10 md:col-span-7 border rounded-md p-4 bg-white shadow flex items-center justify-center">
-                        <p className="text-gray-500">(Map goes here)</p>
+                    <div
+                        className="col-span-10 md:col-span-7 border rounded-md p-4 bg-white shadow flex items-center justify-center">
+                        {/*<p className="text-gray-500">(Map goes here)</p>*/}
+                        <GGMap></GGMap>
                     </div>
                 </div>
             </main>
