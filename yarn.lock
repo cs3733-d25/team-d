@@ -6755,6 +6755,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "softeng-startercode-d25@workspace:."
   dependencies:
+    "@radix-ui/react-dialog": "npm:^1.1.6"
     "@types/node": "npm:^22.13.13"
     "@vitest/ui": "npm:^3.0.9"
     "@yarnpkg/pnpify": "npm:^4.1.4"
