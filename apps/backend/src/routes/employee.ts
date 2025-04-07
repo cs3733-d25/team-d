@@ -45,7 +45,7 @@ router.get('/:id', async function (req: Request, res: Response) {
 
     // If no employee with the ID is found, send 204 and log it
     if (employee == null) {
-        console.error(`The employee with ${employeeId} not found in database!`);
+        console.error(`The employee with Id ${employeeId} not found in database!`);
         res.sendStatus(204);
     }
     // Otherwise send 200 and the data
@@ -67,7 +67,7 @@ router.put('/:id', async function (req: Request, res: Response) {
 
     // error if no employee with the id is found
     if (request == null) {
-        console.error(`The request with ${employeeId} not found in database!`);
+        console.error(`The employee with Id ${employeeId} not found in database!`);
         res.status(404);
     }
     // success: update specified employee
@@ -82,6 +82,40 @@ router.put('/:id', async function (req: Request, res: Response) {
             // send 400 and error message if request cannot be updated
         } catch (error) {
             console.error(`Unable to update employee ${employeeId}: ${error}`);
+            res.sendStatus(400);
+        }
+    }
+});
+
+// Delete employee with specific id
+router.delete('/:id', async function (req: Request, res: Response) {
+    // parse id into variable
+    const employeeId: number = Number(req.params.id);
+    // find service request with id
+    const employee = await PrismaClient.employee.findUnique({
+        where: { employeeId: employeeId },
+    });
+
+    // error if no service request with the id is found
+    if (employee == null) {
+        console.error(`The employee with Id ${employeeId} not found in database!`);
+        res.status(404);
+    }
+    // success: delete specified employee
+    else {
+        try {
+            const deleteEmployee = await PrismaClient.employee.delete({
+                where: { employeeId: employeeId },
+            });
+
+            // send 200 if success
+            res.status(200).json({
+                message: 'Successfully deleted employee',
+                deleteEmployee: deleteEmployee,
+            });
+            // send 400 and error message if request cannot be updated
+        } catch (error) {
+            console.error(`Unable to delete employee ${employeeId}: ${error}`);
             res.sendStatus(400);
         }
     }
