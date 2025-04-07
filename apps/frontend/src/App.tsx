@@ -17,8 +17,10 @@ function App() {
         <div className="h-screen bg-accent flex flex-col parent">
             <BrowserRouter>
                 <Routes>
-                    <Route path="/" element={<Navbar />}>
-                        <Route index element={<Home />} />
+                    <Route
+                        index={true}
+                        element={<Home />} />
+                        <Route path="/" element={<Navbar />}>
 
                         {/* Existing routes */}
                         <Route path="map" element={<Map />} />
