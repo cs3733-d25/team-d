@@ -1,4 +1,25 @@
-import {Coordinates} from "./constants.ts";
+import { Coordinates } from "./constants.ts";
+import { readFileSync } from "fs";
+
+class GraphNode {
+    private neighbors: GraphNode[];
+    public name: string;
+    public coords: Coordinates;
+
+    constructor(name: string, coords: Coordinates) {
+        this.neighbors = [];
+        this.name = name;
+        this.coords = coords;
+    }
+
+    addNeighbor(node: GraphNode): void {
+        this.neighbors.push(node);
+    }
+
+    getNeighbors(): GraphNode[] {
+        return this.neighbors;
+    }
+}
 
 class Graph {
     private nodes: Map<string, GraphNode>;
@@ -10,8 +31,7 @@ class Graph {
     addNode(name: string, coords: Coordinates): void {
         if (!this.nodes.has(name)) {
             this.nodes.set(name, new GraphNode(name, coords));
-        }
-        else {
+        } else {
             throw new Error(`Node ${name} already exists`);
         }
     }
@@ -21,17 +41,39 @@ class Graph {
         const node2 = this.nodes.get(name2);
         if (node1 === undefined || node2 === undefined) {
             throw new Error(`Node ${name1} or Node ${name2} does not exist`);
-        }
-        else {
-            // It is safe to ignore these warnings
-            // because we have already established
-            // above that they are not undefined
-
-            // @ts-ignore
+        } else {
             node1.addNeighbor(node2);
-            // @ts-ignore
             node2.addNeighbor(node1);
         }
+    }
+
+    loadNodesFromCSV(filePath: string): void {
+        const csvContent = readFileSync(filePath, { encoding: 'utf8' });
+        const lines = csvContent.split('\n');
+        lines.shift();
+
+        lines.forEach(line => {
+            const trimmed = line.trim();
+            if (trimmed) {
+                const [nodeName, xCoord, yCoord] = trimmed.split(',');
+                const coords: Coordinates = { x: parseFloat(xCoord), y: parseFloat(yCoord) };
+                this.addNode(nodeName, coords);
+            }
+        });
+    }
+
+    loadEdgesFromCSV(filePath: string): void {
+        const csvContent = readFileSync(filePath, { encoding: 'utf8' });
+        const lines = csvContent.split('\n');
+        lines.shift(); //remove the header line
+
+        lines.forEach(line => {
+            const trimmed = line.trim();
+            if (trimmed) {
+                const [sourceNode, targetNode] = trimmed.split(',');
+                this.addEdge(sourceNode, targetNode);
+            }
+        });
     }
 
     bfs(start: string, goal: string): Coordinates[] | null {
@@ -55,32 +97,12 @@ class Graph {
 
             for (const neighbor of node.getNeighbors()) {
                 if (!visited.has(neighbor.name)) {
-                    queue.push({ node: neighbor, path: [...path, neighbor.coords] });//switched to returning coords
+                    queue.push({ node: neighbor, path: [...path, neighbor.coords] });
                 }
             }
         }
 
-        return null; //if no path is found
-    }
-
-}
-
-class GraphNode {
-    private neighbors: GraphNode[];
-    name: string;
-    coords: Coordinates;
-
-    constructor(name: string, coords: Coordinates) {
-        this.neighbors = [];
-        this.name = name;
-        this.coords = coords;
-    }
-
-    addNeighbor(node: GraphNode): void {
-        this.neighbors.push(node);
-    }
-    getNeighbors(): GraphNode[] {
-        return this.neighbors;
+        return null;//if no path is found
     }
 
 }

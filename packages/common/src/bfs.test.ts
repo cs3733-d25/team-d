@@ -18,4 +18,5 @@ test('Graph BFS > BFS finds correct path between nodes', () => {
 
     const path = graph.bfs('A', 'C');
     expect(path).toEqual([A, B, C]);
+
 });
