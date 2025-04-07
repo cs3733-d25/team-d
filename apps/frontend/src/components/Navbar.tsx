@@ -3,13 +3,9 @@ import { Outlet, Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     NavigationMenu,
-    NavigationMenuContent,
-    NavigationMenuIndicator,
     NavigationMenuItem,
     NavigationMenuLink,
     NavigationMenuList,
-    NavigationMenuTrigger,
-    NavigationMenuViewport,
 } from "@/components/ui/navigation-menu"
 import hospitalLogo from "@/public/hospital2.png";
 import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
@@ -18,8 +14,8 @@ import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
 
 export default function Navbar()  {
     return (
-        <div>
-            <div className={"flex flex-row bg-blue-100"} >
+        <>
+            <div className={"flex flex-row bg-blue-100 sticky top-0"} >
                 <div className={"basis-1/3"}>
                     <img
                         src={hospitalLogo}
@@ -54,7 +50,7 @@ export default function Navbar()  {
 
                             <NavigationMenuItem>
                                 <NavigationMenuLink className=  {"text-base hover:bg-blue-900 hover:text-white"}>
-                                    <Link to={`/servicerequesthub`}> <b>Request Service</b> </Link>
+                                    <Link to={`/servicerequest`}> <b>Request Service</b> </Link>
                                 </NavigationMenuLink>
                             </NavigationMenuItem>
 
@@ -63,21 +59,13 @@ export default function Navbar()  {
                             </NavigationMenuItem>
 
                         </NavigationMenuList>
-
-
-
-
                     </NavigationMenu>
-
-
-
                 </div>
-
             </div>
-            <Outlet />
-        </div>
-
-
+            <div className="flex-1 overflow-y-scroll">
+                <Outlet />
+            </div>
+        </>
     );
 };
 
