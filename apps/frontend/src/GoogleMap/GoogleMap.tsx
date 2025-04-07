@@ -68,7 +68,7 @@ const GGMap: React.FC = () => {
             </div>
 
             <div
-                id="map"
+                id="ggl-map"
                 ref={mapRef}
                 style={{ width: '65vw', height: '100vh' }}
             ></div>
