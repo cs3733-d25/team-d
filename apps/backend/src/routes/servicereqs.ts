@@ -19,7 +19,6 @@ router.get('/', async function (req: Request, res: Response) {
     }
 });
 
-
 // Return a translator request with specified id
 router.get('/:id', async function (req: Request, res: Response) {
     // Parse the id param into a variable
