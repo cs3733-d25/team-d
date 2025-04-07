@@ -53,9 +53,7 @@ export function ServiceRequestPopup() {
                         </DialogTrigger>
                         <DialogContent className="place-content-center animate-in fade-in zoom-in duration-500">
                             <DialogHeader className="sm:justify-start">
-                                <DialogTitle className="text-3xl">
-                                    Request a Translator
-                                </DialogTitle>
+                                <RequestHubCard />
                             </DialogHeader>
                             <form onSubmit={onSubmit}>
                                 <Label htmlFor="languageFrom">Language From</Label>
