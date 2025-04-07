@@ -129,12 +129,10 @@ const Directory: React.FC = () => {
             alert("Please select a service first.");
             return;
         }
-        // Navigate to within-hospital page (could pass service in query if needed)
-        navigate("/within-hospital");
+        navigate(`/within-hospital?service=${encodeURIComponent(selectedService)}`);
     };
 
     const handleGetToChestnutHill = () => {
-        // Navigate to the to-hospital page
         navigate("/to-hospital");
     };
 
@@ -145,9 +143,7 @@ const Directory: React.FC = () => {
             </header>
 
             <main className="max-w-2xl mx-auto p-6 mt-10 bg-white border rounded-lg shadow">
-                <h2 className="text-center text-2xl text-blue-700 mb-6">
-                    Find Your Care
-                </h2>
+                <h2 className="text-center text-2xl text-blue-700 mb-6">Find Your Care</h2>
 
                 <label htmlFor="service" className="block font-semibold mb-2">
                     Select a Service
@@ -167,19 +163,10 @@ const Directory: React.FC = () => {
                 </select>
 
                 <div className="flex flex-col gap-3">
-                    {/* Button to go "within hospital" directions page */}
-                    <Button
-                        onClick={handleGetDirections}
-                        className="bg-black text-white"
-                    >
+                    <Button onClick={handleGetDirections} className="bg-black text-white">
                         Get Directions
                     </Button>
-
-                    {/* New button to go "to hospital" directions page */}
-                    <Button
-                        onClick={handleGetToChestnutHill}
-                        className="bg-blue-700 text-white"
-                    >
+                    <Button onClick={handleGetToChestnutHill} className="bg-blue-700 text-white">
                         Get to Chestnut Hill
                     </Button>
                 </div>
@@ -189,6 +176,7 @@ const Directory: React.FC = () => {
 };
 
 export default Directory;
+
 
 
 

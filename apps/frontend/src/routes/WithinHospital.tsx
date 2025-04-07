@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
 const directoryData = [
@@ -123,11 +123,15 @@ const directoryData = [
 const WithinHospital: React.FC = () => {
     const navigate = useNavigate();
 
-    // “From” and “To” dropdowns
-    const [fromLocation, setFromLocation] = useState("");
-    const [toLocation, setToLocation] = useState("");
+    const [searchParams] = useSearchParams();
+    const initialService = searchParams.get("service") || "";
 
-    const matchedItem = directoryData[0];
+    const [fromLocation, setFromLocation] = useState("");
+    const [toLocation, setToLocation] = useState(initialService);
+
+    const matchedItem = directoryData.find(
+        (item) => item.service === toLocation
+    );
 
     return (
         <div className="min-h-screen bg-white">
@@ -144,12 +148,8 @@ const WithinHospital: React.FC = () => {
             <main className="px-6 py-4">
                 <div className="grid grid-cols-10 gap-6">
                     <div className="col-span-10 md:col-span-3 border rounded-md p-4 bg-white shadow">
-                        {/* “From” dropdown */}
                         <div className="mb-4">
-                            <label
-                                htmlFor="fromLocation"
-                                className="block font-semibold mb-1"
-                            >
+                            <label htmlFor="fromLocation" className="block font-semibold mb-1">
                                 From
                             </label>
                             <select
@@ -165,7 +165,6 @@ const WithinHospital: React.FC = () => {
                             </select>
                         </div>
 
-                        {/* “To” dropdown */}
                         <div className="mb-4">
                             <label htmlFor="toLocation" className="block font-semibold mb-1">
                                 To
@@ -176,6 +175,7 @@ const WithinHospital: React.FC = () => {
                                 onChange={(e) => setToLocation(e.target.value)}
                                 className="w-full p-2 border border-gray-300 rounded-md"
                             >
+                                <option value="">-- Select a Destination --</option>
                                 {directoryData.map((item) => (
                                     <option key={item.service} value={item.service}>
                                         {item.service}
@@ -184,7 +184,8 @@ const WithinHospital: React.FC = () => {
                             </select>
                         </div>
 
-                        {matchedItem && (
+                        {/* Display the matched item's details */}
+                        {matchedItem ? (
                             <div className="mt-6 border-t pt-4">
                                 <h3 className="text-blue-700 text-xl font-semibold mb-2">
                                     {matchedItem.service}
@@ -199,10 +200,14 @@ const WithinHospital: React.FC = () => {
                                     <strong>Telephone:</strong> {matchedItem.phone}
                                 </p>
                             </div>
+                        ) : (
+                            <div className="mt-6 border-t pt-4">
+                                <p className="text-gray-600">No service selected.</p>
+                            </div>
                         )}
                     </div>
 
-                    {/* Map placeholder */}
+                    {/* (map placeholder) */}
                     <div className="col-span-10 md:col-span-7 border rounded-md p-4 bg-white shadow flex items-center justify-center">
                         <p className="text-gray-500">(Map goes here)</p>
                     </div>
@@ -213,3 +218,4 @@ const WithinHospital: React.FC = () => {
 };
 
 export default WithinHospital;
+
