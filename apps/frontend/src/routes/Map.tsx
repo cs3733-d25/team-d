@@ -3,6 +3,8 @@ import React from 'react';
 
 import GGMap from "@/GoogleMap/GoogleMap.tsx";
 import MapComponent from "@/GoogleMap/GoogleMap.tsx";
+import LeafletMap from "@/LeafletMap/LeafletMap.tsx";
+
 export default function Map() {
 
 
@@ -23,6 +25,9 @@ export default function Map() {
                   className="flex items-center justify-center w-full"/>
             <div className="flex items-center justify-center w-full">
             </div>
+
+            <LeafletMap></LeafletMap>
+
         </div>
     );
 }
