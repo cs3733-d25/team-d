@@ -4,6 +4,7 @@ import React from 'react';
 import Login from "@/components/Login.tsx";
 import HeroTextBox from "@/components/HeroPage.tsx";
 import {ServiceRequestPopup} from "@/components/ServiceRequestPopup.tsx";
+import AccessDropMenu from "@/components/accessibility.tsx";
 
 export default function Home() {
     return (
@@ -20,8 +21,12 @@ export default function Home() {
                     <Login />
                 </div>
 
-                <div className="w-100 place-content-top">
+                <div className="w-100 place-content-start">
                     <ServiceRequestPopup />
+                </div>
+
+                <div className="place-content-stretch">
+                    <AccessDropMenu />
                 </div>
             </div>
         </>
