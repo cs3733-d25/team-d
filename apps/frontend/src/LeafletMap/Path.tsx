@@ -11,7 +11,13 @@ type Line = {
     end: Coordinates
 }
 
-export default function Path({coords}: {coords: Coordinates[]}) {
+type PathProps = {
+    coords: Coordinates[]
+    bkWidth: number
+    bkHeight: number
+}
+
+export default function Path({coords, bkWidth, bkHeight}: PathProps) {
 
     // const coords = null;
 
@@ -29,8 +35,8 @@ export default function Path({coords}: {coords: Coordinates[]}) {
     return (
         <>
             {path.map((line) =>
-                <line x1={line.start.x} y1={line.start.y}
-                      x2={line.end.x} y2={line.end.y} width={3} />
+                <line x1={line.start.x * 100 / bkWidth + '%'} y1={line.start.y * 100 / bkHeight + '%'}
+                      x2={line.end.x * 100 / bkWidth + '%'} y2={line.end.y * 100 / bkHeight + '%'} width={3} />
             )}
         </>
     )

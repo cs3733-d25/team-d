@@ -20,8 +20,9 @@ export default function LeafletMap() {
     const SCALE = 0.001
 
     const coords: Coordinates[] = [
-        {x: 0, y: 0},
-        {x: 960, y: 540}
+        {x: 700, y: 1000},
+        {x: 700, y: 500},
+        {x: 450, y: 500},
     ];
 
     return (
@@ -49,8 +50,8 @@ export default function LeafletMap() {
 
                 </ImageOverlay>
                 <SVGOverlay bounds={[[IMG_HEIGHT * SCALE * -0.5, IMG_WIDTH * SCALE * -0.5], [IMG_HEIGHT * SCALE * 0.5, IMG_WIDTH * SCALE * 0.5]]} attributes={{stroke: 'red'}}>
-                    <Path coords={coords} />
-                    <rect x={0} y={0} width={50} height={50} />
+                    <Path coords={coords} bkHeight={IMG_HEIGHT} bkWidth={IMG_WIDTH} />
+                    {/*<rect x={0} y={0} width={50 + '%'} height={50 + '%'} />*/}
                 </SVGOverlay>
             </MapContainer>
         </>
