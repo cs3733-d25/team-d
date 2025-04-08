@@ -26,7 +26,7 @@ export default function Home() {
                     <AccessDropMenu />
                 </div>
 
-                <div className="w-200 place-content-center">
+                <div className="w-200 place-content-bottom">
                     <Banner />
                 </div>
             </div>
