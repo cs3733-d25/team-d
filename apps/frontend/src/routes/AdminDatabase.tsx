@@ -27,17 +27,24 @@ type department = {
 
 const AdminDatabase: React.FC = () => {
     const [departments, currDepartments] = useState<department[]>([]);
+    const [loading, setLoading] = React.useState(false); // true means it needs to reload
     const getDepartments = async() => {
         try{
             const data = await axios.get('api/department');
             currDepartments(data.data);
+            setLoading(false);
         }catch (error) {
             console.error(error);
         }
     }
     useEffect(() => {
         getDepartments();
-    }, []);
+    }, [loading]);
+
+    const  importOnClick = async () => {
+        await updateDirectory();
+        await setLoading(true);
+    }
     return (
         <div className="min-h-screen w-full p-6 bg-white">
             <div className="flex items-center gap-4 mb-6">
@@ -45,7 +52,7 @@ const AdminDatabase: React.FC = () => {
 
                 <Input type="file" accept=".csv" className="max-w-xs" id="directory"/>
 
-                <Button onClick={() => updateDirectory()}>Import CSV</Button>
+                <Button onClick={() => importOnClick()}>Import CSV</Button>
 
                 {/* Vertical Separator */}
                 <Separator className="h-8 mx-4" />
