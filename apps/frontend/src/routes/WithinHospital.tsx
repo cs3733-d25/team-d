@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import LeafletMap from "@/LeafletMap/LeafletMap.tsx";
 
 const directoryData = [
     {
@@ -209,7 +210,7 @@ const WithinHospital: React.FC = () => {
 
                     {/* (map placeholder) */}
                     <div className="col-span-10 md:col-span-7 border rounded-md p-4 bg-white shadow flex items-center justify-center">
-                        <p className="text-gray-500">(Map goes here)</p>
+                        <LeafletMap></LeafletMap>
                     </div>
                 </div>
             </main>
