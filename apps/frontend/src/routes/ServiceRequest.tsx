@@ -4,13 +4,14 @@ import {Input} from "@/components/ui/input.tsx";
 import {Label} from "@/components/ui/label.tsx";
 import ReturnRequest from "@/components/ReturnRequest.tsx";
 import {useState} from "react";
+import {SubmitTranslatorRequest} from "@/services/servicerequests.ts";
 
 type translatorRequestForm = {
     languageFrom: string;
     languageTo: string;
     roomNumber: string;
-    startDateTime: string;
-    endDateTime: string;
+    startDateTime: Date;
+    endDateTime: Date;
 }
 
 export default function ServiceRequest() {
@@ -19,14 +20,22 @@ export default function ServiceRequest() {
         languageFrom: '',
         languageTo: '',
         roomNumber: '',
-        startDateTime: '',
-        endDateTime: '',
+        startDateTime: new Date,
+        endDateTime: new Date,
     });
 
     const [submitted, setSubmitted] = useState(false);
 
     const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+        SubmitTranslatorRequest({
+            languageFrom: form.languageFrom,
+            languageTo: form.languageTo,
+            roomNum: form.roomNumber,
+            startDateTime: form.startDateTime,
+            endDateTime: form.endDateTime
+        })
         e.preventDefault();
+        alert("Service request successfully created!");
         console.log(form);
         setSubmitted(true);
     }
@@ -77,7 +86,7 @@ export default function ServiceRequest() {
                                     onChange={(e) =>
                                         setForm({
                                             ...form,
-                                            startDateTime: e.target.value,
+                                            startDateTime: new Date(e.target.value),
                                         })
                                     }
                                 />
@@ -88,7 +97,7 @@ export default function ServiceRequest() {
                                     onChange={(e) =>
                                         setForm({
                                             ...form,
-                                            endDateTime: e.target.value,
+                                            endDateTime: new Date(e.target.value),
                                         })
                                     }
                                 />
@@ -102,8 +111,8 @@ export default function ServiceRequest() {
                     languageFrom={form.languageFrom}
                     languageTo={form.languageTo}
                     roomNumber={form.roomNumber}
-                    startDateTime={form.startDateTime}
-                    endDateTime={form.endDateTime}/>
+                    startDateTime={form.startDateTime.toDateString()}
+                    endDateTime={form.endDateTime.toDateString()}/>
             }
         </>
     );
