@@ -1,7 +1,16 @@
-import { defineProject } from 'vitest/config';
+import { defineConfig } from 'vitest/config';
 
-export default defineProject({
+export default defineConfig({
+    resolve: {
+        preserveSymlinks: true,
+    },
+    server: {
+        watch: {
+            usePolling: true,
+        },
+    },
     test: {
         environment: 'node',
+        include: ['packages/common/src/**/*.test.ts'],
     },
 });
