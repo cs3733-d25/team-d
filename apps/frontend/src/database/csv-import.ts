@@ -1,13 +1,17 @@
 import axios from "axios";
 
 export async function updateDirectory(){
+    //get the file from the input
     const input  = document.getElementById('directory') as HTMLInputElement;
+    //null handling
     const file = input.files ? input.files[0] : null;
     if(!file){return;}
+    //reading the csv file
     const read = new FileReader();
     read.readAsText(file);
     const csvData: string[][] = [];
     let attributes: string[] = [];
+    //converting format of data
     await new Promise((resolve) => {
         read.onload = () => {
             const csv = read.result as string;
@@ -15,7 +19,6 @@ export async function updateDirectory(){
             const rows = csv.split('\r');
             console.log(rows);
             attributes = rows[0].split(',');
-            console.log(attributes);
             for (let i = 1; i < rows.length; i++) {
                 const columns = rows[i].split(/,(?!\s)(?=\d|"|null)/);
                 csvData.push(columns);

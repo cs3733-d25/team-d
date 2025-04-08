@@ -30,7 +30,7 @@ router.post('/', async function (req: Request, res: Response) {
 
     res.sendStatus(200);
 });
-
+// delete all departments in the database
 router.delete('/', async function (req: Request, res: Response) {
     try {
         await PrismaClient.department.deleteMany({});

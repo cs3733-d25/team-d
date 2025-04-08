@@ -28,6 +28,7 @@ type department = {
 const AdminDatabase: React.FC = () => {
     const [departments, currDepartments] = useState<department[]>([]);
     const [loading, setLoading] = React.useState(false); // true means it needs to reload
+    //getting department data for display
     const getDepartments = async() => {
         try{
             const data = await axios.get('api/department');
@@ -40,7 +41,7 @@ const AdminDatabase: React.FC = () => {
     useEffect(() => {
         getDepartments();
     }, [loading]);
-
+    //makes sure that the display updates everytime new data is imported
     const  importOnClick = async () => {
         await updateDirectory();
         await setLoading(true);
