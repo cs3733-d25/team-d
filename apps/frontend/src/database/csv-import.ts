@@ -1,10 +1,9 @@
 import axios from "axios";
 
 export async function updateDirectory(){
-    console.log("hello");
     const input  = document.getElementById('directory') as HTMLInputElement;
-    if (input.files[0] === null) return(console.log("gb"));
-    const file = input.files[0];
+    const file = input.files ? input.files[0] : null;
+    if(!file){return;}
     const read = new FileReader();
     read.readAsText(file);
     const csvData: any[] = [];
@@ -19,7 +18,6 @@ export async function updateDirectory(){
             console.log(attributes);
             for (let i = 1; i < rows.length; i++) {
                 const columns = rows[i].split(/,\s*(?=\d|"|null)/);
-
                 csvData.push(columns);
             }
             console.log(csvData);
