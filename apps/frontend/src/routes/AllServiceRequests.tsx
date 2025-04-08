@@ -25,14 +25,14 @@ export interface ServiceRequest {
     createdAt: number;
     updatedAt: number;
     assignedEmployeeId: number;
-    typeOfRequest: TranslatorRequest;
+    translatorRequest: TranslatorRequest[];
 }
 
 
 
 
 export default function ShowAllRequests() {
-    const [data, setData] = useState<TranslatorRequest[]>([]);
+    const [data, setData] = useState<ServiceRequest[]>([]);
 
     const getRequests = async() => {
         try {
@@ -40,17 +40,18 @@ export default function ShowAllRequests() {
             // console.log(data.data);
             // curRequests.push(data.data);
             // console.log(curRequests);
-            setData(data.data)
-            console.log(data.data)
+            setData(data.data);
+            console.log('Data:' + data.data);
         } catch (error) {
             console.error(error);
         }
     }
     useEffect(() => {
+        console.log('Fetching---');
         // getRequests();
         axios.get('api/servicereqs').then((response) => {
             setData(response.data);
-            // console.log(response.data);
+            console.log(response.data);
         })
     }, [])
 

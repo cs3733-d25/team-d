@@ -28,19 +28,6 @@ export default function Navbar()  {
                 <div className={"basis-2/3"}>
                     <NavigationMenu className={"ml-auto p-4"}>
                         <NavigationMenuList className={"flex flex-row space-x-5"}>
-                            <NavigationMenuItem>
-                                <NavigationMenuLink className=  {"text-base hover:bg-blue-900 hover:text-white"}>
-                                    <Link to={`/`}> <b>Home</b> </Link>
-                                </NavigationMenuLink>
-                            </NavigationMenuItem>
-
-
-                            <NavigationMenuItem>
-                                <NavigationMenuLink className=  {"text-base hover:bg-blue-900 hover:text-white"}>
-                                    <Link to={`/map`}> <b>Map</b> </Link>
-                                </NavigationMenuLink>
-                            </NavigationMenuItem>
-
 
                             <NavigationMenuItem >
                                 <NavigationMenuLink className=  {"text-base hover:bg-blue-900 hover:text-white"}>
@@ -55,8 +42,46 @@ export default function Navbar()  {
                             </NavigationMenuItem>
 
                             <NavigationMenuItem>
-                                <Link to={`/login`}> <FontAwesomeIcon icon={faCircleUser} size="2x" color="black"/> </Link>
+                                <NavigationMenuLink className=  {"text-base hover:bg-blue-900 hover:text-white"}>
+                                    <Link to={`/all-service-requests`}> <b>Submitted Requests</b> </Link>
+                                </NavigationMenuLink>
                             </NavigationMenuItem>
+
+                            <NavigationMenuItem>
+                                <NavigationMenuLink className=  {"text-base hover:bg-blue-900 hover:text-white"}>
+                                    <Link to={`/admin-database`}> <b>Database Admin</b> </Link>
+                                </NavigationMenuLink>
+                            </NavigationMenuItem>
+
+                            {/*<NavigationMenuItem>*/}
+                            {/*    <NavigationMenuLink className=  {"text-base hover:bg-blue-900 hover:text-white"}>*/}
+                            {/*        <Link to={`/`}> <b>Home</b> </Link>*/}
+                            {/*    </NavigationMenuLink>*/}
+                            {/*</NavigationMenuItem>*/}
+
+
+                            {/*<NavigationMenuItem>*/}
+                            {/*    <NavigationMenuLink className=  {"text-base hover:bg-blue-900 hover:text-white"}>*/}
+                            {/*        <Link to={`/map`}> <b>Map</b> </Link>*/}
+                            {/*    </NavigationMenuLink>*/}
+                            {/*</NavigationMenuItem>*/}
+
+
+                            {/*<NavigationMenuItem >*/}
+                            {/*    <NavigationMenuLink className=  {"text-base hover:bg-blue-900 hover:text-white"}>*/}
+                            {/*        <Link to={`/directory`}> <b>Directory</b> </Link>*/}
+                            {/*    </NavigationMenuLink>*/}
+                            {/*</NavigationMenuItem>*/}
+
+                            {/*<NavigationMenuItem>*/}
+                            {/*    <NavigationMenuLink className=  {"text-base hover:bg-blue-900 hover:text-white"}>*/}
+                            {/*        <Link to={`/servicerequesthub`}> <b>Request Service</b> </Link>*/}
+                            {/*    </NavigationMenuLink>*/}
+                            {/*</NavigationMenuItem>*/}
+
+                            {/*<NavigationMenuItem>*/}
+                            {/*    <Link to={`/login`}> <FontAwesomeIcon icon={faCircleUser} size="2x" color="black"/> </Link>*/}
+                            {/*</NavigationMenuItem>*/}
 
                         </NavigationMenuList>
                     </NavigationMenu>

@@ -53,13 +53,8 @@ export default function LeafletMap() {
             >
                 <TileLayer
                     url="../src/public/literally-just-white.png"
-                    bounds={[[-1, -1], [1, 1]]}
+                    bounds={[[-2, -2], [2, 2]]}
                 />
-                <Marker position={[0, 0]}>
-                    <Popup>
-                        A pretty CSS3 popup. <br /> Easily customizable.
-                    </Popup>
-                </Marker>
                 <ImageOverlay url="../src/public/ChestnutHillFloor1Transparent.png" bounds={[[IMG_HEIGHT * SCALE * -0.5, IMG_WIDTH * SCALE * -0.5], [IMG_HEIGHT * SCALE * 0.5, IMG_WIDTH * SCALE * 0.5]]} >
 
                 </ImageOverlay>

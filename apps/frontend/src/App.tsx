@@ -12,6 +12,7 @@ import WithinHospital from "@/routes/WithinHospital";
 import ToHospital from "@/routes/ToHospital";
 import AdminDatabase from "@/routes/AdminDatabase";
 import ServiceRequestHub from "@/routes/ServiceRequestHub.tsx";
+import AllServiceRequests from "@/routes/AllServiceRequests.tsx";
 
 function App() {
     return (
@@ -30,7 +31,7 @@ function App() {
                         <Route path="within-hospital" element={<WithinHospital />} />
                         <Route path="to-hospital" element={<ToHospital />} />
                         <Route path="admin-database" element={<AdminDatabase />} />
-
+                        <Route path="all-service-requests" element={<AllServiceRequests />} />
                     </Route>
                 </Routes>
             </BrowserRouter>
