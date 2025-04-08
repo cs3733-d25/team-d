@@ -160,9 +160,9 @@ const WithinHospital: React.FC = () => {
                                 className="w-full p-2 border border-gray-300 rounded-md"
                             >
                                 <option value="">-- Select Starting Point --</option>
-                                <option value="Main Lobby">Main Lobby</option>
-                                <option value="Parking Garage">Parking Garage</option>
-                                <option value="Cafeteria">Cafeteria</option>
+                                <option value="Main Lobby">Entrance</option>
+                                {/*<option value="Parking Garage">Parking Garage</option>*/}
+                                {/*<option value="Cafeteria">Cafeteria</option>*/}
                             </select>
                         </div>
 

@@ -1,4 +1,4 @@
-import { Graph } from './bfs.ts';
+import { Graph } from '../src/bfs.ts';
 
 const graph = new Graph();
 graph.loadNodesFromCSV('../database/nodes.csv');

@@ -1,5 +1,6 @@
-import { Coordinates } from "./constants.ts";
-import { readFileSync } from "fs";
+import { Coordinates } from 'common/src/constants.ts';
+import { readFileSync } from 'fs';
+import path from 'path';
 
 class GraphNode {
     private neighbors: GraphNode[];
@@ -52,12 +53,13 @@ class Graph {
         const lines = csvContent.split('\n');
         lines.shift();
 
-        lines.forEach(line => {
+        lines.forEach((line) => {
             const trimmed = line.trim();
             if (trimmed) {
                 const [nodeName, xCoord, yCoord] = trimmed.split(',');
                 const coords: Coordinates = { x: parseFloat(xCoord), y: parseFloat(yCoord) };
                 this.addNode(nodeName, coords);
+                console.log(`Node ${nodeName} loaded`);
             }
         });
     }
@@ -67,11 +69,12 @@ class Graph {
         const lines = csvContent.split('\n');
         lines.shift(); //remove the header line
 
-        lines.forEach(line => {
+        lines.forEach((line) => {
             const trimmed = line.trim();
             if (trimmed) {
                 const [sourceNode, targetNode] = trimmed.split(',');
                 this.addEdge(sourceNode, targetNode);
+                console.log(`Nodes ${sourceNode} and ${targetNode} connected`);
             }
         });
     }
@@ -81,11 +84,13 @@ class Graph {
         const goalNode = this.nodes.get(goal);
 
         if (!startNode || !goalNode) {
-            throw new Error("Start or goal node does not exist.");
+            return null;
         }
 
         const visited = new Set<string>();
-        const queue: { node: GraphNode; path: Coordinates[] }[] = [{ node: startNode, path: [startNode.coords] }];
+        const queue: { node: GraphNode; path: Coordinates[] }[] = [
+            { node: startNode, path: [startNode.coords] },
+        ];
 
         while (queue.length > 0) {
             const { node, path } = queue.shift()!;
@@ -102,9 +107,8 @@ class Graph {
             }
         }
 
-        return null;//if no path is found
+        return null; //if no path is found
     }
-
 }
 
 export { Graph };

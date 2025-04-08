@@ -9,6 +9,10 @@ import { Popup } from "react-leaflet";
 import Path from '@/LeafletMap/Path.tsx';
 
 import {Coordinates} from 'common/src/constants.ts'
+import {useState, useEffect} from "react";
+import axios from "axios";
+
+import {API_ROUTES} from "common/src/constants.ts";
 // import {Graph} from "common/src/bfs.ts";
 
 export default function LeafletMap() {
@@ -16,11 +20,23 @@ export default function LeafletMap() {
     const IMG_HEIGHT = 1080;
     const SCALE = 0.001
 
-    const coords: Coordinates[] = [
-        {x: 700, y: 1000},
-        {x: 700, y: 500},
-        {x: 450, y: 500},
-    ];
+
+    // const coords: Coordinates[] = [
+    //     {x: 700, y: 1000},
+    //     {x: 700, y: 500},
+    //     {x: 450, y: 500},
+    // ];
+
+    const [coords, setCoords] = useState<Coordinates[]>();
+    const start = 'entrance';
+    const end = 'helpdesk';
+
+    useEffect(() => {
+        axios.get(API_ROUTES.PATHFIND + '?start=' + start + '&end=' + end)
+            .then((response => {
+                setCoords((response.data as Coordinates[]));
+            }));
+    }, [])
 
     // const graph: Graph = new Graph();
 
@@ -48,7 +64,7 @@ export default function LeafletMap() {
 
                 </ImageOverlay>
                 <SVGOverlay bounds={[[IMG_HEIGHT * SCALE * -0.5, IMG_WIDTH * SCALE * -0.5], [IMG_HEIGHT * SCALE * 0.5, IMG_WIDTH * SCALE * 0.5]]} attributes={{stroke: 'red'}}>
-                    <Path coords={coords} bkHeight={IMG_HEIGHT} bkWidth={IMG_WIDTH} />
+                    <Path coords={coords || []} bkHeight={IMG_HEIGHT} bkWidth={IMG_WIDTH} />
                 </SVGOverlay>
             </MapContainer>
         </>
