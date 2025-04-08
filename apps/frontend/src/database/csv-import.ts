@@ -6,7 +6,7 @@ export async function updateDirectory(){
     if(!file){return;}
     const read = new FileReader();
     read.readAsText(file);
-    const csvData: any[] = [];
+    const csvData: string[][] = [];
     let attributes: string[] = [];
     await new Promise((resolve, reject) => {
         read.onload = (e) => {
@@ -33,13 +33,14 @@ export async function updateDirectory(){
             resolve(csvData);
         }
     });
+    //delete previous dapartment data entries
     try {
         await axios.delete('/api/department/');
         console.log("Department data deleted successfully");
     }catch(err) {
         console.error(err);
     }
-
+    //post requests to create all new data entries
     for (let i = 0; i < csvData.length; i++) {
         try {
             await axios.post('/api/department', JSON.parse('{' + csvData[i].join(', ') + '}'));
@@ -49,5 +50,6 @@ export async function updateDirectory(){
         }
 
     }
+    //alert that the database has been updated
     return(alert("Successfully updated department data"));
 }
