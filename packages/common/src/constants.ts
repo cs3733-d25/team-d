@@ -4,6 +4,7 @@ export const API_ROUTES = {
     SERVICEREQS: '/api/servicereqs',
     ASSIGNED: '/api/assigned',
     DEPARTMENT: '/api/department',
+    PATHFIND: '/api/pathfind',
 };
 
 export type Coordinates = {

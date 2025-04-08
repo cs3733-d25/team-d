@@ -9,7 +9,7 @@ import { Popup } from "react-leaflet";
 import Path from '@/LeafletMap/Path.tsx';
 
 import {Coordinates} from 'common/src/constants.ts'
-import {Graph} from "common/src/bfs.ts";
+// import {Graph} from "common/src/bfs.ts";
 
 export default function LeafletMap() {
     const IMG_WIDTH = 1920;
@@ -22,7 +22,7 @@ export default function LeafletMap() {
         {x: 450, y: 500},
     ];
 
-    const graph: Graph = new Graph();
+    // const graph: Graph = new Graph();
 
     return (
         <>
