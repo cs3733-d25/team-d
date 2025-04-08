@@ -1,9 +1,4 @@
 import React from 'react';
-import { Link } from "react-router-dom";
-import {
-    Card,
-    CardTitle,
-} from "@/components/ui/card"
 
 import Login from "@/components/Login.tsx";
 import HeroTextBox from "@/components/HeroPage.tsx";
