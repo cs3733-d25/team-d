@@ -49,10 +49,23 @@ router.get('/translator', async function (req: Request, res: Response) {
 router.post('/', async function (req: Request, res: Response) {
     const serviceRequestAttempt: Prisma.ServiceRequestCreateInput = req.body;
     try {
-        await PrismaClient.serviceRequest.create({ data: serviceRequestAttempt });
+        await PrismaClient.serviceRequest.create({
+            data: {
+                assignedEmployeeId: null,
+                translatorRequest: {
+                    create: {
+                        languageFrom: req.body.languageFrom,
+                        languageTo: req.body.languageTo,
+                        roomNum: req.body.roomNum,
+                        startDateTime: req.body.startDateTime,
+                        endDateTime: req.body.endDateTime,
+                    },
+                },
+            },
+        });
         console.log('Service request created');
     } catch (error) {
-        console.error(`Unable to create service request ${serviceRequestAttempt}: ${error}`);
+        console.error(`Unable to create a new service request ${serviceRequestAttempt}: ${error}`);
         res.sendStatus(400);
         return;
     }
