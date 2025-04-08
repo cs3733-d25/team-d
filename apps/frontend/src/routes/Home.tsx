@@ -1,8 +1,6 @@
 import React from 'react';
-
 import Login from "@/components/Login.tsx";
 import HeroTextBox from "@/components/HeroPage.tsx";
-
 
 export default function Home() {
     return (
