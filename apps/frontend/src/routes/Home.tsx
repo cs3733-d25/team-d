@@ -4,6 +4,7 @@ import React from 'react';
 import Login from "@/components/Login.tsx";
 import HeroTextBox from "@/components/HeroPage.tsx";
 import AccessDropMenu from "@/components/accessibility.tsx";
+import Banner from "@/components/Banner.tsx";
 
 export default function Home() {
     return (
@@ -20,8 +21,13 @@ export default function Home() {
                     <Login />
                 </div>
 
+                {/*This is the call of the component Accessibility drop down menu for the home page*/}
                 <div className="place-content-stretch">
                     <AccessDropMenu />
+                </div>
+
+                <div className="w-200 place-content-center">
+                    <Banner />
                 </div>
             </div>
         </>
