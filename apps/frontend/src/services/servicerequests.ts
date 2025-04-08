@@ -1,22 +1,11 @@
 import axios from 'axios';
 
-import { SERVICEREQS } from 'packages/common/src/constants.ts'
+import { API_ROUTES } from '../../../../packages/common/src/constants.ts';
+import type {ServiceRequest} from 'src/routes/AllServiceRequests.tsx';
 
-// const requests = () => {
-//     const services = axios.get(SERVICEREQS);
-//     return services.data;
-// }
-
-export interface TranslatorRequestForm {
-    languageFrom: string;
-    languageTo: string;
-    roomNum: string;
-    startDateTime: Date;
-    endDateTime: Date;
+async function getAllRequests (): Promise<ServiceRequest> {
+    const services = (await axios.get('/api/servicereqs'));
+    return services.data;
 }
 
-export async function SubmitTranslatorRequest(request: TranslatorRequestForm) {
-    await axios.post('/api/servicereqs', request);
-}
-
-// export default requests;
+export default getAllRequests;
