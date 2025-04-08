@@ -50,6 +50,7 @@ export default function ServiceRequest() {
                                 <Input
                                     type="text"
                                     id="languageFrom"
+                                    required
                                     onChange={(e) =>
                                         setForm({
                                             ...form,
@@ -61,6 +62,7 @@ export default function ServiceRequest() {
                                 <Input
                                     type="text"
                                     id="languageTo"
+                                    required
                                     onChange={(e) =>
                                         setForm({
                                             ...form,
@@ -72,6 +74,7 @@ export default function ServiceRequest() {
                                 <Input
                                     type="text"
                                     id="roomNumber"
+                                    required
                                     onChange={(e) =>
                                         setForm({
                                             ...form,
@@ -83,6 +86,7 @@ export default function ServiceRequest() {
                                 <Input
                                     type="datetime-local"
                                     id="startDateTime"
+                                    required
                                     onChange={(e) =>
                                         setForm({
                                             ...form,
@@ -94,6 +98,7 @@ export default function ServiceRequest() {
                                 <Input
                                     type="datetime-local"
                                     id="languageFrom"
+                                    required
                                     onChange={(e) =>
                                         setForm({
                                             ...form,
