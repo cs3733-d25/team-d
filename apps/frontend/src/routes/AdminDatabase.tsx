@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
@@ -12,17 +12,48 @@ import {
 } from "@/components/ui/table";
 
 const AdminDatabase: React.FC = () => {
+    const fileInputRef = useRef<HTMLInputElement | null>(null);
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
+    const [inputKey, setInputKey] = useState<number>(Date.now()); // Used to reset file input
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0] ?? null;
+        setSelectedFile(file);
+    };
+
+    const handleImportCSV = () => {
+        if (!selectedFile) {
+            alert("No file selected!");
+            return;
+        }
+
+        alert(`Importing file: ${selectedFile.name}`);
+
+        setSelectedFile(null);
+        setInputKey(Date.now()); // Resets the input by changing key
+    };
+
     return (
         <div className="min-h-screen w-full p-6 bg-white">
             <div className="flex items-center gap-4 mb-6">
-                <Button>Export as CSV</Button>
+                <Button variant="default">Export as CSV</Button>
 
-                <Input type="file" accept=".csv" className="max-w-xs" />
+                {/* "Choose file" input for CSV */}
+                <Input
+                    key={inputKey}
+                    ref={fileInputRef}
+                    type="file"
+                    accept=".csv"
+                    className="max-w-xs"
+                    onChange={handleFileChange}
+                />
 
-                <Button>Import CSV</Button>
+                <Button variant="default" onClick={handleImportCSV}>
+                    Import CSV
+                </Button>
 
                 {/* Vertical Separator */}
-                <Separator className="h-8 mx-4" />
+                <Separator orientation="vertical" className="h-8 mx-4" />
 
                 {/* Table Title */}
                 <h2 className="text-xl font-bold">Department Database</h2>
@@ -41,8 +72,10 @@ const AdminDatabase: React.FC = () => {
                         <TableHead>Telephone</TableHead>
                     </TableRow>
                 </TableHeader>
+
+                {/* Empty table body for now */}
                 <TableBody>
-                    {/* No rows yet, add <TableRow> items here as needed */}
+                    {/* Placeholder for future rows */}
                 </TableBody>
             </Table>
         </div>
@@ -50,6 +83,9 @@ const AdminDatabase: React.FC = () => {
 };
 
 export default AdminDatabase;
+
+
+
 
 
 
