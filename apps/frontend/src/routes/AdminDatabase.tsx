@@ -12,8 +12,32 @@ import {
 } from "@/components/ui/table";
 import {GetDirectory} from "@/database/csv-export.ts";
 import {updateDirectory} from "@/database/csv-import.ts";
+import { useState, useEffect } from 'react';
+import axios from "axios";
+
+type department = {
+    departmentId: number;
+    name: string;
+    floor: number;
+    suite: string;
+    specialtyServices: string;
+    hours: string;
+    telephone: string;
+}
 
 const AdminDatabase: React.FC = () => {
+    const [departments, currDepartments] = useState<department[]>([]);
+    const getDepartments = async() => {
+        try{
+            const data = await axios.get('api/department');
+            currDepartments(data.data);
+        }catch (error) {
+            console.error(error);
+        }
+    }
+    useEffect(() => {
+        getDepartments();
+    }, []);
     return (
         <div className="min-h-screen w-full p-6 bg-white">
             <div className="flex items-center gap-4 mb-6">
@@ -44,7 +68,17 @@ const AdminDatabase: React.FC = () => {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {/* No rows yet, add <TableRow> items here as needed */}
+                    {departments.map((department,i) => (
+                        <TableRow key={i}>
+                            <TableCell>{department.departmentId}</TableCell>
+                            <TableCell>{department.name}</TableCell>
+                            <TableCell>{department.floor}</TableCell>
+                            <TableCell>{department.suite}</TableCell>
+                            <TableCell>{department.specialtyServices}</TableCell>
+                            <TableCell>{department.hours}</TableCell>
+                            <TableCell>{department.telephone}</TableCell>
+                        </TableRow>
+                    ))}
                 </TableBody>
             </Table>
         </div>
