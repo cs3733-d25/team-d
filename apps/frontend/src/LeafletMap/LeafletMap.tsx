@@ -8,11 +8,7 @@ import { Popup } from "react-leaflet";
 
 import Path from '@/LeafletMap/Path.tsx';
 
-
-type Coordinates = {
-    x: number;
-    y: number;
-}
+import {Coordinates} from 'common/src/constants.ts'
 
 export default function LeafletMap() {
     const IMG_WIDTH = 1920;
@@ -27,7 +23,6 @@ export default function LeafletMap() {
 
     return (
         <>
-            {/*<button className="z-[100]">sdsds</button>*/}
             <MapContainer
                 center={[0, 0]}
                 zoom={10}
@@ -51,15 +46,8 @@ export default function LeafletMap() {
                 </ImageOverlay>
                 <SVGOverlay bounds={[[IMG_HEIGHT * SCALE * -0.5, IMG_WIDTH * SCALE * -0.5], [IMG_HEIGHT * SCALE * 0.5, IMG_WIDTH * SCALE * 0.5]]} attributes={{stroke: 'red'}}>
                     <Path coords={coords} bkHeight={IMG_HEIGHT} bkWidth={IMG_WIDTH} />
-                    {/*<rect x={0} y={0} width={50 + '%'} height={50 + '%'} />*/}
                 </SVGOverlay>
             </MapContainer>
         </>
-        // <div className="LLMap">
-
-
-            // {/*<div id="leafletmap"></div>*/}
-            // {/*<p>hi leaflet should be here</p>*/}
-        // </div>
     );
 }
