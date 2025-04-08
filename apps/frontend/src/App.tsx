@@ -11,6 +11,7 @@ import ServiceRequest from "@/routes/ServiceRequest";
 import WithinHospital from "@/routes/WithinHospital";
 import ToHospital from "@/routes/ToHospital";
 import AdminDatabase from "@/routes/AdminDatabase";
+import ServiceRequestHub from "@/routes/ServiceRequestHub.tsx";
 
 function App() {
     return (
@@ -24,6 +25,7 @@ function App() {
                         <Route path="login" element={<Login />} />
                         <Route path="directory" element={<Directory />} />
                         <Route path="servicerequest" element={<ServiceRequest />} />
+                        <Route path="servicerequesthub" element={<ServiceRequestHub />} />
                         <Route path="kiosk" element={<KioskDirections />} />
                         <Route path="within-hospital" element={<WithinHospital />} />
                         <Route path="to-hospital" element={<ToHospital />} />
