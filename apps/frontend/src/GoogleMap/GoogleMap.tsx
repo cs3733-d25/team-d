@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 
-const API_KEY = '';
+const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
 import AutocompleteDirectionsHandler from "@/GoogleMap/GoogleMapHelper.ts";
 

@@ -21,14 +21,7 @@ export default function Home() {
                     <Login />
                 </div>
 
-                {/*This is the call of the component Accessibility drop down menu for the home page*/}
-                <div className="place-content-stretch">
-                    <AccessDropMenu />
-                </div>
 
-                <div className="w-200 place-content-bottom">
-                    <Banner />
-                </div>
             </div>
         </>
     );

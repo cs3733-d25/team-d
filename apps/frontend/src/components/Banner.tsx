@@ -42,9 +42,6 @@ export default function Banner()  {
                     </NavigationMenu>
                 </div>
             </div>
-            <div className="flex-1 overflow-y-scroll">
-                <Outlet />
-            </div>
         </>
     );
 };

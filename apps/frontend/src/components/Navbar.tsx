@@ -66,12 +66,6 @@ export default function Navbar({isLoggedIn})  { // Accept
                                 </NavigationMenuLink>
                             </NavigationMenuItem>
 
-                            <NavigationMenuItem>
-                                <Link to={`/login`}>
-                                    {' '}
-                                    <FontAwesomeIcon icon={faCircleUser} size="2x" color="black" />
-                                </Link>
-                            </NavigationMenuItem>
                         </NavigationMenuList>
                     </NavigationMenu>
                     </div>
