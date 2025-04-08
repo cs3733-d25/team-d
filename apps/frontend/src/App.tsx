@@ -1,54 +1,35 @@
-import React from 'react';
-import Navbar from "@/components/Navbar.tsx";
-import Map from "@/routes/Map.tsx";
-import Login from "@/routes/Login.tsx";
-import Directory from "@/routes/Directory.tsx";
-import ServiceRequest from "@/routes/ServiceRequest.tsx";
-import Home from "@/routes/Home.tsx";
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import Navbar from "@/components/Navbar";
+import Home from "@/routes/Home";
+import Map from "@/routes/Map";
+import Login from "@/routes/Login";
+import Directory from "@/routes/Directory";
+import KioskDirections from "@/routes/KioskDirections";
+import ServiceRequest from "@/routes/ServiceRequest";
+import WithinHospital from "@/routes/WithinHospital";
+import ToHospital from "@/routes/ToHospital";
+import AdminDatabase from "@/routes/AdminDatabase";
+import ServiceRequestHub from "@/routes/ServiceRequestHub.tsx";
 
 function App() {
     return (
         <div className="h-screen bg-accent flex flex-col parent">
             <BrowserRouter>
                 <Routes>
-                    <Route
-                        index={true}
-                        element={<Home />} />
                     <Route path="/" element={<Navbar />}>
+                        <Route index element={<Home />} />
 
-                        <Route
-                            index={false}
-                            path="/map"
-                            element={<Map />}
-                        />
-
-                        <Route
-                            index={false}
-                            path="/map"
-                            element={<Map />}
-                        />
-
-                        <Route
-                            index={false}
-                            path="/login"
-                            element={<Login />}
-                        />
-
-                        <Route
-                            index={false}
-                            path="/directory"
-                            element={<Directory />}
-                        />
-
-                        <Route
-                            index={false}
-                            path="/servicerequest"
-                            element={<ServiceRequest />}
-                        />
-
-
-                        {/*<Route path="*" element={<NotFound />} />*/}
+                        <Route path="map" element={<Map />} />
+                        <Route path="login" element={<Login />} />
+                        <Route path="directory" element={<Directory />} />
+                        <Route path="servicerequest" element={<ServiceRequest />} />
+                        <Route path="servicerequesthub" element={<ServiceRequestHub />} />
+                        <Route path="kiosk" element={<KioskDirections />} />
+                        <Route path="within-hospital" element={<WithinHospital />} />
+                        <Route path="to-hospital" element={<ToHospital />} />
+                        <Route path="admin-database" element={<AdminDatabase />} />
 
                     </Route>
                 </Routes>
@@ -58,3 +39,5 @@ function App() {
 }
 
 export default App;
+
+

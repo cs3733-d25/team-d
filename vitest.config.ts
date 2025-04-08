@@ -10,9 +10,7 @@ export default defineConfig({
         },
     },
     test: {
-        api: {
-            port: parseInt(<string>process.env['FRONTEND_PORT']),
-            host: 'localhost',
-        },
+        environment: 'node',
+        include: ['src/**/*.test.ts'],
     },
 });

@@ -4,7 +4,6 @@ import App from './App.tsx';
 import './styles/styles.css';
 
 
-
 // Entry point where root component is rendered into the DOM
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <React.StrictMode>

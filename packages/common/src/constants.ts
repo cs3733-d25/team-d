@@ -3,5 +3,10 @@ export const API_ROUTES = {
     EMPLOYEE: '/api/employee',
     SERVICEREQS: '/api/servicereqs',
     ASSIGNED: '/api/assigned',
-
+    DEPARTMENT: '/api/department',
 };
+
+export type Coordinates = {
+    x: number;
+    y: number;
+}
