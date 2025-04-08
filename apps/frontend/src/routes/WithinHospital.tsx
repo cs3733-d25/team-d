@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
 const directoryData = [
@@ -120,63 +120,102 @@ const directoryData = [
     },
 ];
 
-const Directory: React.FC = () => {
+const WithinHospital: React.FC = () => {
     const navigate = useNavigate();
-    const [selectedService, setSelectedService] = useState("");
 
-    const handleGetDirections = () => {
-        if (!selectedService) {
-            alert("Please select a service first.");
-            return;
-        }
-        navigate(`/within-hospital?service=${encodeURIComponent(selectedService)}`);
-    };
+    const [searchParams] = useSearchParams();
+    const initialService = searchParams.get("service") || "";
 
-    const handleGetToChestnutHill = () => {
-        navigate("/to-hospital");
-    };
+    const [fromLocation, setFromLocation] = useState("");
+    const [toLocation, setToLocation] = useState(initialService);
+
+    const matchedItem = directoryData.find(
+        (item) => item.service === toLocation
+    );
 
     return (
         <div className="min-h-screen bg-white">
+            {/* Top Buttons */}
             <header className="p-4 bg-white border-b border-gray-200 flex items-center justify-center">
-                <h1 className="text-2xl font-bold">Brigham and Women’s Hospital</h1>
+                <div className="flex gap-4">
+                    <Button onClick={() => navigate("/to-hospital")}>To Hospital</Button>
+                    <Button onClick={() => navigate("/within-hospital")}>
+                        Within Hospital
+                    </Button>
+                </div>
             </header>
 
-            <main className="max-w-2xl mx-auto p-6 mt-10 bg-white border rounded-lg shadow">
-                <h2 className="text-center text-2xl text-blue-700 mb-6">Find Your Care</h2>
+            <main className="px-6 py-4">
+                <div className="grid grid-cols-10 gap-6">
+                    <div className="col-span-10 md:col-span-3 border rounded-md p-4 bg-white shadow">
+                        <div className="mb-4">
+                            <label htmlFor="fromLocation" className="block font-semibold mb-1">
+                                From
+                            </label>
+                            <select
+                                id="fromLocation"
+                                value={fromLocation}
+                                onChange={(e) => setFromLocation(e.target.value)}
+                                className="w-full p-2 border border-gray-300 rounded-md"
+                            >
+                                <option value="">-- Select Starting Point --</option>
+                                <option value="Main Lobby">Main Lobby</option>
+                                <option value="Parking Garage">Parking Garage</option>
+                                <option value="Cafeteria">Cafeteria</option>
+                            </select>
+                        </div>
 
-                <label htmlFor="service" className="block font-semibold mb-2">
-                    Select a Service
-                </label>
-                <select
-                    id="service"
-                    value={selectedService}
-                    onChange={(e) => setSelectedService(e.target.value)}
-                    className="w-full p-3 border border-gray-300 rounded-md text-base mb-4"
-                >
-                    <option value="">-- Choose a Service --</option>
-                    {directoryData.map((item) => (
-                        <option key={item.service} value={item.service}>
-                            {item.service}
-                        </option>
-                    ))}
-                </select>
+                        <div className="mb-4">
+                            <label htmlFor="toLocation" className="block font-semibold mb-1">
+                                To
+                            </label>
+                            <select
+                                id="toLocation"
+                                value={toLocation}
+                                onChange={(e) => setToLocation(e.target.value)}
+                                className="w-full p-2 border border-gray-300 rounded-md"
+                            >
+                                <option value="">-- Select a Destination --</option>
+                                {directoryData.map((item) => (
+                                    <option key={item.service} value={item.service}>
+                                        {item.service}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
 
-                <div className="flex flex-col gap-3">
-                    <Button onClick={handleGetDirections} className="bg-black text-white">
-                        Get Directions
-                    </Button>
-                    <Button onClick={handleGetToChestnutHill} className="bg-blue-700 text-white">
-                        Get to Chestnut Hill
-                    </Button>
+                        {/* Display the matched item's details */}
+                        {matchedItem ? (
+                            <div className="mt-6 border-t pt-4">
+                                <h3 className="text-blue-700 text-xl font-semibold mb-2">
+                                    {matchedItem.service}
+                                </h3>
+                                <p className="mb-1">
+                                    <strong>Specialties:</strong> {matchedItem.specialties}
+                                </p>
+                                <p className="mb-1">
+                                    <strong>Floor and Suite:</strong> {matchedItem.floorSuite}
+                                </p>
+                                <p>
+                                    <strong>Telephone:</strong> {matchedItem.phone}
+                                </p>
+                            </div>
+                        ) : (
+                            <div className="mt-6 border-t pt-4">
+                                <p className="text-gray-600">No service selected.</p>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* (map placeholder) */}
+                    <div className="col-span-10 md:col-span-7 border rounded-md p-4 bg-white shadow flex items-center justify-center">
+                        <p className="text-gray-500">(Map goes here)</p>
+                    </div>
                 </div>
             </main>
         </div>
     );
 };
 
-export default Directory;
-
-
-
+export default WithinHospital;
 
