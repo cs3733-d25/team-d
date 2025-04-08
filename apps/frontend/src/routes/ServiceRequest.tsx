@@ -1,11 +1,4 @@
 import {FormEvent} from 'react';
-import {
-    Card,
-    CardContent,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card"
 import {Button} from "@/components/ui/button.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import {Label} from "@/components/ui/label.tsx";
@@ -42,12 +35,8 @@ export default function ServiceRequest() {
         <>
             {!submitted ?
                 <div className="grid place-items-center h-full items-center">
-                    <Card className="w-1/3">
-                        <CardHeader className="place-content-center">
-                            <CardTitle className="text-3xl">Request a Translator</CardTitle>
-                        </CardHeader>
+                    <h2 className="text-4xl fontbold">Request a Translator</h2>
                         <form onSubmit={onSubmit}>
-                            <CardContent>
                                 <Label htmlFor="languageFrom">Language From</Label>
                                 <Input
                                     type="text"
@@ -103,12 +92,10 @@ export default function ServiceRequest() {
                                         })
                                     }
                                 />
-                            </CardContent>
-                            <CardFooter>
+
                                 <Button type="submit">Submit</Button>
-                            </CardFooter>
+
                         </form>
-                    </Card>
                 </div>
             :
                 <ReturnRequest
