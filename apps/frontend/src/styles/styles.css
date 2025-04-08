@@ -3,6 +3,17 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@theme {
+    --font-primary: 'Overpass', sans-serif;
+    --font-secondary: 'Comic Sans', sans-serif;
+    --color-background: #F1F1F1; {/* Page background color */}
+    --color-heading: #012D5A; {/* Heading Background */}
+    --color-card: #ADDDE5; {/* Textboxes / Miscellaneous */}
+    --color-card-foreground: #46989E; {/* Transparent textboxes 70% Opacity */}
+    --color-accent-foreground: #95A8EB; {/* Buttons */}
+    --color-accent: #D0CCD0; {/* Hover Shadow */}
+}
+
 /* Login Form Styling */
 .login-container {
     display: flex;
