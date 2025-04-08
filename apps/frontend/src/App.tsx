@@ -6,10 +6,12 @@ import Directory from "@/routes/Directory.tsx";
 import ServiceRequest from "@/routes/ServiceRequest.tsx";
 import Home from "@/routes/Home.tsx";
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import AllServiceRequests from "@/routes/AllServiceRequests.tsx";
 
 function App() {
     return (
         <div className="h-screen bg-accent flex flex-col parent">
+
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<Navbar />}>

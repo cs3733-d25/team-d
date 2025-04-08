@@ -26,12 +26,14 @@
     "husky": "^9.1.7",
     "prettier": "^3.5.3",
     "prettier-config-custom": "workspace:*",
+    "prisma": "^6.5.0",
     "ts-config-custom": "workspace:*",
     "turbo": "*",
     "typescript": "^5.8.2",
     "vitest": "^3.0.9"
   },
   "dependencies": {
+    "@prisma/client": "^6.5.0",
     "common": "workspace:*",
     "dotenv": "^16.4.7",
     "dotenv-cli": "^7.4.4"

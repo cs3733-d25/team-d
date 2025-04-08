@@ -1,10 +1,11 @@
 import axios from 'axios';
 
-import { SERVICEREQS } from 'packages/common/src/constants.ts'
+import { API_ROUTES } from '../../../../packages/common/src/constants.ts';
+import type {ServiceRequest} from 'src/routes/AllServiceRequests.tsx';
 
-const requests = () => {
-    const services = axios.get(SERVICEREQS);
+async function getAllRequests (): Promise<ServiceRequest> {
+    const services = (await axios.get('/api/servicereqs'));
     return services.data;
 }
 
-export default requests;
+export default getAllRequests;
