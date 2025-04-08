@@ -10,16 +10,18 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
+import {GetDirectory} from "@/database/csv-export.ts";
+import {updateDirectory} from "@/database/csv-import.ts";
 
 const AdminDatabase: React.FC = () => {
     return (
         <div className="min-h-screen w-full p-6 bg-white">
             <div className="flex items-center gap-4 mb-6">
-                <Button>Export as CSV</Button>
+                <Button onClick={() => GetDirectory()}>Export as CSV</Button>
 
-                <Input type="file" accept=".csv" className="max-w-xs" />
+                <Input type="file" accept=".csv" className="max-w-xs" id="directory"/>
 
-                <Button>Import CSV</Button>
+                <Button onClick={() => updateDirectory()}>Import CSV</Button>
 
                 {/* Vertical Separator */}
                 <Separator className="h-8 mx-4" />

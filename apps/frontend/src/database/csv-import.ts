@@ -49,5 +49,5 @@ export async function updateDirectory(){
         }
 
     }
-
+    return(alert("Successfully updated department data"));
 }
