@@ -3363,6 +3363,7 @@ __metadata:
     prettier: "npm:*"
     prettier-config-custom: "workspace:*"
     ts-config-custom: "workspace:*"
+    vitest: "npm:*"
   languageName: unknown
   linkType: soft
 

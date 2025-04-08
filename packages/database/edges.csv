@@ -1,0 +1,5 @@
+sourceNode, targetNode
+NodeA, NodeB
+NodeA, NodeC
+NodeB, NodeD
+NodeC, NodeA
