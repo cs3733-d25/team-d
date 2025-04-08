@@ -5,9 +5,23 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Brigham and Women's</title>
         <base href="/" />
+
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+        <style>
+            /* Set the map container size */
+            #map {
+                height: 400px;
+                width: 100%;
+            }
+        </style>
+
     </head>
     <body>
         <div id="root"></div>
         <script type="module" src="/src/main.tsx"></script>
+        <!-- Make sure you put this AFTER Leaflet's CSS -->
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+        <script src="App.js"></script>
+
     </body>
 </html>
