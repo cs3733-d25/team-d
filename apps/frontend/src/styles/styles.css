@@ -165,6 +165,7 @@
     --radius-lg: var(--radius);
     --radius-xl: calc(var(--radius) + 4px);
     --color-background: var(--background);
+    --color-header: var(#012D5A);
     --color-foreground: var(--foreground);
     --color-card: var(--card);
     --color-card-foreground: var(--card-foreground);
