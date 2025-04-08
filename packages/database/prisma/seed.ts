@@ -480,10 +480,11 @@ async function main() {
             where: {departmentId: 17},
             update: {},
             create: {
-                name: "Pharmacy (Monday - Friday, 9 am-4 pm excluding holidays)",
+                name: "Pharmacy",
                 floor: 3,
                 suite: "317",
                 specialtyServices: "Outpatient Pharmacy Service",
+                hours: "(Monday - Friday, 9 am-4 pm excluding holidays)",
                 telephone: "(617) 732–9040",
             }
         }),

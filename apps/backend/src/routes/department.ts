@@ -30,6 +30,17 @@ router.post('/', async function (req: Request, res: Response) {
 
     res.sendStatus(200);
 });
-3;
+
+router.delete('/', async function (req: Request, res: Response) {
+    try {
+        await PrismaClient.department.deleteMany({});
+    } catch (error) {
+        console.error('Unable to delete a department', error);
+        res.sendStatus(400);
+        return;
+    }
+    res.sendStatus(200);
+});
+
 
 export default router;
