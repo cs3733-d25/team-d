@@ -8,8 +8,8 @@ export async function updateDirectory(){
     read.readAsText(file);
     const csvData: string[][] = [];
     let attributes: string[] = [];
-    await new Promise((resolve, reject) => {
-        read.onload = (e) => {
+    await new Promise((resolve) => {
+        read.onload = () => {
             const csv = read.result as string;
             console.log(csv);
             const rows = csv.split('\r');
@@ -50,6 +50,8 @@ export async function updateDirectory(){
         }
 
     }
+    //clear file input after file info has been used
+    input.value = '';
     //alert that the database has been updated
     return(alert("Successfully updated department data"));
 }
