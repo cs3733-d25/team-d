@@ -45,7 +45,7 @@ export default function Login() {
         }
 
         if (form.username==="admin" && form.password==="admin") {
-            navigate('/map');
+            navigate('/directory');
         }
 
     }

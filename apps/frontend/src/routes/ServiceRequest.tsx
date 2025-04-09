@@ -4,6 +4,8 @@ import {Input} from "@/components/ui/input.tsx";
 import {Label} from "@/components/ui/label.tsx";
 import ReturnRequest from "@/components/ReturnRequest.tsx";
 import {useState} from "react";
+import {API_ROUTES} from "common/src/constants.ts";
+import axios from "axios";
 
 type translatorRequestForm = {
     languageFrom: string;
@@ -27,8 +29,12 @@ export default function ServiceRequest() {
 
     const onSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(form);
-        setSubmitted(true);
+        // console.log(form);
+        setSubmitted(false);
+        axios.post(API_ROUTES.SERVICEREQS, form).then(() => {
+            alert("Service request submitted!");
+            setSubmitted(true);
+        });
     }
 
     return (

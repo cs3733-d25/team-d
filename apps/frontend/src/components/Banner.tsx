@@ -32,7 +32,7 @@ export default function Banner()  {
 
 
                             <NavigationMenuItem>
-                                <Link to={`/login`}> <FontAwesomeIcon icon={faCircleUser} size="2x" color="black"/> </Link>
+                                <Link to={`/`}> <FontAwesomeIcon icon={faCircleUser} size="2x" color="black"/> </Link>
                             </NavigationMenuItem>
 
                         </NavigationMenuList>
