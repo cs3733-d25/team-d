@@ -44,7 +44,7 @@ router.get('/translator', async function (req: Request, res: Response) {
         res.json(translatorRequests);
     }
 });
-
+//
 // Post request to add service requests to the database
 router.post('/', async function (req: Request, res: Response) {
     const serviceRequestAttempt: Prisma.ServiceRequestCreateInput = req.body;
@@ -57,8 +57,8 @@ router.post('/', async function (req: Request, res: Response) {
                         languageFrom: req.body.languageFrom,
                         languageTo: req.body.languageTo,
                         roomNum: req.body.roomNum,
-                        startDateTime: req.body.startDateTime,
-                        endDateTime: req.body.endDateTime,
+                        startDateTime: req.body.startDateTime + ':00.000Z',
+                        endDateTime: req.body.endDateTime + ':00.000Z',
                     },
                 },
             },

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 
-const API_KEY = '';
+const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
 import AutocompleteDirectionsHandler from "@/GoogleMap/GoogleMapHelper.ts";
 
@@ -68,7 +68,7 @@ const GGMap: React.FC = () => {
             </div>
 
             <div
-                id="map"
+                id="ggl-map"
                 ref={mapRef}
                 style={{ width: '65vw', height: '100vh' }}
             ></div>

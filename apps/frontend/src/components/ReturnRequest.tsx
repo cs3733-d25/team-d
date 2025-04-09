@@ -11,26 +11,41 @@ type translatorRequestForm = {
 const ReturnRequest = (props: translatorRequestForm) => {
 
     return (
-        <div className="grid place-items-center h-full items-center">
-            <Card className="w-1/3">
-                <CardHeader className="place-content-center">
+        <div className="grid  h-full items-center">
+            <div className="">
+                <div className="place-content-center">
                     <CardTitle className="text-3xl">Request Summary</CardTitle>
-                </CardHeader>
+                </div>
 
-                    <CardContent>
-                        <Label htmlFor="languageFrom">Language From</Label>
+                    <div>
+                        <div className="my-5">
+                            <Label htmlFor="languageFrom">Language From</Label>
                             <p>{props.languageFrom}</p>
-                        <Label htmlFor="languageTo">Language To</Label>
-                            <p>{props.languageTo}</p>
-                        <Label htmlFor="roomNumber">Room Number</Label>
-                            <p>{props.roomNumber}</p>
-                        <Label htmlFor="startDateTime">Start Date and Time</Label>
-                            <p>{props.startDateTime}</p>
-                        <Label htmlFor="endDateTime">End Date and Time</Label>
-                            <p>{props.endDateTime}</p>
+                        </div>
 
-                    </CardContent>
-            </Card>
+                        <div className="my-5">
+                            <Label htmlFor="languageTo">Language To</Label>
+                            <p>{props.languageTo}</p>
+                        </div>
+                        <div className="my-5">
+                            <Label htmlFor="roomNumber">Room Number</Label>
+                            <p>{props.roomNumber}</p>
+                        </div>
+
+                        <div className="my-5">
+                            <Label htmlFor="startDateTime">Start Date and Time</Label>
+                            <p>{props.startDateTime}</p>
+                        </div>
+
+                        <div className="my-5">
+                            <Label htmlFor="endDateTime">End Date and Time</Label>
+                            <p>{props.endDateTime}</p>
+                        </div>
+
+
+
+                    </div>
+            </div>
         </div>
     );
 }

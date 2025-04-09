@@ -11,8 +11,6 @@ import { Button } from "@/components/ui/button.tsx";
 import { Input } from "@/components/ui/input.tsx";
 import { Label } from "@/components/ui/label.tsx";
 
-
-
 type loginForm = {
     username: string;
     password: string;
@@ -47,7 +45,7 @@ export default function Login() {
         }
 
         if (form.username==="admin" && form.password==="admin") {
-            navigate('/map');
+            navigate('/directory');
         }
 
     }
@@ -59,28 +57,33 @@ export default function Login() {
                     <CardTitle>Login</CardTitle>
                 </CardHeader>
                 <form onSubmit={onSubmit}>
-                    <CardContent>
-                        <Label htmlFor="username">Username</Label>
-                        <Input
-                            type="text"
-                            id="username"
-                            value={form.username}
-                            onChange={(e) => setForm({
-                                ...form,
-                                username: e.target.value
-                            })}
-                        />
+                    <CardContent >
+                        <div className="my-5">
+                            <Label className= "username my-2">Username</Label>
+                            <Input
+                                type="text"
+                                id="username"
+                                value={form.username}
+                                onChange={(e) => setForm({
+                                    ...form,
+                                    username: e.target.value
+                                })}
+                            />
+                        </div>
 
-                        <Label htmlFor="password">Password</Label>
-                        <Input
-                            type="password"
-                            id="password"
-                            value={form.password}
-                            onChange={(e) => setForm({
-                                ...form,
-                                password: e.target.value
-                            })}
-                        />
+                        <div className="my-5">
+                            <Label htmlFor="password" className="my-2">Password</Label>
+                            <Input
+                                type="password"
+                                id="password"
+                                value={form.password}
+                                onChange={(e) => setForm({
+                                    ...form,
+                                    password: e.target.value
+                                })}
+                            />
+                        </div>
+
 
                         <div className="checkbox-container flex items-center mb-4">
                             <input

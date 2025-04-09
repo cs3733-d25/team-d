@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import LeafletMap from "@/LeafletMap/LeafletMap.tsx";
 
 const directoryData = [
     {
@@ -159,9 +160,9 @@ const WithinHospital: React.FC = () => {
                                 className="w-full p-2 border border-gray-300 rounded-md"
                             >
                                 <option value="">-- Select Starting Point --</option>
-                                <option value="Main Lobby">Main Lobby</option>
-                                <option value="Parking Garage">Parking Garage</option>
-                                <option value="Cafeteria">Cafeteria</option>
+                                <option value="Main Lobby">Entrance</option>
+                                {/*<option value="Parking Garage">Parking Garage</option>*/}
+                                {/*<option value="Cafeteria">Cafeteria</option>*/}
                             </select>
                         </div>
 
@@ -209,7 +210,7 @@ const WithinHospital: React.FC = () => {
 
                     {/* (map placeholder) */}
                     <div className="col-span-10 md:col-span-7 border rounded-md p-4 bg-white shadow flex items-center justify-center">
-                        <p className="text-gray-500">(Map goes here)</p>
+                        <LeafletMap></LeafletMap>
                     </div>
                 </div>
             </main>
