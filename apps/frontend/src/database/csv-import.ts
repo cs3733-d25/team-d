@@ -19,8 +19,9 @@ export async function updateDirectory(){
             const rows = csv.split('\r');
             console.log(rows);
             attributes = rows[0].split(',');
+            console.log(attributes);
             for (let i = 1; i < rows.length; i++) {
-                const columns = rows[i].split(/,(?!\s)(?=\d|"|null)/);
+                const columns = rows[i].split(/,(?=\d|"|null)/);
                 csvData.push(columns);
             }
             console.log(csvData);
