@@ -60,7 +60,7 @@ export default function Login() {
                 </CardHeader>
                 <form onSubmit={onSubmit}>
                     <CardContent>
-                        <Label htmlFor="username">Username</Label>
+                        <Label className= "username pb-4px">Username</Label>
                         <Input
                             type="text"
                             id="username"

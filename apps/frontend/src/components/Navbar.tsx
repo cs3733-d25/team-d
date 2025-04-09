@@ -17,14 +17,14 @@ export default function Navbar({isLoggedIn})  { // Accept
         <>
             <Banner />
             {isLoggedIn && (
-               <div className="bg-blue-900 text-white flex justify-around p-2">
+               <div className="bg-blue-900 text-white flex justify-between items-center h-10">
 
-                <div className={'basis-2/3'}>
+                <div className={"ml-auto"}>
                     <NavigationMenu className={'ml-auto p-4'}>
                         <NavigationMenuList className={'flex flex-row space-x-5'}>
                             <NavigationMenuItem>
                                 <NavigationMenuLink
-                                    className={'text-base hover:bg-blue-900 hover:text-white'}
+                                    className={'text-base hover:bg-[rgba(0,31,63,0.8)] hover:text-white'}
                                 >
                                     <Link to={`/`}>
                                         {' '}
@@ -35,7 +35,7 @@ export default function Navbar({isLoggedIn})  { // Accept
 
                             <NavigationMenuItem>
                                 <NavigationMenuLink
-                                    className={'text-base hover:bg-blue-900 hover:text-white'}
+                                    className={'text-base hover:bg-[rgba(0,31,63,0.8)] hover:text-white'}
                                 >
                                     <Link to={`/map`}>
                                         {' '}
@@ -46,7 +46,7 @@ export default function Navbar({isLoggedIn})  { // Accept
 
                             <NavigationMenuItem>
                                 <NavigationMenuLink
-                                    className={'text-base hover:bg-blue-900 hover:text-white'}
+                                    className={'text-base hover:bg-[rgba(0,31,63,0.8)] hover:text-white'}
                                 >
                                     <Link to={`/directory`}>
                                         {' '}
@@ -57,7 +57,7 @@ export default function Navbar({isLoggedIn})  { // Accept
 
                             <NavigationMenuItem>
                                 <NavigationMenuLink
-                                    className={'text-base hover:bg-blue-900 hover:text-white'}
+                                    className={'text-base hover:bg-[rgba(0,31,63,0.8)] hover:text-white'}
                                 >
                                     <Link to={`/servicerequesthub`}>
                                         {' '}
