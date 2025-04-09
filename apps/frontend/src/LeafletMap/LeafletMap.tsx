@@ -53,7 +53,7 @@ export default function LeafletMap() {
             >
                 <TileLayer
                     url="../src/public/literally-just-white.png"
-                    bounds={[[-2, -2], [2, 2]]}
+                    bounds={[[-1, -1], [1, 1]]}
                 />
                 <ImageOverlay url="../src/public/ChestnutHillFloor1Transparent.png" bounds={[[IMG_HEIGHT * SCALE * -0.5, IMG_WIDTH * SCALE * -0.5], [IMG_HEIGHT * SCALE * 0.5, IMG_WIDTH * SCALE * 0.5]]} >
 
