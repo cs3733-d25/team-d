@@ -10,7 +10,7 @@ import axios from "axios";
 type translatorRequestForm = {
     languageFrom: string;
     languageTo: string;
-    roomNumber: string;
+    roomNum: string;
     startDateTime: string;
     endDateTime: string;
 }
@@ -20,7 +20,7 @@ export default function ServiceRequest() {
     const [form, setForm] = useState<translatorRequestForm>({
         languageFrom: '',
         languageTo: '',
-        roomNumber: '',
+        roomNum: '',
         startDateTime: '',
         endDateTime: '',
     });
@@ -72,7 +72,7 @@ export default function ServiceRequest() {
                                     onChange={(e) =>
                                         setForm({
                                             ...form,
-                                            roomNumber: e.target.value,
+                                            roomNum: e.target.value,
                                         })
                                     }
                                 />
@@ -108,7 +108,7 @@ export default function ServiceRequest() {
                 <ReturnRequest
                     languageFrom={form.languageFrom}
                     languageTo={form.languageTo}
-                    roomNumber={form.roomNumber}
+                    roomNumber={form.roomNum}
                     startDateTime={form.startDateTime}
                     endDateTime={form.endDateTime}/>
             }
