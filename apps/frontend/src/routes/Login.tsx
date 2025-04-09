@@ -52,14 +52,14 @@ export default function Login() {
     }
 
     return (
-        <div className="grid place-items-center h-full items-center">
-            <Card className="w-1/3">
+        <div className="">
+            <div className="">
                 <CardHeader className="place-content-center">
                     <CardTitle>Login</CardTitle>
                 </CardHeader>
-                <form onSubmit={onSubmit}>
-                    <CardContent>
-                        <Label htmlFor="username">Username</Label>
+                <form className="" onSubmit={onSubmit}>
+                    <div>
+                        <Label className="pt-3 pb-2" htmlFor="username">Username</Label>
                         <Input
                             type="text"
                             id="username"
@@ -69,8 +69,9 @@ export default function Login() {
                                 username: e.target.value
                             })}
                         />
-
-                        <Label htmlFor="password">Password</Label>
+                    </div>
+                    <div>
+                        <Label className="pt-3 pb-2" htmlFor="password">Password</Label>
                         <Input
                             type="password"
                             id="password"
@@ -80,8 +81,8 @@ export default function Login() {
                                 password: e.target.value
                             })}
                         />
-
-                        <div className="checkbox-container flex items-center mb-4">
+                    </div>
+                    <div className="pt-3 pb-2 checkbox-container flex items-center mb-4">
                             <input
                                 type="checkbox"
                                 id="rememberPassword"
@@ -92,14 +93,13 @@ export default function Login() {
                                 })}
                                 className="mr-2"
                             />
-                            <Label htmlFor="rememberPassword">Remember Credentials</Label>
-                        </div>
-                    </CardContent>
+                            <Label htmlFor="pt-3 pb-2 rememberPassword">Remember Credentials</Label>
+                    </div>
                     <CardFooter>
                         <Button type="submit">Submit</Button>
                     </CardFooter>
                 </form>
-            </Card>
+            </div>
         </div>
     );
 }
