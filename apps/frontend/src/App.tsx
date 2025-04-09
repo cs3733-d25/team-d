@@ -4,7 +4,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Home from "@/routes/Home";
 import Map from "@/routes/Map";
-import Login from "@/routes/Login";
 import Directory from "@/routes/Directory";
 import KioskDirections from "@/routes/KioskDirections";
 import ServiceRequest from "@/routes/ServiceRequest";
@@ -23,7 +22,6 @@ function App() {
                         <Route index element={<Home />} />
 
                         <Route path="map" element={<Map />} />
-                        <Route path="login" element={<Login />} />
                         <Route path="directory" element={<Directory />} />
                         <Route path="servicerequest" element={<ServiceRequest />} />
                         <Route path="servicerequesthub" element={<ServiceRequestHub />} />
