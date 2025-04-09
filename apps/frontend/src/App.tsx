@@ -19,7 +19,7 @@ function App() {
         <div className="h-screen bg-accent flex flex-col parent">
             <BrowserRouter>
                 <Routes>
-                    <Route path="/" element={<Navbar />}>
+                    <Route path="/" element={<Navbar isLoggedIn={true} />}>
                         <Route index element={<Home />} />
 
                         <Route path="map" element={<Map />} />

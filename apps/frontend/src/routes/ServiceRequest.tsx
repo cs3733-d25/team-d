@@ -35,9 +35,9 @@ export default function ServiceRequest() {
         <>
             {!submitted ?
                 <div className="grid place-items-center h-full items-center">
-                    <h2 className="text-4xl fontbold">Request a Translator</h2>
+                    <h2 className="text-4xl fontbold pb-3" >Request a Translator</h2>
                         <form onSubmit={onSubmit}>
-                                <Label htmlFor="languageFrom">Language From</Label>
+                                <Label className="pb-3" htmlFor="languageFrom">Language From</Label>
                                 <Input
                                     type="text"
                                     id="languageFrom"
@@ -48,7 +48,7 @@ export default function ServiceRequest() {
                                         })
                                     }
                                 />
-                                <Label htmlFor="languageTo">Language To</Label>
+                                <Label className="pt-3 pb-2" htmlFor="languageTo">Language To</Label>
                                 <Input
                                     type="text"
                                     id="languageTo"
@@ -59,7 +59,7 @@ export default function ServiceRequest() {
                                         })
                                     }
                                 />
-                                <Label htmlFor="roomNumber">Room Number</Label>
+                                <Label className="pt-3 pb-2" htmlFor="roomNumber">Room Number</Label>
                                 <Input
                                     type="text"
                                     id="roomNumber"
@@ -70,7 +70,7 @@ export default function ServiceRequest() {
                                         })
                                     }
                                 />
-                                <Label htmlFor="startDateTime">Start Date and Time</Label>
+                                <Label className="pt-3 pb-2" htmlFor="startDateTime">Start Date and Time</Label>
                                 <Input
                                     type="datetime-local"
                                     id="startDateTime"
@@ -81,10 +81,11 @@ export default function ServiceRequest() {
                                         })
                                     }
                                 />
-                                <Label htmlFor="endDateTime">End Date and Time</Label>
+                                <Label className="pt-3 pb-2" htmlFor="endDateTime">End Date and Time</Label>
                                 <Input
                                     type="datetime-local"
                                     id="languageFrom"
+                                    className='pb-2'
                                     onChange={(e) =>
                                         setForm({
                                             ...form,
@@ -93,7 +94,7 @@ export default function ServiceRequest() {
                                     }
                                 />
 
-                                <Button type="submit">Submit</Button>
+                                <Button type="submit" className='pt-2'>Submit</Button>
 
                         </form>
                 </div>
