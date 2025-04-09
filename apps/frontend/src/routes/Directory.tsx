@@ -163,10 +163,10 @@ const Directory: React.FC = () => {
                 </select>
 
                 <div className="flex flex-col gap-3">
-                    <Button onClick={handleGetDirections} className="bg-black text-white">
+                    <Button onClick={handleGetDirections} className="bg-blue-900 text-white">
                         Get Directions
                     </Button>
-                    <Button onClick={handleGetToChestnutHill} className="bg-blue-700 text-white">
+                    <Button onClick={handleGetToChestnutHill} className="bg-blue-900 text-white">
                         Get to Chestnut Hill
                     </Button>
                 </div>
@@ -176,6 +176,7 @@ const Directory: React.FC = () => {
 };
 
 export default Directory;
+
 
 
 
