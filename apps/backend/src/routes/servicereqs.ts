@@ -44,6 +44,7 @@ router.get('/translator', async function (req: Request, res: Response) {
         res.json(translatorRequests);
     }
 });
+
 //
 // Post request to add service requests to the database
 router.post('/', async function (req: Request, res: Response) {
