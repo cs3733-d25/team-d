@@ -152,6 +152,20 @@ async function main() {
                 assignedEmployeeId: null,
             },
         }),
+        await prisma.serviceRequest.upsert({
+            where: { requestId: 12},
+            update: {},
+            create: {
+                assignedEmployeeId: null,
+            },
+        }),
+        await prisma.serviceRequest.upsert({
+            where: { requestId: 13},
+            update: {},
+            create: {
+                assignedEmployeeId: null,
+            },
+        }),
     ];
     const translatorRequests = [
         await prisma.translatorRequest.upsert({
@@ -290,6 +304,29 @@ async function main() {
     console.log('Translator requests seeded!')
 
     console.log(translatorRequests);
+
+    const securityRequests = [
+        await prisma.securityRequest.upsert({
+            where: {serviceRequestId: serviceRequests[11].requestId},
+            update: {},
+            create: {
+                serviceRequestId: serviceRequests[11].requestId,
+                numOfGuards: 3,
+                securityType: "Violent Patient",
+                additionalComments: "Send help!",
+            }
+        }),
+        await prisma.securityRequest.upsert({
+            where: {serviceRequestId: serviceRequests[12].requestId},
+            update: {},
+            create: {
+                serviceRequestId: serviceRequests[12].requestId,
+                numOfGuards: 3,
+                securityType: "Elopement",
+                additionalComments: "They ran out the west door.",
+            },
+        }),
+    ]
 
     // Seed departments
     console.log('Seeding departments...');
