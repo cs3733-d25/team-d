@@ -32,9 +32,23 @@ const GGMap: React.FC = () => {
 
             const map = new window.google.maps.Map(mapRef.current, {
                 mapTypeControl: false,
-                center: { lat: 42.32610824896946, lng: -71.14955534500426},
+                center: { lat: 42.32629334182415, lng: -71.14949465487962},
                 zoom: 19,
             });
+
+            const line = new window.google.maps.Polyline({
+                path: [
+                    { lat: 42.32629334182415, lng: -71.14949465487962},
+                    { lat: 42.32620824896946, lng: -71.14965534500426},
+                ],
+                geodesic: true,
+                strokeColor: "#FF0000",
+                strokeOpacity: 1.0,
+                strokeWeight: 2,
+                map: map,
+            });
+
+
 
             new AutocompleteDirectionsHandler(map);
         };

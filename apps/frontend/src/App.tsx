@@ -12,15 +12,17 @@ import ToHospital from "@/routes/ToHospital";
 import AdminDatabase from "@/routes/AdminDatabase";
 import ServiceRequestHub from "@/routes/ServiceRequestHub.tsx";
 import AllServiceRequests from "@/routes/AllServiceRequests.tsx";
+import GoogleMap from "@/components/map/GoogleMap.tsx";
+import GGMap from "@/GoogleMap/GoogleMap.tsx";
 
 function App() {
     return (
         <div className="h-screen bg-accent flex flex-col parent">
             <BrowserRouter>
                 <Routes>
+                    <Route path="gmap" element={<GGMap />} />
                     <Route path="/" element={<Navbar isLoggedIn={true} />}>
                         <Route index element={<Home />} />
-
                         <Route path="map" element={<Map />} />
                         <Route path="directory" element={<Directory />} />
                         <Route path="servicerequest" element={<ServiceRequest />} />
