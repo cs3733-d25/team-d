@@ -10,7 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faCircleUser} from "@fortawesome/free-solid-svg-icons";
 import hospitalLogo from "@/public/hospital2.png";
 
-export default function Banner()  {
+export default function Banner({isLoggedIn}: {isLoggedIn: boolean})  {
     return (
         <>
             <div className={"flex flex-row bg-[#Addde5] sticky top-0"} >
@@ -30,10 +30,11 @@ export default function Banner()  {
                             </NavigationMenuItem>
 
 
-
-                            <NavigationMenuItem>
+                            {!isLoggedIn && (
+                                <NavigationMenuItem>
                                 <Link to={`/`}> <FontAwesomeIcon icon={faCircleUser} size="2x" color="black"/> </Link>
-                            </NavigationMenuItem>
+                            </NavigationMenuItem>)}
+
 
                         </NavigationMenuList>
                     </NavigationMenu>
