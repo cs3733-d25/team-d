@@ -117,7 +117,7 @@ const GGMap: React.FC = () => {
                         cursor: 'pointer',
                     }}
                 >
-                    Reset Zoom
+                    Reset View
                 </button>
             </div>
 
