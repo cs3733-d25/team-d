@@ -10,7 +10,8 @@ const DESTINATION_PLACE_IDS = {
 
 import AutocompleteDirectionsHandler from "@/GoogleMap/GoogleMapHelper.ts";
 import floor_1_map from "@/public/rotated-solid.png";
-
+import FloorMap from "@/GoogleMap/FloorMap.ts";
+//
 // Declare window type extension
 declare global {
     interface Window {
@@ -19,34 +20,38 @@ declare global {
     }
 }
 
-let historicalOverlay: google.maps.GroundOverlay | null = null;
-let mapInstance: google.maps.Map | null = null;
-
 interface Props {
     startInput: RefObject<HTMLInputElement | null>;
     locationDropdown: RefObject<HTMLSelectElement | null>;
+    departmentDropdown: RefObject<HTMLSelectElement | null>;
 }
 
 const GGMap = (props: Props) => {
     const mapRef = useRef<HTMLDivElement | null>(null);
-    const [overlayVisible, setOverlayVisible] = useState(true);
+    const floorMaps: Map<string, FloorMap> = new Map();
+    // const [overlayVisible, setOverlayVisible] = useState(true);
 
+    // let historicalOverlay: google.maps.GroundOverlay | null = null;
+    // let mapInstance: google.maps.Map | null = null;
+    //
     const toggleOverlay = () => {
-        if (historicalOverlay) {
-            if (overlayVisible) {
-                historicalOverlay.setMap(null);
-            } else {
-                historicalOverlay.setMap(mapInstance);
-            }
-            setOverlayVisible(!overlayVisible);
-        }
+        const map = floorMaps.get('CH');
+        // if ()
+    //     if (historicalOverlay) {
+    //         if (overlayVisible) {
+    //             historicalOverlay.setMap(null);
+    //         } else {
+    //             historicalOverlay.setMap(mapInstance);
+    //         }
+    //         setOverlayVisible(!overlayVisible);
+    //     }
     };
-
+    //
     const resetView = () => {
-        if (mapInstance) {
-            mapInstance.setZoom(20);
-            mapInstance.setCenter({ lat: 42.32610824896946, lng: -71.14955534500426 });
-        }
+    //     if (mapInstance) {
+    //         mapInstance.setZoom(20);
+    //         mapInstance.setCenter({ lat: 42.32610824896946, lng: -71.14955534500426 });
+    //     }
     };
 
 
@@ -79,7 +84,7 @@ const GGMap = (props: Props) => {
                 zoom: 20,
             });
 
-            mapInstance = map;
+            // mapInstance = map;
 
             const imageBounds = {
                 north: 42.32629629062394,
@@ -87,13 +92,14 @@ const GGMap = (props: Props) => {
                 east: -71.14918542914931,
                 west: -71.15015356316003,
             };
+            //
+            // historicalOverlay = new window.google.maps.GroundOverlay(
+            //     floor_1_map,
+            //     imageBounds
+            // );
 
-            historicalOverlay = new window.google.maps.GroundOverlay(
-                floor_1_map,
-                imageBounds
-            );
-
-            historicalOverlay.setMap(map);
+            // historicalOverlay.setMap(map);
+            floorMaps.set('CH', new FloorMap(imageBounds, floor_1_map, map))
 
             const line = new window.google.maps.Polyline({
                 path: [
