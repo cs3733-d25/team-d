@@ -1,6 +1,8 @@
-// This example adds hide() and show() methods to a custom overlay's prototype.
-// These methods toggle the visibility of the container <div>.
-// overlay to or from the map.
+// // This example adds hide() and show() methods to a custom overlay's prototype.
+// // These methods toggle the visibility of the container <div>.
+// // overlay to or from the map.
+// //
+
 //
 class USGSOverlay extends google.maps.OverlayView {
     private bounds: google.maps.LatLngBounds;
