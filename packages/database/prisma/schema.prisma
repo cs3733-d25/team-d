@@ -65,6 +65,7 @@ model TranslatorRequest {
 
 enum RequestType {
   TranslatorRequest
+  EquipmentRequest
 }
 
 model Department {
