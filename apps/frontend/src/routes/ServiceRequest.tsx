@@ -31,7 +31,7 @@ export default function ServiceRequest() {
         e.preventDefault();
         // console.log(form);
         setSubmitted(false);
-        axios.post(API_ROUTES.SERVICEREQS, form).then(() => {
+        axios.post(API_ROUTES.SERVICEREQS+'/translator', form).then(() => {
             alert("Service request submitted!");
             setSubmitted(true);
         });
