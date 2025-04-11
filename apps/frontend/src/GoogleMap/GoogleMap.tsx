@@ -18,7 +18,7 @@ let mapInstance: google.maps.Map | null = null;
 
 const GGMap: React.FC = () => {
     const mapRef = useRef<HTMLDivElement | null>(null);
-    const [overlayVisible, setOverlayVisible] = useState(true); // toggle state
+    const [overlayVisible, setOverlayVisible] = useState(true);
 
     const toggleOverlay = () => {
         if (historicalOverlay) {
@@ -30,6 +30,14 @@ const GGMap: React.FC = () => {
             setOverlayVisible(!overlayVisible);
         }
     };
+
+    const resetView = () => {
+        if (mapInstance) {
+            mapInstance.setZoom(20);
+            mapInstance.setCenter({ lat: 42.32610824896946, lng: -71.14955534500426 });
+        }
+    };
+
 
     useEffect(() => {
         const loadScript = (url: string) => {
@@ -55,13 +63,13 @@ const GGMap: React.FC = () => {
                 zoom: 20,
             });
 
-            mapInstance = map; // save reference globally
+            mapInstance = map;
 
             const imageBounds = {
-                north: 42.32629629062394, // more positive to move up
-                south: 42.32566563128395, // less positive to move down
-                east: -71.14918542914931, // less negative to move to the right
-                west: -71.15015356316003, // more negative to move to the left
+                north: 42.32629629062394,
+                south: 42.32566563128395,
+                east: -71.14918542914931,
+                west: -71.15015356316003,
             };
 
             historicalOverlay = new window.google.maps.GroundOverlay(
@@ -69,7 +77,7 @@ const GGMap: React.FC = () => {
                 imageBounds
             );
 
-            historicalOverlay.setMap(map); // initially visible
+            historicalOverlay.setMap(map);
 
             new AutocompleteDirectionsHandler(map);
         };
@@ -81,21 +89,37 @@ const GGMap: React.FC = () => {
 
     return (
         <div>
-            <button
-                onClick={toggleOverlay}
-                style={{
+            <div style={{ display: 'flex', gap: '10px', padding: '10px' }}>
+                <button
+                    onClick={toggleOverlay}
+                    style={{
+                        zIndex: 1000,
+                        padding: '8px 12px',
+                        borderRadius: '4px',
+                        backgroundColor: '#007BFF',
+                        color: '#fff',
+                        border: 'none',
+                        cursor: 'pointer',
+                    }}
+                >
+                    {overlayVisible ? 'Hide Overlay' : 'Show Overlay'}
+                </button>
 
-                    zIndex: 1000,
-                    padding: '8px 12px',
-                    borderRadius: '4px',
-                    backgroundColor: '#007BFF',
-                    color: '#fff',
-                    border: 'none',
-                    cursor: 'pointer',
-                }}
-            >
-                {overlayVisible ? 'Hide Overlay' : 'Show Overlay'}
-            </button>
+                <button
+                    onClick={resetView}
+                    style={{
+                        zIndex: 1000,
+                        padding: '8px 12px',
+                        borderRadius: '4px',
+                        backgroundColor: '#28a745',
+                        color: '#fff',
+                        border: 'none',
+                        cursor: 'pointer',
+                    }}
+                >
+                    Reset Zoom
+                </button>
+            </div>
 
             <div
                 id="ggl-map"

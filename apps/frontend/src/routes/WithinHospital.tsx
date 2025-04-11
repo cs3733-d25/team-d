@@ -211,8 +211,8 @@ const WithinHospital: React.FC = () => {
 
                     {/* (map placeholder) */}
                     <div className="col-span-10 md:col-span-7 border rounded-md p-4 bg-white shadow flex items-center justify-center">
-                        {/*<LeafletMap></LeafletMap>*/}
-                        <GGMap></GGMap>
+                        <LeafletMap></LeafletMap>
+                        {/*<GGMap></GGMap>*/}
                     </div>
                 </div>
             </main>
