@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import LeafletMap from "@/LeafletMap/LeafletMap.tsx";
+import GGMap from "@/GoogleMap/GoogleMap.tsx";
 
 const directoryData = [
     {
@@ -210,7 +211,8 @@ const WithinHospital: React.FC = () => {
 
                     {/* (map placeholder) */}
                     <div className="col-span-10 md:col-span-7 border rounded-md p-4 bg-white shadow flex items-center justify-center">
-                        <LeafletMap></LeafletMap>
+                        {/*<LeafletMap></LeafletMap>*/}
+                        <GGMap></GGMap>
                     </div>
                 </div>
             </main>

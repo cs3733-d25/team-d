@@ -3,11 +3,11 @@ import React, { useEffect, useRef, useState } from 'react';
 const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
 import AutocompleteDirectionsHandler from "@/GoogleMap/GoogleMapHelper.ts";
-import floor_1_map from "@/public/floor1transparent.png";
+import floor_1_map from "@/public/rotated-solid.png";
 
 // Declare window type extension
 declare global {
-    interface window {
+    interface Window {
         initMap: () => void;
         google: typeof google;
     }
@@ -52,16 +52,16 @@ const GGMap: React.FC = () => {
             const map = new window.google.maps.Map(mapRef.current, {
                 mapTypeControl: false,
                 center: { lat: 42.32610824896946, lng: -71.14955534500426 },
-                zoom: 18,
+                zoom: 20,
             });
 
             mapInstance = map; // save reference globally
 
             const imageBounds = {
-                north: 42.32629501962394,
-                south: 42.32567963129395,
-                east: -71.14924542914931,
-                west: -71.15010356316003,
+                north: 42.32629629062394, // more positive to move up
+                south: 42.32566563128395, // less positive to move down
+                east: -71.14918542914931, // less negative to move to the right
+                west: -71.15015356316003, // more negative to move to the left
             };
 
             historicalOverlay = new window.google.maps.GroundOverlay(
