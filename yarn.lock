@@ -2603,6 +2603,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/googlemaps@npm:^3.39.1":
+  version: 3.43.3
+  resolution: "@types/googlemaps@npm:3.43.3"
+  checksum: 10c0/7ad03a8107de0bbfa73d5a96708a3eb52a88cc7ef80d877d018ee16696cab2893614756f430d3ae0ea895e8d40e112f6de658aa3623497b088243fe24d3feb21
+  languageName: node
+  linkType: hard
+
 "@types/history@npm:^4.7.11":
   version: 4.7.11
   resolution: "@types/history@npm:4.7.11"
@@ -4988,6 +4995,7 @@ __metadata:
     eslint-plugin-react-compiler: "npm:19.0.0-beta-aeaed83-20250323"
     eslint-plugin-react-hooks: "npm:^5.2.0"
     eslint-plugin-react-refresh: "npm:^0.4.19"
+    google-maps: "npm:^4.3.3"
     leaflet: "npm:^1.9.4"
     localforage: "npm:^1.10.0"
     lucide-react: "npm:^0.487.0"
@@ -5160,6 +5168,15 @@ __metadata:
   version: 14.0.0
   resolution: "globals@npm:14.0.0"
   checksum: 10c0/b96ff42620c9231ad468d4c58ff42afee7777ee1c963013ff8aabe095a451d0ceeb8dcd8ef4cbd64d2538cef45f787a78ba3a9574f4a634438963e334471302d
+  languageName: node
+  linkType: hard
+
+"google-maps@npm:^4.3.3":
+  version: 4.3.3
+  resolution: "google-maps@npm:4.3.3"
+  dependencies:
+    "@types/googlemaps": "npm:^3.39.1"
+  checksum: 10c0/f1d41e97a368d91a7852a127dab28ddc1e2195a992cc085dca4cf65f5472344d1525883de9e0ef93835831655d150791fec4a9e824ba3b26a2cdfbd55742bd50
   languageName: node
   linkType: hard
 
@@ -7627,6 +7644,7 @@ __metadata:
   dependencies:
     "@fortawesome/fontawesome-free": "npm:^6.7.2"
     "@prisma/client": "npm:^6.5.0"
+    "@types/google.maps": "npm:^3.58.1"
     "@types/node": "npm:^22.13.13"
     "@vitest/ui": "npm:^3.0.9"
     "@yarnpkg/pnpify": "npm:^4.1.4"

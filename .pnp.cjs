@@ -64,6 +64,7 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["@fortawesome/fontawesome-free", "npm:6.7.2"],\
           ["@prisma/client", "virtual:3154e7e2502d6821f7eea9434c4cdb00a42b4ad928bf283b9f5a1183af99307a4f66aca3e46a37d196a6c6b81c948321e804193e2cbecf9304b80a7023c19290#npm:6.6.0"],\
+          ["@types/google.maps", "npm:3.58.1"],\
           ["@types/node", "npm:22.13.13"],\
           ["@vitest/ui", "virtual:3154e7e2502d6821f7eea9434c4cdb00a42b4ad928bf283b9f5a1183af99307a4f66aca3e46a37d196a6c6b81c948321e804193e2cbecf9304b80a7023c19290#npm:3.0.9"],\
           ["@yarnpkg/pnpify", "npm:4.1.4"],\
@@ -3499,6 +3500,15 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["@types/googlemaps", [\
+      ["npm:3.43.3", {\
+        "packageLocation": "./.yarn/cache/@types-googlemaps-npm-3.43.3-939f03d9ce-7ad03a8107.zip/node_modules/@types/googlemaps/",\
+        "packageDependencies": [\
+          ["@types/googlemaps", "npm:3.43.3"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["@types/history", [\
       ["npm:4.7.11", {\
         "packageLocation": "./.yarn/cache/@types-history-npm-4.7.11-fe05d7b2e1-3facf37c24.zip/node_modules/@types/history/",\
@@ -6429,6 +6439,7 @@ const RAW_RUNTIME_STATE =
           ["eslint-plugin-react-compiler", "virtual:d3996bc66f5a97675d735c6457b44af0f25df32a5e5981f61ff7f22e93004839ccc5d56298eff651f971a908820429de35800a3f2669be95e1c0f6bb82e8a700#npm:19.0.0-beta-aeaed83-20250323"],\
           ["eslint-plugin-react-hooks", "virtual:d3996bc66f5a97675d735c6457b44af0f25df32a5e5981f61ff7f22e93004839ccc5d56298eff651f971a908820429de35800a3f2669be95e1c0f6bb82e8a700#npm:5.2.0"],\
           ["eslint-plugin-react-refresh", "virtual:d3996bc66f5a97675d735c6457b44af0f25df32a5e5981f61ff7f22e93004839ccc5d56298eff651f971a908820429de35800a3f2669be95e1c0f6bb82e8a700#npm:0.4.19"],\
+          ["google-maps", "npm:4.3.3"],\
           ["leaflet", "npm:1.9.4"],\
           ["localforage", "npm:1.10.0"],\
           ["lucide-react", "virtual:d3996bc66f5a97675d735c6457b44af0f25df32a5e5981f61ff7f22e93004839ccc5d56298eff651f971a908820429de35800a3f2669be95e1c0f6bb82e8a700#npm:0.487.0"],\
@@ -6602,6 +6613,16 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/globals-npm-14.0.0-5fc3d8d5da-b96ff42620.zip/node_modules/globals/",\
         "packageDependencies": [\
           ["globals", "npm:14.0.0"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["google-maps", [\
+      ["npm:4.3.3", {\
+        "packageLocation": "./.yarn/cache/google-maps-npm-4.3.3-2c068ee7fe-f1d41e97a3.zip/node_modules/google-maps/",\
+        "packageDependencies": [\
+          ["google-maps", "npm:4.3.3"],\
+          ["@types/googlemaps", "npm:3.43.3"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -9426,6 +9447,7 @@ const RAW_RUNTIME_STATE =
           ["softeng-startercode-d25", "workspace:."],\
           ["@fortawesome/fontawesome-free", "npm:6.7.2"],\
           ["@prisma/client", "virtual:3154e7e2502d6821f7eea9434c4cdb00a42b4ad928bf283b9f5a1183af99307a4f66aca3e46a37d196a6c6b81c948321e804193e2cbecf9304b80a7023c19290#npm:6.6.0"],\
+          ["@types/google.maps", "npm:3.58.1"],\
           ["@types/node", "npm:22.13.13"],\
           ["@vitest/ui", "virtual:3154e7e2502d6821f7eea9434c4cdb00a42b4ad928bf283b9f5a1183af99307a4f66aca3e46a37d196a6c6b81c948321e804193e2cbecf9304b80a7023c19290#npm:3.0.9"],\
           ["@yarnpkg/pnpify", "npm:4.1.4"],\

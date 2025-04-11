@@ -74,7 +74,7 @@ const ToHospital: React.FC = () => {
                             </div>
 
                             <div>
-                                <input type="radio" name="type" id="changemode-driving"/>
+                                <input type="radio" name="type" id="changemode-driving" />
                                 <label htmlFor="changemode-driving">Driving</label>
                             </div>
 
