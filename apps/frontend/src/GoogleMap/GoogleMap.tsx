@@ -4,7 +4,8 @@ const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
 const DESTINATION_PLACE_IDS = {
     CHESTNUT_HILL:    'ChIJLwkLvP5444kRGTnWxi0zsnM',
-    PATRIOT_PLACE_20: 'ChIJHzla42V95IkR_bz0ni4NvfI'
+    PATRIOT_PLACE_20: 'ChIJHzla42V95IkR_bz0ni4NvfI',
+    PATRIOT_PLACE_22: 'ChIJKQrcBrd85IkRhhpDZMarvhQ',
 }
 
 import AutocompleteDirectionsHandler from "@/GoogleMap/GoogleMapHelper.ts";
@@ -139,9 +140,12 @@ const GGMap = (props: Props) => {
                         destinationPlaceId = DESTINATION_PLACE_IDS.PATRIOT_PLACE_20;
                         await route();
                         break;
-                    default:
-                        destinationPlaceId = DESTINATION_PLACE_IDS.CHESTNUT_HILL;
+                    case '22 Patriot Place':
+                        destinationPlaceId = DESTINATION_PLACE_IDS.PATRIOT_PLACE_22;
                         await route();
+                        break;
+                    default:
+                        console.error('Unknown location dropdown.');
                         break;
 
                 }
