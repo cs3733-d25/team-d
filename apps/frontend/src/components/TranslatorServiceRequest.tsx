@@ -13,9 +13,11 @@ type translatorRequestForm = {
     roomNum: string;
     startDateTime: string;
     endDateTime: string;
+    requestStatus: string;
+    priority: string;
 }
 
-export default function ServiceRequest() {
+export default function TranslatorServiceRequest() {
 
     const [form, setForm] = useState<translatorRequestForm>({
         languageFrom: '',
@@ -23,6 +25,8 @@ export default function ServiceRequest() {
         roomNum: '',
         startDateTime: '',
         endDateTime: '',
+        requestStatus: '',
+        priority: '',
     });
 
     const [submitted, setSubmitted] = useState(false);

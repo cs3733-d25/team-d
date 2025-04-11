@@ -53,6 +53,10 @@ router.post('/translator', async function (req: Request, res: Response) {
         await PrismaClient.serviceRequest.create({
             data: {
                 assignedEmployeeId: null,
+                employeeRequestedById: req.body.employee,
+                departmentUnderId: req.body.department,
+                priority: req.body.priority,
+                requestStatus: req.body.requestStatus,
                 translatorRequest: {
                     create: {
                         languageFrom: req.body.languageFrom,
@@ -63,6 +67,7 @@ router.post('/translator', async function (req: Request, res: Response) {
                     },
                 },
             },
+
         });
         console.log('Service request created');
     } catch (error) {

@@ -6,7 +6,7 @@ import Home from "@/routes/Home";
 import Map from "@/routes/Map";
 import Directory from "@/routes/Directory";
 import KioskDirections from "@/routes/KioskDirections";
-import ServiceRequest from "@/routes/ServiceRequest";
+import TranslatorServiceRequest from "@/components/TranslatorServiceRequest.tsx";
 import WithinHospital from "@/routes/WithinHospital";
 import ToHospital from "@/routes/ToHospital";
 import AdminDatabase from "@/routes/AdminDatabase";
@@ -34,7 +34,7 @@ function App() {
 
                         <Route path="map" element={<Map />} />
                         <Route path="directory" element={<Directory />} />
-                        <Route path="servicerequest" element={<ServiceRequest />} />
+                        <Route path="servicerequest" element={<TranslatorServiceRequest />} />
                         <Route path="servicerequesthub" element={<ServiceRequestHub />} />
                         <Route path="kiosk" element={<KioskDirections />} />
                         <Route path="within-hospital" element={<WithinHospital />} />
