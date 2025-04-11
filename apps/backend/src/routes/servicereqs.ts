@@ -47,7 +47,7 @@ router.get('/translator', async function (req: Request, res: Response) {
 
 //
 // Post request to add service requests to the database
-router.post('/', async function (req: Request, res: Response) {
+router.post('/translator', async function (req: Request, res: Response) {
     const serviceRequestAttempt: Prisma.ServiceRequestCreateInput = req.body;
     try {
         await PrismaClient.serviceRequest.create({
