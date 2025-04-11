@@ -14,7 +14,7 @@ import Auth0LogoutButton from "@/components/Auth0LogoutButton.tsx";
 export default function Navbar({isLoggedIn}: {isLoggedIn: boolean})  { // Accept
     return (
         <>
-            <Banner />
+            <Banner isLoggedIn={isLoggedIn} />
             {/*is logged in*/}
             {isLoggedIn && (
                <div className="bg-blue-900 text-white flex justify-between items-center h-10">
