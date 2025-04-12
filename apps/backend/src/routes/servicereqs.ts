@@ -45,10 +45,9 @@ router.get('/translator', async function (req: Request, res: Response) {
         res.json(translatorRequests);
     }
 });
-
 //
 // Post request to add service requests to the database
-router.post('/translator', async function (req: Request, res: Response) {
+router.post('/', async function (req: Request, res: Response) {
     const serviceRequestAttempt: Prisma.ServiceRequestCreateInput = req.body;
     try {
         await PrismaClient.serviceRequest.create({
@@ -218,4 +217,67 @@ router.delete('/:id', async function (req: Request, res: Response) {
     }
 });
 
+/*
+
+
+
+medical equipment CRUD Operations
+
+
+
+*/
+
+// Returns only medical equipment requests, if any
+// /api/servicereqs/equipment
+router.get('/equipment', async function (req: Request, res: Response) {
+    // Find all service request of type translator request
+    const equipmentRequests = await PrismaClient.equipmentRequest.findMany({
+        include: {
+            serviceRequest: true,
+        },
+    });
+
+    // If no service request with the ID is found, send 204 and log it
+    if (equipmentRequests == null) {
+        console.error(`No medical device requests found in database!`);
+        res.sendStatus(204);
+    }
+    // Otherwise send 200 and the data
+    else {
+        console.log(equipmentRequests);
+        res.json(equipmentRequests);
+    }
+});
+
+// Post request to add medical device requests to the database
+router.post('/equipment', async function (req: Request, res: Response) {
+    const serviceRequestAttempt: Prisma.ServiceRequestCreateInput = req.body;
+    try {
+        await PrismaClient.serviceRequest.create({
+            data: {
+                assignedEmployeeId: null,
+                equipmentRequest: {
+                    create: {
+                        medicalDevice: req.body.medicalDevice,
+                        signature: req.body.signature,
+                        quantity: req.body.quantity,
+                        comments: req.body.comments,
+                        roomNum: req.body.roomNum,
+                        startDateTime: req.body.startDateTime + ':00.000Z',
+                        endDateTime: req.body.endDateTime + ':00.000Z',
+                    },
+                },
+            },
+        });
+        console.log('Medical device service request created');
+    } catch (error) {
+        console.error(
+            `Unable to create a new medical request service request ${serviceRequestAttempt}: ${error}`
+        );
+        res.sendStatus(400);
+        return;
+    }
+
+    res.sendStatus(200);
+});
 export default router;
