@@ -292,6 +292,7 @@ async function main() {
     console.log(translatorRequests);
 
 
+
     console.log('Seeding hospitals...')
     const hospitals = [
         await prisma.hospital.upsert({
@@ -311,23 +312,11 @@ async function main() {
             update: {},
             create: {
                 hospitalId: 1,
-                name: '20 Patriot Place',
-                placeId: 'ChIJHzla42V95IkR_bz0ni4NvfI',
-                defaultZoom: 20,
-                defaultLat: 42.09281274014584,
-                defaultLong: -71.26612984263076,
-            },
-        }),
-        await prisma.hospital.upsert({
-            where: {hospitalId: 2},
-            update: {},
-            create: {
-                hospitalId: 2,
-                name: '22 Patriot Place',
+                name: 'Patriot Place',
                 placeId: 'ChIJKQrcBrd85IkRhhpDZMarvhQ',
                 defaultZoom: 20,
-                defaultLat: 42.09265139820163,
-                defaultLong: -71.2669845235888,
+                defaultLat: 42.092855424416726,
+                defaultLong: -71.26659035290484
             },
         }),
     ];
@@ -365,7 +354,7 @@ async function main() {
                 floorId: 2,
                 num: 3,
                 imageURL: '',
-                hospitalId: 2,
+                hospitalId: 1,
             },
         }),
         await prisma.floor.upsert({
@@ -375,7 +364,7 @@ async function main() {
                 floorId: 3,
                 num: 4,
                 imageURL: '',
-                hospitalId: 2,
+                hospitalId: 1,
             },
         }),
     ];
@@ -529,6 +518,245 @@ async function main() {
 
     console.log('Departments seeded!');
     console.log(departments);
+
+
+    // console.log('Seeding hospitals...')
+    // const hospitals = [
+    //     await prisma.hospital.upsert({
+    //         where: {hospitalId: 0},
+    //         update: {},
+    //         create: {
+    //             hospitalId: 0,
+    //             name: 'Chestnut Hill',
+    //             placeId: 'ChIJLwkLvP5444kRGTnWxi0zsnM',
+    //             defaultZoom: 20,
+    //             defaultLat: 42.325956546246374,
+    //             defaultLong: -71.14971804046458,
+    //         },
+    //     }),
+    //     await prisma.hospital.upsert({
+    //         where: {hospitalId: 1},
+    //         update: {},
+    //         create: {
+    //             hospitalId: 1,
+    //             name: '20 Patriot Place',
+    //             placeId: 'ChIJHzla42V95IkR_bz0ni4NvfI',
+    //             defaultZoom: 20,
+    //             defaultLat: 42.09281274014584,
+    //             defaultLong: -71.26612984263076,
+    //         },
+    //     }),
+    //     await prisma.hospital.upsert({
+    //         where: {hospitalId: 2},
+    //         update: {},
+    //         create: {
+    //             hospitalId: 2,
+    //             name: '22 Patriot Place',
+    //             placeId: 'ChIJKQrcBrd85IkRhhpDZMarvhQ',
+    //             defaultZoom: 20,
+    //             defaultLat: 42.09265139820163,
+    //             defaultLong: -71.2669845235888,
+    //         },
+    //     }),
+    // ];
+    //
+    // console.log('Hospitals seeded!');
+    // console.log(hospitals);
+    //
+    // console.log('Seeding floors...');
+    //
+    // const floors = [
+    //     await prisma.floor.upsert({
+    //         where: {floorId: 0},
+    //         update: {},
+    //         create: {
+    //             floorId: 0,
+    //             num: 1,
+    //             imageURL: '',
+    //             hospitalId: 0,
+    //         },
+    //     }),
+    //     await prisma.floor.upsert({
+    //         where: {floorId: 1},
+    //         update: {},
+    //         create: {
+    //             floorId: 1,
+    //             num: 1,
+    //             imageURL: '',
+    //             hospitalId: 1,
+    //         },
+    //     }),
+    //     await prisma.floor.upsert({
+    //         where: {floorId: 2},
+    //         update: {},
+    //         create: {
+    //             floorId: 2,
+    //             num: 3,
+    //             imageURL: '',
+    //             hospitalId: 2,
+    //         },
+    //     }),
+    //     await prisma.floor.upsert({
+    //         where: {floorId: 3},
+    //         update: {},
+    //         create: {
+    //             floorId: 3,
+    //             num: 4,
+    //             imageURL: '',
+    //             hospitalId: 2,
+    //         },
+    //     }),
+    // ];
+    //
+    // console.log('Floors seeded!');
+    // console.log(floors);
+    //
+    // console.log('Seeding departments...');
+    // const departments = [
+    //     await prisma.department.upsert({
+    //         where: {departmentId: 0},
+    //         update: {},
+    //         create: {
+    //             departmentId: 0,
+    //             name: 'Laboratory',
+    //             suite: '100',
+    //             floorId: 0,
+    //         },
+    //     }),
+    //     await prisma.department.upsert({
+    //         where: {departmentId: 1},
+    //         update: {},
+    //         create: {
+    //             departmentId: 1,
+    //             name: 'Multi-Specialty Clinic',
+    //             suite: '130',
+    //             floorId: 0,
+    //         },
+    //     }),
+    //     await prisma.department.upsert({
+    //         where: {departmentId: 2},
+    //         update: {},
+    //         create: {
+    //             departmentId: 2,
+    //             name: 'Radiology, MRI/CT scan',
+    //             suite: '102B',
+    //             floorId: 0,
+    //         },
+    //     }),
+    //     await prisma.department.upsert({
+    //         where: {departmentId: 3},
+    //         update: {},
+    //         create: {
+    //             departmentId: 3,
+    //             name: 'Blood Draw / Phlebotomy',
+    //             suite: '',
+    //             floorId: 1,
+    //         },
+    //     }),
+    //     await prisma.department.upsert({
+    //         where: {departmentId: 4},
+    //         update: {},
+    //         create: {
+    //             departmentId: 4,
+    //             name: 'Pharmacy',
+    //             suite: '',
+    //             floorId: 1,
+    //         },
+    //     }),
+    //     await prisma.department.upsert({
+    //         where: {departmentId: 5},
+    //         update: {},
+    //         create: {
+    //             departmentId: 5,
+    //             name: 'Radiology',
+    //             suite: '',
+    //             floorId: 1,
+    //         },
+    //     }),
+    //     await prisma.department.upsert({
+    //         where: {departmentId: 6},
+    //         update: {},
+    //         create: {
+    //             departmentId: 6,
+    //             name: 'Cardiovascular Services',
+    //             suite: '',
+    //             floorId: 1,
+    //         },
+    //     }),
+    //     await prisma.department.upsert({
+    //         where: {departmentId: 7},
+    //         update: {},
+    //         create: {
+    //             departmentId: 7,
+    //             name: 'Urology',
+    //             suite: '',
+    //             floorId: 1,
+    //         },
+    //     }),
+    //     await prisma.department.upsert({
+    //         where: {departmentId: 8},
+    //         update: {},
+    //         create: {
+    //             departmentId: 8,
+    //             name: 'Urgent Care Center',
+    //             suite: '',
+    //             floorId: 1,
+    //         },
+    //     }),
+    //     await prisma.department.upsert({
+    //         where: {departmentId: 9},
+    //         update: {},
+    //         create: {
+    //             departmentId: 9,
+    //             name: 'Multi Specialty Clinic',
+    //             suite: '',
+    //             floorId: 2,
+    //         },
+    //     }),
+    //     await prisma.department.upsert({
+    //         where: {departmentId: 10},
+    //         update: {},
+    //         create: {
+    //             departmentId: 10,
+    //             name: 'Patient Financial Services',
+    //             suite: '',
+    //             floorId: 2,
+    //         },
+    //     }),
+    //     await prisma.department.upsert({
+    //         where: {departmentId: 11},
+    //         update: {},
+    //         create: {
+    //             departmentId: 11,
+    //             name: 'Blood Draw / Phlebotomy',
+    //             suite: '',
+    //             floorId: 3,
+    //         },
+    //     }),
+    //     await prisma.department.upsert({
+    //         where: {departmentId: 12},
+    //         update: {},
+    //         create: {
+    //             departmentId: 12,
+    //             name: 'Community Room',
+    //             suite: '',
+    //             floorId: 3,
+    //         },
+    //     }),
+    //     await prisma.department.upsert({
+    //         where: {departmentId: 13},
+    //         update: {},
+    //         create: {
+    //             departmentId: 13,
+    //             name: 'Primary Care',
+    //             suite: '',
+    //             floorId: 3,
+    //         },
+    //     }),
+    // ];
+    //
+    // console.log('Departments seeded!');
+    // console.log(departments);
 
 
     // Seed departments

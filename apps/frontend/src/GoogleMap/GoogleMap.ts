@@ -104,14 +104,14 @@ export default class GoogleMap {
                 this.route();
             }
             this.resetFloorMap();
-            if (props.department) {
-                for (const fm of this.floorMaps) {
-                    if (props.department.floor === fm.floorNumber && props.hospital.name === fm.hospitalName) {
-                        this.floorMap = fm;
-                        this.floorMap.overlay.setMap(this.map);
-                    }
-                }
-            }
+            // if (props.department) {
+            //     for (const fm of this.floorMaps) {
+            //         if (props.department.floor === fm.floorNumber && props.hospital.name === fm.hospitalName) {
+            //             this.floorMap = fm;
+            //             this.floorMap.overlay.setMap(this.map);
+            //         }
+            //     }
+            // }
         }
     }
 
@@ -129,22 +129,22 @@ export default class GoogleMap {
     }
 
     updatePathfinding(props: GoogleMapProps): void {
-        if (!props.department || !props.hospital) {
-            // console.warn('Department not found ' + this.props.department?.name + ' ' + this.props.hospital?.name);
-            return;
-        }
-        if (this.floorMap) {
-            this.floorMap.overlay.setMap(null);
-        }
-        console.log('Searching for departments...');
-        let found = false;
-        for (const fm of this.floorMaps) {
-            if (props.department.floor === fm.floorNumber && props.hospital.name === fm.hospitalName) {
-                this.floorMap = fm;
-                this.floorMap.overlay.setMap(this.map);
-                found = true;
-            }
-        }
-        console.log(found);
+        // if (!props.department || !props.hospital) {
+        //     // console.warn('Department not found ' + this.props.department?.name + ' ' + this.props.hospital?.name);
+        //     return;
+        // }
+        // if (this.floorMap) {
+        //     this.floorMap.overlay.setMap(null);
+        // }
+        // console.log('Searching for departments...');
+        // let found = false;
+        // for (const fm of this.floorMaps) {
+        //     if (props.department.floor === fm.floorNumber && props.hospital.name === fm.hospitalName) {
+        //         this.floorMap = fm;
+        //         this.floorMap.overlay.setMap(this.map);
+        //         found = true;
+        //     }
+        // }
+        // console.log(found);
     }
 }

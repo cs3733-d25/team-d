@@ -1,89 +1,131 @@
 import GGMap from "@/GoogleMap/GoogleMap.tsx";
-import React, {useRef, useState} from 'react';
-import {Input} from "@/components/ui/input.tsx";
+import React, {useEffect, useRef, useState} from 'react';
 
-export type Department = {
-    name: string;
-    floor: number;
-}
+import {Input} from "@/components/ui/input.tsx";
+import {API_ROUTES} from "common/src/constants.ts";
+import axios from "axios";
 
 export type Hospital = {
-    name: string;
-    placeId: string;
-    departments: Department[];
+    hospitalId: number
+    name: string
+    placeId: string
+    defaultZoom: number
+    defaultLat: number
+    defaultLng: number
+    Floors: Floor[]
 }
+
+export type Floor = {
+    floorId: number
+    num: number
+    imageUrl: string
+    Departments: Department[]
+}
+
+export type Department = {
+    departmentId: number
+    name: string
+    suite: string
+}
+
+// import PrismaClient from 'backend/src/bin/prisma-client.ts';
+// export type Department = {
+//     name: string;
+//     floor: number;
+// }
+//
+// export type Hospital = {
+//     name: string;
+//     placeId: string;
+//     departments: Department[];
+// }
 
 export default function Directions() {
 
+    const [data, setData] = useState<Hospital[]>([]);
+
+    useEffect(() => {
+        axios.get(API_ROUTES.DEPARTMENT).then((response) => {
+            console.log('Raw:');
+            console.log(response.data);
+            console.log('Casted:');
+            console.log(response.data as Hospital[]);
+            setData(response.data as Hospital[]);
+            console.log('New data: ' + data);
+        })
+    }, []);
+
+
     // const [selected, setSelected] = useState<Hospital | null>(null);
 
-    const data: Hospital[] = [
-        {
-            name: 'Chestnut Hill',
-            placeId: 'ChIJLwkLvP5444kRGTnWxi0zsnM',
-            departments: [
-                {
-                    name: 'Laboratory',
-                    floor: 1,
-                },
-                {
-                    name: 'Multi-Specialty Clinic',
-                    floor: 1,
-                },
-                {
-                    name: 'Radiology, MRI/CT scan',
-                    floor: 1,
-                },
-            ],
-        },
-        {
-            name: '20 Patriot Place',
-            placeId: 'ChIJHzla42V95IkR_bz0ni4NvfI',
-            departments: [
-                {
-                    name: 'Blood Draw/Phlebotomy',
-                    floor: 1,
-                },
-                {
-                    name: 'Pharmacy',
-                    floor: 1,
-                },
-                {
-                    name: 'Radiology',
-                    floor: 1,
-                },
-                {
-                    name: 'Cardiovascular Services',
-                    floor: 1,
-                },
-                {
-                    name: 'Urology',
-                    floor: 1,
-                },
-                {
-                    name: 'Urgent Care Center',
-                    floor: 1,
-                },
-            ],
-        },
-        {
-            name: '22 Patriot Place',
-            placeId: 'ChIJKQrcBrd85IkRhhpDZMarvhQ',
-            departments: [
-                {
-                    name: 'Laboratory',
-                    floor: 1,
-                },
-                {
-                    name: 'Multi-Specialty Clinic',
-                    floor: 1,
-                },
-            ],
-        },
-    ];
+    // const data: Hospital[] = [
+    //     {
+    //         name: 'Chestnut Hill',
+    //         placeId: 'ChIJLwkLvP5444kRGTnWxi0zsnM',
+    //         departments: [
+    //             {
+    //                 name: 'Laboratory',
+    //                 floor: 1,
+    //             },
+    //             {
+    //                 name: 'Multi-Specialty Clinic',
+    //                 floor: 1,
+    //             },
+    //             {
+    //                 name: 'Radiology, MRI/CT scan',
+    //                 floor: 1,
+    //             },
+    //         ],
+    //     },
+    //     {
+    //         name: '20 Patriot Place',
+    //         placeId: 'ChIJHzla42V95IkR_bz0ni4NvfI',
+    //         departments: [
+    //             {
+    //                 name: 'Blood Draw/Phlebotomy',
+    //                 floor: 1,
+    //             },
+    //             {
+    //                 name: 'Pharmacy',
+    //                 floor: 1,
+    //             },
+    //             {
+    //                 name: 'Radiology',
+    //                 floor: 1,
+    //             },
+    //             {
+    //                 name: 'Cardiovascular Services',
+    //                 floor: 1,
+    //             },
+    //             {
+    //                 name: 'Urology',
+    //                 floor: 1,
+    //             },
+    //             {
+    //                 name: 'Urgent Care Center',
+    //                 floor: 1,
+    //             },
+    //         ],
+    //     },
+    //     {
+    //         name: '22 Patriot Place',
+    //         placeId: 'ChIJKQrcBrd85IkRhhpDZMarvhQ',
+    //         departments: [
+    //             {
+    //                 name: 'Laboratory',
+    //                 floor: 1,
+    //             },
+    //             {
+    //                 name: 'Multi-Specialty Clinic',
+    //                 floor: 1,
+    //             },
+    //         ],
+    //     },
+    // ];
 
     const autocompleteRef = useRef<HTMLInputElement>(null);
     const [hospital, setHospital] = useState<Hospital | undefined>();
+    const [floor, setFloor] = useState<Floor | undefined>();
     const [department, setDepartment] = useState<Department | undefined>();
 
     const handleHospitalChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -98,10 +140,12 @@ export default function Directions() {
 
     const handleDepartmentChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         if (!hospital) return;
-        for (const d of hospital.departments) {
-            if (d.name === e.target.value) {
-                setDepartment(d);
-                break;
+        for (const f of hospital.Floors) {
+            for (const d of f.Departments) {
+                if (d.name === e.target.value) {
+                    setDepartment(d);
+                    break;
+                }
             }
         }
     }
@@ -133,9 +177,12 @@ export default function Directions() {
                         <br/>
                         <select id="department-dropdown" name="department-dropdown" onChange={handleDepartmentChange}>
                             <option value="" selected disabled>Choose here</option>
-                            {hospital.departments.map((department: Department) => (
-                                <option value={department.name}>{department.name}</option>
-                            ))}
+                            {/*{hospital.departments.map((department: Department) => (*/}
+                            {/*    <option value={department.name}>{department.name}</option>*/}
+                            {/*))}*/}
+                            {hospital.Floors.map((floor: Floor) => (
+                                floor.Departments.map((department: Department) => (
+                                    <option value={department.name}>{department.name}</option>))))}
                         </select>
                     </>}
                 </div>

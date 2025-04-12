@@ -8,7 +8,7 @@ router.get('/', async (req, res) => {
         include: {
             Floors: {
                 include: {
-                    Departments: true
+                    Departments: true,
                 },
             },
         },
@@ -16,12 +16,10 @@ router.get('/', async (req, res) => {
     if (!data) {
         console.error('No data found');
         res.sendStatus(204);
-    }
-    else {
+    } else {
         res.json(data);
     }
 });
-
 
 //
 // // Returns all departments in the directory, if any
