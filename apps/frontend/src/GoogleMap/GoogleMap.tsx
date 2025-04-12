@@ -4,32 +4,6 @@ import {Hospital, Department} from '@/routes/Directions.tsx'
 
 const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
-// const DESTINATION_PLACE_IDS = {
-//     CHESTNUT_HILL:    'ChIJLwkLvP5444kRGTnWxi0zsnM',
-//     PATRIOT_PLACE_20: 'ChIJHzla42V95IkR_bz0ni4NvfI',
-//     PATRIOT_PLACE_22: 'ChIJKQrcBrd85IkRhhpDZMarvhQ',
-// }
-
-// const PLACES = [
-//     {
-//         name: 'Chestnut Hill',
-//         id: 'ChIJLwkLvP5444kRGTnWxi0zsnM',
-//     },
-//     {
-//         name: '20 Patriot Place',
-//         id: 'ChIJHzla42V95IkR_bz0ni4NvfI',
-//     },
-//     {
-//         name: '22 Patriot Place',
-//         id: 'ChIJKQrcBrd85IkRhhpDZMarvhQ',
-//     },
-// ];
-
-import AutocompleteDirectionsHandler from "@/GoogleMap/GoogleMapHelper.ts";
-import floor_1_map from "@/public/rotated-solid.png";
-import FloorMap from "@/GoogleMap/FloorMap.ts";
-//
-// Declare window type extension
 
 
 export interface GoogleMapProps {
@@ -43,7 +17,6 @@ export interface GoogleMapProps {
 const GGMap = (props: GoogleMapProps) => {
     const mapRef = useRef<HTMLDivElement | null>(null);
 
-    // const [destinationPlaceId, setDestinationPlaceId] = React.useState<string>(DESTINATION_PLACE_IDS.CHESTNUT_HILL);
     const [map, setMap] = React.useState<GoogleMap | undefined>();
 
 
@@ -77,43 +50,6 @@ const GGMap = (props: GoogleMapProps) => {
         );
     }, []);
 
-    // useEffect(() => {
-    //     if (!map || !props.hospital) return;
-    //     // for (const place of PLACES) {
-    //     //     if (place.name == props.hospital) {
-    //     //         console.log(place);
-    //     //         map.updateDestinationPlaceId(place.id);
-    //     //         break;
-    //     //     }
-    //     // }
-    //     map.updateDestinationPlaceId(props.hospital.placeId);
-    //     // switch (props.hospital) {
-    //     //     case 'Chestnut Hill':
-    //     //         console.log('Chestnut Hill');
-    //     //         setDestinationPlaceId(DESTINATION_PLACE_IDS.CHESTNUT_HILL);
-    //     //         console.log(destinationPlaceId);
-    //     //         break;
-    //     //     case '20 Patriot Place':
-    //     //         console.log('20 Patriot Place');
-    //     //         setDestinationPlaceId(DESTINATION_PLACE_IDS.PATRIOT_PLACE_20);
-    //     //         console.log(destinationPlaceId);
-    //     //         break;
-    //     //     case '22 Patriot Place':
-    //     //         console.log('22 Patriot Place');
-    //     //         setDestinationPlaceId(DESTINATION_PLACE_IDS.PATRIOT_PLACE_22);
-    //     //         break;
-    //     //     default:
-    //     //         console.error('Unknown location dropdown.');
-    //     //         break;
-    //     // }
-    // }, [props.hospital]);
-    //
-    // useEffect(() => {
-    //     console.log('Hello ' + props.department);
-    //     if (!map || !props.department) return;
-    //     map.updatePathfinding(props);
-    // }, [props.department]);
-
     useEffect(() => {
         console.log('UseEffect');
         if (!map) return;
@@ -122,38 +58,6 @@ const GGMap = (props: GoogleMapProps) => {
 
     return (
         <div>
-            {/*<div style={{ display: 'flex', gap: '10px', padding: '10px' }}>*/}
-            {/*    <button*/}
-            {/*        // onClick={toggleOverlay}*/}
-            {/*        style={{*/}
-            {/*            zIndex: 1000,*/}
-            {/*            padding: '8px 12px',*/}
-            {/*            borderRadius: '4px',*/}
-            {/*            backgroundColor: '#007BFF',*/}
-            {/*            color: '#fff',*/}
-            {/*            border: 'none',*/}
-            {/*            cursor: 'pointer',*/}
-            {/*        }}*/}
-            {/*    >*/}
-            {/*        /!*{overlayVisible ? 'Hide Overlay' : 'Show Overlay'}*!/*/}
-            {/*    </button>*/}
-
-            {/*    <button*/}
-            {/*        // onClick={resetView}*/}
-            {/*        style={{*/}
-            {/*            zIndex: 1000,*/}
-            {/*            padding: '8px 12px',*/}
-            {/*            borderRadius: '4px',*/}
-            {/*            backgroundColor: '#28a745',*/}
-            {/*            color: '#fff',*/}
-            {/*            border: 'none',*/}
-            {/*            cursor: 'pointer',*/}
-            {/*        }}*/}
-            {/*    >*/}
-            {/*        Reset View*/}
-            {/*    </button>*/}
-            {/*</div>*/}
-
             <div
                 id="ggl-map"
                 ref={mapRef}

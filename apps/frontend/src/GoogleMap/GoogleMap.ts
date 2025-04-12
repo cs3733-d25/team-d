@@ -121,30 +121,4 @@ export default class GoogleMap {
             this.floorMap = null;
         }
     }
-
-    updateDestinationPlaceId(destinationPlaceId: string): void {
-        this.destinationPlaceId = destinationPlaceId;
-        console.log('Destination is now ' + this.destinationPlaceId);
-        this.route();
-    }
-
-    updatePathfinding(props: GoogleMapProps): void {
-        // if (!props.department || !props.hospital) {
-        //     // console.warn('Department not found ' + this.props.department?.name + ' ' + this.props.hospital?.name);
-        //     return;
-        // }
-        // if (this.floorMap) {
-        //     this.floorMap.overlay.setMap(null);
-        // }
-        // console.log('Searching for departments...');
-        // let found = false;
-        // for (const fm of this.floorMaps) {
-        //     if (props.department.floor === fm.floorNumber && props.hospital.name === fm.hospitalName) {
-        //         this.floorMap = fm;
-        //         this.floorMap.overlay.setMap(this.map);
-        //         found = true;
-        //     }
-        // }
-        // console.log(found);
-    }
 }

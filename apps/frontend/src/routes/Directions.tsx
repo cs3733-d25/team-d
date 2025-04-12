@@ -28,18 +28,6 @@ export type Department = {
     suite: string
 }
 
-// import PrismaClient from 'backend/src/bin/prisma-client.ts';
-// export type Department = {
-//     name: string;
-//     floor: number;
-// }
-//
-// export type Hospital = {
-//     name: string;
-//     placeId: string;
-//     departments: Department[];
-// }
-
 export default function Directions() {
 
     const [data, setData] = useState<Hospital[]>([]);
@@ -54,74 +42,6 @@ export default function Directions() {
             console.log('New data: ' + data);
         })
     }, []);
-
-
-    // const [selected, setSelected] = useState<Hospital | null>(null);
-
-    // const data: Hospital[] = [
-    //     {
-    //         name: 'Chestnut Hill',
-    //         placeId: 'ChIJLwkLvP5444kRGTnWxi0zsnM',
-    //         departments: [
-    //             {
-    //                 name: 'Laboratory',
-    //                 floor: 1,
-    //             },
-    //             {
-    //                 name: 'Multi-Specialty Clinic',
-    //                 floor: 1,
-    //             },
-    //             {
-    //                 name: 'Radiology, MRI/CT scan',
-    //                 floor: 1,
-    //             },
-    //         ],
-    //     },
-    //     {
-    //         name: '20 Patriot Place',
-    //         placeId: 'ChIJHzla42V95IkR_bz0ni4NvfI',
-    //         departments: [
-    //             {
-    //                 name: 'Blood Draw/Phlebotomy',
-    //                 floor: 1,
-    //             },
-    //             {
-    //                 name: 'Pharmacy',
-    //                 floor: 1,
-    //             },
-    //             {
-    //                 name: 'Radiology',
-    //                 floor: 1,
-    //             },
-    //             {
-    //                 name: 'Cardiovascular Services',
-    //                 floor: 1,
-    //             },
-    //             {
-    //                 name: 'Urology',
-    //                 floor: 1,
-    //             },
-    //             {
-    //                 name: 'Urgent Care Center',
-    //                 floor: 1,
-    //             },
-    //         ],
-    //     },
-    //     {
-    //         name: '22 Patriot Place',
-    //         placeId: 'ChIJKQrcBrd85IkRhhpDZMarvhQ',
-    //         departments: [
-    //             {
-    //                 name: 'Laboratory',
-    //                 floor: 1,
-    //             },
-    //             {
-    //                 name: 'Multi-Specialty Clinic',
-    //                 floor: 1,
-    //             },
-    //         ],
-    //     },
-    // ];
 
     const autocompleteRef = useRef<HTMLInputElement>(null);
     const [hospital, setHospital] = useState<Hospital | undefined>();
@@ -144,6 +64,7 @@ export default function Directions() {
             for (const d of f.Departments) {
                 if (d.name === e.target.value) {
                     setDepartment(d);
+                    setFloor(f);
                     break;
                 }
             }
