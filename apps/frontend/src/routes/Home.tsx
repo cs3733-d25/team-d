@@ -22,7 +22,7 @@ export default function Home() {
                     <Login />
                 </div>
 
-                {/*<Auth0LoginButton />*/}
+                <Auth0LoginButton />
 
 
             </div>
