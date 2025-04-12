@@ -1,6 +1,6 @@
 import { Coordinates } from 'common/src/constants.ts';
 import { readFileSync } from 'fs';
-import path from 'path';
+import { PrismaClient } from 'database';
 
 class GraphNode {
     private neighbors: GraphNode[];
@@ -11,6 +11,26 @@ class GraphNode {
         this.neighbors = [];
         this.name = name;
         this.coords = coords;
+        this.makeNode().then();
+    }
+    //creates a Node data entry in the Node database
+    public async makeNode() :Promise<any> {
+        const prisma = new PrismaClient();
+        try{
+            const node = await prisma.node.create({
+                data: {
+                    name: this.name,
+                    xCoord: this.coords.x,
+                    yCoord: this.coords.y,
+                }
+            });
+            console.log("New node created");
+            return node;
+        }catch(e){
+            console.error(e);
+        }finally {
+            await prisma.$disconnect();
+        }
     }
 
     addNeighbor(node: GraphNode): void {
@@ -45,6 +65,43 @@ class Graph {
         } else {
             node1.addNeighbor(node2);
             node2.addNeighbor(node1);
+        }
+        this.makeEdge(name1,name2).then()
+    }
+
+    //creates a Node data entry in the Node database
+    public async makeEdge(startName: string, endName: string) :Promise<any> {
+        const prisma = new PrismaClient();
+        const startNode = await prisma.node.findFirst({
+            where: { name: startName },
+        });
+        const endNode = await prisma.node.findFirst({
+            where: { name: endName },
+        });
+        // If no node with the name is found, send 204 and log it
+        if (startNode == null || endNode == null) {
+            console.error(`The node with name ${startName} or ${endName} not found in database!`);
+            await prisma.$disconnect();
+            return null;
+        }
+        else {
+            const startNodeId = startNode?.nodeId;
+            const endNodeId = endNode?.nodeId;
+            try{
+                const edge = await prisma.edge.create({
+                    data: {
+                        weight: 1,
+                        startNodeId: startNodeId,
+                        endNodeId: endNodeId,
+                    }
+                });
+                console.log("New edge created");
+                return edge;
+            }catch(e){
+                console.error(e);
+            }finally {
+                await prisma.$disconnect();
+            }
         }
     }
 
