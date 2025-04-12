@@ -131,7 +131,7 @@ export default function Directions() {
                         <br/>
                         <label htmlFor="department-dropdown">Choose a location</label>
                         <br/>
-                        <select id="department-dropdown" name="department-dropdown" onChange={handleHospitalChange}>
+                        <select id="department-dropdown" name="department-dropdown" onChange={handleDepartmentChange}>
                             <option value="" selected disabled>Choose here</option>
                             {hospital.departments.map((department: Department) => (
                                 <option value={department.name}>{department.name}</option>
