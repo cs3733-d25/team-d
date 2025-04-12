@@ -10,8 +10,9 @@ import ServiceRequest from "@/routes/ServiceRequest";
 import WithinHospital from "@/routes/WithinHospital";
 import ToHospital from "@/routes/ToHospital";
 import AdminDatabase from "@/routes/AdminDatabase";
-import ServiceRequestHub from "@/routes/ServiceRequestHub.tsx";
-import AllServiceRequests from "@/routes/AllServiceRequests.tsx";
+import ServiceRequestHub from "@/routes/ServiceRequestHub";
+import AllServiceRequests from "@/routes/AllServiceRequests";
+import SanitationRequest from "@/routes/SanitationRequest";
 
 function App() {
     return (
@@ -25,16 +26,15 @@ function App() {
                         <Route path="within-hospital" element={<WithinHospital />} />
                         <Route path="to-hospital" element={<ToHospital />} />
                         <Route path="servicerequesthub" element={<ServiceRequestHub />} />
-
-
                     </Route>
 
                     <Route path="/loggedIn" element={<Navbar isLoggedIn={true} />}>
                         <Route index element={<Home />} />
-
                         <Route path="map" element={<Map />} />
                         <Route path="directory" element={<Directory />} />
                         <Route path="servicerequest" element={<ServiceRequest />} />
+
+                        <Route path="sanitation" element={<SanitationRequest />} />
                         <Route path="servicerequesthub" element={<ServiceRequestHub />} />
                         <Route path="kiosk" element={<KioskDirections />} />
                         <Route path="within-hospital" element={<WithinHospital />} />
@@ -49,5 +49,6 @@ function App() {
 }
 
 export default App;
+
 
 
