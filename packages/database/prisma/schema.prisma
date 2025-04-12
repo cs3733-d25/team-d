@@ -25,9 +25,9 @@ model Employee {
 }
 
 //**
- //* Each type of service request inherits from ServiceRequest
- //* Only translator requests for Iteration 1
- //*/
+//* Each type of service request inherits from ServiceRequest
+//* Only translator requests for Iteration 1
+//*/
 model ServiceRequest {
   requestId          Int                 @id @default(autoincrement())
   createdAt          DateTime            @default(now())
@@ -54,12 +54,39 @@ enum RequestType {
   TranslatorRequest
 }
 
+// model Department {
+//   departmentId      Int     @id @default(autoincrement())
+//   name              String
+//   floor             Int
+//   suite             String
+//   specialtyServices String
+//   hours             String?
+//   telephone         String
+// }
+
+model Hospital {
+  hospitalId  Int     @id @default(autoincrement())
+  name        String  @unique
+  placeId     String
+  defaultZoom Int
+  defaultLat  Float
+  defaultLong Float
+  Floors      Floor[]
+}
+
+model Floor {
+  floorId     Int          @id @default(autoincrement())
+  num         Int
+  imageURL    String
+  hospitalId  Int
+  Hospital    Hospital     @relation(fields: [hospitalId], references: [hospitalId])
+  Departments Department[]
+}
+
 model Department {
-  departmentId      Int     @id @default(autoincrement())
-  name              String
-  floor             Int
-  suite             String
-  specialtyServices String
-  hours             String?
-  telephone         String
+  departmentId Int    @id @default(autoincrement())
+  name         String
+  suite        String
+  floorId      Int
+  Floor        Floor  @relation(fields: [floorId], references: [floorId])
 }

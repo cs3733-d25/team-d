@@ -291,239 +291,479 @@ async function main() {
 
     console.log(translatorRequests);
 
-    // Seed departments
+
+    console.log('Seeding hospitals...')
+    const hospitals = [
+        await prisma.hospital.upsert({
+            where: {hospitalId: 0},
+            update: {},
+            create: {
+                hospitalId: 0,
+                name: 'Chestnut Hill',
+                placeId: 'ChIJLwkLvP5444kRGTnWxi0zsnM',
+                defaultZoom: 20,
+                defaultLat: 42.325956546246374,
+                defaultLong: -71.14971804046458,
+            },
+        }),
+        await prisma.hospital.upsert({
+            where: {hospitalId: 1},
+            update: {},
+            create: {
+                hospitalId: 1,
+                name: '20 Patriot Place',
+                placeId: 'ChIJHzla42V95IkR_bz0ni4NvfI',
+                defaultZoom: 20,
+                defaultLat: 42.09281274014584,
+                defaultLong: -71.26612984263076,
+            },
+        }),
+        await prisma.hospital.upsert({
+            where: {hospitalId: 2},
+            update: {},
+            create: {
+                hospitalId: 2,
+                name: '22 Patriot Place',
+                placeId: 'ChIJKQrcBrd85IkRhhpDZMarvhQ',
+                defaultZoom: 20,
+                defaultLat: 42.09265139820163,
+                defaultLong: -71.2669845235888,
+            },
+        }),
+    ];
+
+    console.log('Hospitals seeded!');
+    console.log(hospitals);
+
+    console.log('Seeding floors...');
+
+    const floors = [
+        await prisma.floor.upsert({
+            where: {floorId: 0},
+            update: {},
+            create: {
+                floorId: 0,
+                num: 1,
+                imageURL: '',
+                hospitalId: 0,
+            },
+        }),
+        await prisma.floor.upsert({
+            where: {floorId: 1},
+            update: {},
+            create: {
+                floorId: 1,
+                num: 1,
+                imageURL: '',
+                hospitalId: 1,
+            },
+        }),
+        await prisma.floor.upsert({
+            where: {floorId: 2},
+            update: {},
+            create: {
+                floorId: 2,
+                num: 3,
+                imageURL: '',
+                hospitalId: 2,
+            },
+        }),
+        await prisma.floor.upsert({
+            where: {floorId: 3},
+            update: {},
+            create: {
+                floorId: 3,
+                num: 4,
+                imageURL: '',
+                hospitalId: 2,
+            },
+        }),
+    ];
+
+    console.log('Floors seeded!');
+    console.log(floors);
+
     console.log('Seeding departments...');
     const departments = [
+        await prisma.department.upsert({
+            where: {departmentId: 0},
+            update: {},
+            create: {
+                departmentId: 0,
+                name: 'Laboratory',
+                suite: '100',
+                floorId: 0,
+            },
+        }),
         await prisma.department.upsert({
             where: {departmentId: 1},
             update: {},
             create: {
-                name: "Allergy and Clinical Immunology",
-                floor: 3,
-                suite: "301",
-                specialtyServices:
-                    "Allergy, (environmental, food, medication, and venoms), asthma, anaphylaxis, angioedema, sinusitis, and immunodeficiency",
-                telephone: "(617) 732–9850",
-            }
+                departmentId: 1,
+                name: 'Multi-Specialty Clinic',
+                suite: '130',
+                floorId: 0,
+            },
         }),
         await prisma.department.upsert({
             where: {departmentId: 2},
             update: {},
             create: {
-                name: "Allergy and Clinical Immunology",
-                floor: 5,
-                suite: "540",
-                specialtyServices:
-                    "Allergy, (environmental, food, medication, and venoms), asthma, anaphylaxis, angioedema, sinusitis, and immunodeficiency",
-                telephone: "(617) 732–9850",
-            }
+                departmentId: 2,
+                name: 'Radiology, MRI/CT scan',
+                suite: '102B',
+                floorId: 0,
+            },
         }),
         await prisma.department.upsert({
             where: {departmentId: 3},
             update: {},
             create: {
-                name: "Backup Child Care Center",
-                floor: 2,
-                suite: "210",
-                specialtyServices: "Backup childcare for employees",
-                hours:"Monday – Friday, 8 am–4:30 pm",
-                telephone: "(617) 732–9543",
-            }
+                departmentId: 3,
+                name: 'Blood Draw / Phlebotomy',
+                suite: '',
+                floorId: 1,
+            },
         }),
         await prisma.department.upsert({
             where: {departmentId: 4},
             update: {},
             create: {
-                name: "Brigham Dermatology Associates (BDA)",
-                floor: 3,
-                suite: "317",
-                specialtyServices: "Medical and surgical dermatology",
-                telephone: "(617) 732–9080",
-            }
+                departmentId: 4,
+                name: 'Pharmacy',
+                suite: '',
+                floorId: 1,
+            },
         }),
         await prisma.department.upsert({
             where: {departmentId: 5},
             update: {},
             create: {
-                name: "Brigham Obstetrics and Gynecology Group (BOGG)",
-                floor: 5,
-                suite: "575",
-                specialtyServices: "Gynecology, Obstetrics",
-                telephone: "(617) 732–9100",
-            }
+                departmentId: 5,
+                name: 'Radiology',
+                suite: '',
+                floorId: 1,
+            },
         }),
         await prisma.department.upsert({
             where: {departmentId: 6},
             update: {},
             create: {
-                name: "Brigham Physicians Group (BPG)",
-                floor: 4,
-                suite: "428",
-                specialtyServices: "Adult Primary Care",
-                telephone: "(617) 732–9900",
-            }
+                departmentId: 6,
+                name: 'Cardiovascular Services',
+                suite: '',
+                floorId: 1,
+            },
         }),
         await prisma.department.upsert({
             where: {departmentId: 7},
             update: {},
             create: {
-                name: "Brigham Physicians Group (BPG)",
-                floor: 5,
-                suite: "530",
-                specialtyServices: "Adult Primary Care",
-                telephone: "(617) 732–9900",
-            }
+                departmentId: 7,
+                name: 'Urology',
+                suite: '',
+                floorId: 1,
+            },
         }),
         await prisma.department.upsert({
             where: {departmentId: 8},
             update: {},
             create: {
-                name: "Brigham Psychiatric Specialities",
-                floor: 3,
-                suite: "303",
-                specialtyServices: "Psychiatry, Psychology, Social Work",
-                telephone: "(617) 732–9811",
-            }
+                departmentId: 8,
+                name: 'Urgent Care Center',
+                suite: '',
+                floorId: 1,
+            },
         }),
         await prisma.department.upsert({
             where: {departmentId: 9},
             update: {},
             create: {
-                name: "Center for Pain Medicine",
-                floor: 3,
-                suite: "320",
-                specialtyServices: "Multidisciplinary pain management",
-                telephone: "(617) 732–9060",
-            }
+                departmentId: 9,
+                name: 'Multi Specialty Clinic',
+                suite: '',
+                floorId: 2,
+            },
         }),
         await prisma.department.upsert({
             where: {departmentId: 10},
             update: {},
             create: {
-                name: "Crohn's and Colitis Center",
-                floor: 2,
-                suite: "201",
-                specialtyServices: "Crohn's disease, inflammatory bowel disease, infusion services, microscopic colitis, pulmonary, rheumatology, ulcerative colitis",
-                telephone: "(617) 732–6389",
-            }
+                departmentId: 10,
+                name: 'Patient Financial Services',
+                suite: '',
+                floorId: 2,
+            },
         }),
         await prisma.department.upsert({
             where: {departmentId: 11},
             update: {},
             create: {
-                name: "Endoscopy Center",
-                floor: 2,
-                suite: "202",
-                specialtyServices: "Bacterial overgrowth breath test, colonoscopy, H. Pylori breath test, lactose malabsorption breath test, upper endoscopy",
-                telephone: "(617) 732–7426",
-            }
+                departmentId: 11,
+                name: 'Blood Draw / Phlebotomy',
+                suite: '',
+                floorId: 3,
+            },
         }),
         await prisma.department.upsert({
             where: {departmentId: 12},
             update: {},
             create: {
-                name: "Gretchen S. and Edward A. Fish Center for Women's Health",
-                floor: 4,
-                suite: "402",
-                specialtyServices: "Cardiology, Dermatology (cosmetic, medical, and surgical), Endocrinology, Gastroenterology, Gynecology, Hematology, Infectious Diseases, Mental Health (social work), General neurology, Nutrition, Primary care, Pulmonary, Renal, Rheumatology, Sleep medicine, Women's Health (Menopause and Midlife Clinic, Obstetric Internal Medicine)\n",
-                telephone: "(617) 732–9300",
-            }
+                departmentId: 12,
+                name: 'Community Room',
+                suite: '',
+                floorId: 3,
+            },
         }),
         await prisma.department.upsert({
             where: {departmentId: 13},
             update: {},
             create: {
-                name: "Laboratory",
-                floor: 1,
-                suite: "100",
-                specialtyServices: "Blood work, lab services",
-                hours: "Mon–Fri, 7 a.m.–7 p.m.; Sat, 7 a.m.–3 p.m.",
-                telephone: "(617) 732–9841",
-            }
+                departmentId: 13,
+                name: 'Primary Care',
+                suite: '',
+                floorId: 3,
+            },
         }),
-        await prisma.department.upsert({
-            where: {departmentId: 14},
-            update: {},
-            create: {
-                name: "Multi-Specialty Clinic",
-                floor: 1,
-                suite: "130",
-                specialtyServices:
-                    "Orthopedic surgery, Vascular surgery, Contact Dermatitis and Occupational Dermatology Program, Pain Medicine and Travel Medicine\n",
-                telephone: "(617) 732–9500",
-            }
-        }),
-        await prisma.department.upsert({
-            where: {departmentId: 15},
-            update: {},
-            create: {
-                name: "Osher Clinical Center for Integrative Health",
-                floor: 4,
-                suite: "422",
-                specialtyServices: "Acupuncture, health coaching, chiropractic, craniosacral therapy, integrative medicine, structural massage & movement therapies, neurology (movement disorders and headache), echocardiography, and pulmonary.\n" +
-                    "Educational courses: Integrative wellness courses are also offered.\n",
-                telephone: "(617) 732–9700",
-            }
-        }),
-        await prisma.department.upsert({
-            where: {departmentId: 16},
-            update: {},
-            create: {
-                name: "Patient Financial Services",
-                floor: 2,
-                suite: "204B",
-                specialtyServices: "Patient financial counselling (Payment, Insurance, Billing questions)",
-                telephone: "(617) 732–9677",
-            }
-        }),
-        await prisma.department.upsert({
-            where: {departmentId: 17},
-            update: {},
-            create: {
-                name: "Pharmacy",
-                floor: 3,
-                suite: "317",
-                specialtyServices: "Outpatient Pharmacy Service",
-                hours: "(Monday - Friday, 9 am-4 pm excluding holidays)",
-                telephone: "(617) 732–9040",
-            }
-        }),
-        await prisma.department.upsert({
-            where: {departmentId: 18},
-            update: {},
-            create: {
-                name: "Radiology",
-                floor: 5,
-                suite: "560",
-                specialtyServices: "Bone Density, Breast Imaging/Mammography, Ultrasound, X-Ray",
-                telephone: "(617) 732–9801",
-            }
-        }),
-        await prisma.department.upsert({
-            where: {departmentId: 19},
-            update: {},
-            create: {
-                name: "Radiology, MRI/CT scan",
-                floor: 1,
-                suite: "102B",
-                specialtyServices: "CT scan, MRI, X-Ray",
-                telephone: "(617) 732–9821",
-            }
-        }),
-        await prisma.department.upsert({
-            where: {departmentId: 20},
-            update: {},
-            create: {
-                name: "Rehabilitation Services",
-                floor: 2,
-                suite: "200",
-                specialtyServices: "Orthopedic, sports, neurologic and vestibular Physical Therapy, Men's and Women's pelvic floor Physical Therapy. Hand/Occupational, Therapy Speech Language Pathology",
-                telephone: "(617) 732–9525",
-            }
-        })
     ];
+
     console.log('Departments seeded!');
     console.log(departments);
+
+
+    // Seed departments
+    // console.log('Seeding departments...');
+    // const departments = [
+    //     await prisma.department.upsert({
+    //         where: {departmentId: 1},
+    //         update: {},
+    //         create: {
+    //             name: "Allergy and Clinical Immunology",
+    //             floor: 3,
+    //             suite: "301",
+    //             specialtyServices:
+    //                 "Allergy, (environmental, food, medication, and venoms), asthma, anaphylaxis, angioedema, sinusitis, and immunodeficiency",
+    //             telephone: "(617) 732–9850",
+    //         }
+    //     }),
+    //     await prisma.department.upsert({
+    //         where: {departmentId: 2},
+    //         update: {},
+    //         create: {
+    //             name: "Allergy and Clinical Immunology",
+    //             floor: 5,
+    //             suite: "540",
+    //             specialtyServices:
+    //                 "Allergy, (environmental, food, medication, and venoms), asthma, anaphylaxis, angioedema, sinusitis, and immunodeficiency",
+    //             telephone: "(617) 732–9850",
+    //         }
+    //     }),
+    //     await prisma.department.upsert({
+    //         where: {departmentId: 3},
+    //         update: {},
+    //         create: {
+    //             name: "Backup Child Care Center",
+    //             floor: 2,
+    //             suite: "210",
+    //             specialtyServices: "Backup childcare for employees",
+    //             hours:"Monday – Friday, 8 am–4:30 pm",
+    //             telephone: "(617) 732–9543",
+    //         }
+    //     }),
+    //     await prisma.department.upsert({
+    //         where: {departmentId: 4},
+    //         update: {},
+    //         create: {
+    //             name: "Brigham Dermatology Associates (BDA)",
+    //             floor: 3,
+    //             suite: "317",
+    //             specialtyServices: "Medical and surgical dermatology",
+    //             telephone: "(617) 732–9080",
+    //         }
+    //     }),
+    //     await prisma.department.upsert({
+    //         where: {departmentId: 5},
+    //         update: {},
+    //         create: {
+    //             name: "Brigham Obstetrics and Gynecology Group (BOGG)",
+    //             floor: 5,
+    //             suite: "575",
+    //             specialtyServices: "Gynecology, Obstetrics",
+    //             telephone: "(617) 732–9100",
+    //         }
+    //     }),
+    //     await prisma.department.upsert({
+    //         where: {departmentId: 6},
+    //         update: {},
+    //         create: {
+    //             name: "Brigham Physicians Group (BPG)",
+    //             floor: 4,
+    //             suite: "428",
+    //             specialtyServices: "Adult Primary Care",
+    //             telephone: "(617) 732–9900",
+    //         }
+    //     }),
+    //     await prisma.department.upsert({
+    //         where: {departmentId: 7},
+    //         update: {},
+    //         create: {
+    //             name: "Brigham Physicians Group (BPG)",
+    //             floor: 5,
+    //             suite: "530",
+    //             specialtyServices: "Adult Primary Care",
+    //             telephone: "(617) 732–9900",
+    //         }
+    //     }),
+    //     await prisma.department.upsert({
+    //         where: {departmentId: 8},
+    //         update: {},
+    //         create: {
+    //             name: "Brigham Psychiatric Specialities",
+    //             floor: 3,
+    //             suite: "303",
+    //             specialtyServices: "Psychiatry, Psychology, Social Work",
+    //             telephone: "(617) 732–9811",
+    //         }
+    //     }),
+    //     await prisma.department.upsert({
+    //         where: {departmentId: 9},
+    //         update: {},
+    //         create: {
+    //             name: "Center for Pain Medicine",
+    //             floor: 3,
+    //             suite: "320",
+    //             specialtyServices: "Multidisciplinary pain management",
+    //             telephone: "(617) 732–9060",
+    //         }
+    //     }),
+    //     await prisma.department.upsert({
+    //         where: {departmentId: 10},
+    //         update: {},
+    //         create: {
+    //             name: "Crohn's and Colitis Center",
+    //             floor: 2,
+    //             suite: "201",
+    //             specialtyServices: "Crohn's disease, inflammatory bowel disease, infusion services, microscopic colitis, pulmonary, rheumatology, ulcerative colitis",
+    //             telephone: "(617) 732–6389",
+    //         }
+    //     }),
+    //     await prisma.department.upsert({
+    //         where: {departmentId: 11},
+    //         update: {},
+    //         create: {
+    //             name: "Endoscopy Center",
+    //             floor: 2,
+    //             suite: "202",
+    //             specialtyServices: "Bacterial overgrowth breath test, colonoscopy, H. Pylori breath test, lactose malabsorption breath test, upper endoscopy",
+    //             telephone: "(617) 732–7426",
+    //         }
+    //     }),
+    //     await prisma.department.upsert({
+    //         where: {departmentId: 12},
+    //         update: {},
+    //         create: {
+    //             name: "Gretchen S. and Edward A. Fish Center for Women's Health",
+    //             floor: 4,
+    //             suite: "402",
+    //             specialtyServices: "Cardiology, Dermatology (cosmetic, medical, and surgical), Endocrinology, Gastroenterology, Gynecology, Hematology, Infectious Diseases, Mental Health (social work), General neurology, Nutrition, Primary care, Pulmonary, Renal, Rheumatology, Sleep medicine, Women's Health (Menopause and Midlife Clinic, Obstetric Internal Medicine)\n",
+    //             telephone: "(617) 732–9300",
+    //         }
+    //     }),
+    //     await prisma.department.upsert({
+    //         where: {departmentId: 13},
+    //         update: {},
+    //         create: {
+    //             name: "Laboratory",
+    //             floor: 1,
+    //             suite: "100",
+    //             specialtyServices: "Blood work, lab services",
+    //             hours: "Mon–Fri, 7 a.m.–7 p.m.; Sat, 7 a.m.–3 p.m.",
+    //             telephone: "(617) 732–9841",
+    //         }
+    //     }),
+    //     await prisma.department.upsert({
+    //         where: {departmentId: 14},
+    //         update: {},
+    //         create: {
+    //             name: "Multi-Specialty Clinic",
+    //             floor: 1,
+    //             suite: "130",
+    //             specialtyServices:
+    //                 "Orthopedic surgery, Vascular surgery, Contact Dermatitis and Occupational Dermatology Program, Pain Medicine and Travel Medicine\n",
+    //             telephone: "(617) 732–9500",
+    //         }
+    //     }),
+    //     await prisma.department.upsert({
+    //         where: {departmentId: 15},
+    //         update: {},
+    //         create: {
+    //             name: "Osher Clinical Center for Integrative Health",
+    //             floor: 4,
+    //             suite: "422",
+    //             specialtyServices: "Acupuncture, health coaching, chiropractic, craniosacral therapy, integrative medicine, structural massage & movement therapies, neurology (movement disorders and headache), echocardiography, and pulmonary.\n" +
+    //                 "Educational courses: Integrative wellness courses are also offered.\n",
+    //             telephone: "(617) 732–9700",
+    //         }
+    //     }),
+    //     await prisma.department.upsert({
+    //         where: {departmentId: 16},
+    //         update: {},
+    //         create: {
+    //             name: "Patient Financial Services",
+    //             floor: 2,
+    //             suite: "204B",
+    //             specialtyServices: "Patient financial counselling (Payment, Insurance, Billing questions)",
+    //             telephone: "(617) 732–9677",
+    //         }
+    //     }),
+    //     await prisma.department.upsert({
+    //         where: {departmentId: 17},
+    //         update: {},
+    //         create: {
+    //             name: "Pharmacy",
+    //             floor: 3,
+    //             suite: "317",
+    //             specialtyServices: "Outpatient Pharmacy Service",
+    //             hours: "(Monday - Friday, 9 am-4 pm excluding holidays)",
+    //             telephone: "(617) 732–9040",
+    //         }
+    //     }),
+    //     await prisma.department.upsert({
+    //         where: {departmentId: 18},
+    //         update: {},
+    //         create: {
+    //             name: "Radiology",
+    //             floor: 5,
+    //             suite: "560",
+    //             specialtyServices: "Bone Density, Breast Imaging/Mammography, Ultrasound, X-Ray",
+    //             telephone: "(617) 732–9801",
+    //         }
+    //     }),
+    //     await prisma.department.upsert({
+    //         where: {departmentId: 19},
+    //         update: {},
+    //         create: {
+    //             name: "Radiology, MRI/CT scan",
+    //             floor: 1,
+    //             suite: "102B",
+    //             specialtyServices: "CT scan, MRI, X-Ray",
+    //             telephone: "(617) 732–9821",
+    //         }
+    //     }),
+    //     await prisma.department.upsert({
+    //         where: {departmentId: 20},
+    //         update: {},
+    //         create: {
+    //             name: "Rehabilitation Services",
+    //             floor: 2,
+    //             suite: "200",
+    //             specialtyServices: "Orthopedic, sports, neurologic and vestibular Physical Therapy, Men's and Women's pelvic floor Physical Therapy. Hand/Occupational, Therapy Speech Language Pathology",
+    //             telephone: "(617) 732–9525",
+    //         }
+    //     })
+    // ];
+    // console.log('Departments seeded!');
+    // console.log(departments);
 }
 
 
