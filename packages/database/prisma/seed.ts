@@ -302,7 +302,6 @@ async function main() {
             }
         })
     ];
-
     console.log('Departments seeded!');
     console.log(departments);
 

@@ -1,7 +1,5 @@
 // This is your Prisma schema file, learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// This is your Prisma schema file, learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider   = "prisma-client-js"
   output     = "../.prisma/client"
@@ -27,10 +25,10 @@ model Employee {
   serviceRequestsMade ServiceRequest[] @relation(name:"requestedBy")
 }
 
-/*
-* Each type of service request inherits from ServiceRequest
-* Only translator requests for Iteration 1
-*/
+//**
+//* Each type of service request inherits from ServiceRequest
+//* Only translator requests for Iteration 1
+//*/
 model ServiceRequest {
   requestId          Int                 @id @default(autoincrement())
   createdAt          DateTime            @default(now())
@@ -41,6 +39,7 @@ model ServiceRequest {
   // tables that inherit from ServiceRequest:
   translatorRequest  TranslatorRequest?
   equipmentRequest EquipmentRequest?
+  securityRequest    SecurityRequest[]
   // assigned relationship to Employee:
   assignedEmployeeId Int?
   assignedEmployee   Employee?           @relation(name:"assignedTo", fields: [assignedEmployeeId], references: [employeeId])
@@ -52,7 +51,6 @@ model ServiceRequest {
   departmentUnder Department  @relation(fields: [departmentUnderId], references: [departmentId])
 }
 
-
 model TranslatorRequest {
   languageFrom     String
   languageTo       String
@@ -62,6 +60,15 @@ model TranslatorRequest {
   // link to service request:
   serviceRequestId Int            @unique
   serviceRequest   ServiceRequest @relation(fields: [serviceRequestId], references: [requestId])
+}
+
+model SecurityRequest {
+  numOfGuards        Int
+  securityType       String
+  additionalComments String
+  // link to service request:
+  serviceRequestId   Int            @unique
+  serviceRequest     ServiceRequest @relation(fields: [serviceRequestId], references: [requestId])
 }
 
 model EquipmentRequest {
