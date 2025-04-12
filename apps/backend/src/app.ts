@@ -8,6 +8,7 @@ import assignedRouter from './routes/assigned.ts';
 import servicereqsRouter from './routes/servicereqs.ts';
 import departmentRouter from './routes/department.ts';
 import pathfindRouter from './routes/pathfind.ts';
+import pathfindingRouter from './routes/pathfinding.ts';
 
 import { API_ROUTES } from 'common/src/constants';
 
@@ -35,6 +36,7 @@ app.use(API_ROUTES.SERVICEREQS, servicereqsRouter);
 app.use(API_ROUTES.ASSIGNED, assignedRouter);
 app.use(API_ROUTES.DEPARTMENT, departmentRouter);
 app.use(API_ROUTES.PATHFIND, pathfindRouter);
+app.use(API_ROUTES.PATHFINDING, pathfindingRouter);
 /**
  * Catch all 404 errors, and forward them to the error handler
  */

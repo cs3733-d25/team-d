@@ -524,6 +524,50 @@ async function main() {
     ];
     console.log('Departments seeded!');
     console.log(departments);
+
+    //seed nodes
+    console.log('Seeding Nodes...');
+    const nodes = [
+        await prisma.node.upsert({
+            where: {nodeId: 1},
+            update: {},
+            create: {
+                name: 'entrance',
+                xCoord: 705,
+                yCoord: 1060,
+            }
+        }),
+        await prisma.node.upsert({
+            where: {nodeId: 2},
+            update: {},
+            create: {
+                name: 'n1',
+                xCoord: 360,
+                yCoord: 500,
+            }
+        })
+    ];
+
+    console.log('Nodes seeded!');
+    console.log(nodes);
+
+
+    //seed edges
+    console.log('Seeding Edges...');
+    const edges = [
+        await prisma.edge.upsert({
+            where: {edgeId: 1},
+            update: {},
+            create: {
+                weight: 12,
+                startNodeId: 1,
+                endNodeId: 2,
+            }
+        })
+    ];
+
+    console.log('Edges seeded!');
+    console.log(edges);
 }
 
 
