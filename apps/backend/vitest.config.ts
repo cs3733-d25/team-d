@@ -12,6 +12,6 @@ export default defineConfig({
     test: {
         environment: 'node',
         setupFiles: ['dotenv/config'],
-        include: ['src/pathfinding/tests/bfs.test.ts'],
+        include: ['**/*.test.ts'],
     },
 });
