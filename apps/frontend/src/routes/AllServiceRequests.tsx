@@ -61,15 +61,6 @@ export default function ShowAllRequests() {
         })
     }, [])
 
-    useEffect(() => {
-        console.log('Fetching---');
-        // getRequests();
-        axios.get('api/servicereqs/equipment').then((response) => {
-            setDataEquipment(response.data);
-            console.log(response.data);
-        })
-    }, [])
-
     return (
         <>
             <div className="min-h-screen w-full p-6 bg-white">

@@ -88,6 +88,7 @@ router.get('/:id', async function (req: Request, res: Response) {
         where: { requestId: requestId },
         include: {
             translatorRequest: true,
+            equipmentRequest: true,
         },
     });
 
@@ -128,14 +129,16 @@ router.put('/:id', async function (req: Request, res: Response) {
                 startDateTime,
                 endDateTime,
                 assignedEmployeeId,
+                employeeRequestedById,
+                departmentUnderId,
                 priority,
                 requestStatus,
                 medicalDevice,
                 quantity,
                 signature,
             } = req.body;
-            const [updateTranslatorRequest, updateServiceRequest] = await PrismaClient.$transaction(
-                [
+            const [updateTranslatorRequest, updateServiceRequest, updateEquipmentRequest] =
+                await PrismaClient.$transaction([
                     PrismaClient.translatorRequest.update({
                         where: { serviceRequestId: requestId },
                         data: { languageTo, languageFrom, roomNum, startDateTime, endDateTime },
@@ -146,15 +149,21 @@ router.put('/:id', async function (req: Request, res: Response) {
                     }),
                     PrismaClient.serviceRequest.update({
                         where: { requestId: requestId },
-                        data: { assignedEmployeeId, priority, requestStatus },
+                        data: {
+                            assignedEmployeeId,
+                            priority,
+                            requestStatus,
+                            employeeRequestedById,
+                            departmentUnderId,
+                        },
                     }),
-                ]
-            );
+                ]);
             // send 200 and updated service request if success
             res.status(200).json({
                 message: 'Successfully updated service request',
                 updateServiceRequest,
                 updateTranslatorRequest,
+                updateEquipmentRequest,
             });
             // send 400 and error message if request cannot be updated
         } catch (error) {
