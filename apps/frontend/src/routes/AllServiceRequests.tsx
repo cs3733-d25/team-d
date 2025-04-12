@@ -21,22 +21,22 @@ interface TranslatorRequest {
     serviceRequestId: number;
 }
 
-interface EquipmentRequest {
-    medicalDevice: string;
-    signature: string;
-    quantity: number;
-    comments: string;
-    roomNum: string;
-    startDateTime: string;
-    endDateTime: string;
-}
+// interface EquipmentRequest {
+//     medicalDevice: string;
+//     signature: string;
+//     quantity: number;
+//     comments: string;
+//     roomNum: string;
+//     startDateTime: string;
+//     endDateTime: string;
+// }
 
 export interface ServiceRequest {
     requestId: number;
     createdAt: number;
     updatedAt: number;
     assignedEmployeeId: number;
-    translatorRequest: TranslatorRequest[];
+    translatorRequest: TranslatorRequest;
     requestStatus: string;
     priority: string;
     employeeRequestedById: number;
@@ -46,18 +46,7 @@ export interface ServiceRequest {
 export default function ShowAllRequests() {
     const [data, setData] = useState<ServiceRequest[]>([]);
 
-    const getRequests = async() => {
-        try {
-            const data = await axios.get('api/servicereqs');
-            // console.log(data.data);
-            // curRequests.push(data.data);
-            // console.log(curRequests);
-            setData(data.data);
-            console.log('Data:' + data.data);
-        } catch (error) {
-            console.error(error);
-        }
-    }
+
     useEffect(() => {
         console.log('Fetching---');
         // getRequests();
@@ -74,7 +63,7 @@ export default function ShowAllRequests() {
                     <h2 className="text-xl font-bold">Service Request Database: Translator Requests</h2>
                 </div>
 
-                {/* Data table (headers only for now) */}
+                 {/*Data table (headers only for now) */}
                 <Table>
                     <TableHeader>
                         <TableRow>
@@ -88,14 +77,14 @@ export default function ShowAllRequests() {
                         </TableRow>
                     </TableHeader>
 
-                    {/* Empty table body for now */}
+                {/*    /!* Empty table body for now *!/*/}
                     <TableBody>
                         {data.map((element, i) => (
                             <TableRow key={i}>
                                 <TableCell>{element.requestId}</TableCell>
-                                <TableCell>{element.translatorRequest[0].languageTo}</TableCell>
-                                <TableCell>{element.translatorRequest[0].languageFrom}</TableCell>
-                                <TableCell>{element.translatorRequest[0].roomNum}</TableCell>
+                                <TableCell>{element.translatorRequest.languageTo}</TableCell>
+                                <TableCell>{element.translatorRequest.languageFrom}</TableCell>
+                                <TableCell>{element.translatorRequest.roomNum}</TableCell>
                                 <TableCell>{element.createdAt}</TableCell>
                                 <TableCell>{element.updatedAt}</TableCell>
                                 <TableCell>{element.assignedEmployeeId}</TableCell>
