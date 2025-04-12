@@ -65,7 +65,7 @@ model Department {
 }
 
 
-//currently based on the ERD however it fails upon implementation because triggers are not supported by prisma
+
 model Node{
   nodeId    Int     @id @default(autoincrement())
   name      String
@@ -73,12 +73,8 @@ model Node{
   yCoord    Int
   edgeStart Edge[]  @relation(name: "edgeS")
   edgeEnd   Edge[]  @relation(name: "edgeE")
-  // edgeId  Int?
-  // edges   Edge?  @relation(fields: [edgeId], references: [edgeId])
 }
-//needs a trigger to make sure that and edge can only have two nodes
-//needs some kind of relation with node so that if a node gets deleted it deletes the edge
-//essentially needs some kind of way to keep track fo the number of the Nodes
+
 model Edge{
   edgeId      Int     @id @default(autoincrement())
   weight      Int
@@ -86,7 +82,6 @@ model Edge{
   endNodeId   Int     @unique
   startNode   Node    @relation(name: "edgeS", fields: [startNodeId], references: [nodeId], onDelete: Cascade)
   endNode     Node    @relation(name: "edgeE", fields: [endNodeId], references: [nodeId], onDelete: Cascade)
-  // Nodes       Node[]
 }
 
 
