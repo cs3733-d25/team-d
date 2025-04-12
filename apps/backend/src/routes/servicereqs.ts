@@ -67,7 +67,6 @@ router.post('/translator', async function (req: Request, res: Response) {
                     },
                 },
             },
-
         });
         console.log('Service request created');
     } catch (error) {
@@ -128,6 +127,11 @@ router.put('/:id', async function (req: Request, res: Response) {
                 startDateTime,
                 endDateTime,
                 assignedEmployeeId,
+                priority,
+                requestStatus,
+                medicalDevice,
+                quantity,
+                signature,
             } = req.body;
             const [updateTranslatorRequest, updateServiceRequest] = await PrismaClient.$transaction(
                 [
@@ -135,9 +139,13 @@ router.put('/:id', async function (req: Request, res: Response) {
                         where: { serviceRequestId: requestId },
                         data: { languageTo, languageFrom, roomNum, startDateTime, endDateTime },
                     }),
+                    PrismaClient.equipmentRequest.update({
+                        where: { serviceRequestId: requestId },
+                        data: { medicalDevice, quantity, signature },
+                    }),
                     PrismaClient.serviceRequest.update({
                         where: { requestId: requestId },
-                        data: { assignedEmployeeId },
+                        data: { assignedEmployeeId, priority, requestStatus },
                     }),
                 ]
             );

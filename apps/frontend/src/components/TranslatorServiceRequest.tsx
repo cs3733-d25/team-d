@@ -47,6 +47,7 @@ export default function TranslatorServiceRequest() {
                 <div className="grid place-items-center h-full items-center">
                     <h2 className="text-4xl fontbold pb-3" >Request a Translator</h2>
                         <form onSubmit={onSubmit}>
+                            <div>
                                 <Label className="pb-3" htmlFor="languageFrom">Language From</Label>
                                 <Input
                                     type="text"
@@ -58,6 +59,9 @@ export default function TranslatorServiceRequest() {
                                         })
                                     }
                                 />
+                            </div>
+
+                            <div>
                                 <Label className="pt-3 pb-2" htmlFor="languageTo">Language To</Label>
                                 <Input
                                     type="text"
@@ -69,6 +73,8 @@ export default function TranslatorServiceRequest() {
                                         })
                                     }
                                 />
+                            </div>
+                            <div>
                                 <Label className="pt-3 pb-2" htmlFor="roomNumber">Room Number</Label>
                                 <Input
                                     type="text"
@@ -80,6 +86,8 @@ export default function TranslatorServiceRequest() {
                                         })
                                     }
                                 />
+                            </div>
+                            <div>
                                 <Label className="pt-3 pb-2" htmlFor="startDateTime">Start Date and Time</Label>
                                 <Input
                                     type="datetime-local"
@@ -91,6 +99,8 @@ export default function TranslatorServiceRequest() {
                                         })
                                     }
                                 />
+                            </div>
+                            <div>
                                 <Label className="pt-3 pb-2" htmlFor="endDateTime">End Date and Time</Label>
                                 <Input
                                     type="datetime-local"
@@ -103,9 +113,44 @@ export default function TranslatorServiceRequest() {
                                         })
                                     }
                                 />
-
+                            </div>
+                            <div>
+                                <Label className="pt-3 pb-2" htmlFor="priority">Priority</Label>
+                                <select
+                                    id="priority"
+                                    className='pb-2 border rounded-md'
+                                    onChange={(e) =>
+                                        setForm({
+                                            ...form,
+                                            priority: e.target.value,
+                                        })
+                                    }>
+                                    <option value="Low">Low</option>
+                                    <option value="Medium">Medium</option>
+                                    <option value="High">High</option>
+                                    <option value="High">Emergency</option>
+                                </select>
+                            </div>
+                            <div>
+                                <Label className="pt-3 pb-2" htmlFor="requestStatus">Request Status</Label>
+                                <select
+                                    id="requestStatus"
+                                    className='pb-2 border mb-4 rounded-md'
+                                    onChange={(e) =>
+                                        setForm({
+                                            ...form,
+                                            requestStatus: e.target.value,
+                                        })
+                                    }>
+                                    <option value="Incomplete">Incomplete</option>
+                                    <option value="Pending">Pending</option>
+                                    <option value="Complete">Complete</option>
+                                    <option value="Unassigned">Unassigned</option>
+                                </select>
+                            </div>
+                            <div className="flex flex-row justify-center items-center">
                                 <Button type="submit" className="mt-5">Submit</Button>
-
+                            </div>
                         </form>
                 </div>
             :
