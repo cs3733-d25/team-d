@@ -2,10 +2,10 @@ import {FormEvent} from 'react';
 import {Button} from "@/components/ui/button.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import {Label} from "@/components/ui/label.tsx";
-import ReturnRequest from "@/components/ReturnRequest.tsx";
 import {useState} from "react";
 import {API_ROUTES} from "common/src/constants.ts";
 import axios from "axios";
+import ReturnTranslatorRequest from "@/components/ReturnTranslatorRequest.tsx";
 
 type translatorRequestForm = {
     languageFrom: string;
@@ -109,12 +109,14 @@ export default function TranslatorServiceRequest() {
                         </form>
                 </div>
             :
-                <ReturnRequest
+                <ReturnTranslatorRequest
                     languageFrom={form.languageFrom}
                     languageTo={form.languageTo}
-                    roomNumber={form.roomNum}
+                    roomNum={form.roomNum}
                     startDateTime={form.startDateTime}
-                    endDateTime={form.endDateTime}/>
+                    endDateTime={form.endDateTime}
+                    priority={form.priority}
+                    requestStatus={form.requestStatus}/>
             }
         </>
     );

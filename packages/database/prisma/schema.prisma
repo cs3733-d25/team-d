@@ -65,7 +65,7 @@ model TranslatorRequest {
 }
 
 model EquipmentRequest {
-  roomNum Int
+  roomNum String
   startDateTime DateTime
   endDateTime DateTime
   medicalDevice String
