@@ -12,6 +12,7 @@ import ToHospital from "@/routes/ToHospital";
 import AdminDatabase from "@/routes/AdminDatabase";
 import ServiceRequestHub from "@/routes/ServiceRequestHub.tsx";
 import AllServiceRequests from "@/routes/AllServiceRequests.tsx";
+import Auth0Profile from "@/components/Auth0Profile.tsx";
 
 import { ProtectedRoute } from "./components/ProtectedRoute";
 
@@ -33,7 +34,6 @@ function App() {
                     {/* Protected routes */}
                     <Route element={<ProtectedRoute />}>
                         <Route path="/loggedIn" element={<Navbar isLoggedIn={true} />}>
-                            <Route index element={<Home />} />
                             <Route path="map" element={<Map />} />
                             <Route path="directory" element={<Directory />} />
                             <Route path="servicerequest" element={<ServiceRequest />} />
@@ -43,6 +43,8 @@ function App() {
                             <Route path="to-hospital" element={<ToHospital />} />
                             <Route path="admin-database" element={<AdminDatabase />} />
                             <Route path="all-service-requests" element={<AllServiceRequests />} />
+                            <Route path="profile" element={<Auth0Profile />} />
+
                         </Route>
                     </Route>
                 </Routes>
