@@ -17,6 +17,8 @@ type equipmentRequestForm = {
     endDateTime: string;
     requestStatus: string;
     priority: string;
+    employeeRequestedById: number;
+    departmentUnderId: number;
 }
 
 export default function EquipmentServiceRequest() {
@@ -31,6 +33,8 @@ export default function EquipmentServiceRequest() {
         endDateTime: '',
         requestStatus: '',
         priority: '',
+        employeeRequestedById: 0,
+        departmentUnderId: 0,
     });
 
     const [submitted, setSubmitted] = useState(false);
@@ -51,7 +55,29 @@ export default function EquipmentServiceRequest() {
                 <div className="grid place-items-center h-full items-center">
                     <h2 className="text-4xl fontbold pb-3" >Request a Medical Device</h2>
                     <form onSubmit={onSubmit}>
-                        <Label className="pb-3" htmlFor="medicalDevice">Medical Device</Label>
+                        <Label className="pt-3 pb-2" htmlFor="employeeId">Employee ID</Label>
+                        <Input
+                            type="number"
+                            id="employeeId"
+                            onChange={(e) =>
+                                setForm({
+                                    ...form,
+                                    employeeRequestedById: Number(e.target.value),
+                                })
+                            }
+                        />
+                        <Label className="pt-3 pb-2" htmlFor="departmentId">Department ID</Label>
+                        <Input
+                            type="number"
+                            id="departmentId"
+                            onChange={(e) =>
+                                setForm({
+                                    ...form,
+                                    departmentUnderId: Number(e.target.value),
+                                })
+                            }
+                        />
+                        <Label className="pt-3 pb-2" htmlFor="medicalDevice">Medical Device</Label>
                         <Input
                             type="text"
                             id="medicalDevice"

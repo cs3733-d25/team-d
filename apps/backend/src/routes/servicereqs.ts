@@ -9,6 +9,7 @@ router.get('/', async function (req: Request, res: Response) {
     const requests = await PrismaClient.serviceRequest.findMany({
         include: {
             translatorRequest: true,
+            equipmentRequest: true,
         },
     });
     // If no service requests are found, send 204 and log it

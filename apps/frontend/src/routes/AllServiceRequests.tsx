@@ -12,7 +12,7 @@ import {
 } from "../components/ui/table.tsx";
 import axios from "axios";
 
-interface TranslatorRequest{
+interface TranslatorRequest {
     languageFrom: string;
     languageTo: string;
     roomNum: number;
@@ -20,16 +20,28 @@ interface TranslatorRequest{
     endDateTime: number;
     serviceRequestId: number;
 }
+
+interface EquipmentRequest {
+    medicalDevice: string;
+    signature: string;
+    quantity: number;
+    comments: string;
+    roomNum: string;
+    startDateTime: string;
+    endDateTime: string;
+}
+
 export interface ServiceRequest {
     requestId: number;
     createdAt: number;
     updatedAt: number;
     assignedEmployeeId: number;
     translatorRequest: TranslatorRequest[];
+    requestStatus: string;
+    priority: string;
+    employeeRequestedById: number;
+    departmentUnderId: number;
 }
-
-
-
 
 export default function ShowAllRequests() {
     const [data, setData] = useState<ServiceRequest[]>([]);

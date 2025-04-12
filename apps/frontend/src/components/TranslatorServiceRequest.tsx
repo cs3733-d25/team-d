@@ -15,6 +15,8 @@ type translatorRequestForm = {
     endDateTime: string;
     requestStatus: string;
     priority: string;
+    employeeRequestedById: number;
+    departmentUnderId: number;
 }
 
 export default function TranslatorServiceRequest() {
@@ -27,6 +29,8 @@ export default function TranslatorServiceRequest() {
         endDateTime: '',
         requestStatus: '',
         priority: '',
+        employeeRequestedById: 0,
+        departmentUnderId: 0,
     });
 
     const [submitted, setSubmitted] = useState(false);
@@ -48,7 +52,35 @@ export default function TranslatorServiceRequest() {
                     <h2 className="text-4xl fontbold pb-3" >Request a Translator</h2>
                         <form onSubmit={onSubmit}>
                             <div>
-                                <Label className="pb-3" htmlFor="languageFrom">Language From</Label>
+                                <Label className="pt-3 pb-2" htmlFor="employeeId">Employee ID</Label>
+                                <Input
+                                    type="number"
+                                    id="employeeId"
+                                    onChange={(e) =>
+                                        setForm({
+                                            ...form,
+                                            employeeRequestedById: Number(e.target.value),
+                                        })
+                                    }
+                                />
+                            </div>
+
+                            <div>
+                                <Label className="pt-3 pb-2" htmlFor="departmentId">Department ID</Label>
+                                <Input
+                                    type="number"
+                                    id="departmentId"
+                                    onChange={(e) =>
+                                        setForm({
+                                            ...form,
+                                            departmentUnderId: Number(e.target.value),
+                                        })
+                                    }
+                                />
+                            </div>
+
+                            <div>
+                                <Label className="pt-3 pb-2" htmlFor="languageFrom">Language From</Label>
                                 <Input
                                     type="text"
                                     id="languageFrom"
