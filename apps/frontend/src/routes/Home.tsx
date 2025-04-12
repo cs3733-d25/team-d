@@ -14,15 +14,15 @@ export default function Home() {
 
 
                 {/*This is the call of the component HeroTextBox for the home page*/}
-                <div className="flex-2/3 place-content-center">
+                <div className="">
                     <HeroTextBox />
                 </div>
 
-                <div className="w-200 place-content-center">
-                    <Login />
+                <div className="w-60 ">
+                    <Auth0LoginButton />
                 </div>
 
-                {/*<Auth0LoginButton />*/}
+
 
 
             </div>
