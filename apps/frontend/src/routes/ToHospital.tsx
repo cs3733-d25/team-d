@@ -85,7 +85,7 @@ const ToHospital: React.FC = () => {
                     <div
                         className="col-span-10 md:col-span-7 border rounded-md p-4 bg-white shadow flex items-center justify-center">
                         {/*<p className="text-gray-500">(Map goes here)</p>*/}
-                        <GGMap startInput={startInput} locationDropdown={locationDropdown}></GGMap>
+                        {/*<GGMap startInput={startInput} locationDropdown={locationDropdown}></GGMap>*/}
                     </div>
                 </div>
             </main>
