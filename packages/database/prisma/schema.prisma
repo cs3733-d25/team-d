@@ -1,4 +1,4 @@
-// This is your Prisma schema file, learn more about it in the docs: https://pris.ly/d/prisma-schema
+ // This is your Prisma schema file, learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
   provider   = "prisma-client-js"
@@ -63,3 +63,37 @@ model Department {
   hours             String?
   telephone         String
 }
+
+ // --- The SanitationRequest model ---
+ model SanitationRequest {
+   id         Int            @id @default(autoincrement())
+   createdAt  DateTime       @default(now())
+   updatedAt  DateTime       @updatedAt
+
+   roomNumber String
+   date       DateTime
+   priority   Priority
+   type       SanitationType
+   status     RoomStatus
+   comments   String?
+ }
+
+ enum Priority {
+   LOW
+   NORMAL
+   HIGH
+   URGENT
+ }
+
+ enum SanitationType {
+   GENERAL
+   DISINFECT
+   DEEP_CLEANING
+   WASTE_REMOVAL
+   PEST_CONTROL
+ }
+
+ enum RoomStatus {
+   VACANT
+   IN_USE
+ }

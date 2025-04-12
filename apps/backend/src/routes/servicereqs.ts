@@ -195,4 +195,34 @@ router.delete('/:id', async function (req: Request, res: Response) {
     }
 });
 
+router.post("/sanitation", async (req, res) => {
+    try {
+        const { roomNumber, date, priority, type, status, comments } = req.body;
+        const sanitationRequest = await prisma.sanitationRequest.create({
+            data: {
+                roomNumber,
+                date: new Date(date),
+                priority,
+                type,
+                status,
+                comments,
+            },
+        });
+        res.json(sanitationRequest);
+    } catch (error) {
+        console.error("Error creating sanitation request:", error);
+        res.status(500).json({ error: "Error creating sanitation request" });
+    }
+});
+
+router.get("/sanitation", async (req, res) => {
+    try {
+        const sanitationRequests = await prisma.sanitationRequest.findMany();
+        res.json(sanitationRequests);
+    } catch (error) {
+        console.error("Error fetching sanitation requests:", error);
+        res.status(500).json({ error: "Error fetching sanitation requests" });
+    }
+});
+
 export default router;
