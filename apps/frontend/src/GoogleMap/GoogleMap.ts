@@ -1,44 +1,38 @@
 import {GoogleMapProps} from "@/GoogleMap/GoogleMap.tsx";
 import chestnutHill1 from '@/public/rotated-transparent.png';
 import {Department} from "@/routes/Directions.tsx";
-// import {Department} from "@/routes/Directions.tsx";
-
-// type FloorMap = {
-//     floorId: number;
-//     overlay: google.maps.GroundOverlay
-//     // defaultView: number
-//     // defaultCoords: google.maps.LatLngLiteral
-// }
 
 export default class GoogleMap {
-
-
 
     private readonly map: google.maps.Map;
     private readonly directionsService: google.maps.DirectionsService;
     private readonly directionsRenderer: google.maps.DirectionsRenderer;
     private readonly autocomplete: google.maps.places.Autocomplete;
+
     private readonly floorMaps: Map<number, google.maps.GroundOverlay>;
+    private floorMap: google.maps.GroundOverlay | null;
 
     private startPlaceId: string;
     private destinationPlaceId: string;
-
-    private floorMap: google.maps.GroundOverlay | null;
 
     constructor(mapRef: HTMLDivElement, props: GoogleMapProps) {
 
         if (!mapRef || !props.autoCompleteRef.current) throw new Error('Missing References');
 
+        // Make map
         this.map = new google.maps.Map(mapRef, {
             mapTypeControl: false,
             center: {lat: 42.32610824896946, lng: -71.14955534500426},
             zoom: 20,
         });
 
+        // Make directions
         this.directionsService = new google.maps.DirectionsService();
         this.directionsRenderer = new google.maps.DirectionsRenderer({
             map: this.map
         });
+
+        // Make autocomplete for origin
         this.autocomplete = new google.maps.places.Autocomplete(props.autoCompleteRef.current, {
             fields: ['place_id'],
         });
@@ -53,24 +47,14 @@ export default class GoogleMap {
                 this.route();
             }
         });
-        this.floorMaps = new Map<number, google.maps.GroundOverlay>();
 
-        this.startPlaceId = '';
-        this.destinationPlaceId = '';
+        // Set floor maps
+        this.floorMaps = new Map<number, google.maps.GroundOverlay>();
         this.floorMap = null;
 
-        // this.floorMaps = [
-        //     {
-        //         hospitalName: 'Chestnut Hill',
-        //         floorNumber: 1,
-        //         overlay: new google.maps.GroundOverlay(chestnutHill1, {
-        //             north: 42.32629629062394,
-        //             south: 42.32566563128395,
-        //             east: -71.14918542914931,
-        //             west: -71.15015356316003,
-        //         }),
-        //     },
-        // ];
+        // Set start and finish locations
+        this.startPlaceId = '';
+        this.destinationPlaceId = '';
     }
 
     private route(): void {
@@ -134,34 +118,5 @@ export default class GoogleMap {
         if (props.department) {
             // TODO: implement
         }
-
-
-        // if (props.hospital) {
-        //     if (props.hospital.placeId !== this.destinationPlaceId) {
-        //         this.destinationPlaceId = props.hospital.placeId;
-        //         this.route();
-        //     }
-        //     if (props.floor) {
-        //
-        //     }
-        //     if (props.department) {
-        //
-        //     }
-        //     // if (props.department) {
-        //     //     for (const fm of this.floorMaps) {
-        //     //         if (props.department.floor === fm.floorNumber && props.hospital.name === fm.hospitalName) {
-        //     //             this.floorMap = fm;
-        //     //             this.floorMap.overlay.setMap(this.map);
-        //     //         }
-        //     //     }
-        //     // }
-        // }
     }
-
-    // private resetFloorMap() {
-    //     if (this.floorMap) {
-    //         this.floorMap.overlay.setMap(null);
-    //         this.floorMap = null;
-    //     }
-    // }
 }
