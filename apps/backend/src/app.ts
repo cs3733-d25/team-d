@@ -1,5 +1,4 @@
-@ -1,85 +0,0 @@
-    import createError, { HttpError } from 'http-errors';
+import createError, { HttpError } from 'http-errors';
 import express, { Express, NextFunction, Request, Response } from 'express';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
