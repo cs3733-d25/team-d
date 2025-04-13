@@ -424,7 +424,6 @@ router.post('/equipment', async function (req: Request, res: Response) {
         res.sendStatus(400);
         return;
     }
-
     res.sendStatus(200);
 });
 
@@ -464,6 +463,7 @@ router.post('/sanitation', async (req, res) => {
         console.error('Error creating sanitation request:', error);
         res.status(500).json({ error: 'Error creating sanitation request' });
     }
+    res.sendStatus(200);
 });
 
 router.get('/sanitation', async (req, res) => {

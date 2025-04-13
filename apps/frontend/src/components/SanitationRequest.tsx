@@ -1,9 +1,9 @@
 import React, { FormEvent, useState } from "react";
 import axios from "axios";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { API_ROUTES } from "common/src/constants";
+import { Button } from "@/components/ui/button.tsx";
+import { Input } from "@/components/ui/input.tsx";
+import { Label } from "@/components/ui/label.tsx";
+import { API_ROUTES } from "common/src/constants.ts";
 
 import ReturnSanitationRequest from "@/components/ReturnSanitationRequest.tsx";
 

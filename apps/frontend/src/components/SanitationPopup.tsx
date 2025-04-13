@@ -7,7 +7,7 @@ import {
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
-import SanitationRequest from "@/routes/SanitationRequest";
+import SanitationRequest from "@/components/SanitationRequest.tsx";
 
 type SanitationPopupProps = {
     title: string;

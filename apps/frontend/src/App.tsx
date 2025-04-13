@@ -11,7 +11,7 @@ import ToHospital from "@/routes/ToHospital";
 import AdminDatabase from "@/routes/AdminDatabase";
 import ServiceRequestHub from "@/routes/ServiceRequestHub";
 import AllServiceRequests from "@/routes/AllServiceRequests";
-import SanitationRequest from "@/routes/SanitationRequest";
+import SanitationRequest from "@/components/SanitationRequest.tsx";
 
 function App() {
     return (
