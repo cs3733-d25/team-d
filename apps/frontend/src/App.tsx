@@ -26,7 +26,7 @@ function App() {
                 <Routes>
                     <Route path="/" element={<Navbar isLoggedIn={false} />}>
                         <Route index element={<Home />} />
-                        <Route path="map" element={<Directions />} />
+                        <Route path="directory" element={<Directions />} />
                         {/*<Route path="directory" element={<Directory />} />*/}
                         {/*<Route path="within-hospital" element={<WithinHospital />} />*/}
                         {/*<Route path="to-hospital" element={<ToHospital />} />*/}
@@ -38,12 +38,12 @@ function App() {
                     {/* Protected routes */}
                     <Route element={<ProtectedRoute />}>
                         <Route path="/loggedIn" element={<Navbar isLoggedIn={true} />}>
-                            <Route path="map" element={<Map />} />
-                            <Route path="directory" element={<Directory />} />
+                            <Route path="map" element={<Directions />} />
+                            <Route path="directory" element={<Directions />} />
                             <Route path="servicerequesthub" element={<ServiceRequestHub />} />
-                            <Route path="kiosk" element={<KioskDirections />} />
-                            <Route path="within-hospital" element={<WithinHospital />} />
-                            <Route path="to-hospital" element={<ToHospital />} />
+                            {/*<Route path="kiosk" element={<KioskDirections />} />*/}
+                            {/*<Route path="within-hospital" element={<WithinHospital />} />*/}
+                            {/*<Route path="to-hospital" element={<ToHospital />} />*/}
                             <Route path="admin-database" element={<AdminDatabase />} />
                             <Route path="all-service-requests" element={<AllServiceRequests />} />
                             <Route path="profile" element={<Auth0Profile />} />
