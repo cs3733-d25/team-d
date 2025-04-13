@@ -13,7 +13,7 @@ import hospitalLogo from "@/public/hospital2.png";
 export default function Banner({isLoggedIn}: {isLoggedIn: boolean})  {
     return (
         <>
-            <div className={"flex flex-row bg-[#Addde5] sticky top-0"} >
+            <div className={"flex flex-row bg-[#Addde5]"} >
                 <div className={"basis-1/3"}>
                     <img
                         src={hospitalLogo}
