@@ -66,29 +66,30 @@ export default function ShowAllRequests() {
     const [dataEquipment, setDataEquipment] = useState<ServiceRequest[]>([]);
     const [dataSecurity, setDataSecurity] = useState<ServiceRequest[]>([]);
     const [dataSanitation, setDataSanitation] = useState<ServiceRequest[]>([]);
+    const fetchData = async () => {
+        try {
+            const translatorResponse = await axios.get('/api/servicereqs/translator');
+            setDataTranslator(translatorResponse.data);
+            console.log(translatorResponse.data);
 
-    useEffect(() => {
-        console.log('Fetching---');
-        // getRequests();
-        axios.get('api/servicereqs/translator').then((response) => {
-            setDataTranslator(response.data);
-            console.log(response.data);
-        })
+            const equipmentResponse = await axios.get('/api/servicereqs/equipment');
+            setDataEquipment(equipmentResponse.data);
+            console.log(equipmentResponse.data);
 
-        axios.get('/api/servicereqs/equipment').then((response) => {
-            setDataEquipment(response.data);
-            console.log(response.data);
-        })
+            const securityResponse = await axios.get('/api/servicereqs/security');
+            setDataSecurity(securityResponse.data);
+            console.log(securityResponse.data);
 
-        axios.get('/api/servicereqs/security').then((response) => {
-            setDataSecurity(response.data);
-            console.log(response.data);
-        })
+            const sanitationResponse = await axios.get('/api/servicereqs/sanitation');
+            setDataSanitation(sanitationResponse.data);
+            console.log(sanitationResponse.data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
 
-        axios.get('/api/servicereqs/sanitation').then((response) => {
-            setDataSanitation(response.data);
-            console.log(response.data);
-        })
+    useEffect( () => {
+        fetchData().then();
     }, [])
 
     return (
