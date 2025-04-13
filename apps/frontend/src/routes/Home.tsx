@@ -1,8 +1,10 @@
 import React from 'react';
 
 
+import Login from "@/components/Login.tsx";
 import HeroTextBox from "@/components/HeroPage.tsx";
 import AccessDropMenu from "@/components/accessibility.tsx";
+import Banner from "@/components/Banner.tsx";
 import Auth0LoginButton from "@/components/Auth0LoginButton.tsx";
 import MapButton from "@/components/MapButton.tsx";
 import DirectoryButton from "@/components/DirectoryButton.tsx";
@@ -13,7 +15,7 @@ import Footer from "@/components/Footer.tsx";
 
 export default function Home() {
     return (
-        <>
+        <div>
             <div className="object-left bg-[url(../public/Hospital.jpg)] bg-no-repeat bg-cover h-screen filter saturate-200 flex flex-col items-center justify-center overflow-hidden">
                 <div className="absolute inset-0 bg-yellow-600/10 mix-blend-multiply pointer-events-none"></div>
                 <div className="absolute inset-0 bg-zinc-900/50 pointer-events-none"></div>
@@ -36,12 +38,10 @@ export default function Home() {
                     </div>
                 </div>
 
-            </div>
-
             <div className="place">
                 <Footer />
             </div>
-
-        </>
+            </div>
+        </div>
     );
 }

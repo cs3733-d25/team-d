@@ -9,8 +9,11 @@ import KioskDirections from "@/routes/KioskDirections";
 import WithinHospital from "@/routes/WithinHospital";
 import ToHospital from "@/routes/ToHospital";
 import AdminDatabase from "@/routes/AdminDatabase";
-import ServiceRequestHub from "@/routes/ServiceRequestHub";
-import AllServiceRequests from "@/routes/AllServiceRequests";
+import ServiceRequestHub from "@/routes/ServiceRequestHub.tsx";
+import AllServiceRequests from "@/routes/AllServiceRequests.tsx";
+import Auth0Profile from "@/components/Auth0Profile.tsx";
+
+import { ProtectedRoute } from "./components/ProtectedRoute";
 import SanitationRequest from "@/components/SanitationRequest.tsx";
 
 function App() {
@@ -29,18 +32,20 @@ function App() {
 
                     </Route>
 
-                    <Route path="/loggedIn" element={<Navbar isLoggedIn={true} />}>
-                        <Route index element={<Home />} />
+                    {/* Protected routes */}
+                    <Route element={<ProtectedRoute />}>
+                        <Route path="/loggedIn" element={<Navbar isLoggedIn={true} />}>
+                            <Route path="map" element={<Map />} />
+                            <Route path="directory" element={<Directory />} />
+                            <Route path="servicerequesthub" element={<ServiceRequestHub />} />
+                            <Route path="kiosk" element={<KioskDirections />} />
+                            <Route path="within-hospital" element={<WithinHospital />} />
+                            <Route path="to-hospital" element={<ToHospital />} />
+                            <Route path="admin-database" element={<AdminDatabase />} />
+                            <Route path="all-service-requests" element={<AllServiceRequests />} />
+                            <Route path="profile" element={<Auth0Profile />} />
 
-                        <Route path="map" element={<Map />} />
-                        <Route path="directory" element={<Directory />} />
-                        <Route path="sanitation" element={<SanitationRequest />} />
-                        <Route path="servicerequesthub" element={<ServiceRequestHub />} />
-                        <Route path="kiosk" element={<KioskDirections />} />
-                        <Route path="within-hospital" element={<WithinHospital />} />
-                        <Route path="to-hospital" element={<ToHospital />} />
-                        <Route path="admin-database" element={<AdminDatabase />} />
-                        <Route path="all-service-requests" element={<AllServiceRequests />} />
+                        </Route>
                     </Route>
                 </Routes>
             </BrowserRouter>
