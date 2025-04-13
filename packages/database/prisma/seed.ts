@@ -1130,48 +1130,131 @@ async function main() {
     // console.log(departments);
 
     //seed nodes
-    console.log('Seeding Nodes...');
+    // console.log('Seeding Nodes...');
+    // const nodes = [
+    //     await prisma.node.upsert({
+    //         where: {nodeId: 1},
+    //         update: {},
+    //         create: {
+    //             name: 'entrance',
+    //             xCoord: 705,
+    //             yCoord: 1060,
+    //         }
+    //     }),
+    //     await prisma.node.upsert({
+    //         where: {nodeId: 2},
+    //         update: {},
+    //         create: {
+    //             name: 'n1',
+    //             xCoord: 360,
+    //             yCoord: 500,
+    //         }
+    //     })
+    // ];
+    //
+    // console.log('Nodes seeded!');
+    // console.log(nodes);
+    //
+    //
+    // //seed edges
+    // console.log('Seeding Edges...');
+    // const edges = [
+    //     await prisma.edge.upsert({
+    //         where: {edgeId: 1},
+    //         update: {},
+    //         create: {
+    //             weight: 12,
+    //             startNodeId: 1,
+    //             endNodeId: 2,
+    //         }
+    //     })
+    // ];
+    //
+    // console.log('Edges seeded!');
+    // console.log(edges);
+
+
+    console.log('Seeding graphs:');
+
+    const graphs = [
+        await prisma.graph.upsert({
+            where: {graphId: 0},
+            update: {
+                graphId: 0,
+                name: 'CH FL1',
+                floorId: 0,
+            },
+            create: {
+                graphId: 0,
+                name: 'CH FL1',
+                floorId: 0,
+            },
+        })
+    ];
+
+    console.log('Graphs seeded!');
+    console.log(graphs);
+
+    console.log('Seeding nodes:');
+
     const nodes = [
         await prisma.node.upsert({
-            where: {nodeId: 1},
-            update: {},
+            where: {nodeId: 0},
+            update: {
+                nodeId: 0,
+                name: 'Entrance',
+                lat: 0,
+                lng: 0,
+                graphId: 0,
+            },
             create: {
-                name: 'entrance',
-                xCoord: 705,
-                yCoord: 1060,
-            }
+                nodeId: 0,
+                name: 'Entrance',
+                lat: 0,
+                lng: 0,
+                graphId: 0,
+            },
         }),
         await prisma.node.upsert({
-            where: {nodeId: 2},
-            update: {},
+            where: {nodeId: 1},
+            update: {
+                nodeId: 1,
+                name: 'Exit',
+                lat: 1,
+                lng: 1,
+                graphId: 0,
+            },
             create: {
-                name: 'n1',
-                xCoord: 360,
-                yCoord: 500,
-            }
-        })
+                nodeId: 1,
+                name: 'Exit',
+                lat: 1,
+                lng: 1,
+                graphId: 0,
+            },
+        }),
     ];
 
     console.log('Nodes seeded!');
     console.log(nodes);
 
-
-    //seed edges
-    console.log('Seeding Edges...');
+    console.log('Seeding edges:');
     const edges = [
         await prisma.edge.upsert({
-            where: {edgeId: 1},
-            update: {},
+            where: {edgeId: 0},
+            update: {
+                edgeId: 0,
+                weight: 1,
+                startNodeId: 0,
+                endNodeId: 1,
+            },
             create: {
-                weight: 12,
-                startNodeId: 1,
-                endNodeId: 2,
-            }
+                edgeId: 0,
+                weight: 1,
+                startNodeId: 0,
+                endNodeId: 1,
+            },
         })
     ];
-
-    console.log('Edges seeded!');
-    console.log(edges);
 }
 
 

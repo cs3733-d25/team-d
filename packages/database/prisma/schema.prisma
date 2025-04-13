@@ -85,6 +85,7 @@ model Floor {
   hospitalId  Int
   Hospital    Hospital     @relation(fields: [hospitalId], references: [hospitalId])
   Departments Department[]
+  Graph       Graph?
 }
 
 model Department {
@@ -95,24 +96,30 @@ model Department {
   Floor        Floor  @relation(fields: [floorId], references: [floorId])
 }
 
+model Graph {
+  graphId Int    @id @default(autoincrement())
+  name    String
+  Nodes   Node[]
+  floorId Int    @unique
+  Floor   Floor  @relation(fields: [floorId], references: [floorId])
+}
 
-
-model Node{
-  nodeId    Int     @id @default(autoincrement())
+model Node {
+  nodeId    Int    @id @default(autoincrement())
   name      String
-  xCoord    Int
-  yCoord    Int
-  edgeStart Edge[]  @relation(name: "edgeS")
-  edgeEnd   Edge[]  @relation(name: "edgeE")
+  lat       Float
+  lng       Float
+  edgeStart Edge[] @relation(name: "edgeS")
+  edgeEnd   Edge[] @relation(name: "edgeE")
+  graphId   Int
+  Graph     Graph  @relation(fields: [graphId], references: [graphId])
 }
 
-model Edge{
-  edgeId      Int     @id @default(autoincrement())
+model Edge {
+  edgeId      Int  @id @default(autoincrement())
   weight      Int
-  startNodeId Int     @unique
-  endNodeId   Int     @unique
-  startNode   Node    @relation(name: "edgeS", fields: [startNodeId], references: [nodeId], onDelete: Cascade)
-  endNode     Node    @relation(name: "edgeE", fields: [endNodeId], references: [nodeId], onDelete: Cascade)
+  startNodeId Int  @unique
+  endNodeId   Int  @unique
+  startNode   Node @relation(name: "edgeS", fields: [startNodeId], references: [nodeId], onDelete: Cascade)
+  endNode     Node @relation(name: "edgeE", fields: [endNodeId], references: [nodeId], onDelete: Cascade)
 }
-
-

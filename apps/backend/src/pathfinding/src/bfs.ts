@@ -17,15 +17,15 @@ class GraphNode {
     public async makeNode(): Promise<any> {
         const prisma = new PrismaClient();
         try {
-            const node = await prisma.node.create({
-                data: {
-                    name: this.name,
-                    xCoord: this.coords.x,
-                    yCoord: this.coords.y,
-                },
-            });
-            console.log('New node created');
-            return node;
+            // const node = await prisma.node.create({
+            //     data: {
+            //         name: this.name,
+            //         xCoord: this.coords.x,
+            //         yCoord: this.coords.y,
+            //     },
+            // });
+            // console.log('New node created');
+            // return node;
         } catch (e) {
             console.error(e);
         } finally {
