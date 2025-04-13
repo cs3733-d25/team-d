@@ -79,7 +79,6 @@ const RAW_RUNTIME_STATE =
           ["prettier", "npm:3.5.3"],\
           ["prettier-config-custom", "workspace:configs/prettier-config-custom"],\
           ["prisma", "virtual:3154e7e2502d6821f7eea9434c4cdb00a42b4ad928bf283b9f5a1183af99307a4f66aca3e46a37d196a6c6b81c948321e804193e2cbecf9304b80a7023c19290#npm:6.6.0"],\
-          ["react-signature-canvas", "virtual:3154e7e2502d6821f7eea9434c4cdb00a42b4ad928bf283b9f5a1183af99307a4f66aca3e46a37d196a6c6b81c948321e804193e2cbecf9304b80a7023c19290#npm:1.1.0-alpha.2"],\
           ["tailwindcss", "npm:4.1.3"],\
           ["ts-config-custom", "workspace:configs/ts-config-custom"],\
           ["turbo", "npm:2.4.4"],\
@@ -3254,15 +3253,6 @@ const RAW_RUNTIME_STATE =
           ["@types/http-errors", "npm:2.0.4"],\
           ["@types/node", "npm:22.13.13"],\
           ["@types/send", "npm:0.17.4"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
-    ["@types/signature_pad", [\
-      ["npm:2.3.6", {\
-        "packageLocation": "./.yarn/cache/@types-signature_pad-npm-2.3.6-76161cb050-67bd91a078.zip/node_modules/@types/signature_pad/",\
-        "packageDependencies": [\
-          ["@types/signature_pad", "npm:2.3.6"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -8611,40 +8601,6 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
-    ["react-signature-canvas", [\
-      ["npm:1.1.0-alpha.2", {\
-        "packageLocation": "./.yarn/cache/react-signature-canvas-npm-1.1.0-alpha.2-bbd2e36ffe-96c60771a4.zip/node_modules/react-signature-canvas/",\
-        "packageDependencies": [\
-          ["react-signature-canvas", "npm:1.1.0-alpha.2"]\
-        ],\
-        "linkType": "SOFT"\
-      }],\
-      ["virtual:3154e7e2502d6821f7eea9434c4cdb00a42b4ad928bf283b9f5a1183af99307a4f66aca3e46a37d196a6c6b81c948321e804193e2cbecf9304b80a7023c19290#npm:1.1.0-alpha.2", {\
-        "packageLocation": "./.yarn/__virtual__/react-signature-canvas-virtual-7f94abe201/0/cache/react-signature-canvas-npm-1.1.0-alpha.2-bbd2e36ffe-96c60771a4.zip/node_modules/react-signature-canvas/",\
-        "packageDependencies": [\
-          ["react-signature-canvas", "virtual:3154e7e2502d6821f7eea9434c4cdb00a42b4ad928bf283b9f5a1183af99307a4f66aca3e46a37d196a6c6b81c948321e804193e2cbecf9304b80a7023c19290#npm:1.1.0-alpha.2"],\
-          ["@babel/runtime", "npm:7.27.0"],\
-          ["@types/prop-types", null],\
-          ["@types/react", null],\
-          ["@types/react-dom", null],\
-          ["@types/signature_pad", "npm:2.3.6"],\
-          ["prop-types", null],\
-          ["react", null],\
-          ["react-dom", null],\
-          ["signature_pad", "npm:2.3.2"],\
-          ["trim-canvas", "npm:0.1.2"]\
-        ],\
-        "packagePeers": [\
-          "@types/prop-types",\
-          "@types/react-dom",\
-          "@types/react",\
-          "prop-types",\
-          "react-dom",\
-          "react"\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
     ["react-style-singleton", [\
       ["npm:2.2.3", {\
         "packageLocation": "./.yarn/cache/react-style-singleton-npm-2.2.3-18f32c05f7-841938ff16.zip/node_modules/react-style-singleton/",\
@@ -9096,15 +9052,6 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
-    ["signature_pad", [\
-      ["npm:2.3.2", {\
-        "packageLocation": "./.yarn/cache/signature_pad-npm-2.3.2-7d69e272f0-ab888873b2.zip/node_modules/signature_pad/",\
-        "packageDependencies": [\
-          ["signature_pad", "npm:2.3.2"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
     ["simple-update-notifier", [\
       ["npm:2.0.0", {\
         "packageLocation": "./.yarn/cache/simple-update-notifier-npm-2.0.0-4d6e5dba61-2a00bd03bf.zip/node_modules/simple-update-notifier/",\
@@ -9181,7 +9128,6 @@ const RAW_RUNTIME_STATE =
           ["prettier", "npm:3.5.3"],\
           ["prettier-config-custom", "workspace:configs/prettier-config-custom"],\
           ["prisma", "virtual:3154e7e2502d6821f7eea9434c4cdb00a42b4ad928bf283b9f5a1183af99307a4f66aca3e46a37d196a6c6b81c948321e804193e2cbecf9304b80a7023c19290#npm:6.6.0"],\
-          ["react-signature-canvas", "virtual:3154e7e2502d6821f7eea9434c4cdb00a42b4ad928bf283b9f5a1183af99307a4f66aca3e46a37d196a6c6b81c948321e804193e2cbecf9304b80a7023c19290#npm:1.1.0-alpha.2"],\
           ["tailwindcss", "npm:4.1.3"],\
           ["ts-config-custom", "workspace:configs/ts-config-custom"],\
           ["turbo", "npm:2.4.4"],\
@@ -9551,15 +9497,6 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/treeify-npm-1.1.0-abf9292333-2f0dea9e89.zip/node_modules/treeify/",\
         "packageDependencies": [\
           ["treeify", "npm:1.1.0"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
-    ["trim-canvas", [\
-      ["npm:0.1.2", {\
-        "packageLocation": "./.yarn/cache/trim-canvas-npm-0.1.2-ddd6cb5761-dddc2ac30f.zip/node_modules/trim-canvas/",\
-        "packageDependencies": [\
-          ["trim-canvas", "npm:0.1.2"]\
         ],\
         "linkType": "HARD"\
       }]\

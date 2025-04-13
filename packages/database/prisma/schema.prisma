@@ -39,7 +39,7 @@ model ServiceRequest {
   // tables that inherit from ServiceRequest:
   translatorRequest  TranslatorRequest?
   equipmentRequest EquipmentRequest?
-  securityRequest    SecurityRequest[]
+  securityRequest    SecurityRequest?
   // assigned relationship to Employee:
   assignedEmployeeId Int?
   assignedEmployee   Employee?           @relation(name:"assignedTo", fields: [assignedEmployeeId], references: [employeeId])
