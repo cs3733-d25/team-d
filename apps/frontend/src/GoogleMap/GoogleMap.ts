@@ -41,7 +41,6 @@ export default class GoogleMap {
 
         // TODO: remove later
         this.map.addListener('click', (e: google.maps.MapMouseEvent) => {
-            // console.log('click', e);
             const ll = e.latLng;
             if (ll) {
                 console.log('Point ' + this.pointNum++ + ':   ' + ll.toJSON().lat + ' ' + ll.toJSON().lng);
@@ -143,8 +142,6 @@ export default class GoogleMap {
                         console.log('Point ' + this.pointNum++ + ':   ' + ll.toJSON().lat + ' ' + ll.toJSON().lng);
                     }
                 });
-
-                // let fm1 = new google.maps.GroundOverlay()
             }
             else {
                 this.floorMap = floorMap;
