@@ -1198,40 +1198,156 @@ async function main() {
     console.log('Seeding nodes:');
 
     const nodes = [
+        // await prisma.node.upsert({
+        //     where: {nodeId: 0},
+        //     update: {
+        //         nodeId: 0,
+        //         name: 'Entrance',
+        //         lat: 0,
+        //         lng: 0,
+        //         graphId: 0,
+        //     },
+        //     create: {
+        //         nodeId: 0,
+        //         name: 'Entrance',
+        //         lat: 0,
+        //         lng: 0,
+        //         graphId: 0,
+        //     },
+        // }),
+        // await prisma.node.upsert({
+        //     where: {nodeId: 1},
+        //     update: {
+        //         nodeId: 1,
+        //         name: 'Exit',
+        //         lat: 1,
+        //         lng: 1,
+        //         graphId: 0,
+        //     },
+        //     create: {
+        //         nodeId: 1,
+        //         name: 'Exit',
+        //         lat: 1,
+        //         lng: 1,
+        //         graphId: 0,
+        //     },
+        // }),
+
+
+
         await prisma.node.upsert({
             where: {nodeId: 0},
             update: {
                 nodeId: 0,
-                name: 'Entrance',
-                lat: 0,
-                lng: 0,
+                name: 'Start',
+                lat: 42.32628328491628 ,
+                lng: -71.14950027862017,
                 graphId: 0,
             },
             create: {
                 nodeId: 0,
-                name: 'Entrance',
-                lat: 0,
-                lng: 0,
+                name: 'Start',
+                lat: 42.32628328491628 ,
+                lng: 71.14950027862017,
                 graphId: 0,
             },
         }),
+
         await prisma.node.upsert({
             where: {nodeId: 1},
             update: {
                 nodeId: 1,
-                name: 'Exit',
-                lat: 1,
-                lng: 1,
+                name: '',
+                lat: 42.326241641547554 ,
+                lng: 71.14951100745623,
                 graphId: 0,
             },
             create: {
                 nodeId: 1,
-                name: 'Exit',
-                lat: 1,
-                lng: 1,
+                name: '',
+                lat: 42.326241641547554 ,
+                lng: 71.14951100745623,
                 graphId: 0,
             },
         }),
+
+
+
+        await prisma.node.upsert({
+            where: { nodeId: 2 },
+            update: {
+                nodeId: 2,
+                name: '',
+                lat: 42.32620495569991,
+                lng: -71.14950832524721,
+                graphId: 0,
+            },
+            create: {
+                nodeId: 2,
+                name: '',
+                lat: 42.32620495569991,
+                lng: -71.14950832524721,
+                graphId: 0,
+            },
+        }),
+
+        await prisma.node.upsert({
+            where: { nodeId: 3 },
+            update: {
+                nodeId: 3,
+                name: '',
+                lat: 42.3262019811708,
+                lng: -71.14959013262217,
+                graphId: 0,
+            },
+            create: {
+                nodeId: 3,
+                name: '',
+                lat: 42.3262019811708,
+                lng: -71.14959013262217,
+                graphId: 0,
+            },
+        }),
+
+        await prisma.node.upsert({
+            where: { nodeId: 4 },
+            update: {
+                nodeId: 4,
+                name: '',
+                lat: 42.32616926134112,
+                lng: -71.14958745041315,
+                graphId: 0,
+            },
+            create: {
+                nodeId: 4,
+                name: '',
+                lat: 42.32616926134112,
+                lng: -71.14958745041315,
+                graphId: 0,
+            },
+        }),
+
+        await prisma.node.upsert({
+            where: { nodeId: 5 },
+            update: {
+                nodeId: 5,
+                name: 'Check in',
+                lat: 42.326144473580044,
+                lng: -71.14964645901148,
+                graphId: 0,
+            },
+            create: {
+                nodeId: 5,
+                name: 'Check in',
+                lat: 42.326144473580044,
+                lng: -71.14964645901148,
+                graphId: 0,
+            },
+        }),
+
+
+
+
     ];
 
     console.log('Nodes seeded!');
@@ -1239,21 +1355,21 @@ async function main() {
 
     console.log('Seeding edges:');
     const edges = [
-        await prisma.edge.upsert({
-            where: {edgeId: 0},
-            update: {
-                edgeId: 0,
-                weight: 1,
-                startNodeId: 0,
-                endNodeId: 1,
-            },
-            create: {
-                edgeId: 0,
-                weight: 1,
-                startNodeId: 0,
-                endNodeId: 1,
-            },
-        })
+        // await prisma.edge.upsert({
+        //     where: {edgeId: 0},
+        //     update: {
+        //         edgeId: 0,
+        //         weight: 1,
+        //         startNodeId: 0,
+        //         endNodeId: 1,
+        //     },
+        //     create: {
+        //         edgeId: 0,
+        //         weight: 1,
+        //         startNodeId: 0,
+        //         endNodeId: 1,
+        //     },
+        // })
     ];
 }
 
