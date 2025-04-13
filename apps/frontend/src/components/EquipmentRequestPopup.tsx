@@ -7,9 +7,9 @@ import {
 import {Card, CardHeader, CardTitle} from "@/components/ui/card.tsx";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
-import TranslatorServiceRequest from "@/components/TranslatorServiceRequest.tsx";
+import EquipmentServiceRequest from "@/components/EquipmentServiceRequest.tsx";
 
-const ServiceRequestPopup: React.FC<{title: string, iconName: IconDefinition}> = ({title, iconName}) => {
+const EquipmentRequestPopup: React.FC<{title: string, iconName: IconDefinition}> = ({title, iconName}) => {
     return (
         <Dialog>
             <DialogTrigger asChild>
@@ -26,10 +26,10 @@ const ServiceRequestPopup: React.FC<{title: string, iconName: IconDefinition}> =
             </DialogTrigger>
 
             <DialogContent className="place-content-center animate-in fade-in zoom-in duration-500 border-none">
-                <TranslatorServiceRequest />
+                <EquipmentServiceRequest />
             </DialogContent>
         </Dialog>
     );
 }
 
-export default ServiceRequestPopup;
+export default EquipmentRequestPopup;

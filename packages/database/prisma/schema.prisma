@@ -21,23 +21,35 @@ model Employee {
   middleInitial   String?
   lastName        String
   occupation      String
-  serviceRequests ServiceRequest[]
+  serviceRequestsAssigned ServiceRequest[] @relation(name:"assignedTo")
+  serviceRequestsMade ServiceRequest[] @relation(name:"requestedBy")
 }
 
 //**
-//* Each type of service request inherits from ServiceRequest
-//* Only translator requests for Iteration 1
-//*/
+ //* Each type of service request inherits from ServiceRequest
+ //* Only translator requests for Iteration 1
+ //*/
 model ServiceRequest {
   requestId          Int                 @id @default(autoincrement())
   createdAt          DateTime            @default(now())
   updatedAt          DateTime            @updatedAt
+  requestStatus String
+  priority String
+
   // tables that inherit from ServiceRequest:
+  translatorRequest  TranslatorRequest?
+  equipmentRequest EquipmentRequest?
   translatorRequest  TranslatorRequest[]
   securityRequest    SecurityRequest[]
   // assigned relationship to Employee:
   assignedEmployeeId Int?
-  assignedEmployee   Employee?           @relation(fields: [assignedEmployeeId], references: [employeeId])
+  assignedEmployee   Employee?           @relation(name:"assignedTo", fields: [assignedEmployeeId], references: [employeeId])
+  // the employee who made the request
+  employeeRequestedById Int
+  employeeRequestedBy Employee @relation(name:"requestedBy", fields: [employeeRequestedById], references: [employeeId])
+  // which department it's made under
+  departmentUnderId Int
+  departmentUnder Department  @relation(fields: [departmentUnderId], references: [departmentId])
 }
 
 model TranslatorRequest {
@@ -60,8 +72,22 @@ model SecurityRequest {
   serviceRequest     ServiceRequest @relation(fields: [serviceRequestId], references: [requestId])
 }
 
+model EquipmentRequest {
+  roomNum String
+  startDateTime DateTime
+  endDateTime DateTime
+  medicalDevice String
+  signature String //picture of signature
+  quantity Int
+  comments String
+  // link to service request
+  serviceRequestId Int @unique
+  serviceRequest ServiceRequest @relation(fields: [serviceRequestId], references: [requestId])
+}
+
 enum RequestType {
   TranslatorRequest
+  EquipmentRequest
 }
 
 model Department {
@@ -72,4 +98,5 @@ model Department {
   specialtyServices String
   hours             String?
   telephone         String
+  serviceRequests ServiceRequest[]
 }
