@@ -8,6 +8,9 @@ import assignedRouter from './routes/assigned.ts';
 import servicereqsRouter from './routes/servicereqs.ts';
 import directoryRouter from './routes/directory.ts';
 import pathfindRouter from './routes/pathfind.ts';
+import pathfindingRouter from './routes/pathfinding.ts';
+
+// const { auth, requiresAuth } = require('express-openid-connect');
 
 import { API_ROUTES } from 'common/src/constants';
 
@@ -35,6 +38,28 @@ app.use(API_ROUTES.SERVICEREQS, servicereqsRouter);
 app.use(API_ROUTES.ASSIGNED, assignedRouter);
 app.use(API_ROUTES.DEPARTMENT, directoryRouter);
 app.use(API_ROUTES.PATHFIND, pathfindRouter);
+app.use(API_ROUTES.PATHFINDING, pathfindingRouter);
+
+/**
+ * Auth0
+ */
+// const config = {
+//     authRequired: false,
+//     auth0Logout: true,
+//     secret: 'yada',
+//     baseURL: 'http://localhost:3000',
+//     clientID: 'oTdQpRiO6NMqpsVbTLhp6Kk5egdnFmEs',
+//     issuerBaseURL: 'https://dev-b5d68fi8od5s513y.us.auth0.com',
+// };
+//
+// // auth router attaches /login, /logout, and /callback routes to the baseURL
+// app.use(auth(config));
+
+// req.isAuthenticated is provided from the auth router
+// app.get('/', (req, res) => {
+//     res.send(req.oidc.sisAuthenticated() ? 'Logged in' : 'Logged out');
+// });
+
 /**
  * Catch all 404 errors, and forward them to the error handler
  */

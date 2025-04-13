@@ -5,6 +5,7 @@ import Login from "@/components/Login.tsx";
 import HeroTextBox from "@/components/HeroPage.tsx";
 import AccessDropMenu from "@/components/accessibility.tsx";
 import Banner from "@/components/Banner.tsx";
+import Auth0LoginButton from "@/components/Auth0LoginButton.tsx";
 
 export default function Home() {
     return (
@@ -17,10 +18,11 @@ export default function Home() {
                     <HeroTextBox />
                 </div>
 
-                {/*This is the call of the component login for the home page*/}
                 <div className="w-200 place-content-center">
                     <Login />
                 </div>
+
+                {/*<Auth0LoginButton />*/}
 
 
             </div>

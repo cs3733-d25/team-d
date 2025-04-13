@@ -94,3 +94,25 @@ model Department {
   floorId      Int
   Floor        Floor  @relation(fields: [floorId], references: [floorId])
 }
+
+
+
+model Node{
+  nodeId    Int     @id @default(autoincrement())
+  name      String
+  xCoord    Int
+  yCoord    Int
+  edgeStart Edge[]  @relation(name: "edgeS")
+  edgeEnd   Edge[]  @relation(name: "edgeE")
+}
+
+model Edge{
+  edgeId      Int     @id @default(autoincrement())
+  weight      Int
+  startNodeId Int     @unique
+  endNodeId   Int     @unique
+  startNode   Node    @relation(name: "edgeS", fields: [startNodeId], references: [nodeId], onDelete: Cascade)
+  endNode     Node    @relation(name: "edgeE", fields: [endNodeId], references: [nodeId], onDelete: Cascade)
+}
+
+
