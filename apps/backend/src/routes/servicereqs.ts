@@ -210,7 +210,7 @@ router.post('/sanitation', async (req, res) => {
                         priority,
                         type,
                         status,
-                        comments,
+                        comments
                     },
                 },
             },
