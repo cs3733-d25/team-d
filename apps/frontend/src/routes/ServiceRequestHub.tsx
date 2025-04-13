@@ -14,8 +14,8 @@ const ServiceRequestHub = () => {
                 <img src={ServiceHubBackground} className="absolute h-screen w-screen z-0" />
 
                 {/*Overlay*/}
-                <div className="absolute inset-0 bg-yellow-600/10 mix-blend-multiply pointer-events-none"/>
-                <div className="absolute inset-0 bg-zinc-900/50 pointer-events-none"/>
+                {/*<div className="absolute inset-0 bg-yellow-600/10 mix-blend-multiply pointer-events-none"/>*/}
+                {/*<div className="absolute inset-0 bg-zinc-900/50 pointer-events-none"/>*/}
 
                 <div className="relative flex justify-center">
                     <div className="absolute flex items-center justify-center mt-24 bg-gray-300/60 h-20 w-110 rounded-full text-5xl font-bold font-nunito font-nunito">Service Requests</div>
