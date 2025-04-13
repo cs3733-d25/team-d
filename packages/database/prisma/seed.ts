@@ -627,6 +627,30 @@ async function main() {
     console.log('Equipment requests seeded!')
     console.log(equipmentRequests);
 
+    const securityRequests = [
+        await prisma.securityRequest.upsert({
+            where: {serviceRequestId: serviceRequests[13].requestId},
+            update: {},
+            create: {
+                serviceRequestId: serviceRequests[13].requestId,
+                numOfGuards: 3,
+                securityType: "Violent Patient",
+                additionalComments: "Send help!",
+            }
+        }),
+        await prisma.securityRequest.upsert({
+            where: {serviceRequestId: serviceRequests[14].requestId},
+            update: {},
+            create: {
+                serviceRequestId: serviceRequests[14].requestId,
+                numOfGuards: 3,
+                securityType: "Elopement",
+                additionalComments: "They ran out the west door.",
+            },
+        }),
+    ];
+    console.log('Equipment requests seeded!')
+    console.log(equipmentRequests);
 }
 
 

@@ -157,6 +157,7 @@ export default function TranslatorServiceRequest() {
                                             priority: e.target.value,
                                         })
                                     }>
+                                    <option value="" disabled selected>Select your option</option>
                                     <option value="Low">Low</option>
                                     <option value="Medium">Medium</option>
                                     <option value="High">High</option>
@@ -174,6 +175,7 @@ export default function TranslatorServiceRequest() {
                                             requestStatus: e.target.value,
                                         })
                                     }>
+                                    <option value="" disabled selected>Select your option</option>
                                     <option value="Incomplete">Incomplete</option>
                                     <option value="Pending">Pending</option>
                                     <option value="Complete">Complete</option>

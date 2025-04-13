@@ -10,6 +10,7 @@ router.get('/', async function (req: Request, res: Response) {
         include: {
             translatorRequest: true,
             equipmentRequest: true,
+            securityRequest: true,
         },
     });
     // If no service requests are found, send 204 and log it
@@ -50,6 +51,32 @@ router.get('/translator', async function (req: Request, res: Response) {
     }
 });
 
+// GET ALL SECURITY REQUESTS
+router.get('/security', async function (req: Request, res: Response) {
+    // Find all service request of type equipment request
+    const securityRequests = await PrismaClient.serviceRequest.findMany({
+        where: {
+            securityRequest: {
+                isNot: null,
+            },
+        },
+        include: {
+            securityRequest: true,
+        },
+    });
+
+    // If no service request with the ID is found, send 204 and log it
+    if (securityRequests == null) {
+        console.error(`No security requests found in database!`);
+        res.sendStatus(204);
+    }
+    // Otherwise send 200 and the data
+    else {
+        console.log(securityRequests);
+        res.json(securityRequests);
+    }
+});
+
 // GET ALL MEDICAL EQUIPMENT REQUESTS
 router.get('/equipment', async function (req: Request, res: Response) {
     // Find all service request of type equipment request
@@ -75,6 +102,7 @@ router.get('/equipment', async function (req: Request, res: Response) {
         res.json(equipmentRequests);
     }
 });
+
 
 // Post request to add service requests to the database
 router.post('/translator', async function (req: Request, res: Response) {
@@ -137,6 +165,7 @@ router.get('/:id', async function (req: Request, res: Response) {
         include: {
             translatorRequest: true,
             equipmentRequest: true,
+            securityRequest: true,
         },
     });
 
@@ -185,7 +214,7 @@ router.put('/:id', async function (req: Request, res: Response) {
                 quantity,
                 signature,
             } = req.body;
-            const [updateTranslatorRequest, updateServiceRequest, updateEquipmentRequest] =
+            const [updateTranslatorRequest, updateServiceRequest, updateSecurityRequest, updateEquipmentRequest] =
                 await PrismaClient.$transaction([
                     PrismaClient.translatorRequest.update({
                         where: { serviceRequestId: requestId },
@@ -205,6 +234,14 @@ router.put('/:id', async function (req: Request, res: Response) {
                             signature,
                         },
                     }),
+                    PrismaClient.securityRequest.update({
+                        where: { serviceRequestId: requestId },
+                        data: {
+                            numOfGuards,
+                            securityType,
+                            additionalComments,
+                        },
+                    }),
                     PrismaClient.serviceRequest.update({
                         where: { requestId: requestId },
                         data: {
@@ -221,6 +258,7 @@ router.put('/:id', async function (req: Request, res: Response) {
                 message: 'Successfully updated service request',
                 updateServiceRequest,
                 updateTranslatorRequest,
+                updateSecurityRequest,
                 updateEquipmentRequest,
             });
             // send 400 and error message if request cannot be updated
@@ -245,16 +283,19 @@ router.delete('/:id', async function (req: Request, res: Response) {
     const equipmentRequest = await PrismaClient.equipmentRequest.findUnique({
         where: { serviceRequestId: requestId },
     });
+    const securityRequest = await PrismaClient.securityRequest.findUnique({
+        where: { serviceRequestId: requestId },
+    });
 
     // error if no service request with the id is found
-    if (serviceRequest == null && translatorRequest == null && equipmentRequest == null) {
+    if (serviceRequest == null && translatorRequest == null && equipmentRequest == null && securityRequest == null) {
         console.error(`The request with Id ${requestId} not found in database!`);
         res.status(404);
     }
     // success: delete specified service request
     else {
         try {
-            const [deleteTranslatorRequest, deleteServiceRequest, deleteEquipmentRequest] =
+            const [deleteTranslatorRequest, deleteEquipmentRequest, deleteServiceRequest, deleteSecurityRequest] =
                 await PrismaClient.$transaction([
                     PrismaClient.translatorRequest.delete({
                         where: { serviceRequestId: requestId },
@@ -265,6 +306,9 @@ router.delete('/:id', async function (req: Request, res: Response) {
                     PrismaClient.serviceRequest.delete({
                         where: { requestId: requestId },
                     }),
+                    PrismaClient.securityRequest.delete({
+                        where: { requestId: requestId },
+                    }),
                 ]);
 
             // send 200 if success
@@ -273,6 +317,7 @@ router.delete('/:id', async function (req: Request, res: Response) {
                 deleteServiceRequest,
                 deleteTranslatorRequest,
                 deleteEquipmentRequest,
+                deleteSecurityRequest,
             });
             // send 400 and error message if request cannot be updated
         } catch (error) {
@@ -280,6 +325,48 @@ router.delete('/:id', async function (req: Request, res: Response) {
             res.sendStatus(400);
         }
     }
+});
+
+// Post request to add security requests to the database
+router.post('/security', async function (req: Request, res: Response) {
+    const {
+        numOfGuards,
+        securityType,
+        additionalComments,
+        roomNum,
+        employeeRequestedById,
+        departmentUnderId,
+        priority,
+        requestStatus,
+    } = req.body;
+    try {
+        await PrismaClient.serviceRequest.create({
+            data: {
+                assignedEmployeeId: null,
+                employeeRequestedById,
+                departmentUnderId,
+                priority,
+                requestStatus,
+                securityRequest: {
+                    create: {
+                        roomNum,
+                        numOfGuards,
+                        securityType,
+                        additionalComments,
+                        startDateTime: req.body.startDateTime + ':00.000Z',
+                        endDateTime: req.body.endDateTime + ':00.000Z',
+                    },
+                },
+            },
+        });
+        console.log('Service request created');
+    } catch (error) {
+        console.error(`Unable to create a new service request: ${error}`);
+        res.sendStatus(400);
+        return;
+    }
+
+    res.sendStatus(200);
 });
 
 // Post request to add medical device requests to the database
@@ -325,5 +412,7 @@ router.post('/equipment', async function (req: Request, res: Response) {
 
     res.sendStatus(200);
 });
+
+
 
 export default router;
