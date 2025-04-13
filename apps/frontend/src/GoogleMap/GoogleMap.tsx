@@ -11,6 +11,7 @@ export interface GoogleMapProps {
     hospital: Hospital | undefined;
     floor: Floor | undefined;
     department: Department | undefined;
+    zoomFlag: boolean;
 }
 
 
@@ -57,7 +58,7 @@ const GGMap = (props: GoogleMapProps) => {
         console.log('UseEffect');
         if (!map) return;
         map.update(props);
-    }, [props.department, props.floor, props.hospital]);
+    }, [props.department, props.floor, props.hospital, props.zoomFlag]);
 
     return (
         <div>

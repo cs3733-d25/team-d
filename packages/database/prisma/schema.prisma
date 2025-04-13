@@ -70,7 +70,7 @@ model Hospital {
   placeId     String
   defaultZoom Int
   defaultLat  Float
-  defaultLong Float
+  defaultLng  Float
   Floors      Floor[]
 }
 

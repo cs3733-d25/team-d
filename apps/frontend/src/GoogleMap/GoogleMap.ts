@@ -1,6 +1,11 @@
-import {GoogleMapProps} from "@/GoogleMap/GoogleMap.tsx";
-import chestnutHill1 from '@/public/rotated-transparent.png';
-import {Department} from "@/routes/Directions.tsx";
+import {GoogleMapProps} from "@/GoogleMap/GoogleMap.tsx"
+
+const DEFAULT_CENTER: google.maps.LatLngLiteral = {
+    lat: 42.31934987791928,
+    lng: -71.3162829187303,
+};
+
+const DEFAULT_ZOOM = 10;
 
 export default class GoogleMap {
 
@@ -15,17 +20,18 @@ export default class GoogleMap {
     private startPlaceId: string;
     private destinationPlaceId: string;
 
+    private zoomFlag: boolean;
+
     constructor(mapRef: HTMLDivElement, props: GoogleMapProps) {
 
-        console.log(chestnutHill1);
 
         if (!mapRef || !props.autoCompleteRef.current) throw new Error('Missing References');
 
         // Make map
         this.map = new google.maps.Map(mapRef, {
             mapTypeControl: false,
-            center: {lat: 42.09274507452062, lng: -71.26652770742672},
-            zoom: 19,
+            center: DEFAULT_CENTER,
+            zoom: DEFAULT_ZOOM,
             // center: {lat: 42.32610824896946, lng: -71.14955534500426},
             // zoom: 20,
         });
@@ -70,6 +76,8 @@ export default class GoogleMap {
         // Set start and finish locations
         this.startPlaceId = '';
         this.destinationPlaceId = '';
+
+        this.zoomFlag = false;
     }
 
     private route(): void {
@@ -135,6 +143,15 @@ export default class GoogleMap {
         // to that dept.
         if (props.department) {
             // TODO: implement
+        }
+
+        if (props.hospital && props.zoomFlag !== this.zoomFlag) {
+            this.zoomFlag = props.zoomFlag;
+            this.map.setCenter({
+                lat: props.hospital.defaultLat,
+                lng: props.hospital.defaultLng,
+            });
+            this.map.setZoom(props.hospital.defaultZoom);
         }
     }
 }
