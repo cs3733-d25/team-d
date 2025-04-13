@@ -6,6 +6,7 @@ import HeroTextBox from "@/components/HeroPage.tsx";
 import AccessDropMenu from "@/components/accessibility.tsx";
 import Banner from "@/components/Banner.tsx";
 import Auth0LoginButton from "@/components/Auth0LoginButton.tsx";
+import SubmissionReqPopup from "@/components/SubmissionReqPopup.tsx";
 
 export default function Home() {
     return (
@@ -23,6 +24,10 @@ export default function Home() {
                 </div>
 
                 {/*<Auth0LoginButton />*/}
+
+                <div className="w-200 place-content-center ">
+                    <SubmissionReqPopup />
+                </div>
 
 
             </div>
