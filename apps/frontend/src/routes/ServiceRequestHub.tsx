@@ -1,6 +1,8 @@
 import {faLanguage} from "@fortawesome/free-solid-svg-icons";
 import ServiceRequestPopup from "@/components/ServiceRequestPopup.tsx";
-
+import SanitationPopup  from "@/components/SanitationPopup.tsx";
+import EquipmentRequestPopup from "@/components/EquipmentRequestPopup.tsx";
+import SecurityRequestPopup from "@/components/SecurityRequestPopup.tsx";
 const ServiceRequestHub = () => {
     return (
         <div style={{marginTop: '180px'}}>
@@ -9,16 +11,16 @@ const ServiceRequestHub = () => {
                     title="Request Translator"
                     iconName={faLanguage}
                 />
-                <ServiceRequestPopup
-                    title="Request 2"
+                <SanitationPopup
+                    title="Request Sanitation"
                     iconName={faLanguage}
                 />
-                <ServiceRequestPopup
-                    title="Request 3"
+                <EquipmentRequestPopup
+                    title="Request Equipment"
                     iconName={faLanguage}
                 />
-                <ServiceRequestPopup
-                    title="Request 4"
+                <SecurityRequestPopup
+                    title="Request Security"
                     iconName={faLanguage}
                 />
                 <ServiceRequestPopup

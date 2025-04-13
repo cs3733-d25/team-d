@@ -1,15 +1,23 @@
-import React from 'react';
+import React from "react";
 import {
     Dialog,
     DialogContent,
     DialogTrigger,
-} from '@/components/ui/dialog';
-import {Card, CardHeader, CardTitle} from "@/components/ui/card.tsx";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
-import TranslatorServiceRequest from "@/components/TranslatorServiceRequest.tsx";
+} from "@/components/ui/dialog";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+import SanitationRequest from "@/components/SanitationRequest.tsx";
 
-const ServiceRequestPopup: React.FC<{title: string, iconName: IconDefinition}> = ({title, iconName}) => {
+type SanitationPopupProps = {
+    title: string;
+    iconName: IconDefinition;
+};
+
+const SanitationPopup: React.FC<SanitationPopupProps> = ({
+                                                             title,
+                                                             iconName,
+                                                         }) => {
     return (
         <Dialog>
             <DialogTrigger asChild>
@@ -26,10 +34,11 @@ const ServiceRequestPopup: React.FC<{title: string, iconName: IconDefinition}> =
             </DialogTrigger>
 
             <DialogContent className="place-content-center animate-in fade-in zoom-in duration-500 border-none">
-                <TranslatorServiceRequest />
+                <SanitationRequest />
             </DialogContent>
         </Dialog>
     );
-}
+};
 
-export default ServiceRequestPopup;
+export default SanitationPopup;
+

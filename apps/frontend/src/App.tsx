@@ -15,13 +15,13 @@ import AllServiceRequests from "@/routes/AllServiceRequests.tsx";
 import GoogleMap from "@/components/map/GoogleMap.tsx";
 import GGMap from "@/GoogleMap/GoogleMap.tsx";
 import Directions from "@/routes/Directions.tsx";
+import SanitationRequest from "@/components/SanitationRequest.tsx";
 
 function App() {
     return (
         <div className="h-screen bg-accent flex flex-col parent">
             <BrowserRouter>
                 <Routes>
-                    <Route path="gmap" element={<Directions />} />
                     <Route path="/" element={<Navbar isLoggedIn={false} />}>
                         <Route index element={<Home />} />
                         <Route path="map" element={<Map />} />

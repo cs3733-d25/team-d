@@ -1,0 +1,69 @@
+import { CardTitle } from '@/components/ui/card.tsx';
+import { Label } from '@/components/ui/label.tsx';
+
+type securityRequestForm = {
+    roomNum: string;
+    numOfGuards: number;
+    securityType: string;
+    additionalComments: string;
+    requestStatus: string;
+    priority: string;
+    employeeRequestedById: number;
+    departmentUnderId: number;
+}
+
+const ReturnSecurityRequest = (props: securityRequestForm) => {
+    return (
+        <div className="grid  h-full items-center">
+            <div className="">
+                <div className="place-content-center">
+                    <CardTitle className="text-3xl">Request Summary</CardTitle>
+                </div>
+
+                <div>
+                    <div className="my-5">
+                        <Label htmlFor="languageFrom">Employee ID</Label>
+                        <p>{props.employeeRequestedById}</p>
+                    </div>
+
+                    <div className="my-5">
+                        <Label htmlFor="languageFrom">Department ID</Label>
+                        <p>{props.departmentUnderId}</p>
+                    </div>
+
+                    <div className="my-5">
+                        <Label htmlFor="languageFrom">Number of Guards Requested</Label>
+                        <p>{props.numOfGuards}</p>
+                    </div>
+
+                    <div className="my-5">
+                        <Label htmlFor="languageTo">Security Type</Label>
+                        <p>{props.securityType}</p>
+                    </div>
+
+                    <div className="my-5">
+                        <Label htmlFor="roomNum">Room Number</Label>
+                        <p>{props.roomNum}</p>
+                    </div>
+
+                    <div className="my-5">
+                        <Label htmlFor="startDateTime">Additional Comments</Label>
+                        <p>{props.additionalComments}</p>
+                    </div>
+
+                    <div className="my-5">
+                        <Label htmlFor="priority">Priority</Label>
+                        <p>{props.priority}</p>
+                    </div>
+
+                    <div className="my-5">
+                        <Label htmlFor="requestStatus">Request Status</Label>
+                        <p>{props.requestStatus}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default ReturnSecurityRequest;
