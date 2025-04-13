@@ -1190,6 +1190,22 @@ async function main() {
                 floorId: 0,
             },
         }),
+
+        await prisma.graph.upsert({
+            where: {graphId: 1},
+            update: {
+                graphId: 1,
+                name: 'PP 20Fl1',
+                floorId: 1,
+            },
+            create: {
+                graphId: 1,
+                name: 'PP 20FL1',
+                floorId: 1,
+            },
+        }),
+
+
     ];
 
     console.log('Graphs seeded!');
@@ -1346,6 +1362,28 @@ async function main() {
         }),
 
 
+        //Patriot Place
+        await prisma.node.upsert({
+            where: { nodeId: 6 },
+            update: {
+                nodeId: 6,
+                name: 'PP Parking lot',
+                lat: 42.326144473580044,
+                lng: -71.14964645901148,
+                graphId: 0,
+            },
+            create: {
+                nodeId: 5,
+                name: 'PP Parking lot',
+                lat: 42.326144473580044,
+                lng: -71.14964645901148,
+                graphId: 0,
+            },
+        }),
+
+
+
+
 
 
     ];
@@ -1371,7 +1409,20 @@ async function main() {
         //     },
         // })
     ];
+
+
+
+
+
+
+
+
+
+
 }
+
+
+
 
 
 
