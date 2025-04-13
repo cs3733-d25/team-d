@@ -21,7 +21,7 @@ function App() {
         <div className="h-screen bg-accent flex flex-col parent">
             <BrowserRouter>
                 <Routes>
-                    <Route path="gmap" element={<Directions />} />
+
                     <Route path="/" element={<Navbar isLoggedIn={false} />}>
                         <Route index element={<Home />} />
                         <Route path="map" element={<Map />} />
@@ -29,7 +29,7 @@ function App() {
                         <Route path="within-hospital" element={<WithinHospital />} />
                         <Route path="to-hospital" element={<ToHospital />} />
                         <Route path="servicerequesthub" element={<ServiceRequestHub />} />
-
+                        <Route path="gmap" element={<Directions />} />
 
                     </Route>
 
