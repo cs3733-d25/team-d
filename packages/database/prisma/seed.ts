@@ -409,7 +409,7 @@ async function main() {
             update: {},
             create: {
                 departmentId: 3,
-                name: 'Blood Draw / Phlebotomy',
+                name: 'Blood Draw / Phlebotomy (20 floor 1)',
                 suite: '',
                 floorId: 1,
             },
@@ -489,7 +489,7 @@ async function main() {
             update: {},
             create: {
                 departmentId: 11,
-                name: 'Blood Draw / Phlebotomy',
+                name: 'Blood Draw / Phlebotomy (22 floor 4)',
                 suite: '',
                 floorId: 3,
             },

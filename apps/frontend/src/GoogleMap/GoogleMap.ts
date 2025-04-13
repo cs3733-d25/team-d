@@ -3,13 +3,12 @@ import chestnutHill1 from '@/public/rotated-transparent.png';
 import {Department} from "@/routes/Directions.tsx";
 // import {Department} from "@/routes/Directions.tsx";
 
-type FloorMap = {
-    hospitalName: string
-    floorNumber: number
-    overlay: google.maps.GroundOverlay
-    // defaultView: number
-    // defaultCoords: google.maps.LatLngLiteral
-}
+// type FloorMap = {
+//     floorId: number;
+//     overlay: google.maps.GroundOverlay
+//     // defaultView: number
+//     // defaultCoords: google.maps.LatLngLiteral
+// }
 
 export default class GoogleMap {
 
@@ -19,12 +18,12 @@ export default class GoogleMap {
     private readonly directionsService: google.maps.DirectionsService;
     private readonly directionsRenderer: google.maps.DirectionsRenderer;
     private readonly autocomplete: google.maps.places.Autocomplete;
-    private readonly floorMaps: FloorMap[];
+    private readonly floorMaps: Map<number, google.maps.GroundOverlay>;
 
     private startPlaceId: string;
     private destinationPlaceId: string;
 
-    private floorMap: FloorMap | null;
+    private floorMap: google.maps.GroundOverlay | null;
 
     constructor(mapRef: HTMLDivElement, props: GoogleMapProps) {
 
@@ -54,22 +53,24 @@ export default class GoogleMap {
                 this.route();
             }
         });
+        this.floorMaps = new Map<number, google.maps.GroundOverlay>();
+
         this.startPlaceId = '';
         this.destinationPlaceId = '';
         this.floorMap = null;
 
-        this.floorMaps = [
-            {
-                hospitalName: 'Chestnut Hill',
-                floorNumber: 1,
-                overlay: new google.maps.GroundOverlay(chestnutHill1, {
-                    north: 42.32629629062394,
-                    south: 42.32566563128395,
-                    east: -71.14918542914931,
-                    west: -71.15015356316003,
-                }),
-            },
-        ];
+        // this.floorMaps = [
+        //     {
+        //         hospitalName: 'Chestnut Hill',
+        //         floorNumber: 1,
+        //         overlay: new google.maps.GroundOverlay(chestnutHill1, {
+        //             north: 42.32629629062394,
+        //             south: 42.32566563128395,
+        //             east: -71.14918542914931,
+        //             west: -71.15015356316003,
+        //         }),
+        //     },
+        // ];
     }
 
     private route(): void {
@@ -98,27 +99,69 @@ export default class GoogleMap {
 
     update(props: GoogleMapProps): void {
         console.log('Update method');
-        if (props.hospital) {
-            if (props.hospital.placeId !== this.destinationPlaceId) {
-                this.destinationPlaceId = props.hospital.placeId;
-                this.route();
-            }
-            this.resetFloorMap();
-            // if (props.department) {
-            //     for (const fm of this.floorMaps) {
-            //         if (props.department.floor === fm.floorNumber && props.hospital.name === fm.hospitalName) {
-            //             this.floorMap = fm;
-            //             this.floorMap.overlay.setMap(this.map);
-            //         }
-            //     }
-            // }
-        }
-    }
-
-    private resetFloorMap() {
-        if (this.floorMap) {
-            this.floorMap.overlay.setMap(null);
+        // Reset the currently showing floor map
+        if (this.floorMap !== null) {
+            this.floorMap.setMap(null);
             this.floorMap = null;
         }
+        // If the destination hospital has changed, re-route via
+        // Google Maps to the new hospital
+        if (props.hospital && (props.hospital.placeId !== this.destinationPlaceId)) {
+            this.destinationPlaceId = props.hospital.placeId;
+            this.route();
+        }
+        // If the floor has changed, show the current floor
+        if (props.floor) {
+            const floorMap = this.floorMaps.get(props.floor.floorId)
+            if (!floorMap) {
+                const newFloorMap = new google.maps.GroundOverlay(chestnutHill1, {
+                    north: 42.32629629062394,
+                    south: 42.32566563128395,
+                    east: -71.14918542914931,
+                    west: -71.15015356316003,
+                });
+                this.floorMaps.set(props.floor.floorId, newFloorMap);
+                this.floorMap = newFloorMap;
+            }
+            else {
+                this.floorMap = floorMap;
+            }
+            this.floorMap.setMap(this.map);
+        }
+        // If the department has changed, re-route
+        // the pathfinding to the nearest check-in location
+        // to that dept.
+        if (props.department) {
+            // TODO: implement
+        }
+
+
+        // if (props.hospital) {
+        //     if (props.hospital.placeId !== this.destinationPlaceId) {
+        //         this.destinationPlaceId = props.hospital.placeId;
+        //         this.route();
+        //     }
+        //     if (props.floor) {
+        //
+        //     }
+        //     if (props.department) {
+        //
+        //     }
+        //     // if (props.department) {
+        //     //     for (const fm of this.floorMaps) {
+        //     //         if (props.department.floor === fm.floorNumber && props.hospital.name === fm.hospitalName) {
+        //     //             this.floorMap = fm;
+        //     //             this.floorMap.overlay.setMap(this.map);
+        //     //         }
+        //     //     }
+        //     // }
+        // }
     }
+
+    // private resetFloorMap() {
+    //     if (this.floorMap) {
+    //         this.floorMap.overlay.setMap(null);
+    //         this.floorMap = null;
+    //     }
+    // }
 }

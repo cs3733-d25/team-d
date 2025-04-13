@@ -1,6 +1,6 @@
 import React, {RefObject, useEffect, useRef, useState} from 'react';
 import GoogleMap from "@/GoogleMap/GoogleMap.ts";
-import {Hospital, Department} from '@/routes/Directions.tsx'
+import {Hospital, Floor, Department} from '@/routes/Directions.tsx'
 
 const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
@@ -9,6 +9,7 @@ const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 export interface GoogleMapProps {
     autoCompleteRef: RefObject<HTMLInputElement | null>;
     hospital: Hospital | undefined;
+    floor: Floor | undefined;
     department: Department | undefined;
 }
 
@@ -20,6 +21,7 @@ const GGMap = (props: GoogleMapProps) => {
     const [map, setMap] = React.useState<GoogleMap | undefined>();
 
 
+    // Used to load the script that google maps API uses
     useEffect(() => {
         const loadScript = (url: string) => {
             const existingScript = document.querySelector(`script[src="${url}"]`);
@@ -50,11 +52,12 @@ const GGMap = (props: GoogleMapProps) => {
         );
     }, []);
 
+    // Update the map when new hospital/dept selected
     useEffect(() => {
         console.log('UseEffect');
         if (!map) return;
         map.update(props);
-    }, [props.department, props.hospital]);
+    }, [props.department, props.floor, props.hospital]);
 
     return (
         <div>

@@ -87,9 +87,6 @@ export default function Directions() {
                         {data.map((hospital: Hospital) => (
                             <option value={hospital.name}>{hospital.name}</option>
                         ))}
-                        {/*<option value="Chestnut Hill">Chestnut Hill</option>*/}
-                        {/*<option value="20 Patriot Place">20 Patriot Place</option>*/}
-                        {/*<option value="22 Patriot Place">22 Patriot Place</option>*/}
                     </select>
                     {hospital && <>
                         <hr/>
@@ -98,9 +95,6 @@ export default function Directions() {
                         <br/>
                         <select id="department-dropdown" name="department-dropdown" onChange={handleDepartmentChange}>
                             <option value="" selected disabled>Choose here</option>
-                            {/*{hospital.departments.map((department: Department) => (*/}
-                            {/*    <option value={department.name}>{department.name}</option>*/}
-                            {/*))}*/}
                             {hospital.Floors.map((floor: Floor) => (
                                 floor.Departments.map((department: Department) => (
                                     <option value={department.name}>{department.name}</option>))))}
@@ -108,7 +102,7 @@ export default function Directions() {
                     </>}
                 </div>
                 <div className="flex-2">
-                    <GGMap autoCompleteRef={autocompleteRef} hospital={hospital} department={department} />
+                    <GGMap autoCompleteRef={autocompleteRef} hospital={hospital} floor={floor} department={department} />
                 </div>
             </div>
         </>
