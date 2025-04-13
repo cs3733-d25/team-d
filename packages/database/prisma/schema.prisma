@@ -12,16 +12,17 @@ datasource db {
 }
 
 model Employee {
-  employeeId      Int              @id @default(autoincrement())
-  createdAt       DateTime         @default(now())
-  updatedAt       DateTime         @updatedAt
-  email           String           @unique
-  password        String
-  firstName       String
-  middleInitial   String?
-  lastName        String
-  occupation      String
-  serviceRequests ServiceRequest[]
+  employeeId              Int              @id @default(autoincrement())
+  createdAt               DateTime         @default(now())
+  updatedAt               DateTime         @updatedAt
+  email                   String           @unique
+  password                String
+  firstName               String
+  middleInitial           String?
+  lastName                String
+  occupation              String
+  serviceRequestsAssigned ServiceRequest[] @relation(name: "assignedTo")
+  serviceRequestsMade     ServiceRequest[] @relation(name: "requestedBy")
 }
 
 //**
@@ -29,15 +30,27 @@ model Employee {
 //* Only translator requests for Iteration 1
 //*/
 model ServiceRequest {
-  requestId          Int                @id @default(autoincrement())
-  createdAt          DateTime           @default(now())
-  updatedAt          DateTime           @updatedAt
+  requestId     Int      @id @default(autoincrement())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  requestStatus String
+  priority      String
+
   // tables that inherit from ServiceRequest:
-  translatorRequest  TranslatorRequest?
+  translatorRequest     TranslatorRequest?
+  equipmentRequest      EquipmentRequest?
+  securityRequest       SecurityRequest?
   sanitationRequest  SanitationRequest?
+
   // assigned relationship to Employee:
-  assignedEmployeeId Int?
-  assignedEmployee   Employee?          @relation(fields: [assignedEmployeeId], references: [employeeId])
+  assignedEmployeeId    Int?
+  assignedEmployee      Employee?          @relation(name: "assignedTo", fields: [assignedEmployeeId], references: [employeeId])
+  // the employee who made the request
+  employeeRequestedById Int
+  employeeRequestedBy   Employee           @relation(name: "requestedBy", fields: [employeeRequestedById], references: [employeeId])
+  // which department it's made under
+  departmentUnderId     Int
+  departmentUnder       Department         @relation(fields: [departmentUnderId], references: [departmentId])
 }
 
 model TranslatorRequest {
@@ -51,18 +64,44 @@ model TranslatorRequest {
   serviceRequest   ServiceRequest @relation(fields: [serviceRequestId], references: [requestId])
 }
 
+model SecurityRequest {
+  roomNum            String
+  numOfGuards        Int
+  securityType       String
+  additionalComments String
+  // link to service request:
+  serviceRequestId   Int            @unique
+  serviceRequest     ServiceRequest @relation(fields: [serviceRequestId], references: [requestId])
+}
+
+model EquipmentRequest {
+  roomNum          String
+  startDateTime    DateTime
+  endDateTime      DateTime
+  medicalDevice    String
+  signature        String //picture of signature
+  quantity         Int
+  comments         String
+  // link to service request
+  serviceRequestId Int            @unique
+  serviceRequest   ServiceRequest @relation(fields: [serviceRequestId], references: [requestId])
+}
+
 enum RequestType {
   TranslatorRequest
+  EquipmentRequest
+  SecurityRequest
 }
 
 model Department {
-  departmentId      Int     @id @default(autoincrement())
+  departmentId      Int              @id @default(autoincrement())
   name              String
   floor             Int
   suite             String
   specialtyServices String
   hours             String?
   telephone         String
+  serviceRequests   ServiceRequest[]
 }
 
 // --- The SanitationRequest model ---

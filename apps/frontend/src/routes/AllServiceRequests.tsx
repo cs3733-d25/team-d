@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, {useEffect, useState} from "react";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+
 import {
     Table,
     TableBody,
@@ -7,16 +9,32 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
+} from "../components/ui/table.tsx";
+import axios from "axios";
 
-interface TranslatorRequest {
+interface TranslatorRequest{
     languageFrom: string;
     languageTo: string;
     roomNum: number;
     startDateTime: number;
     endDateTime: number;
-    serviceRequestId: number;
+}
+
+export interface EquipmentRequest {
+    medicalDevice: string;
+    signature: string;
+    quantity: number;
+    comments: string;
+    roomNum: string;
+    startDateTime: string;
+    endDateTime: string;
+}
+
+export interface SecurityRequest {
+    numOfGuards: number;
+    securityType: string;
+    additionalComments: string;
+    roomNum: string;
 }
 
 interface SanitationRequest {
@@ -29,91 +47,175 @@ interface SanitationRequest {
     comments: string;
 }
 
-interface AllRequestsResponse {
-    translatorRequests: TranslatorRequest[];
-    sanitationRequests: SanitationRequest[];
+export interface ServiceRequest {
+    requestId: number;
+    createdAt: number;
+    updatedAt: number;
+    assignedEmployeeId: number;
+    translatorRequest: TranslatorRequest;
+    equipmentRequest: EquipmentRequest;
+    securityRequest: SecurityRequest;
+    requestStatus: string;
+    priority: string;
+    employeeRequestedById: number;
+    departmentUnderId: number;
 }
+
+
+
 
 export default function ShowAllRequests() {
-    const [translatorData, setTranslatorData] = useState<TranslatorRequest[]>([]);
-    const [sanitationData, setSanitationData] = useState<SanitationRequest[]>([]);
+    const [dataTranslator, setDataTranslator] = useState<ServiceRequest[]>([]);
+    const [dataEquipment, setDataEquipment] = useState<ServiceRequest[]>([]);
+    const [dataSecurity, setDataSecurity] = useState<ServiceRequest[]>([]);
 
     useEffect(() => {
-        axios
-            .get<AllRequestsResponse>("api/servicereqs/all")
-            .then((response) => {
-                setTranslatorData(response.data.translatorRequests);
-                setSanitationData(response.data.sanitationRequests);
-            })
-            .catch((error) => console.error(error));
-    }, []);
+        console.log('Fetching---');
+        // getRequests();
+        axios.get('api/servicereqs/translator').then((response) => {
+            setDataTranslator(response.data);
+            console.log(response.data);
+        })
+
+        axios.get('/api/servicereqs/equipment').then((response) => {
+            setDataEquipment(response.data);
+            console.log(response.data);
+        })
+
+        axios.get('/api/servicereqs/security').then((response) => {
+            setDataSecurity(response.data);
+            console.log(response.data);
+        })
+    }, [])
 
     return (
-        <div className="min-h-screen w-full p-6 bg-white">
-            <h2 className="text-2xl font-bold mb-6">All Service Requests</h2>
+        <>
+            <div className="min-h-screen w-full p-6 bg-white">
+                <div className="flex items-center gap-4 mb-6">
+                    <h2 className="text-xl font-bold">Service Request Database:</h2>
+                    <br/>
+                </div>
 
-            {/* Translator Requests Table */}
-            <div className="mb-10">
-                <h3 className="text-xl font-semibold mb-3">Translator Requests</h3>
+                <h2 className="text-xl font-bold">Translator Requests</h2>
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead>Request ID</TableHead>
-                            <TableHead>Language From</TableHead>
+                            <TableHead className="w-32">Request ID</TableHead>
+                            <TableHead>Requested By</TableHead>
+                            <TableHead>Department</TableHead>
+                            <TableHead>Assigned Employee</TableHead>
                             <TableHead>Language To</TableHead>
-                            <TableHead>Room #</TableHead>
-                            <TableHead>Start</TableHead>
-                            <TableHead>End</TableHead>
+                            <TableHead>Language From</TableHead>
+                            <TableHead>Room Number</TableHead>
+                            <TableHead>Priority</TableHead>
+                            <TableHead>Status</TableHead>
+                            <TableHead>Created At</TableHead>
+                            <TableHead>Updated At</TableHead>
                         </TableRow>
                     </TableHeader>
+
                     <TableBody>
-                        {translatorData.map((req) => (
-                            <TableRow key={req.serviceRequestId}>
-                                <TableCell>{req.serviceRequestId}</TableCell>
-                                <TableCell>{req.languageFrom}</TableCell>
-                                <TableCell>{req.languageTo}</TableCell>
-                                <TableCell>{req.roomNum}</TableCell>
-                                <TableCell>{req.startDateTime}</TableCell>
-                                <TableCell>{req.endDateTime}</TableCell>
+                        {dataTranslator.map((element, i) => (
+                            <TableRow key={i}>
+                                <TableCell>{element.requestId}</TableCell>
+                                <TableCell>{element.employeeRequestedById}</TableCell>
+                                <TableCell>{element.departmentUnderId}</TableCell>
+                                <TableCell>{element.assignedEmployeeId}</TableCell>
+                                <TableCell>{element.translatorRequest.languageTo}</TableCell>
+                                <TableCell>{element.translatorRequest.languageFrom}</TableCell>
+                                <TableCell>{element.translatorRequest.roomNum}</TableCell>
+                                <TableCell>{element.priority}</TableCell>
+                                <TableCell>{element.requestStatus}</TableCell>
+                                <TableCell>{element.createdAt}</TableCell>
+                                <TableCell>{element.updatedAt}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
                 </Table>
-            </div>
 
-            {/* Sanitation Requests Table */}
-            <div>
-                <h3 className="text-xl font-semibold mb-3">Sanitation Requests</h3>
+
+                <h2 className="text-xl font-bold">Equipment Requests</h2>
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead>Request ID</TableHead>
-                            <TableHead>Room #</TableHead>
-                            <TableHead>Date</TableHead>
-                            <TableHead>Priority</TableHead>
-                            <TableHead>Type</TableHead>
-                            <TableHead>Status</TableHead>
+                            <TableHead className="w-32">Request ID</TableHead>
+                            <TableHead>Requested By</TableHead>
+                            <TableHead>Department</TableHead>
+                            <TableHead>Assigned Employee</TableHead>
+                            <TableHead>Medical Device</TableHead>
+                            <TableHead>Quantity</TableHead>
+                            <TableHead>Room Number</TableHead>
                             <TableHead>Comments</TableHead>
+                            <TableHead>Signature</TableHead>
+                            <TableHead>Priority</TableHead>
+                            <TableHead>Status</TableHead>
+                            <TableHead>Created At</TableHead>
+                            <TableHead>Updated At</TableHead>
                         </TableRow>
                     </TableHeader>
+
                     <TableBody>
-                        {sanitationData.map((req) => (
-                            <TableRow key={req.serviceRequestId}>
-                                <TableCell>{req.serviceRequestId}</TableCell>
-                                <TableCell>{req.roomNumber}</TableCell>
-                                <TableCell>{req.date}</TableCell>
-                                <TableCell>{req.priority}</TableCell>
-                                <TableCell>{req.type}</TableCell>
-                                <TableCell>{req.status}</TableCell>
-                                <TableCell>{req.comments}</TableCell>
+                        {dataEquipment.map((element, j) => (
+                            <TableRow key={j}>
+                                <TableCell>{element.requestId}</TableCell>
+                                <TableCell>{element.employeeRequestedById}</TableCell>
+                                <TableCell>{element.departmentUnderId}</TableCell>
+                                <TableCell>{element.assignedEmployeeId}</TableCell>
+                                <TableCell>{element.equipmentRequest.medicalDevice}</TableCell>
+                                <TableCell>{element.equipmentRequest.quantity}</TableCell>
+                                <TableCell>{element.equipmentRequest.roomNum}</TableCell>
+                                <TableCell>{element.equipmentRequest.comments}</TableCell>
+                                <TableCell>{element.equipmentRequest.signature}</TableCell>
+                                <TableCell>{element.priority}</TableCell>
+                                <TableCell>{element.requestStatus}</TableCell>
+                                <TableCell>{element.createdAt}</TableCell>
+                                <TableCell>{element.updatedAt}</TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+
+
+                <h2 className="text-xl font-bold">Security Requests</h2>
+                <Table>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead className="w-32">Request ID</TableHead>
+                            <TableHead>Requested By</TableHead>
+                            <TableHead>Department</TableHead>
+                            <TableHead>Assigned Employee</TableHead>
+                            <TableHead>Security Type</TableHead>
+                            <TableHead>Guards Needed</TableHead>
+                            <TableHead>Room Number</TableHead>
+                            <TableHead>Additional Comments</TableHead>
+                            <TableHead>Priority</TableHead>
+                            <TableHead>Status</TableHead>
+                            <TableHead>Created At</TableHead>
+                            <TableHead>Updated At</TableHead>
+                        </TableRow>
+                    </TableHeader>
+
+                    <TableBody>
+                        {dataSecurity.map((element, j) => (
+                            <TableRow key={j}>
+                                <TableCell>{element.requestId}</TableCell>
+                                <TableCell>{element.employeeRequestedById}</TableCell>
+                                <TableCell>{element.departmentUnderId}</TableCell>
+                                <TableCell>{element.assignedEmployeeId}</TableCell>
+                                <TableCell>{element.securityRequest.securityType}</TableCell>
+                                <TableCell>{element.securityRequest.numOfGuards}</TableCell>
+                                <TableCell>{element.securityRequest.roomNum}</TableCell>
+                                <TableCell>{element.securityRequest.additionalComments}</TableCell>
+                                <TableCell>{element.priority}</TableCell>
+                                <TableCell>{element.requestStatus}</TableCell>
+                                <TableCell>{element.createdAt}</TableCell>
+                                <TableCell>{element.updatedAt}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
                 </Table>
             </div>
-        </div>
+        </>
     );
-}
-
-
+};
 

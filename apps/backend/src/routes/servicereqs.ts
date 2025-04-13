@@ -3,12 +3,14 @@ import PrismaClient from '../bin/prisma-client';
 import { Prisma } from 'database';
 const router: Router = express.Router();
 
-// Returns all service requests, if any
+// GET ALL SERVICE REQUESTS
 router.get('/', async function (req: Request, res: Response) {
     // Query db, store response
     const requests = await PrismaClient.serviceRequest.findMany({
         include: {
             translatorRequest: true,
+            equipmentRequest: true,
+            securityRequest: true,
             sanitationRequest: true,
         },
     });
@@ -24,13 +26,17 @@ router.get('/', async function (req: Request, res: Response) {
     }
 });
 
-// Returns only translator requests, if any
-// /api/servicereqs/translator
+// GET ALL TRANSLATOR REQUESTS
 router.get('/translator', async function (req: Request, res: Response) {
     // Find all service request of type translator request
-    const translatorRequests = await PrismaClient.translatorRequest.findMany({
+    const translatorRequests = await PrismaClient.serviceRequest.findMany({
+        where: {
+            translatorRequest: {
+                isNot: null,
+            },
+        },
         include: {
-            serviceRequest: true,
+            translatorRequest: true,
         },
     });
 
@@ -46,28 +52,102 @@ router.get('/translator', async function (req: Request, res: Response) {
     }
 });
 
-//
+// GET ALL SECURITY REQUESTS
+router.get('/security', async function (req: Request, res: Response) {
+    // Find all service request of type equipment request
+    const securityRequests = await PrismaClient.serviceRequest.findMany({
+        where: {
+            securityRequest: {
+                isNot: null,
+            },
+        },
+        include: {
+            securityRequest: true,
+        },
+    });
+
+    // If no service request with the ID is found, send 204 and log it
+    if (securityRequests == null) {
+        console.error(`No security requests found in database!`);
+        res.sendStatus(204);
+    }
+    // Otherwise send 200 and the data
+    else {
+        console.log(securityRequests);
+        res.json(securityRequests);
+    }
+});
+
+// GET ALL MEDICAL EQUIPMENT REQUESTS
+router.get('/equipment', async function (req: Request, res: Response) {
+    // Find all service request of type equipment request
+    const equipmentRequests = await PrismaClient.serviceRequest.findMany({
+        where: {
+            equipmentRequest: {
+                isNot: null,
+            },
+        },
+        include: {
+            equipmentRequest: true,
+        },
+    });
+
+    // If no service request with the ID is found, send 204 and log it
+    if (equipmentRequests == null) {
+        console.error(`No medical device requests found in database!`);
+        res.sendStatus(204);
+    }
+    // Otherwise send 200 and the data
+    else {
+        console.log(equipmentRequests);
+        res.json(equipmentRequests);
+    }
+});
+
 // Post request to add service requests to the database
 router.post('/translator', async function (req: Request, res: Response) {
-    const serviceRequestAttempt: Prisma.ServiceRequestCreateInput = req.body;
+    const {
+        languageTo,
+        languageFrom,
+        roomNum,
+        employeeRequestedById,
+        departmentUnderId,
+        priority,
+        requestStatus,
+    } = req.body;
     try {
         await PrismaClient.serviceRequest.create({
             data: {
                 assignedEmployeeId: null,
+                requestStatus,
+                priority,
+                departmentUnderId,
+                employeeRequestedById,
                 translatorRequest: {
                     create: {
-                        languageFrom: req.body.languageFrom,
-                        languageTo: req.body.languageTo,
-                        roomNum: req.body.roomNum,
+                        languageFrom,
+                        languageTo,
+                        roomNum,
                         startDateTime: req.body.startDateTime + ':00.000Z',
                         endDateTime: req.body.endDateTime + ':00.000Z',
                     },
                 },
+                // equipmentRequest: {
+                //     create: {
+                //         roomNum: req.body.roomNum,
+                //         medicalDevice: req.body.medicalDevice,
+                //         quantity: req.body.quantity,
+                //         signature: req.body.signature,
+                //         comments: req.body.comments,
+                //         startDateTime: req.body.startDateTime + ':00.000Z',
+                //         endDateTime: req.body.endDateTime + ':00.000Z',
+                //     },
+                // },
             },
         });
         console.log('Service request created');
     } catch (error) {
-        console.error(`Unable to create a new service request ${serviceRequestAttempt}: ${error}`);
+        console.error(`Unable to create a new service request: ${error}`);
         res.sendStatus(400);
         return;
     }
@@ -76,126 +156,276 @@ router.post('/translator', async function (req: Request, res: Response) {
 });
 
 // Return a service request with specified id
-// router.get('/:id', async function (req: Request, res: Response) {
-//     // Parse the id param into a variable
-//     const requestId: number = Number(req.params.id);
-//     // Find the service request with the id
-//     const request = await PrismaClient.serviceRequest.findUnique({
-//         where: { requestId: requestId },
-//         include: {
-//             translatorRequest: true,
-//             sanitationRequest: true,
-//         },
-//     });
-//
-//     // If no service request with the ID is found, send 204 and log it
-//     if (request == null) {
-//         console.error(`The request with Id ${requestId} not found in database!`);
-//         res.sendStatus(204);
-//     }
-//     // Otherwise send 200 and the data
-//     else {
-//         console.log(request);
-//         res.json(request);
-//     }
-// });
-//
-// // Update service request with specified id
-// router.put('/:id', async function (req: Request, res: Response) {
-//     // parse id into variable
-//     const requestId: number = Number(req.params.id);
-//
-//     // find translator request with id
-//     const request = await PrismaClient.translatorRequest.findUnique({
-//         where: { serviceRequestId: requestId },
-//     });
-//
-//     // error if no service request with the id is found
-//     if (request == null) {
-//         console.error(`The request with Id ${requestId} not found in database!`);
-//         res.status(404);
-//     }
-//     // success: update specified service request
-//     else {
-//         try {
-//             const {
-//                 languageTo,
-//                 languageFrom,
-//                 roomNum,
-//                 startDateTime,
-//                 endDateTime,
-//                 assignedEmployeeId,
-//             } = req.body;
-//             const [updateTranslatorRequest, updateServiceRequest] = await PrismaClient.$transaction(
-//                 [
-//                     PrismaClient.translatorRequest.update({
-//                         where: { serviceRequestId: requestId },
-//                         data: { languageTo, languageFrom, roomNum, startDateTime, endDateTime },
-//                     }),
-//                     PrismaClient.serviceRequest.update({
-//                         where: { requestId: requestId },
-//                         data: { assignedEmployeeId },
-//                     }),
-//                 ]
-//             );
-//             // send 200 and updated service request if success
-//             res.status(200).json({
-//                 message: 'Successfully updated service request',
-//                 updateServiceRequest,
-//                 updateTranslatorRequest,
-//             });
-//             // send 400 and error message if request cannot be updated
-//         } catch (error) {
-//             console.error(`Unable to update service request ${requestId}: ${error}`);
-//             res.sendStatus(400);
-//         }
-//     }
-// });
-//
-// // Delete service request with specific id
-// router.delete('/:id', async function (req: Request, res: Response) {
-//     // parse id into variable
-//     const requestId: number = Number(req.params.id);
-//     // find service request with id
-//     const serviceRequest = await PrismaClient.serviceRequest.findUnique({
-//         where: { requestId: requestId },
-//     });
-//     const translatorRequest = await PrismaClient.translatorRequest.findUnique({
-//         where: { serviceRequestId: requestId },
-//     });
-//
-//     // error if no service request with the id is found
-//     if (serviceRequest == null || translatorRequest == null) {
-//         console.error(`The request with Id ${requestId} not found in database!`);
-//         res.status(404);
-//     }
-//     // success: delete specified service request
-//     else {
-//         try {
-//             const [deleteTranslatorRequest, deleteServiceRequest] = await PrismaClient.$transaction(
-//                 [
-//                     PrismaClient.translatorRequest.delete({
-//                         where: { serviceRequestId: requestId },
-//                     }),
-//                     PrismaClient.serviceRequest.delete({
-//                         where: { requestId: requestId },
-//                     }),
-//                 ]
-//             );
-//
-//             // send 200 if success
-//             res.status(200).json({
-//                 message: 'Successfully deleted service request',
-//                 deleteServiceRequest,
-//                 deleteTranslatorRequest,
-//             });
-//             // send 400 and error message if request cannot be updated
-//         } catch (error) {
-//             console.error(`Unable to delete service request ${requestId}: ${error}`);
-//             res.sendStatus(400);
-//         }
-//     }
-// });
+router.get('/:id', async function (req: Request, res: Response) {
+    // Parse the id param into a variable
+    const requestNum: number = Number(req.params.id);
+    // Find the service request with the id
+    const request = await PrismaClient.serviceRequest.findUnique({
+        where: { requestId: requestNum },
+        include: {
+            translatorRequest: true,
+            equipmentRequest: true,
+            securityRequest: true,
+        },
+    });
+
+    // If no service request with the ID is found, send 204 and log it
+    if (request == null) {
+        console.error(`The request with Id ${requestNum} not found in database!`);
+        res.sendStatus(204);
+    }
+    // Otherwise send 200 and the data
+    else {
+        console.log(request);
+        res.json(request);
+    }
+});
+
+// Update service request with specified id
+router.put('/:id', async function (req: Request, res: Response) {
+    // parse id into variable
+    const requestId: number = Number(req.params.id);
+
+    // find translator request with id
+    const request = await PrismaClient.translatorRequest.findUnique({
+        where: { serviceRequestId: requestId },
+    });
+
+    // error if no service request with the id is found
+    if (request == null) {
+        console.error(`The request with Id ${requestId} not found in database!`);
+        res.status(404);
+    }
+    // success: update specified service request
+    else {
+        try {
+            const {
+                languageTo,
+                languageFrom,
+                roomNum,
+                startDateTime,
+                endDateTime,
+                assignedEmployeeId,
+                employeeRequestedById,
+                departmentUnderId,
+                priority,
+                requestStatus,
+                medicalDevice,
+                quantity,
+                signature,
+                numOfGuards,
+                securityType,
+                additionalComments,
+            } = req.body;
+            const [
+                updateTranslatorRequest,
+                updateServiceRequest,
+                updateSecurityRequest,
+                updateEquipmentRequest,
+            ] = await PrismaClient.$transaction([
+                PrismaClient.translatorRequest.update({
+                    where: { serviceRequestId: requestId },
+                    data: {
+                        languageTo,
+                        languageFrom,
+                        roomNum,
+                        startDateTime,
+                        endDateTime,
+                    },
+                }),
+                PrismaClient.equipmentRequest.update({
+                    where: { serviceRequestId: requestId },
+                    data: {
+                        medicalDevice,
+                        quantity,
+                        signature,
+                    },
+                }),
+                PrismaClient.securityRequest.update({
+                    where: { serviceRequestId: requestId },
+                    data: {
+                        numOfGuards,
+                        securityType,
+                        additionalComments,
+                    },
+                }),
+                PrismaClient.serviceRequest.update({
+                    where: { requestId: requestId },
+                    data: {
+                        assignedEmployeeId,
+                        priority,
+                        requestStatus,
+                        employeeRequestedById,
+                        departmentUnderId,
+                    },
+                }),
+            ]);
+            // send 200 and updated service request if success
+            res.status(200).json({
+                message: 'Successfully updated service request',
+                updateServiceRequest,
+                updateTranslatorRequest,
+                updateSecurityRequest,
+                updateEquipmentRequest,
+            });
+            // send 400 and error message if request cannot be updated
+        } catch (error) {
+            console.error(`Unable to update service request ${requestId}: ${error}`);
+            res.sendStatus(400);
+        }
+    }
+});
+
+// Delete service request with specific id
+router.delete('/:id', async function (req: Request, res: Response) {
+    // parse id into variable
+    const requestId: number = Number(req.params.id);
+    // find service request with id
+    const serviceRequest = await PrismaClient.serviceRequest.findUnique({
+        where: { requestId: requestId },
+    });
+    const translatorRequest = await PrismaClient.translatorRequest.findUnique({
+        where: { serviceRequestId: requestId },
+    });
+    const equipmentRequest = await PrismaClient.equipmentRequest.findUnique({
+        where: { serviceRequestId: requestId },
+    });
+    const securityRequest = await PrismaClient.securityRequest.findUnique({
+        where: { serviceRequestId: requestId },
+    });
+
+    // error if no service request with the id is found
+    if (
+        serviceRequest == null &&
+        translatorRequest == null &&
+        equipmentRequest == null &&
+        securityRequest == null
+    ) {
+        console.error(`The request with Id ${requestId} not found in database!`);
+        res.status(404);
+    }
+    // success: delete specified service request
+    else {
+        try {
+            const [
+                deleteTranslatorRequest,
+                deleteEquipmentRequest,
+                deleteServiceRequest,
+                deleteSecurityRequest,
+            ] = await PrismaClient.$transaction([
+                PrismaClient.translatorRequest.delete({
+                    where: { serviceRequestId: requestId },
+                }),
+                PrismaClient.equipmentRequest.delete({
+                    where: { serviceRequestId: requestId },
+                }),
+                PrismaClient.serviceRequest.delete({
+                    where: { requestId: requestId },
+                }),
+                PrismaClient.securityRequest.delete({
+                    where: { serviceRequestId: requestId },
+                }),
+            ]);
+
+            // send 200 if success
+            res.status(200).json({
+                message: 'Successfully deleted service request',
+                deleteServiceRequest,
+                deleteTranslatorRequest,
+                deleteEquipmentRequest,
+                deleteSecurityRequest,
+            });
+            // send 400 and error message if request cannot be updated
+        } catch (error) {
+            console.error(`Unable to delete service request ${requestId}: ${error}`);
+            res.sendStatus(400);
+        }
+    }
+});
+
+// Post request to add security requests to the database
+router.post('/security', async function (req: Request, res: Response) {
+    const {
+        numOfGuards,
+        securityType,
+        additionalComments,
+        roomNum,
+        employeeRequestedById,
+        departmentUnderId,
+        priority,
+        requestStatus,
+    } = req.body;
+    try {
+        await PrismaClient.serviceRequest.create({
+            data: {
+                assignedEmployeeId: null,
+                employeeRequestedById,
+                departmentUnderId,
+                priority,
+                requestStatus,
+                securityRequest: {
+                    create: {
+                        roomNum,
+                        numOfGuards,
+                        securityType,
+                        additionalComments,
+                    },
+                },
+            },
+        });
+        console.log('Service request created');
+    } catch (error) {
+        console.error(`Unable to create a new service request: ${error}`);
+        res.sendStatus(400);
+        return;
+    }
+
+    res.sendStatus(200);
+});
+
+// Post request to add medical device requests to the database
+router.post('/equipment', async function (req: Request, res: Response) {
+    const {
+        medicalDevice,
+        quantity,
+        comments,
+        signature,
+        roomNum,
+        employeeRequestedById,
+        departmentUnderId,
+        priority,
+        requestStatus,
+    } = req.body;
+    try {
+        await PrismaClient.serviceRequest.create({
+            data: {
+                assignedEmployeeId: null,
+                employeeRequestedById,
+                departmentUnderId,
+                priority,
+                requestStatus,
+                equipmentRequest: {
+                    create: {
+                        roomNum,
+                        medicalDevice,
+                        quantity,
+                        signature,
+                        comments,
+                        startDateTime: req.body.startDateTime + ':00.000Z',
+                        endDateTime: req.body.endDateTime + ':00.000Z',
+                    },
+                },
+            },
+        });
+        console.log('Service request created');
+    } catch (error) {
+        console.error(`Unable to create a new service request: ${error}`);
+        res.sendStatus(400);
+        return;
+    }
+
+    res.sendStatus(200);
+});
 
 router.post('/sanitation', async (req, res) => {
     const { roomNumber, priority, type, status, comments } = req.body;
@@ -247,5 +477,6 @@ router.get('/sanitation', async (req, res) => {
         res.json(sanitationRequests);
     }
 });
+
 
 export default router;
