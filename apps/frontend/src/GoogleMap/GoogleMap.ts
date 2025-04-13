@@ -24,8 +24,10 @@ export default class GoogleMap {
         // Make map
         this.map = new google.maps.Map(mapRef, {
             mapTypeControl: false,
-            center: {lat: 42.32610824896946, lng: -71.14955534500426},
-            zoom: 20,
+            center: {lat: 42.09274507452062, lng: -71.26652770742672},
+            zoom: 19,
+            // center: {lat: 42.32610824896946, lng: -71.14955534500426},
+            // zoom: 20,
         });
 
         // Make directions
@@ -49,6 +51,17 @@ export default class GoogleMap {
                 this.route();
             }
         });
+
+        // console.log('hi');
+        // new google.maps.GroundOverlay(
+        //     '/src/public/floormaps/pp22f4-trans.png',
+        //     {
+        //         north: 42.09308,
+        //         south: 42.09223,
+        //         east: -71.26654,
+        //         west: -71.26744,
+        //     }
+        // ).setMap(this.map);
 
         // Set floor maps
         this.floorMaps = new Map<number, google.maps.GroundOverlay>();
@@ -98,7 +111,7 @@ export default class GoogleMap {
         }
         // If the floor has changed, show the current floor
         if (props.floor) {
-            const floorMap = this.floorMaps.get(props.floor.floorId)
+            const floorMap = this.floorMaps.get(props.floor.floorId);
             if (!floorMap) {
                 console.log('Getting floor map url from ' + props.floor.imageURL + ' ' + props.floor.north);
                 const newFloorMap = new google.maps.GroundOverlay(props.floor.imageURL, {
