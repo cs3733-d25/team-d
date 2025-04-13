@@ -17,6 +17,8 @@ export default class GoogleMap {
 
     constructor(mapRef: HTMLDivElement, props: GoogleMapProps) {
 
+        console.log(chestnutHill1);
+
         if (!mapRef || !props.autoCompleteRef.current) throw new Error('Missing References');
 
         // Make map
@@ -58,7 +60,7 @@ export default class GoogleMap {
     }
 
     private route(): void {
-        // cant go anywher ewithout start and end
+        // can't go anywhere without start and end
         if (!this.startPlaceId || !this.destinationPlaceId) {
             console.log('Insufficient fields')
             return;
@@ -98,14 +100,17 @@ export default class GoogleMap {
         if (props.floor) {
             const floorMap = this.floorMaps.get(props.floor.floorId)
             if (!floorMap) {
-                const newFloorMap = new google.maps.GroundOverlay(chestnutHill1, {
-                    north: 42.32629629062394,
-                    south: 42.32566563128395,
-                    east: -71.14918542914931,
-                    west: -71.15015356316003,
+                console.log('Getting floor map url from ' + props.floor.imageURL + ' ' + props.floor.north);
+                const newFloorMap = new google.maps.GroundOverlay(props.floor.imageURL, {
+                    north: props.floor.north,
+                    south: props.floor.south,
+                    east: props.floor.east,
+                    west: props.floor.west,
                 });
                 this.floorMaps.set(props.floor.floorId, newFloorMap);
                 this.floorMap = newFloorMap;
+
+                // let fm1 = new google.maps.GroundOverlay()
             }
             else {
                 this.floorMap = floorMap;

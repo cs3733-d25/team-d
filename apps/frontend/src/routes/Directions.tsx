@@ -18,7 +18,11 @@ export type Hospital = {
 export type Floor = {
     floorId: number
     num: number
-    imageUrl: string
+    imageURL: string
+    north: number
+    south: number
+    east: number
+    west: number
     Departments: Department[]
 }
 
@@ -29,6 +33,8 @@ export type Department = {
 }
 
 export default function Directions() {
+
+    const departmentRef = useRef<HTMLSelectElement | null>(null);
 
     const [data, setData] = useState<Hospital[]>([]);
 
@@ -49,6 +55,9 @@ export default function Directions() {
     const [department, setDepartment] = useState<Department | undefined>();
 
     const handleHospitalChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        if (departmentRef.current) {
+            departmentRef.current.value = '';
+        }
         for (const h of data) {
             if (h.name === e.target.value) {
                 setHospital(h);
@@ -82,10 +91,10 @@ export default function Directions() {
                     <br/>
                     <label htmlFor="location-dropdown">Destination Hospital</label>
                     <br/>
-                    <select id="location-dropdown" name="location-dropdown" onChange={handleHospitalChange}>
-                        <option value="" selected disabled>Choose a hospital</option>
+                    <select id="location-dropdown" name="location-dropdown" onChange={handleHospitalChange} defaultValue="">
+                        <option key="0" value="" disabled>Choose a hospital</option>
                         {data.map((hospital: Hospital) => (
-                            <option value={hospital.name}>{hospital.name}</option>
+                            <option key={hospital.hospitalId + 1} value={hospital.name}>{hospital.name}</option>
                         ))}
                     </select>
                     {hospital && <>
@@ -93,11 +102,11 @@ export default function Directions() {
                         <br/>
                         <label htmlFor="department-dropdown">Choose a location</label>
                         <br/>
-                        <select id="department-dropdown" name="department-dropdown" onChange={handleDepartmentChange}>
-                            <option value="" selected disabled>Choose here</option>
+                        <select id="department-dropdown" name="department-dropdown" onChange={handleDepartmentChange} defaultValue="" ref={departmentRef}>
+                            <option key="0" value="" disabled>Choose here</option>
                             {hospital.Floors.map((floor: Floor) => (
                                 floor.Departments.map((department: Department) => (
-                                    <option value={department.name}>{department.name}</option>))))}
+                                    <option key={department.name + 1} value={department.name}>{department.name}</option>))))}
                         </select>
                     </>}
                 </div>

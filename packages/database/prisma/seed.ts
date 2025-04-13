@@ -297,7 +297,14 @@ async function main() {
     const hospitals = [
         await prisma.hospital.upsert({
             where: {hospitalId: 0},
-            update: {},
+            update: {
+                hospitalId: 0,
+                name: 'Chestnut Hill',
+                placeId: 'ChIJLwkLvP5444kRGTnWxi0zsnM',
+                defaultZoom: 20,
+                defaultLat: 42.325956546246374,
+                defaultLong: -71.14971804046458,
+            },
             create: {
                 hospitalId: 0,
                 name: 'Chestnut Hill',
@@ -309,7 +316,14 @@ async function main() {
         }),
         await prisma.hospital.upsert({
             where: {hospitalId: 1},
-            update: {},
+            update: {
+                hospitalId: 1,
+                name: 'Patriot Place',
+                placeId: 'ChIJKQrcBrd85IkRhhpDZMarvhQ',
+                defaultZoom: 20,
+                defaultLat: 42.092855424416726,
+                defaultLong: -71.26659035290484
+            },
             create: {
                 hospitalId: 1,
                 name: 'Patriot Place',
@@ -329,41 +343,93 @@ async function main() {
     const floors = [
         await prisma.floor.upsert({
             where: {floorId: 0},
-            update: {},
+            update: {
+                floorId: 0,
+                num: 1,
+                imageURL: '/src/public/rotated-solid.png',
+                north: 42.32629629062394,
+                south: 42.32566563128395,
+                east: -71.14918542914931,
+                west: -71.15015356316003,
+                hospitalId: 0,
+            },
             create: {
                 floorId: 0,
                 num: 1,
-                imageURL: '',
+                imageURL: '/src/public/rotated-solid.png',
+                north: 42.32629629062394,
+                south: 42.32566563128395,
+                east: -71.14918542914931,
+                west: -71.15015356316003,
                 hospitalId: 0,
             },
         }),
         await prisma.floor.upsert({
             where: {floorId: 1},
-            update: {},
+            update: {
+                floorId: 1,
+                num: 1,
+                imageURL: '/src/public/rotated-transparent.png',
+                north: 42.32629629062394,
+                south: 42.32566563128395,
+                east: -71.14918542914931,
+                west: -71.15015356316003,
+                hospitalId: 1,
+            },
             create: {
                 floorId: 1,
                 num: 1,
-                imageURL: '',
+                imageURL: '/src/public/rotated-transparent.png',
+                north: 42.32629629062394,
+                south: 42.32566563128395,
+                east: -71.14918542914931,
+                west: -71.15015356316003,
                 hospitalId: 1,
             },
         }),
         await prisma.floor.upsert({
             where: {floorId: 2},
-            update: {},
+            update: {
+                floorId: 2,
+                num: 3,
+                imageURL: '/src/public/rotated-solid.png',
+                north: 42.32629629062394,
+                south: 42.32566563128395,
+                east: -71.14918542914931,
+                west: -71.15015356316003,
+                hospitalId: 1,
+            },
             create: {
                 floorId: 2,
                 num: 3,
-                imageURL: '',
+                imageURL: '/src/public/rotated-solid.png',
+                north: 42.32629629062394,
+                south: 42.32566563128395,
+                east: -71.14918542914931,
+                west: -71.15015356316003,
                 hospitalId: 1,
             },
         }),
         await prisma.floor.upsert({
             where: {floorId: 3},
-            update: {},
+            update: {
+                floorId: 3,
+                num: 4,
+                imageURL: '/src/public/rotated-transparent.png',
+                north: 42.32629629062394,
+                south: 42.32566563128395,
+                east: -71.14918542914931,
+                west: -71.15015356316003,
+                hospitalId: 1,
+            },
             create: {
                 floorId: 3,
                 num: 4,
-                imageURL: '',
+                imageURL: '/src/public/rotated-transparent.png',
+                north: 42.32629629062394,
+                south: 42.32566563128395,
+                east: -71.14918542914931,
+                west: -71.15015356316003,
                 hospitalId: 1,
             },
         }),
@@ -376,7 +442,12 @@ async function main() {
     const departments = [
         await prisma.department.upsert({
             where: {departmentId: 0},
-            update: {},
+            update: {
+                departmentId: 0,
+                name: 'Laboratory',
+                suite: '100',
+                floorId: 0,
+            },
             create: {
                 departmentId: 0,
                 name: 'Laboratory',
@@ -386,7 +457,12 @@ async function main() {
         }),
         await prisma.department.upsert({
             where: {departmentId: 1},
-            update: {},
+            update: {
+                departmentId: 1,
+                name: 'Multi-Specialty Clinic',
+                suite: '130',
+                floorId: 0,
+            },
             create: {
                 departmentId: 1,
                 name: 'Multi-Specialty Clinic',
@@ -396,7 +472,12 @@ async function main() {
         }),
         await prisma.department.upsert({
             where: {departmentId: 2},
-            update: {},
+            update: {
+                departmentId: 2,
+                name: 'Radiology, MRI/CT scan',
+                suite: '102B',
+                floorId: 0,
+            },
             create: {
                 departmentId: 2,
                 name: 'Radiology, MRI/CT scan',
@@ -406,7 +487,12 @@ async function main() {
         }),
         await prisma.department.upsert({
             where: {departmentId: 3},
-            update: {},
+            update: {
+                departmentId: 3,
+                name: 'Blood Draw / Phlebotomy (20 floor 1)',
+                suite: '',
+                floorId: 1,
+            },
             create: {
                 departmentId: 3,
                 name: 'Blood Draw / Phlebotomy (20 floor 1)',
@@ -416,7 +502,12 @@ async function main() {
         }),
         await prisma.department.upsert({
             where: {departmentId: 4},
-            update: {},
+            update: {
+                departmentId: 4,
+                name: 'Pharmacy',
+                suite: '',
+                floorId: 1,
+            },
             create: {
                 departmentId: 4,
                 name: 'Pharmacy',
@@ -426,7 +517,12 @@ async function main() {
         }),
         await prisma.department.upsert({
             where: {departmentId: 5},
-            update: {},
+            update: {
+                departmentId: 5,
+                name: 'Radiology',
+                suite: '',
+                floorId: 1,
+            },
             create: {
                 departmentId: 5,
                 name: 'Radiology',
@@ -436,7 +532,12 @@ async function main() {
         }),
         await prisma.department.upsert({
             where: {departmentId: 6},
-            update: {},
+            update: {
+                departmentId: 6,
+                name: 'Cardiovascular Services',
+                suite: '',
+                floorId: 1,
+            },
             create: {
                 departmentId: 6,
                 name: 'Cardiovascular Services',
@@ -446,7 +547,12 @@ async function main() {
         }),
         await prisma.department.upsert({
             where: {departmentId: 7},
-            update: {},
+            update: {
+                departmentId: 7,
+                name: 'Urology',
+                suite: '',
+                floorId: 1,
+            },
             create: {
                 departmentId: 7,
                 name: 'Urology',
@@ -456,7 +562,12 @@ async function main() {
         }),
         await prisma.department.upsert({
             where: {departmentId: 8},
-            update: {},
+            update: {
+                departmentId: 8,
+                name: 'Urgent Care Center',
+                suite: '',
+                floorId: 1,
+            },
             create: {
                 departmentId: 8,
                 name: 'Urgent Care Center',
@@ -466,7 +577,12 @@ async function main() {
         }),
         await prisma.department.upsert({
             where: {departmentId: 9},
-            update: {},
+            update: {
+                departmentId: 9,
+                name: 'Multi Specialty Clinic',
+                suite: '',
+                floorId: 2,
+            },
             create: {
                 departmentId: 9,
                 name: 'Multi Specialty Clinic',
@@ -476,7 +592,12 @@ async function main() {
         }),
         await prisma.department.upsert({
             where: {departmentId: 10},
-            update: {},
+            update: {
+                departmentId: 10,
+                name: 'Patient Financial Services',
+                suite: '',
+                floorId: 2,
+            },
             create: {
                 departmentId: 10,
                 name: 'Patient Financial Services',
@@ -486,7 +607,12 @@ async function main() {
         }),
         await prisma.department.upsert({
             where: {departmentId: 11},
-            update: {},
+            update: {
+                departmentId: 11,
+                name: 'Blood Draw / Phlebotomy (22 floor 4)',
+                suite: '',
+                floorId: 3,
+            },
             create: {
                 departmentId: 11,
                 name: 'Blood Draw / Phlebotomy (22 floor 4)',
@@ -496,7 +622,12 @@ async function main() {
         }),
         await prisma.department.upsert({
             where: {departmentId: 12},
-            update: {},
+            update: {
+                departmentId: 12,
+                name: 'Community Room',
+                suite: '',
+                floorId: 3,
+            },
             create: {
                 departmentId: 12,
                 name: 'Community Room',
@@ -506,7 +637,12 @@ async function main() {
         }),
         await prisma.department.upsert({
             where: {departmentId: 13},
-            update: {},
+            update: {
+                departmentId: 13,
+                name: 'Primary Care',
+                suite: '',
+                floorId: 3,
+            },
             create: {
                 departmentId: 13,
                 name: 'Primary Care',

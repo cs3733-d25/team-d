@@ -2,7 +2,7 @@ import React, {RefObject, useEffect, useRef, useState} from 'react';
 import GoogleMap from "@/GoogleMap/GoogleMap.ts";
 import {Hospital, Floor, Department} from '@/routes/Directions.tsx'
 
-const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+const API_KEY: string = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
 
 
