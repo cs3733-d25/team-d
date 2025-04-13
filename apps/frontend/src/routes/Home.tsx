@@ -6,6 +6,9 @@ import AccessDropMenu from "@/components/accessibility.tsx";
 import Auth0LoginButton from "@/components/Auth0LoginButton.tsx";
 import Footer from "@/components/Footer.tsx";
 
+// Use for comments
+{/**/}
+
 export default function Home() {
     return (
         <>
