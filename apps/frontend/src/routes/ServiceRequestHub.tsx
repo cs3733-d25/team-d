@@ -6,8 +6,11 @@ const ServiceRequestHub = () => {
     return (
         <>
             <img src={ServiceHubBackground} className="absolute h-screen w-screen z-0" />
-            <div className="relative flex items-center justify-center h-screen">
-                <div className="absolute flex flex-row items-center justify-evenly bg-blue-900/80 w-300 h-100 z-10">
+            <div className="relative flex justify-center">
+                <div className="absolute flex items-center justify-center mt-24 bg-gray-300/80 h-20 w-110 rounded-full text-5xl text-bold font-nunito">Service Requests</div>
+            </div>
+            <div className="relative flex justify-center h-screen w-screen">
+                <div className="absolute mt-80 flex flex-row items-center justify-evenly bg-blue-900/80 w-300 h-100 z-10">
                     <ServiceRequestPopup
                         title="Request Translator"
                         iconName={faLanguage} />
