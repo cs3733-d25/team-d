@@ -430,6 +430,28 @@ async function main() {
                 requestStatus: 'Unassigned',
             },
         }),
+        await prisma.serviceRequest.upsert({
+            where: { requestId: 12},
+            update: {},
+            create: {
+                assignedEmployeeId: 3,
+                employeeRequestedById: 3,
+                departmentUnderId: 10,
+                priority: 'Low',
+                requestStatus: 'Pending',
+            },
+        }),
+        await prisma.serviceRequest.upsert({
+            where: { requestId: 13},
+            update: {},
+            create: {
+                assignedEmployeeId: null,
+                employeeRequestedById: 1,
+                departmentUnderId: 17,
+                priority: 'High',
+                requestStatus: 'Unassigned',
+            },
+        }),
     ];
 
     // Seed translator requests
@@ -569,6 +591,41 @@ async function main() {
     ];
     console.log('Translator requests seeded!')
     console.log(translatorRequests);
+
+    // Seed equipment requests
+    const equipmentRequests = [
+        await prisma.equipmentRequest.upsert({
+            where: {serviceRequestId: serviceRequests[11].requestId},
+            update: {},
+            create: {
+                serviceRequestId: serviceRequests[11].requestId,
+                medicalDevice: 'MRI',
+                quantity: 1,
+                comments: 'Please calibrate prior to appointment.',
+                signature: 'Jen',
+                roomNum: '303',
+                startDateTime: new Date('2025-04-01T22:07:00.639Z'),
+                endDateTime: new Date('2025-04-01T22:07:45.639Z'),
+            }
+        }),
+        await prisma.equipmentRequest.upsert({
+            where: {serviceRequestId: serviceRequests[12].requestId},
+            update: {},
+            create: {
+                serviceRequestId: serviceRequests[12].requestId,
+                medicalDevice: 'EKG',
+                quantity: 2,
+                comments: 'Please set up system.',
+                signature: 'Karina',
+                roomNum: '111',
+                startDateTime: new Date('2025-04-07T22:07:00.639Z'),
+                endDateTime: new Date('2025-04-07T22:08:05.639Z'),
+            }
+        }),
+    ];
+
+    console.log('Equipment requests seeded!')
+    console.log(equipmentRequests);
 
 }
 
