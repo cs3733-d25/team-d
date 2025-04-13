@@ -428,16 +428,26 @@ router.post('/equipment', async function (req: Request, res: Response) {
 });
 
 router.post('/sanitation', async (req, res) => {
-    const { roomNumber, priority, type, status, comments } = req.body;
+    const { roomNumber,
+        type,
+        status,
+        comments,
+        employeeRequestedById,
+        departmentUnderId,
+        priority,
+        requestStatus, } = req.body;
 
     try {
         await PrismaClient.serviceRequest.create({
             data: {
                 assignedEmployeeId: null,
+                employeeRequestedById,
+                departmentUnderId,
+                priority,
+                requestStatus,
                 sanitationRequest: {
                     create: {
                         roomNumber,
-                        priority,
                         type,
                         status,
                         comments

@@ -37,20 +37,20 @@ model ServiceRequest {
   priority      String
 
   // tables that inherit from ServiceRequest:
-  translatorRequest     TranslatorRequest?
-  equipmentRequest      EquipmentRequest?
-  securityRequest       SecurityRequest?
-  sanitationRequest  SanitationRequest?
+  translatorRequest TranslatorRequest?
+  equipmentRequest  EquipmentRequest?
+  securityRequest   SecurityRequest?
+  sanitationRequest SanitationRequest?
 
   // assigned relationship to Employee:
   assignedEmployeeId    Int?
-  assignedEmployee      Employee?          @relation(name: "assignedTo", fields: [assignedEmployeeId], references: [employeeId])
+  assignedEmployee      Employee?  @relation(name: "assignedTo", fields: [assignedEmployeeId], references: [employeeId])
   // the employee who made the request
   employeeRequestedById Int
-  employeeRequestedBy   Employee           @relation(name: "requestedBy", fields: [employeeRequestedById], references: [employeeId])
+  employeeRequestedBy   Employee   @relation(name: "requestedBy", fields: [employeeRequestedById], references: [employeeId])
   // which department it's made under
   departmentUnderId     Int
-  departmentUnder       Department         @relation(fields: [departmentUnderId], references: [departmentId])
+  departmentUnder       Department @relation(fields: [departmentUnderId], references: [departmentId])
 }
 
 model TranslatorRequest {
@@ -107,7 +107,6 @@ model Department {
 // --- The SanitationRequest model ---
 model SanitationRequest {
   roomNumber String
-  priority   Priority
   type       SanitationType
   status     RoomStatus
   comments   String?
