@@ -44,8 +44,8 @@ export interface ServiceRequest {
 }
 
 export default function ShowAllRequests() {
-    const [dataTranslator, setDataTranslator] = useState<ServiceRequest[]>([]);
-    const [dataEquipment, setDataEquipment] = useState<ServiceRequest[]>([]);
+    const [dataTranslator, setDataTranslator] = useState<TranslatorRequest[]>([]);
+    const [dataEquipment, setDataEquipment] = useState<EquipmentRequest[]>([]);
 
     useEffect(() => {
         console.log('Fetching---');
@@ -55,7 +55,7 @@ export default function ShowAllRequests() {
             console.log(response.data);
         })
 
-        axios.get('api/servicereqs/equipment').then((response) => {
+        axios.get('/api/servicereqs/equipment').then((response) => {
             setDataEquipment(response.data);
             console.log(response.data);
         })
@@ -118,10 +118,10 @@ export default function ShowAllRequests() {
                             <TableHead>Medical Device</TableHead>
                             <TableHead>Quantity</TableHead>
                             <TableHead>Room Number</TableHead>
-                            <TableHead>Priority</TableHead>
-                            <TableHead>Status</TableHead>
                             <TableHead>Comments</TableHead>
                             <TableHead>Signature</TableHead>
+                            <TableHead>Priority</TableHead>
+                            <TableHead>Status</TableHead>
                             <TableHead>Created At</TableHead>
                             <TableHead>Updated At</TableHead>
                         </TableRow>
@@ -137,10 +137,10 @@ export default function ShowAllRequests() {
                                 <TableCell>{element.equipmentRequest.medicalDevice}</TableCell>
                                 <TableCell>{element.equipmentRequest.quantity}</TableCell>
                                 <TableCell>{element.equipmentRequest.roomNum}</TableCell>
-                                <TableCell>{element.priority}</TableCell>
-                                <TableCell>{element.requestStatus}</TableCell>
                                 <TableCell>{element.equipmentRequest.comments}</TableCell>
                                 <TableCell>{element.equipmentRequest.signature}</TableCell>
+                                <TableCell>{element.priority}</TableCell>
+                                <TableCell>{element.requestStatus}</TableCell>
                                 <TableCell>{element.createdAt}</TableCell>
                                 <TableCell>{element.updatedAt}</TableCell>
                             </TableRow>

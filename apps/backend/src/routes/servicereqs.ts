@@ -27,9 +27,14 @@ router.get('/', async function (req: Request, res: Response) {
 // GET ALL TRANSLATOR REQUESTS
 router.get('/translator', async function (req: Request, res: Response) {
     // Find all service request of type translator request
-    const translatorRequests = await PrismaClient.translatorRequest.findMany({
+    const translatorRequests = await PrismaClient.serviceRequest.findMany({
+        where: {
+            translatorRequest: {
+                isNot: null,
+            },
+        },
         include: {
-            serviceRequest: true,
+            translatorRequest: true,
         },
     });
 
@@ -48,9 +53,14 @@ router.get('/translator', async function (req: Request, res: Response) {
 // GET ALL MEDICAL EQUIPMENT REQUESTS
 router.get('/equipment', async function (req: Request, res: Response) {
     // Find all service request of type equipment request
-    const equipmentRequests = await PrismaClient.equipmentRequest.findMany({
+    const equipmentRequests = await PrismaClient.serviceRequest.findMany({
+        where: {
+            equipmentRequest: {
+                isNot: null,
+            },
+        },
         include: {
-            serviceRequest: true,
+            equipmentRequest: true,
         },
     });
 
@@ -68,20 +78,28 @@ router.get('/equipment', async function (req: Request, res: Response) {
 
 // Post request to add service requests to the database
 router.post('/translator', async function (req: Request, res: Response) {
-    const serviceRequestAttempt: Prisma.ServiceRequestCreateInput = req.body;
+    const {
+        languageTo,
+        languageFrom,
+        roomNum,
+        employeeRequestedById,
+        departmentUnderId,
+        priority,
+        requestStatus,
+    } = req.body;
     try {
         await PrismaClient.serviceRequest.create({
             data: {
                 assignedEmployeeId: null,
-                employeeRequestedById: req.body.employee,
-                departmentUnderId: req.body.department,
-                priority: req.body.priority,
-                requestStatus: req.body.requestStatus,
+                requestStatus,
+                priority,
+                departmentUnderId,
+                employeeRequestedById,
                 translatorRequest: {
                     create: {
-                        languageFrom: req.body.languageFrom,
-                        languageTo: req.body.languageTo,
-                        roomNum: req.body.roomNum,
+                        languageFrom,
+                        languageTo,
+                        roomNum,
                         startDateTime: req.body.startDateTime + ':00.000Z',
                         endDateTime: req.body.endDateTime + ':00.000Z',
                     },
@@ -101,7 +119,7 @@ router.post('/translator', async function (req: Request, res: Response) {
         });
         console.log('Service request created');
     } catch (error) {
-        console.error(`Unable to create a new service request ${serviceRequestAttempt}: ${error}`);
+        console.error(`Unable to create a new service request: ${error}`);
         res.sendStatus(400);
         return;
     }
@@ -265,37 +283,47 @@ router.delete('/:id', async function (req: Request, res: Response) {
 });
 
 // Post request to add medical device requests to the database
-// router.post('/equipment', async function (req: Request, res: Response) {
-//     const serviceRequestAttempt: Prisma.ServiceRequestCreateInput = req.body;
-//     try {
-//         await PrismaClient.serviceRequest.create({
-//             data: {
-//                 assignedEmployeeId: null,
-//                 employeeRequestedById: req.body.employee,
-//                 departmentUnderId: req.body.department,
-//                 priority: req.body.priority,
-//                 requestStatus: req.body.requestStatus,
-//                 equipmentRequest: {
-//                     create: {
-//                         roomNum: req.body.roomNum,
-//                         medicalDevice: req.body.medicalDevice,
-//                         quantity: req.body.quantity,
-//                         signature: req.body.signature,
-//                         comments: req.body.comments,
-//                         startDateTime: req.body.startDateTime + ':00.000Z',
-//                         endDateTime: req.body.endDateTime + ':00.000Z',
-//                     }
-//                 },
-//             },
-//         });
-//         console.log('Service request created');
-//     } catch (error) {
-//         console.error(`Unable to create a new service request ${serviceRequestAttempt}: ${error}`);
-//         res.sendStatus(400);
-//         return;
-//     }
-//
-//     res.sendStatus(200);
-// });
+router.post('/equipment', async function (req: Request, res: Response) {
+    const {
+        medicalDevice,
+        quantity,
+        comments,
+        signature,
+        roomNum,
+        employeeRequestedById,
+        departmentUnderId,
+        priority,
+        requestStatus,
+    } = req.body;
+    try {
+        await PrismaClient.serviceRequest.create({
+            data: {
+                assignedEmployeeId: null,
+                employeeRequestedById,
+                departmentUnderId,
+                priority,
+                requestStatus,
+                equipmentRequest: {
+                    create: {
+                        roomNum,
+                        medicalDevice,
+                        quantity,
+                        signature,
+                        comments,
+                        startDateTime: req.body.startDateTime + ':00.000Z',
+                        endDateTime: req.body.endDateTime + ':00.000Z',
+                    },
+                },
+            },
+        });
+        console.log('Service request created');
+    } catch (error) {
+        console.error(`Unable to create a new service request: ${error}`);
+        res.sendStatus(400);
+        return;
+    }
+
+    res.sendStatus(200);
+});
 
 export default router;
