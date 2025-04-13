@@ -9,7 +9,6 @@ import { API_ROUTES } from "common/src/constants";
 
 type SanitationRequestForm = {
     roomNumber: string;
-    date: string;
     priority: string;
     type: string;
     status: string;
@@ -19,7 +18,6 @@ type SanitationRequestForm = {
 export default function SanitationRequest() {
     const [form, setForm] = useState<SanitationRequestForm>({
         roomNumber: "",
-        date: "",
         priority: "",
         type: "",
         status: "",
@@ -45,7 +43,7 @@ export default function SanitationRequest() {
 
     return (
         <>
-            {!submitted ? (
+            {/*{!submitted ? (*/}
                 <div className="grid place-items-center h-full items-center">
                     <h2 className="text-4xl font-bold pb-3">Request Sanitation</h2>
                     <form onSubmit={onSubmit} className="flex flex-col">
@@ -62,16 +60,16 @@ export default function SanitationRequest() {
                             }
                         />
 
-                        <Label className="pt-4 pb-2" htmlFor="date">
-                            Date
-                        </Label>
-                        <Input
-                            type="date"
-                            id="date"
-                            onChange={(e) =>
-                                setForm({ ...form, date: e.target.value })
-                            }
-                        />
+                        {/*<Label className="pt-4 pb-2" htmlFor="date">*/}
+                        {/*    Date*/}
+                        {/*</Label>*/}
+                        {/*<Input*/}
+                        {/*    type="date"*/}
+                        {/*    id="date"*/}
+                        {/*    onChange={(e) =>*/}
+                        {/*        setForm({ ...form, date: e.target.value })*/}
+                        {/*    }*/}
+                        {/*/>*/}
 
                         <Label className="pt-4 pb-2" htmlFor="priority">
                             Priority
@@ -84,10 +82,10 @@ export default function SanitationRequest() {
                             }
                         >
                             <option value="">-- Select Priority --</option>
-                            <option value="Low">Low</option>
-                            <option value="Normal">Normal</option>
-                            <option value="High">High</option>
-                            <option value="Urgent">Urgent</option>
+                            <option value="LOW">Low</option>
+                            <option value="NORMAL">Normal</option>
+                            <option value="HIGH">High</option>
+                            <option value="URGENT">Urgent</option>
                         </select>
 
                         <Label className="pt-4 pb-2" htmlFor="type">
@@ -101,11 +99,11 @@ export default function SanitationRequest() {
                             }
                         >
                             <option value="">-- Select Type --</option>
-                            <option value="General">General</option>
-                            <option value="Disinfect">Disinfect</option>
-                            <option value="Deep Cleaning">Deep Cleaning</option>
-                            <option value="Waste Removal">Waste Removal</option>
-                            <option value="Pest Control">Pest Control</option>
+                            <option value="GENERAL">General</option>
+                            <option value="DISINFECT">Disinfect</option>
+                            <option value="DEEP_CLEANING">Deep Cleaning</option>
+                            <option value="WASTE_REMOVAL">Waste Removal</option>
+                            <option value="PEST_CONTROL">Pest Control</option>
                         </select>
 
                         <Label className="pt-4 pb-2" htmlFor="status">
@@ -119,8 +117,8 @@ export default function SanitationRequest() {
                             }
                         >
                             <option value="">-- Select Room Status --</option>
-                            <option value="Vacant">Vacant</option>
-                            <option value="In Use">In Use</option>
+                            <option value="VACANT">Vacant</option>
+                            <option value="IN_USE">In Use</option>
                         </select>
 
                         <Label className="pt-4 pb-2" htmlFor="comments">
@@ -139,15 +137,16 @@ export default function SanitationRequest() {
                         </Button>
                     </form>
                 </div>
-            ) : (
-                <ReturnRequest
-                    languageFrom={form.roomNumber}
-                    languageTo={form.priority}
-                    roomNumber={form.date}
-                    startDateTime={form.type}
-                    endDateTime={form.comments}
-                />
-            )}
+
+            {/*// ) : (*/}
+            {/*//     <ReturnRequest*/}
+            {/*//         languageFrom={form.roomNumber}*/}
+            {/*//         languageTo={form.priority}*/}
+            {/*//         roomNumber={form.date}*/}
+            {/*//         startDateTime={form.type}*/}
+            {/*//         endDateTime={form.comments}*/}
+            {/*//     />*/}
+            {/*// )}*/}
         </>
     );
 }
