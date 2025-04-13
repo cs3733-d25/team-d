@@ -1189,7 +1189,7 @@ async function main() {
                 name: 'CH FL1',
                 floorId: 0,
             },
-        })
+        }),
     ];
 
     console.log('Graphs seeded!');

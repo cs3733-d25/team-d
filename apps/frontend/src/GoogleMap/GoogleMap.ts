@@ -22,6 +22,9 @@ export default class GoogleMap {
 
     private zoomFlag: boolean;
 
+    // TODO: remove later
+    private pointNum: number;
+
     constructor(mapRef: HTMLDivElement, props: GoogleMapProps) {
 
 
@@ -34,6 +37,15 @@ export default class GoogleMap {
             zoom: DEFAULT_ZOOM,
             // center: {lat: 42.32610824896946, lng: -71.14955534500426},
             // zoom: 20,
+        });
+
+        // TODO: remove later
+        this.map.addListener('click', (e: google.maps.MapMouseEvent) => {
+            // console.log('click', e);
+            const ll = e.latLng;
+            if (ll) {
+                console.log('Point ' + this.pointNum++ + ':   ' + ll.toJSON().lat + ' ' + ll.toJSON().lng);
+            }
         });
 
         // Make directions
@@ -58,17 +70,6 @@ export default class GoogleMap {
             }
         });
 
-        // console.log('hi');
-        // new google.maps.GroundOverlay(
-        //     '/src/public/floormaps/pp22f4-trans.png',
-        //     {
-        //         north: 42.09308,
-        //         south: 42.09223,
-        //         east: -71.26654,
-        //         west: -71.26744,
-        //     }
-        // ).setMap(this.map);
-
         // Set floor maps
         this.floorMaps = new Map<number, google.maps.GroundOverlay>();
         this.floorMap = null;
@@ -78,6 +79,9 @@ export default class GoogleMap {
         this.destinationPlaceId = '';
 
         this.zoomFlag = false;
+
+        // TODO: remove later
+        this.pointNum = 0;
     }
 
     private route(): void {
@@ -130,6 +134,15 @@ export default class GoogleMap {
                 });
                 this.floorMaps.set(props.floor.floorId, newFloorMap);
                 this.floorMap = newFloorMap;
+
+                // TODO: remove later
+                this.floorMap.addListener('click', (e: google.maps.MapMouseEvent) => {
+                    // console.log('click', e);
+                    const ll = e.latLng;
+                    if (ll) {
+                        console.log('Point ' + this.pointNum++ + ':   ' + ll.toJSON().lat + ' ' + ll.toJSON().lng);
+                    }
+                });
 
                 // let fm1 = new google.maps.GroundOverlay()
             }
