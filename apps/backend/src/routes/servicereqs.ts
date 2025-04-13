@@ -27,9 +27,14 @@ router.get('/', async function (req: Request, res: Response) {
 // GET ALL TRANSLATOR REQUESTS
 router.get('/translator', async function (req: Request, res: Response) {
     // Find all service request of type translator request
-    const translatorRequests = await PrismaClient.translatorRequest.findMany({
+    const translatorRequests = await PrismaClient.serviceRequest.findMany({
+        where: {
+            translatorRequest: {
+                isNot: null,
+            },
+        },
         include: {
-            serviceRequest: true,
+            translatorRequest: true,
         },
     });
 
@@ -48,9 +53,14 @@ router.get('/translator', async function (req: Request, res: Response) {
 // GET ALL MEDICAL EQUIPMENT REQUESTS
 router.get('/equipment', async function (req: Request, res: Response) {
     // Find all service request of type equipment request
-    const equipmentRequests = await PrismaClient.equipmentRequest.findMany({
+    const equipmentRequests = await PrismaClient.serviceRequest.findMany({
+        where: {
+            equipmentRequest: {
+                isNot: null,
+            },
+        },
         include: {
-            serviceRequest: true,
+            equipmentRequest: true,
         },
     });
 

@@ -44,8 +44,8 @@ export interface ServiceRequest {
 }
 
 export default function ShowAllRequests() {
-    const [dataTranslator, setDataTranslator] = useState<ServiceRequest[]>([]);
-    const [dataEquipment, setDataEquipment] = useState<ServiceRequest[]>([]);
+    const [dataTranslator, setDataTranslator] = useState<TranslatorRequest[]>([]);
+    const [dataEquipment, setDataEquipment] = useState<EquipmentRequest[]>([]);
 
     useEffect(() => {
         console.log('Fetching---');
@@ -94,9 +94,9 @@ export default function ShowAllRequests() {
                                 <TableCell>{element.employeeRequestedById}</TableCell>
                                 <TableCell>{element.departmentUnderId}</TableCell>
                                 <TableCell>{element.assignedEmployeeId}</TableCell>
-                                <TableCell>{element.languageTo}</TableCell>
-                                <TableCell>{element.languageFrom}</TableCell>
-                                <TableCell>{element.roomNum}</TableCell>
+                                <TableCell>{element.translatorRequest.languageTo}</TableCell>
+                                <TableCell>{element.translatorRequest.languageFrom}</TableCell>
+                                <TableCell>{element.translatorRequest.roomNum}</TableCell>
                                 <TableCell>{element.priority}</TableCell>
                                 <TableCell>{element.requestStatus}</TableCell>
                                 <TableCell>{element.createdAt}</TableCell>
@@ -118,10 +118,10 @@ export default function ShowAllRequests() {
                             <TableHead>Medical Device</TableHead>
                             <TableHead>Quantity</TableHead>
                             <TableHead>Room Number</TableHead>
-                            <TableHead>Priority</TableHead>
-                            <TableHead>Status</TableHead>
                             <TableHead>Comments</TableHead>
                             <TableHead>Signature</TableHead>
+                            <TableHead>Priority</TableHead>
+                            <TableHead>Status</TableHead>
                             <TableHead>Created At</TableHead>
                             <TableHead>Updated At</TableHead>
                         </TableRow>
@@ -134,13 +134,13 @@ export default function ShowAllRequests() {
                                 <TableCell>{element.employeeRequestedById}</TableCell>
                                 <TableCell>{element.departmentUnderId}</TableCell>
                                 <TableCell>{element.assignedEmployeeId}</TableCell>
-                                <TableCell>{element.medicalDevice}</TableCell>
-                                <TableCell>{element.quantity}</TableCell>
-                                <TableCell>{element.roomNum}</TableCell>
+                                <TableCell>{element.equipmentRequest.medicalDevice}</TableCell>
+                                <TableCell>{element.equipmentRequest.quantity}</TableCell>
+                                <TableCell>{element.equipmentRequest.roomNum}</TableCell>
+                                <TableCell>{element.equipmentRequest.comments}</TableCell>
+                                <TableCell>{element.equipmentRequest.signature}</TableCell>
                                 <TableCell>{element.priority}</TableCell>
                                 <TableCell>{element.requestStatus}</TableCell>
-                                <TableCell>{element.comments}</TableCell>
-                                <TableCell>{element.signature}</TableCell>
                                 <TableCell>{element.createdAt}</TableCell>
                                 <TableCell>{element.updatedAt}</TableCell>
                             </TableRow>
