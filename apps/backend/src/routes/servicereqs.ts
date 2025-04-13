@@ -103,7 +103,6 @@ router.get('/equipment', async function (req: Request, res: Response) {
     }
 });
 
-
 // Post request to add service requests to the database
 router.post('/translator', async function (req: Request, res: Response) {
     const {
@@ -213,46 +212,53 @@ router.put('/:id', async function (req: Request, res: Response) {
                 medicalDevice,
                 quantity,
                 signature,
+                numOfGuards,
+                securityType,
+                additionalComments,
             } = req.body;
-            const [updateTranslatorRequest, updateServiceRequest, updateSecurityRequest, updateEquipmentRequest] =
-                await PrismaClient.$transaction([
-                    PrismaClient.translatorRequest.update({
-                        where: { serviceRequestId: requestId },
-                        data: {
-                            languageTo,
-                            languageFrom,
-                            roomNum,
-                            startDateTime,
-                            endDateTime,
-                        },
-                    }),
-                    PrismaClient.equipmentRequest.update({
-                        where: { serviceRequestId: requestId },
-                        data: {
-                            medicalDevice,
-                            quantity,
-                            signature,
-                        },
-                    }),
-                    PrismaClient.securityRequest.update({
-                        where: { serviceRequestId: requestId },
-                        data: {
-                            numOfGuards,
-                            securityType,
-                            additionalComments,
-                        },
-                    }),
-                    PrismaClient.serviceRequest.update({
-                        where: { requestId: requestId },
-                        data: {
-                            assignedEmployeeId,
-                            priority,
-                            requestStatus,
-                            employeeRequestedById,
-                            departmentUnderId,
-                        },
-                    }),
-                ]);
+            const [
+                updateTranslatorRequest,
+                updateServiceRequest,
+                updateSecurityRequest,
+                updateEquipmentRequest,
+            ] = await PrismaClient.$transaction([
+                PrismaClient.translatorRequest.update({
+                    where: { serviceRequestId: requestId },
+                    data: {
+                        languageTo,
+                        languageFrom,
+                        roomNum,
+                        startDateTime,
+                        endDateTime,
+                    },
+                }),
+                PrismaClient.equipmentRequest.update({
+                    where: { serviceRequestId: requestId },
+                    data: {
+                        medicalDevice,
+                        quantity,
+                        signature,
+                    },
+                }),
+                PrismaClient.securityRequest.update({
+                    where: { serviceRequestId: requestId },
+                    data: {
+                        numOfGuards,
+                        securityType,
+                        additionalComments,
+                    },
+                }),
+                PrismaClient.serviceRequest.update({
+                    where: { requestId: requestId },
+                    data: {
+                        assignedEmployeeId,
+                        priority,
+                        requestStatus,
+                        employeeRequestedById,
+                        departmentUnderId,
+                    },
+                }),
+            ]);
             // send 200 and updated service request if success
             res.status(200).json({
                 message: 'Successfully updated service request',
@@ -288,28 +294,37 @@ router.delete('/:id', async function (req: Request, res: Response) {
     });
 
     // error if no service request with the id is found
-    if (serviceRequest == null && translatorRequest == null && equipmentRequest == null && securityRequest == null) {
+    if (
+        serviceRequest == null &&
+        translatorRequest == null &&
+        equipmentRequest == null &&
+        securityRequest == null
+    ) {
         console.error(`The request with Id ${requestId} not found in database!`);
         res.status(404);
     }
     // success: delete specified service request
     else {
         try {
-            const [deleteTranslatorRequest, deleteEquipmentRequest, deleteServiceRequest, deleteSecurityRequest] =
-                await PrismaClient.$transaction([
-                    PrismaClient.translatorRequest.delete({
-                        where: { serviceRequestId: requestId },
-                    }),
-                    PrismaClient.equipmentRequest.delete({
-                        where: { serviceRequestId: requestId },
-                    }),
-                    PrismaClient.serviceRequest.delete({
-                        where: { requestId: requestId },
-                    }),
-                    PrismaClient.securityRequest.delete({
-                        where: { requestId: requestId },
-                    }),
-                ]);
+            const [
+                deleteTranslatorRequest,
+                deleteEquipmentRequest,
+                deleteServiceRequest,
+                deleteSecurityRequest,
+            ] = await PrismaClient.$transaction([
+                PrismaClient.translatorRequest.delete({
+                    where: { serviceRequestId: requestId },
+                }),
+                PrismaClient.equipmentRequest.delete({
+                    where: { serviceRequestId: requestId },
+                }),
+                PrismaClient.serviceRequest.delete({
+                    where: { requestId: requestId },
+                }),
+                PrismaClient.securityRequest.delete({
+                    where: { serviceRequestId: requestId },
+                }),
+            ]);
 
             // send 200 if success
             res.status(200).json({
@@ -353,8 +368,6 @@ router.post('/security', async function (req: Request, res: Response) {
                         numOfGuards,
                         securityType,
                         additionalComments,
-                        startDateTime: req.body.startDateTime + ':00.000Z',
-                        endDateTime: req.body.endDateTime + ':00.000Z',
                     },
                 },
             },

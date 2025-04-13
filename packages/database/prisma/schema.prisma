@@ -63,6 +63,7 @@ model TranslatorRequest {
 }
 
 model SecurityRequest {
+  roomNum            String
   numOfGuards        Int
   securityType       String
   additionalComments String

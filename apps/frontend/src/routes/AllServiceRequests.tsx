@@ -29,6 +29,13 @@ export interface EquipmentRequest {
     endDateTime: string;
 }
 
+export interface SecurityRequest {
+    numOfGuards: number;
+    securityType: string;
+    additionalComments: string;
+    roomNum: string;
+}
+
 export interface ServiceRequest {
     requestId: number;
     createdAt: number;
@@ -36,6 +43,7 @@ export interface ServiceRequest {
     assignedEmployeeId: number;
     translatorRequest: TranslatorRequest;
     equipmentRequest: EquipmentRequest;
+    securityRequest: SecurityRequest;
     requestStatus: string;
     priority: string;
     employeeRequestedById: number;
@@ -45,6 +53,7 @@ export interface ServiceRequest {
 export default function ShowAllRequests() {
     const [dataTranslator, setDataTranslator] = useState<ServiceRequest[]>([]);
     const [dataEquipment, setDataEquipment] = useState<ServiceRequest[]>([]);
+    const [dataSecurity, setDataSecurity] = useState<ServiceRequest[]>([]);
 
     useEffect(() => {
         console.log('Fetching---');
@@ -58,6 +67,11 @@ export default function ShowAllRequests() {
             setDataEquipment(response.data);
             console.log(response.data);
         })
+
+        axios.get('/api/servicereqs/security').then((response) => {
+            setDataSecurity(response.data);
+            console.log(response.data);
+        })
     }, [])
 
     return (
@@ -65,7 +79,7 @@ export default function ShowAllRequests() {
             <div className="min-h-screen w-full p-6 bg-white">
                 <div className="flex items-center gap-4 mb-6">
                     <h2 className="text-xl font-bold">Service Request Database:</h2>
-                    <br />
+                    <br/>
                 </div>
 
                 <h2 className="text-xl font-bold">Translator Requests</h2>
@@ -138,6 +152,46 @@ export default function ShowAllRequests() {
                                 <TableCell>{element.equipmentRequest.roomNum}</TableCell>
                                 <TableCell>{element.equipmentRequest.comments}</TableCell>
                                 <TableCell>{element.equipmentRequest.signature}</TableCell>
+                                <TableCell>{element.priority}</TableCell>
+                                <TableCell>{element.requestStatus}</TableCell>
+                                <TableCell>{element.createdAt}</TableCell>
+                                <TableCell>{element.updatedAt}</TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+
+
+                <h2 className="text-xl font-bold">Security Requests</h2>
+                <Table>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead className="w-32">Request ID</TableHead>
+                            <TableHead>Requested By</TableHead>
+                            <TableHead>Department</TableHead>
+                            <TableHead>Assigned Employee</TableHead>
+                            <TableHead>Security Type</TableHead>
+                            <TableHead>Guards Needed</TableHead>
+                            <TableHead>Room Number</TableHead>
+                            <TableHead>Additional Comments</TableHead>
+                            <TableHead>Priority</TableHead>
+                            <TableHead>Status</TableHead>
+                            <TableHead>Created At</TableHead>
+                            <TableHead>Updated At</TableHead>
+                        </TableRow>
+                    </TableHeader>
+
+                    <TableBody>
+                        {dataSecurity.map((element, j) => (
+                            <TableRow key={j}>
+                                <TableCell>{element.requestId}</TableCell>
+                                <TableCell>{element.employeeRequestedById}</TableCell>
+                                <TableCell>{element.departmentUnderId}</TableCell>
+                                <TableCell>{element.assignedEmployeeId}</TableCell>
+                                <TableCell>{element.securityRequest.securityType}</TableCell>
+                                <TableCell>{element.securityRequest.numOfGuards}</TableCell>
+                                <TableCell>{element.securityRequest.roomNum}</TableCell>
+                                <TableCell>{element.securityRequest.additionalComments}</TableCell>
                                 <TableCell>{element.priority}</TableCell>
                                 <TableCell>{element.requestStatus}</TableCell>
                                 <TableCell>{element.createdAt}</TableCell>

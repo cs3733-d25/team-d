@@ -306,7 +306,7 @@ async function main() {
     console.log(departments);
 
     // Seed service requests
-    console.log('Seeding translator requests...');
+    console.log('Seeding service requests...');
     const serviceRequests = [
         await prisma.serviceRequest.upsert({
             where: { requestId: 1},
@@ -451,9 +451,35 @@ async function main() {
                 requestStatus: 'Unassigned',
             },
         }),
+        await prisma.serviceRequest.upsert({
+            where: { requestId: 14},
+            update: {},
+            create: {
+                assignedEmployeeId: null,
+                employeeRequestedById: 2,
+                departmentUnderId: 11,
+                priority: 'Emergency',
+                requestStatus: 'Unassigned',
+            },
+        }),
+        await prisma.serviceRequest.upsert({
+            where: { requestId: 15},
+            update: {},
+            create: {
+                assignedEmployeeId: 2,
+                employeeRequestedById: 4,
+                departmentUnderId: 2,
+                priority: 'Low',
+                requestStatus: 'Unassigned',
+            },
+        }),
     ];
+    console.log('Service Requests seeded!');
+    console.log(serviceRequests);
+
 
     // Seed translator requests
+    console.log('Seeding translator requests...');
     const translatorRequests = [
         await prisma.translatorRequest.upsert({
             where: {serviceRequestId: serviceRequests[0].requestId},
@@ -592,6 +618,7 @@ async function main() {
     console.log(translatorRequests);
 
     // Seed equipment requests
+    console.log('Seeding Equipment Requests seeded!');
     const equipmentRequests = [
         await prisma.equipmentRequest.upsert({
             where: {serviceRequestId: serviceRequests[11].requestId},
@@ -622,16 +649,18 @@ async function main() {
             }
         }),
     ];
-
     console.log('Equipment requests seeded!')
     console.log(equipmentRequests);
 
+    //Seed security request
+    console.log('Seeding Security requests...');
     const securityRequests = [
         await prisma.securityRequest.upsert({
             where: {serviceRequestId: serviceRequests[13].requestId},
             update: {},
             create: {
                 serviceRequestId: serviceRequests[13].requestId,
+                roomNum: '111',
                 numOfGuards: 3,
                 securityType: "Violent Patient",
                 additionalComments: "Send help!",
@@ -642,14 +671,15 @@ async function main() {
             update: {},
             create: {
                 serviceRequestId: serviceRequests[14].requestId,
+                roomNum: '222',
                 numOfGuards: 3,
                 securityType: "Elopement",
                 additionalComments: "They ran out the west door.",
             },
         }),
     ];
-    console.log('Equipment requests seeded!')
-    console.log(equipmentRequests);
+    console.log('Security requests seeded!')
+    console.log(securityRequests);
 }
 
 
