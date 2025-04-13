@@ -265,37 +265,37 @@ router.delete('/:id', async function (req: Request, res: Response) {
 });
 
 // Post request to add medical device requests to the database
-// router.post('/equipment', async function (req: Request, res: Response) {
-//     const serviceRequestAttempt: Prisma.ServiceRequestCreateInput = req.body;
-//     try {
-//         await PrismaClient.serviceRequest.create({
-//             data: {
-//                 assignedEmployeeId: null,
-//                 employeeRequestedById: req.body.employee,
-//                 departmentUnderId: req.body.department,
-//                 priority: req.body.priority,
-//                 requestStatus: req.body.requestStatus,
-//                 equipmentRequest: {
-//                     create: {
-//                         roomNum: req.body.roomNum,
-//                         medicalDevice: req.body.medicalDevice,
-//                         quantity: req.body.quantity,
-//                         signature: req.body.signature,
-//                         comments: req.body.comments,
-//                         startDateTime: req.body.startDateTime + ':00.000Z',
-//                         endDateTime: req.body.endDateTime + ':00.000Z',
-//                     }
-//                 },
-//             },
-//         });
-//         console.log('Service request created');
-//     } catch (error) {
-//         console.error(`Unable to create a new service request ${serviceRequestAttempt}: ${error}`);
-//         res.sendStatus(400);
-//         return;
-//     }
-//
-//     res.sendStatus(200);
-// });
+router.post('/equipment', async function (req: Request, res: Response) {
+    const serviceRequestAttempt: Prisma.ServiceRequestCreateInput = req.body;
+    try {
+        await PrismaClient.serviceRequest.create({
+            data: {
+                assignedEmployeeId: null,
+                employeeRequestedById: req.body.employee,
+                departmentUnderId: req.body.department,
+                priority: req.body.priority,
+                requestStatus: req.body.requestStatus,
+                equipmentRequest: {
+                    create: {
+                        roomNum: req.body.roomNum,
+                        medicalDevice: req.body.medicalDevice,
+                        quantity: req.body.quantity,
+                        signature: req.body.signature,
+                        comments: req.body.comments,
+                        startDateTime: req.body.startDateTime + ':00.000Z',
+                        endDateTime: req.body.endDateTime + ':00.000Z',
+                    },
+                },
+            },
+        });
+        console.log('Service request created');
+    } catch (error) {
+        console.error(`Unable to create a new service request ${serviceRequestAttempt}: ${error}`);
+        res.sendStatus(400);
+        return;
+    }
+
+    res.sendStatus(200);
+});
 
 export default router;

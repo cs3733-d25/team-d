@@ -55,7 +55,7 @@ export default function ShowAllRequests() {
             console.log(response.data);
         })
 
-        axios.get('api/servicereqs/equipment').then((response) => {
+        axios.get('/api/servicereqs/equipment').then((response) => {
             setDataEquipment(response.data);
             console.log(response.data);
         })
@@ -94,9 +94,9 @@ export default function ShowAllRequests() {
                                 <TableCell>{element.employeeRequestedById}</TableCell>
                                 <TableCell>{element.departmentUnderId}</TableCell>
                                 <TableCell>{element.assignedEmployeeId}</TableCell>
-                                <TableCell>{element.translatorRequest.languageTo}</TableCell>
-                                <TableCell>{element.translatorRequest.languageFrom}</TableCell>
-                                <TableCell>{element.translatorRequest.roomNum}</TableCell>
+                                <TableCell>{element.languageTo}</TableCell>
+                                <TableCell>{element.languageFrom}</TableCell>
+                                <TableCell>{element.roomNum}</TableCell>
                                 <TableCell>{element.priority}</TableCell>
                                 <TableCell>{element.requestStatus}</TableCell>
                                 <TableCell>{element.createdAt}</TableCell>
@@ -134,13 +134,13 @@ export default function ShowAllRequests() {
                                 <TableCell>{element.employeeRequestedById}</TableCell>
                                 <TableCell>{element.departmentUnderId}</TableCell>
                                 <TableCell>{element.assignedEmployeeId}</TableCell>
-                                <TableCell>{element.equipmentRequest.medicalDevice}</TableCell>
-                                <TableCell>{element.equipmentRequest.quantity}</TableCell>
-                                <TableCell>{element.equipmentRequest.roomNum}</TableCell>
+                                <TableCell>{element.medicalDevice}</TableCell>
+                                <TableCell>{element.quantity}</TableCell>
+                                <TableCell>{element.roomNum}</TableCell>
                                 <TableCell>{element.priority}</TableCell>
                                 <TableCell>{element.requestStatus}</TableCell>
-                                <TableCell>{element.equipmentRequest.comments}</TableCell>
-                                <TableCell>{element.equipmentRequest.signature}</TableCell>
+                                <TableCell>{element.comments}</TableCell>
+                                <TableCell>{element.signature}</TableCell>
                                 <TableCell>{element.createdAt}</TableCell>
                                 <TableCell>{element.updatedAt}</TableCell>
                             </TableRow>
