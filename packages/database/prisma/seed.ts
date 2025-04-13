@@ -473,6 +473,17 @@ async function main() {
                 requestStatus: 'Unassigned',
             },
         }),
+        await prisma.serviceRequest.upsert({
+            where: { requestId: 16},
+            update: {},
+            create: {
+                assignedEmployeeId: null,
+                employeeRequestedById: 3,
+                departmentUnderId: 3,
+                priority: 'Medium',
+                requestStatus: 'Unassigned',
+            },
+        }),
     ];
     console.log('Service Requests seeded!');
     console.log(serviceRequests);
@@ -680,6 +691,24 @@ async function main() {
     ];
     console.log('Security requests seeded!')
     console.log(securityRequests);
+
+    //Seed sanitation request
+    console.log('Seeding Sanitation requests...');
+    const sanitationRequests = [
+        await prisma.sanitationRequest.upsert({
+            where: {serviceRequestId: serviceRequests[15].requestId},
+            update: {},
+            create: {
+                serviceRequestId: serviceRequests[15].requestId,
+                roomNumber: '111',
+                type: 'GENERAL',
+                status: 'IN_USE',
+                comments: "idk",
+            }
+        }),
+    ];
+    console.log('Sanitation requests seeded!')
+    console.log(sanitationRequests);
 }
 
 
