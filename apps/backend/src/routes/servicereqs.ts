@@ -254,7 +254,7 @@ router.delete('/:id', async function (req: Request, res: Response) {
     // success: delete specified service request
     else {
         try {
-            const [deleteTranslatorRequest, deleteServiceRequest, deleteEquipmentRequest] =
+            const [deleteTranslatorRequest, deleteEquipmentRequest, deleteServiceRequest] =
                 await PrismaClient.$transaction([
                     PrismaClient.translatorRequest.delete({
                         where: { serviceRequestId: requestId },

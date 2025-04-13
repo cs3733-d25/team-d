@@ -57,6 +57,7 @@ export default function EquipmentServiceRequest() {
                     <form onSubmit={onSubmit}>
                         <Label className="pt-3 pb-2" htmlFor="employeeId">Employee ID</Label>
                         <Input
+                            required
                             type="number"
                             id="employeeId"
                             onChange={(e) =>
@@ -68,6 +69,7 @@ export default function EquipmentServiceRequest() {
                         />
                         <Label className="pt-3 pb-2" htmlFor="departmentId">Department ID</Label>
                         <Input
+                            required
                             type="number"
                             id="departmentId"
                             onChange={(e) =>
@@ -79,6 +81,7 @@ export default function EquipmentServiceRequest() {
                         />
                         <Label className="pt-3 pb-2" htmlFor="medicalDevice">Medical Device</Label>
                         <Input
+                            required
                             type="text"
                             id="medicalDevice"
                             onChange={(e) =>
@@ -90,6 +93,7 @@ export default function EquipmentServiceRequest() {
                         />
                         <Label className="pt-3 pb-2" htmlFor="quantity">Quantity</Label>
                         <Input
+                            required
                             type="number"
                             id="quantity"
                             onChange={(e) =>
@@ -101,6 +105,7 @@ export default function EquipmentServiceRequest() {
                         />
                         <Label className="pt-3 pb-2" htmlFor="roomNumber">Room Number</Label>
                         <Input
+                            required
                             type="text"
                             id="roomNumber"
                             onChange={(e) =>
@@ -112,6 +117,7 @@ export default function EquipmentServiceRequest() {
                         />
                         <Label className="pt-3 pb-2" htmlFor="startDateTime">Start Date and Time</Label>
                         <Input
+                            required
                             type="datetime-local"
                             id="startDateTime"
                             onChange={(e) =>
@@ -123,6 +129,7 @@ export default function EquipmentServiceRequest() {
                         />
                         <Label className="pt-3 pb-2" htmlFor="endDateTime">End Date and Time</Label>
                         <Input
+                            required
                             type="datetime-local"
                             id="languageFrom"
                             className='pb-2'
@@ -135,6 +142,7 @@ export default function EquipmentServiceRequest() {
                         />
                         <Label className="pt-3 pb-2" htmlFor="priority">Priority</Label>
                         <select
+                            required
                             id="priority"
                             className='pb-2 border'
                             onChange={(e) =>
@@ -150,6 +158,7 @@ export default function EquipmentServiceRequest() {
                         </select>
                         <Label className="pt-3 pb-2" htmlFor="requestStatus">Request Status</Label>
                         <select
+                            required
                             id="requestStatus"
                             className='pb-2 border'
                             onChange={(e) =>
@@ -165,6 +174,7 @@ export default function EquipmentServiceRequest() {
                         </select>
                         <Label className="pt-3 pb-2" htmlFor="comments">Comments</Label>
                         <Input
+                            required
                             type="textarea"
                             id="comments"
                             onChange={(e) =>
@@ -176,6 +186,7 @@ export default function EquipmentServiceRequest() {
                         />
                         <Label className="pt-3 pb-2" htmlFor="signature">Signature</Label>
                         <Input
+                            required
                             type="text"
                             id="signature"
                             onChange={(e) =>
@@ -192,6 +203,8 @@ export default function EquipmentServiceRequest() {
                 </div>
                 :
                 <ReturnEquipmentRequest
+                    employeeRequestedById={form.employeeRequestedById}
+                    departmentUnderId={form.departmentUnderId}
                     medicalDevice={form.medicalDevice}
                     quantity={form.quantity}
                     signature={form.signature}
