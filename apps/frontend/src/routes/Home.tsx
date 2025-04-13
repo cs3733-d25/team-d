@@ -18,7 +18,7 @@ export default function Home() {
                     <HeroTextBox />
                 </div>
 
-                <div className="w-60 ">
+                <div className="w-50 ">
                     <Auth0LoginButton />
                 </div>
 
