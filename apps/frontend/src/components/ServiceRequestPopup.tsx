@@ -13,11 +13,9 @@ const ServiceRequestPopup: React.FC<{title: string, iconName: IconDefinition}> =
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Card className="relative bg-[#d0ccd0] hover:bg-[#addde5] justify-center h-50 text-black">
-                    <div className="absolute flex items-center justify-center rounded-tl-md w-20 h-10 bg-[#addde5] top-0">
-                        <FontAwesomeIcon icon={iconName} size="2x" />
-                    </div>
-                    <CardHeader className="place-content-center">
+                <Card className="relative bg-[#d0ccd0] hover:bg-[#addde5] justify-center h-70 w-60 text-black">
+                    <FontAwesomeIcon icon={iconName} className="text-6xl" />
+                    <CardHeader>
                         <CardTitle className="text-3xl">
                             <p>{title}</p>
                         </CardTitle>
