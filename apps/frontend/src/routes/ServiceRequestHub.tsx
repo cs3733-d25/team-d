@@ -1,9 +1,16 @@
 import {faLanguage} from "@fortawesome/free-solid-svg-icons";
 import ServiceRequestPopup from "@/components/ServiceRequestPopup.tsx";
+import ServiceHubBackground from "../public/ServiceHubBackground.png";
 
 const ServiceRequestHub = () => {
     return (
-        <div style={{marginTop: '180px'}}>
+        <>
+        {/*Image Background*/}
+        <div>
+            <img src={ServiceHubBackground} className="absolute h-screen"/>
+        </div>
+            {/*Service Request Buttons*/}
+            <div style={{marginTop: '180px'}}>
             <div className="grid grid-rows-1 grid-cols-3 gap-4 ml-4">
                 <ServiceRequestPopup
                     title="Request Translator"
@@ -27,6 +34,7 @@ const ServiceRequestHub = () => {
                 />
             </div>
         </div>
+        </>
     )
 }
 
