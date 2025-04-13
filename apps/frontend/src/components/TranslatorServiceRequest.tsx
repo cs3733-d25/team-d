@@ -54,6 +54,7 @@ export default function TranslatorServiceRequest() {
                             <div>
                                 <Label className="pt-3 pb-2" htmlFor="employeeId">Employee ID</Label>
                                 <Input
+                                    required
                                     type="number"
                                     id="employeeId"
                                     onChange={(e) =>
@@ -68,6 +69,7 @@ export default function TranslatorServiceRequest() {
                             <div>
                                 <Label className="pt-3 pb-2" htmlFor="departmentId">Department ID</Label>
                                 <Input
+                                    required
                                     type="number"
                                     id="departmentId"
                                     onChange={(e) =>
@@ -82,6 +84,7 @@ export default function TranslatorServiceRequest() {
                             <div>
                                 <Label className="pt-3 pb-2" htmlFor="languageFrom">Language From</Label>
                                 <Input
+                                    required
                                     type="text"
                                     id="languageFrom"
                                     onChange={(e) =>
@@ -96,6 +99,7 @@ export default function TranslatorServiceRequest() {
                             <div>
                                 <Label className="pt-3 pb-2" htmlFor="languageTo">Language To</Label>
                                 <Input
+                                    required
                                     type="text"
                                     id="languageTo"
                                     onChange={(e) =>
@@ -109,6 +113,7 @@ export default function TranslatorServiceRequest() {
                             <div>
                                 <Label className="pt-3 pb-2" htmlFor="roomNumber">Room Number</Label>
                                 <Input
+                                    required
                                     type="text"
                                     id="roomNumber"
                                     onChange={(e) =>
@@ -122,6 +127,7 @@ export default function TranslatorServiceRequest() {
                             <div>
                                 <Label className="pt-3 pb-2" htmlFor="startDateTime">Start Date and Time</Label>
                                 <Input
+                                    required
                                     type="datetime-local"
                                     id="startDateTime"
                                     onChange={(e) =>
@@ -135,6 +141,7 @@ export default function TranslatorServiceRequest() {
                             <div>
                                 <Label className="pt-3 pb-2" htmlFor="endDateTime">End Date and Time</Label>
                                 <Input
+                                    required
                                     type="datetime-local"
                                     id="languageFrom"
                                     className='pb-2'
@@ -149,6 +156,7 @@ export default function TranslatorServiceRequest() {
                             <div>
                                 <Label className="pt-3 pb-2" htmlFor="priority">Priority</Label>
                                 <select
+                                    required
                                     id="priority"
                                     className='pb-2 border rounded-md'
                                     onChange={(e) =>
@@ -167,6 +175,7 @@ export default function TranslatorServiceRequest() {
                             <div>
                                 <Label className="pt-3 pb-2" htmlFor="requestStatus">Request Status</Label>
                                 <select
+                                    required
                                     id="requestStatus"
                                     className='pb-2 border mb-4 rounded-md'
                                     onChange={(e) =>
@@ -189,6 +198,8 @@ export default function TranslatorServiceRequest() {
                 </div>
             :
                 <ReturnTranslatorRequest
+                    employeeRequestedById={form.employeeRequestedById}
+                    departmentUnderId={form.departmentUnderId}
                     languageFrom={form.languageFrom}
                     languageTo={form.languageTo}
                     roomNum={form.roomNum}

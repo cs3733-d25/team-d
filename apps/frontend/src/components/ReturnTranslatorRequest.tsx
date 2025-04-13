@@ -9,6 +9,8 @@ type translatorRequestForm = {
     endDateTime: string;
     requestStatus: string;
     priority: string;
+    employeeRequestedById: number;
+    departmentUnderId: number;
 };
 
 const ReturnTranslatorRequest = (props: translatorRequestForm) => {
@@ -20,6 +22,16 @@ const ReturnTranslatorRequest = (props: translatorRequestForm) => {
                 </div>
 
                 <div>
+                    <div className="my-5">
+                        <Label htmlFor="employeeId">Requested By</Label>
+                        <p>{props.employeeRequestedById}</p>
+                    </div>
+
+                    <div className="my-5">
+                        <Label htmlFor="departmentId">Department ID</Label>
+                        <p>{props.departmentUnderId}</p>
+                    </div>
+
                     <div className="my-5">
                         <Label htmlFor="languageFrom">Language From</Label>
                         <p>{props.languageFrom}</p>

@@ -11,6 +11,8 @@ type equipmentRequestForm = {
     endDateTime: string;
     requestStatus: string;
     priority: string;
+    employeeRequestedById: number;
+    departmentUnderId: number;
 }
 
 const ReturnEquipmentRequest = (props: equipmentRequestForm) => {
@@ -22,6 +24,16 @@ const ReturnEquipmentRequest = (props: equipmentRequestForm) => {
                 </div>
 
                 <div>
+                    <div className="my-5">
+                        <Label htmlFor="employeeId">Requested By</Label>
+                        <p>{props.employeeRequestedById}</p>
+                    </div>
+
+                    <div className="my-5">
+                        <Label htmlFor="departmentId">Department ID</Label>
+                        <p>{props.departmentUnderId}</p>
+                    </div>
+
                     <div className="my-5">
                         <Label htmlFor="medicalDevice">Medical Device</Label>
                         <p>{props.medicalDevice}</p>
