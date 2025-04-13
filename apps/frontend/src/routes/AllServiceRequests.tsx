@@ -17,7 +17,6 @@ export interface TranslatorRequest {
     roomNum: number;
     startDateTime: number;
     endDateTime: number;
-    serviceRequestId: number;
 }
 
 export interface EquipmentRequest {
@@ -44,8 +43,8 @@ export interface ServiceRequest {
 }
 
 export default function ShowAllRequests() {
-    const [dataTranslator, setDataTranslator] = useState<TranslatorRequest[]>([]);
-    const [dataEquipment, setDataEquipment] = useState<EquipmentRequest[]>([]);
+    const [dataTranslator, setDataTranslator] = useState<ServiceRequest[]>([]);
+    const [dataEquipment, setDataEquipment] = useState<ServiceRequest[]>([]);
 
     useEffect(() => {
         console.log('Fetching---');
