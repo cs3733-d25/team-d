@@ -220,7 +220,7 @@ router.put('/:id', async function (req: Request, res: Response) {
                 roomNumber,
                 type,
                 status,
-                comments
+                comments,
             } = req.body;
             const [
                 updateTranslatorRequest,
@@ -283,7 +283,6 @@ router.put('/:id', async function (req: Request, res: Response) {
                 updateSecurityRequest,
                 updateEquipmentRequest,
                 updateSanitationRequest,
-
             });
             // send 400 and error message if request cannot be updated
         } catch (error) {
@@ -333,7 +332,7 @@ router.delete('/:id', async function (req: Request, res: Response) {
                 deleteEquipmentRequest,
                 deleteServiceRequest,
                 deleteSecurityRequest,
-                deleteSanitationRequest
+                deleteSanitationRequest,
             ] = await PrismaClient.$transaction([
                 PrismaClient.translatorRequest.delete({
                     where: { serviceRequestId: requestId },
@@ -349,7 +348,7 @@ router.delete('/:id', async function (req: Request, res: Response) {
                 }),
                 PrismaClient.sanitationRequest.delete({
                     where: { serviceRequestId: requestId },
-                })
+                }),
             ]);
 
             // send 200 if success

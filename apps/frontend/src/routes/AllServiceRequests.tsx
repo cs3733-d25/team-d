@@ -12,7 +12,7 @@ import {
 } from "../components/ui/table.tsx";
 import axios from "axios";
 
-interface TranslatorRequest{
+export interface TranslatorRequest{
     languageFrom: string;
     languageTo: string;
     roomNum: number;
@@ -37,11 +37,9 @@ export interface SecurityRequest {
     roomNum: string;
 }
 
-interface SanitationRequest {
-    serviceRequestId: number;
+export interface SanitationRequest {
     roomNumber: string;
     date: string;
-    priority: string;
     type: string;
     status: string;
     comments: string;
@@ -63,12 +61,11 @@ export interface ServiceRequest {
 }
 
 
-
-
 export default function ShowAllRequests() {
     const [dataTranslator, setDataTranslator] = useState<ServiceRequest[]>([]);
     const [dataEquipment, setDataEquipment] = useState<ServiceRequest[]>([]);
     const [dataSecurity, setDataSecurity] = useState<ServiceRequest[]>([]);
+    const [dataSanitation, setDataSanitation] = useState<ServiceRequest[]>([]);
 
     useEffect(() => {
         console.log('Fetching---');
@@ -85,6 +82,11 @@ export default function ShowAllRequests() {
 
         axios.get('/api/servicereqs/security').then((response) => {
             setDataSecurity(response.data);
+            console.log(response.data);
+        })
+
+        axios.get('/api/servicereqs/sanitation').then((response) => {
+            setDataSanitation(response.data);
             console.log(response.data);
         })
     }, [])
@@ -207,6 +209,48 @@ export default function ShowAllRequests() {
                                 <TableCell>{element.securityRequest.numOfGuards}</TableCell>
                                 <TableCell>{element.securityRequest.roomNum}</TableCell>
                                 <TableCell>{element.securityRequest.additionalComments}</TableCell>
+                                <TableCell>{element.priority}</TableCell>
+                                <TableCell>{element.requestStatus}</TableCell>
+                                <TableCell>{element.createdAt}</TableCell>
+                                <TableCell>{element.updatedAt}</TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+
+
+                <h2 className="text-xl font-bold">Sanitation Requests</h2>
+                <Table>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead className="w-32">Request ID</TableHead>
+                            <TableHead>Requested By</TableHead>
+                            <TableHead>Department</TableHead>
+                            <TableHead>Assigned Employee</TableHead>
+                            <TableHead>Sanitation Type</TableHead>
+                            <TableHead>Date</TableHead>
+                            <TableHead>Room Status</TableHead>
+                            <TableHead>Comments</TableHead>
+                            <TableHead>Room Number</TableHead>
+                            <TableHead>Priority</TableHead>
+                            <TableHead>Status</TableHead>
+                            <TableHead>Created At</TableHead>
+                            <TableHead>Updated At</TableHead>
+                        </TableRow>
+                    </TableHeader>
+
+                    <TableBody>
+                        {dataSanitation.map((element, i) => (
+                            <TableRow key={i}>
+                                <TableCell>{element.requestId}</TableCell>
+                                <TableCell>{element.employeeRequestedById}</TableCell>
+                                <TableCell>{element.departmentUnderId}</TableCell>
+                                <TableCell>{element.assignedEmployeeId}</TableCell>
+                                <TableCell>{element.sanitationRequest.type}</TableCell>
+                                <TableCell>{element.sanitationRequest.date}</TableCell>
+                                <TableCell>{element.sanitationRequest.status}</TableCell>
+                                <TableCell>{element.sanitationRequest.comments}</TableCell>
+                                <TableCell>{element.sanitationRequest.roomNumber}</TableCell>
                                 <TableCell>{element.priority}</TableCell>
                                 <TableCell>{element.requestStatus}</TableCell>
                                 <TableCell>{element.createdAt}</TableCell>
