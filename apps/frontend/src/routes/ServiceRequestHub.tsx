@@ -11,58 +11,31 @@ import ServiceHubBackground from "../public/ServiceHubBackground.png";
 const ServiceRequestHub = () => {
     return (
         <div>
+                <img src={ServiceHubBackground} className="absolute h-screen w-screen z-0" />
 
-        <div style={{marginTop: '180px'}}>
-            <div className="grid grid-rows-1 grid-cols-3 gap-4 ml-4">
-                <ServiceRequestPopup
-                    title="Request Translator"
-                    iconName={faLanguage}
-                />
-                <SanitationPopup
-                    title="Request Sanitation"
-                    iconName={faLanguage}
-                />
-                <EquipmentRequestPopup
-                    title="Request Equipment"
-                    iconName={faLanguage}
-                />
-                <SecurityRequestPopup
-                    title="Request Security"
-                    iconName={faLanguage}
-                />
-                <ServiceRequestPopup
-                    title="Request 5"
-                    iconName={faLanguage}
-                />
-            </div>
-        </div>
-        <>
-            <img src={ServiceHubBackground} className="absolute h-screen w-screen z-0" />
+                {/*Overlay*/}
+                <div className="absolute inset-0 bg-yellow-600/10 mix-blend-multiply pointer-events-none"/>
+                <div className="absolute inset-0 bg-zinc-900/50 pointer-events-none"/>
 
-            {/*Overlay*/}
-            <div className="absolute inset-0 bg-yellow-600/10 mix-blend-multiply pointer-events-none"/>
-            <div className="absolute inset-0 bg-zinc-900/50 pointer-events-none"/>
-
-            <div className="relative flex justify-center">
-                <div className="absolute flex items-center justify-center mt-24 bg-gray-300/60 h-20 w-110 rounded-full text-5xl font-bold font-nunito font-nunito">Service Requests</div>
-            </div>
-            <div className="relative flex justify-center h-screen w-screen">
-                <div className="absolute mt-80 flex flex-row items-center justify-evenly bg-blue-900/80 w-300 h-100 z-10 rounded-md">
-                    <ServiceRequestPopup
-                        title="Translator Request "
-                        iconName={faLanguage} />
-                    <ServiceRequestPopup
-                        title="Sanitation Request"
-                        iconName={faHandHoldingDroplet} />
-                    <ServiceRequestPopup
-                        title="Equipment Request "
-                        iconName={faScrewdriverWrench} />
-                    <ServiceRequestPopup
-                        title="Security Request"
-                        iconName={faShield} />
+                <div className="relative flex justify-center">
+                    <div className="absolute flex items-center justify-center mt-24 bg-gray-300/60 h-20 w-110 rounded-full text-5xl font-bold font-nunito font-nunito">Service Requests</div>
                 </div>
-            </div>
-            </>
+                <div className="relative flex justify-center h-screen w-screen">
+                    <div className="absolute mt-80 flex flex-row items-center justify-evenly bg-blue-900/80 w-300 h-100 z-10 rounded-md">
+                        <ServiceRequestPopup
+                            title="Translator Request "
+                            iconName={faLanguage} />
+                        <SanitationPopup
+                            title="Sanitation Request"
+                            iconName={faHandHoldingDroplet} />
+                        <EquipmentRequestPopup
+                            title="Equipment Request "
+                            iconName={faScrewdriverWrench} />
+                        <SecurityRequestPopup
+                            title="Security Request"
+                            iconName={faShield} />
+                    </div>
+                </div>
             </div>
     )
 }
