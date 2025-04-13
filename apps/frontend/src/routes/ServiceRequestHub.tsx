@@ -1,6 +1,8 @@
 import {faLanguage} from "@fortawesome/free-solid-svg-icons";
 import ServiceRequestPopup from "@/components/ServiceRequestPopup.tsx";
-
+import SanitationPopup  from "@/components/SanitationPopup.tsx";
+import EquipmentRequestPopup from "@/components/EquipmentRequestPopup.tsx";
+import SecurityRequestPopup from "@/components/SecurityRequestPopup.tsx";
 const ServiceRequestHub = () => {
     return (
         <div style={{marginTop: '180px'}}>

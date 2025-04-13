@@ -55,6 +55,7 @@ export interface ServiceRequest {
     translatorRequest: TranslatorRequest;
     equipmentRequest: EquipmentRequest;
     securityRequest: SecurityRequest;
+    sanitationRequest: SanitationRequest;
     requestStatus: string;
     priority: string;
     employeeRequestedById: number;

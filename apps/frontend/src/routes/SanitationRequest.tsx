@@ -3,9 +3,9 @@ import axios from "axios";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import ReturnRequest from "@/components/ReturnRequest";
 import { API_ROUTES } from "common/src/constants";
 
+import ReturnSanitationRequest from "@/components/ReturnSanitationRequest.tsx";
 
 type SanitationRequestForm = {
     roomNumber: string;
@@ -13,6 +13,9 @@ type SanitationRequestForm = {
     type: string;
     status: string;
     comments: string;
+    requestStatus: string;
+    employeeRequestedById: number;
+    departmentUnderId: number;
 };
 
 export default function SanitationRequest() {
@@ -22,6 +25,9 @@ export default function SanitationRequest() {
         type: "",
         status: "",
         comments: "",
+        requestStatus: '',
+        employeeRequestedById: 0,
+        departmentUnderId: 0,
     });
 
     const [submitted, setSubmitted] = useState(false);
@@ -43,7 +49,7 @@ export default function SanitationRequest() {
 
     return (
         <>
-            {/*{!submitted ? (*/}
+            {!submitted ?
                 <div className="grid place-items-center h-full items-center">
                     <h2 className="text-4xl font-bold pb-3">Request Sanitation</h2>
                     <form onSubmit={onSubmit} className="flex flex-col">
@@ -60,33 +66,68 @@ export default function SanitationRequest() {
                             }
                         />
 
-                        {/*<Label className="pt-4 pb-2" htmlFor="date">*/}
-                        {/*    Date*/}
-                        {/*</Label>*/}
-                        {/*<Input*/}
-                        {/*    type="date"*/}
-                        {/*    id="date"*/}
-                        {/*    onChange={(e) =>*/}
-                        {/*        setForm({ ...form, date: e.target.value })*/}
-                        {/*    }*/}
-                        {/*/>*/}
+                        <div>
+                            <Label className="pt-3 pb-2" htmlFor="employeeId">Employee ID</Label>
+                            <Input
+                                type="number"
+                                id="employeeId"
+                                onChange={(e) =>
+                                    setForm({
+                                        ...form,
+                                        employeeRequestedById: Number(e.target.value),
+                                    })
+                                }
+                            />
+                        </div>
 
-                        <Label className="pt-4 pb-2" htmlFor="priority">
-                            Priority
-                        </Label>
-                        <select
-                            id="priority"
-                            className="border border-gray-300 rounded-md p-2"
-                            onChange={(e) =>
-                                setForm({ ...form, priority: e.target.value })
-                            }
-                        >
-                            <option value="">-- Select Priority --</option>
-                            <option value="LOW">Low</option>
-                            <option value="NORMAL">Normal</option>
-                            <option value="HIGH">High</option>
-                            <option value="URGENT">Urgent</option>
-                        </select>
+                        <div>
+                            <Label className="pt-3 pb-2" htmlFor="departmentId">Department ID</Label>
+                            <Input
+                                type="number"
+                                id="departmentId"
+                                onChange={(e) =>
+                                    setForm({
+                                        ...form,
+                                        departmentUnderId: Number(e.target.value),
+                                    })
+                                }
+                            />
+                        </div>
+
+                        <div>
+                            <Label className="pt-3 pb-2" htmlFor="priority">Priority</Label>
+                            <select
+                                id="priority"
+                                className='pb-2 border rounded-md'
+                                onChange={(e) =>
+                                    setForm({
+                                        ...form,
+                                        priority: e.target.value,
+                                    })
+                                }>
+                                <option value="Low">Low</option>
+                                <option value="Medium">Medium</option>
+                                <option value="High">High</option>
+                                <option value="High">Emergency</option>
+                            </select>
+                        </div>
+                        <div>
+                            <Label className="pt-3 pb-2" htmlFor="requestStatus">Request Status</Label>
+                            <select
+                                id="requestStatus"
+                                className='pb-2 border mb-4 rounded-md'
+                                onChange={(e) =>
+                                    setForm({
+                                        ...form,
+                                        requestStatus: e.target.value,
+                                    })
+                                }>
+                                <option value="Incomplete">Incomplete</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Complete">Complete</option>
+                                <option value="Unassigned">Unassigned</option>
+                            </select>
+                        </div>
 
                         <Label className="pt-4 pb-2" htmlFor="type">
                             Type
@@ -137,16 +178,18 @@ export default function SanitationRequest() {
                         </Button>
                     </form>
                 </div>
-
-            {/*// ) : (*/}
-            {/*//     <ReturnRequest*/}
-            {/*//         languageFrom={form.roomNumber}*/}
-            {/*//         languageTo={form.priority}*/}
-            {/*//         roomNumber={form.date}*/}
-            {/*//         startDateTime={form.type}*/}
-            {/*//         endDateTime={form.comments}*/}
-            {/*//     />*/}
-            {/*// )}*/}
+                :
+                <ReturnSanitationRequest
+                    roomNumber={form.roomNumber}
+                    type={form.type}
+                    status={form.status}
+                    comments={form.comments}
+                    requestStatus={form.requestStatus}
+                    priority={form.priority}
+                    employeeRequestedById={form.employeeRequestedById}
+                    departmentUnderId={form.departmentUnderId}
+                />
+            }
         </>
     );
 }
