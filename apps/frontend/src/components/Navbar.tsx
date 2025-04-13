@@ -15,6 +15,7 @@ import Banner from "@/components/Banner";
 export default function Navbar({isLoggedIn}: {isLoggedIn: boolean})  { // Accept
     return (
         <>
+        <div className="sticky top-0 z-20">
             <Banner />
             {isLoggedIn && (
                <div className="bg-blue-900 text-white flex justify-between items-center h-10">
@@ -82,9 +83,10 @@ export default function Navbar({isLoggedIn}: {isLoggedIn: boolean})  { // Accept
                     </div>
                 </div>
             )}
-            <div className="flex-1 overflow-y-scroll">
-                <Outlet />
-            </div>
+        </div>
+    <div className="flex-1 overflow-y-scroll">
+        <Outlet />
+    </div>
         </>
     );
 };
