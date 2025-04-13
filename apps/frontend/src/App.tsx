@@ -26,10 +26,10 @@ function App() {
                 <Routes>
                     <Route path="/" element={<Navbar isLoggedIn={false} />}>
                         <Route index element={<Home />} />
-                        <Route path="map" element={<Map />} />
-                        <Route path="directory" element={<Directory />} />
-                        <Route path="within-hospital" element={<WithinHospital />} />
-                        <Route path="to-hospital" element={<ToHospital />} />
+                        <Route path="map" element={<Directions />} />
+                        {/*<Route path="directory" element={<Directory />} />*/}
+                        {/*<Route path="within-hospital" element={<WithinHospital />} />*/}
+                        {/*<Route path="to-hospital" element={<ToHospital />} />*/}
                         <Route path="servicerequesthub" element={<ServiceRequestHub />} />
 
 
