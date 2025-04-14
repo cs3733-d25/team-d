@@ -1518,6 +1518,322 @@ async function main() {
     console.log('Departments seeded!');
     console.log(departments);
 
+    console.log('Seeding nodes...');
+    const nodes = [
+        await prisma.node.upsert({
+            where: {nodeId: 0},
+            create: {
+                nodeId: 0,
+                tags: 'Garage',
+                lat: 42.0910630370867,
+                lng: -71.2668215581872,
+                graphId: 1,
+            },
+            update: {
+                nodeId: 0,
+                tags: 'Garage',
+                lat: 42.0910630370867,
+                lng: -71.2668215581872,
+                graphId: 1,
+            }
+        }),
+        await prisma.node.upsert({
+            where: {nodeId: 1},
+            create: {
+                nodeId: 1,
+                tags: 'Garage turn point',
+                lat: 42.09154316533154,
+                lng: -71.26703074024732,
+                graphId: 1,
+            },
+            update: {
+                nodeId: 1,
+                tags: 'Garage turn point',
+                lat: 42.09154316533154,
+                lng: -71.26703074024732,
+                graphId: 1,
+            }
+        }),
+        await prisma.node.upsert({
+            where: {nodeId: 2},
+            create: {
+                nodeId: 2,
+                tags: 'Garage exit',
+                lat: 42.09124112146019,
+                lng: -71.26719234334047,
+                graphId: 1,
+            },
+            update: {
+                nodeId: 2,
+                tags: 'Garage exit',
+                lat: 42.09124112146019,
+                lng: -71.26719234334047,
+                graphId: 1,
+            }
+        }),
+        await prisma.node.upsert({
+            where: {nodeId: 3},
+            create: {
+                nodeId: 3,
+                tags: 'Path entrance',
+                lat: 42.0913013313088,
+                lng: -71.26736668692644,
+                graphId: 1,
+            },
+            update: {
+                nodeId: 3,
+                tags: 'Path entrance',
+                lat: 42.0913013313088,
+                lng: -71.26736668692644,
+                graphId: 1,
+            }
+        }),
+        await prisma.node.upsert({
+            where: {nodeId: 4},
+            create: {
+                nodeId: 4,
+                tags: 'Path curve 1',
+                lat: 42.09171861287582,
+                lng: -71.26715708030366,
+                graphId: 1,
+            },
+            update: {
+                nodeId: 4,
+                tags: 'Path curve 1',
+                lat: 42.09171861287582,
+                lng: -71.26715708030366,
+                graphId: 1,
+            }
+        }),
+        await prisma.node.upsert({
+            where: {nodeId: 5},
+            create: {
+                nodeId: 5,
+                tags: 'Path curve 2',
+                lat: 42.091838534011785,
+                lng: -71.26707996679448,
+                graphId: 1,
+            },
+            update: {
+                nodeId: 5,
+                tags: 'Path curve 2',
+                lat: 42.091838534011785,
+                lng: -71.26707996679448,
+                graphId: 1,
+            }
+        }),
+        await prisma.node.upsert({
+            where: {nodeId: 6},
+            create: {
+                nodeId: 6,
+                tags: 'Path 1 end point',
+                lat: 42.09207738041204,
+                lng: -71.26688483608865,
+                graphId: 1,
+            },
+            update: {
+                nodeId: 6,
+                tags: 'Path 1 end point',
+                lat: 42.09207738041204,
+                lng: -71.26688483608865,
+                graphId: 1,
+            }
+        }),
+        await prisma.node.upsert({
+            where: {nodeId: 7},
+            create: {
+                nodeId: 7,
+                tags: 'Point beside entrance',
+                lat: 42.09251097266492,
+                lng: -71.26650997752694,
+                graphId: 1,
+            },
+            update: {
+                nodeId: 7,
+                tags: 'Point beside entrance',
+                lat: 42.09251097266492,
+                lng: -71.26650997752694,
+                graphId: 1,
+            }
+        }),
+        await prisma.node.upsert({
+            where: {nodeId: 8},
+            create: {
+                nodeId: 8,
+                tags: 'Point in front of entrance',
+                lat: 42.09247813156273,
+                lng: -71.266430852361,
+                graphId: 1,
+            },
+            update: {
+                nodeId: 8,
+                tags: 'Point in front of entrance',
+                lat: 42.09247813156273,
+                lng: -71.266430852361,
+                graphId: 1,
+            }
+        }),
+        await prisma.node.upsert({
+            where: {nodeId: 9},
+            create: {
+                nodeId: 9,
+                tags: 'Entrance point',
+                lat: 42.092501020817565,
+                lng: -71.26636647934464,
+                graphId: 1,
+            },
+            update: {
+                nodeId: 9,
+                tags: 'Entrance point',
+                lat: 42.092501020817565,
+                lng: -71.26636647934464,
+                graphId: 1,
+            }
+        })
+    ];
+
+    console.log('Seeding edges...');
+    const edges = [
+        await prisma.edge.upsert({
+            where: {edgeId: 0},
+            create: {
+                edgeId: 0,
+                weight: 0,
+                startNodeId: 0,
+                endNodeId: 1,
+            },
+            update: {
+                edgeId: 0,
+                weight: 0,
+                startNodeId: 0,
+                endNodeId: 1,
+            }
+        }),
+        await prisma.edge.upsert({
+            where: {edgeId: 1},
+            create: {
+                edgeId: 1,
+                weight: 0,
+                startNodeId: 1,
+                endNodeId: 2,
+            },
+            update: {
+                edgeId: 1,
+                weight: 0,
+                startNodeId: 1,
+                endNodeId: 2,
+            }
+        }),
+        await prisma.edge.upsert({
+            where: {edgeId: 2},
+            create: {
+                edgeId: 2,
+                weight: 0,
+                startNodeId: 2,
+                endNodeId: 3,
+            },
+            update: {
+                edgeId: 2,
+                weight: 0,
+                startNodeId: 2,
+                endNodeId: 3,
+            }
+        }),
+        await prisma.edge.upsert({
+            where: {edgeId: 3},
+            create: {
+                edgeId: 0,
+                weight: 0,
+                startNodeId: 3,
+                endNodeId: 4,
+            },
+            update: {
+                edgeId: 3,
+                weight: 0,
+                startNodeId: 3,
+                endNodeId: 4,
+            }
+        }),
+        await prisma.edge.upsert({
+            where: {edgeId: 4},
+            create: {
+                edgeId: 0,
+                weight: 0,
+                startNodeId: 4,
+                endNodeId: 5,
+            },
+            update: {
+                edgeId: 4,
+                weight: 0,
+                startNodeId: 4,
+                endNodeId: 5,
+            }
+        }),
+        await prisma.edge.upsert({
+            where: {edgeId: 5},
+            create: {
+                edgeId: 0,
+                weight: 0,
+                startNodeId: 5,
+                endNodeId: 6,
+            },
+            update: {
+                edgeId: 5,
+                weight: 0,
+                startNodeId: 5,
+                endNodeId: 6,
+            }
+        }),
+
+        await prisma.edge.upsert({
+            where: {edgeId: 6},
+            create: {
+                edgeId: 6,
+                weight: 0,
+                startNodeId: 6,
+                endNodeId: 7,
+            },
+            update: {
+                edgeId: 6,
+                weight: 0,
+                startNodeId: 6,
+                endNodeId: 7,
+            }
+        }),
+        await prisma.edge.upsert({
+            where: {edgeId: 7},
+            create: {
+                edgeId: 7,
+                weight: 0,
+                startNodeId: 7,
+                endNodeId: 8,
+            },
+            update: {
+                edgeId: 7,
+                weight: 0,
+                startNodeId: 7,
+                endNodeId: 8,
+            }
+        }),
+
+        await prisma.edge.upsert({
+            where: {edgeId: 8},
+            create: {
+                edgeId: 8,
+                weight: 0,
+                startNodeId: 8,
+                endNodeId: 9,
+            },
+            update: {
+                edgeId: 8,
+                weight: 0,
+                startNodeId: 8,
+                endNodeId: 9,
+            }
+        }),
+
+
+    ];
 
 
     // console.log('Seeding hospitals...')
