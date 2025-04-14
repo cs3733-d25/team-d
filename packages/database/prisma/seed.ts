@@ -1690,7 +1690,151 @@ async function main() {
                 graphId: 1,
             }
         })
-    ]
+    ];
+
+    console.log('Seeding edges...');
+    const edges = [
+        await prisma.edge.upsert({
+            where: {edgeId: 0},
+            create: {
+                edgeId: 0,
+                weight: 0,
+                startNodeId: 0,
+                endNodeId: 1,
+            },
+            update: {
+                edgeId: 0,
+                weight: 0,
+                startNodeId: 0,
+                endNodeId: 1,
+            }
+        }),
+        await prisma.edge.upsert({
+            where: {edgeId: 1},
+            create: {
+                edgeId: 1,
+                weight: 0,
+                startNodeId: 1,
+                endNodeId: 2,
+            },
+            update: {
+                edgeId: 1,
+                weight: 0,
+                startNodeId: 1,
+                endNodeId: 2,
+            }
+        }),
+        await prisma.edge.upsert({
+            where: {edgeId: 2},
+            create: {
+                edgeId: 2,
+                weight: 0,
+                startNodeId: 2,
+                endNodeId: 3,
+            },
+            update: {
+                edgeId: 2,
+                weight: 0,
+                startNodeId: 2,
+                endNodeId: 3,
+            }
+        }),
+        await prisma.edge.upsert({
+            where: {edgeId: 3},
+            create: {
+                edgeId: 0,
+                weight: 0,
+                startNodeId: 3,
+                endNodeId: 4,
+            },
+            update: {
+                edgeId: 3,
+                weight: 0,
+                startNodeId: 3,
+                endNodeId: 4,
+            }
+        }),
+        await prisma.edge.upsert({
+            where: {edgeId: 4},
+            create: {
+                edgeId: 0,
+                weight: 0,
+                startNodeId: 4,
+                endNodeId: 5,
+            },
+            update: {
+                edgeId: 4,
+                weight: 0,
+                startNodeId: 4,
+                endNodeId: 5,
+            }
+        }),
+        await prisma.edge.upsert({
+            where: {edgeId: 5},
+            create: {
+                edgeId: 0,
+                weight: 0,
+                startNodeId: 5,
+                endNodeId: 6,
+            },
+            update: {
+                edgeId: 5,
+                weight: 0,
+                startNodeId: 5,
+                endNodeId: 6,
+            }
+        }),
+
+        await prisma.edge.upsert({
+            where: {edgeId: 6},
+            create: {
+                edgeId: 6,
+                weight: 0,
+                startNodeId: 6,
+                endNodeId: 7,
+            },
+            update: {
+                edgeId: 6,
+                weight: 0,
+                startNodeId: 6,
+                endNodeId: 7,
+            }
+        }),
+        await prisma.edge.upsert({
+            where: {edgeId: 7},
+            create: {
+                edgeId: 7,
+                weight: 0,
+                startNodeId: 7,
+                endNodeId: 8,
+            },
+            update: {
+                edgeId: 7,
+                weight: 0,
+                startNodeId: 7,
+                endNodeId: 8,
+            }
+        }),
+
+        await prisma.edge.upsert({
+            where: {edgeId: 8},
+            create: {
+                edgeId: 8,
+                weight: 0,
+                startNodeId: 8,
+                endNodeId: 9,
+            },
+            update: {
+                edgeId: 8,
+                weight: 0,
+                startNodeId: 8,
+                endNodeId: 9,
+            }
+        }),
+
+
+    ];
+
 
     // console.log('Seeding hospitals...')
     // const hospitals = [
