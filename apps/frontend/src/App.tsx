@@ -21,7 +21,7 @@ function App() {
         <div className="h-screen bg-accent flex flex-col parent">
             <BrowserRouter>
                 <Routes>
-                    <Route path="/" element={<Navbar isLoggedIn={false} />}>
+                    <Route path="/" element={<Navbar />}>
                         <Route index element={<Home />} />
                         <Route path="map" element={<Map />} />
                         <Route path="directory" element={<Directory />} />
@@ -29,25 +29,15 @@ function App() {
                         <Route path="to-hospital" element={<ToHospital />} />
                         <Route path="servicerequesthub" element={<ServiceRequestHub />} />
 
-
-                    </Route>
-
-                    {/* Protected routes */}
-                    <Route element={<ProtectedRoute />}>
-                        <Route path="/loggedIn" element={<Navbar isLoggedIn={true} />}>
-                            <Route path="map" element={<Map />} />
-                            <Route path="directory" element={<Directory />} />
-                            <Route path="servicerequesthub" element={<ServiceRequestHub />} />
-                            <Route path="kiosk" element={<KioskDirections />} />
-                            <Route path="within-hospital" element={<WithinHospital />} />
-                            <Route path="to-hospital" element={<ToHospital />} />
+                        {/* Protected routes wrapped in ProtectedRoute */}
+                        <Route element={<ProtectedRoute />}>
                             <Route path="admin-database" element={<AdminDatabase />} />
                             <Route path="all-service-requests" element={<AllServiceRequests />} />
                             <Route path="profile" element={<Auth0Profile />} />
-
                         </Route>
                     </Route>
                 </Routes>
+
             </BrowserRouter>
         </div>
     );
