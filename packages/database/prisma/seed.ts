@@ -1520,22 +1520,6 @@ async function main() {
 
 
 
-    console.log('Seeding nodes...');
-
-    const nodes = [
-        await prisma.node.upsert({
-            where: {nodeId: 0},
-            update {
-
-            },
-            create {
-
-            },
-        })
-    ];
-
-
-
     // console.log('Seeding hospitals...')
     // const hospitals = [
     //     await prisma.hospital.upsert({
