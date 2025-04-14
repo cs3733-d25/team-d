@@ -6,17 +6,15 @@ import healthcheckRouter from './routes/healthcheck';
 import employeeRouter from './routes/employee.ts';
 import assignedRouter from './routes/assigned.ts';
 import servicereqsRouter from './routes/servicereqs.ts';
-import departmentRouter from './routes/department.ts';
+import directoryRouter from './routes/directory.ts';
 import pathfindRouter from './routes/pathfind.ts';
-import cors from 'cors';
+import pathfindingRouter from './routes/pathfinding.ts';
 
 // const { auth, requiresAuth } = require('express-openid-connect');
 
 import { API_ROUTES } from 'common/src/constants';
 
 const app: Express = express(); // Setup the backend
-// Enable CORS before any routes
-app.use(cors());
 // Setup generic middlewear
 app.use(
     logger('dev', {
@@ -37,8 +35,9 @@ app.use(API_ROUTES.HEALTHCHECK, healthcheckRouter);
 app.use(API_ROUTES.EMPLOYEE, employeeRouter);
 app.use(API_ROUTES.SERVICEREQS, servicereqsRouter);
 app.use(API_ROUTES.ASSIGNED, assignedRouter);
-app.use(API_ROUTES.DEPARTMENT, departmentRouter);
+app.use(API_ROUTES.DEPARTMENT, directoryRouter);
 app.use(API_ROUTES.PATHFIND, pathfindRouter);
+app.use(API_ROUTES.PATHFINDING, pathfindingRouter);
 
 /**
  * Auth0
