@@ -19,12 +19,14 @@ export default function Banner({isLoggedIn}: {isLoggedIn: boolean})  {
         <>
             <div className={"flex flex-row bg-[#Addde5]"} >
                 <div className={"basis-1/3"}>
-                    <img
-                        src={hospitalLogo}
-                        alt="Brigham and Women’s Hospital (Founding Member, Mass General Brigham)"
-                        style={{ height: "40px" }}
-                        className={"mx-4 my-4"}
-                    />
+                    <Link to="/profile">
+                        <img
+                            src={hospitalLogo}
+                            alt="Brigham and Women’s Hospital (Founding Member, Mass General Brigham)"
+                            style={{ height: "40px" }}
+                            className={"mx-4 my-4 cursor-pointer hover:scale-105 transition-transform duration-200"}
+                        />
+                    </Link>
                 </div>
 
                 <div className={"basis-2/3"}>
