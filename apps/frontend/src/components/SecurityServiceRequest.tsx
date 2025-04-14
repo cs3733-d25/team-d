@@ -6,6 +6,7 @@ import {useState} from "react";
 import {API_ROUTES} from "common/src/constants.ts";
 import axios from "axios";
 import ReturnSecurityRequest from "@/components/ReturnSecurityRequest.tsx";
+import SubmissionReqPopup from "@/components/SubmissionReqPopup.tsx";
 
 type securityRequestForm = {
     roomNum: string;
@@ -32,19 +33,26 @@ export default function SecurityServiceRequest() {
     });
 
     const [submitted, setSubmitted] = useState(false);
+    const [showPopup, setShowPopup] = useState(false);
 
     const onSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        // console.log(form);
         setSubmitted(false);
-        axios.post(API_ROUTES.SERVICEREQS+'/security', form).then(() => {
-            alert("Service request submitted!");
-            setSubmitted(true);
-        });
-    }
+
+        axios
+            .post(API_ROUTES.SERVICEREQS + "/sanitation", form)
+            .then(() => {
+                setSubmitted(true);
+                setShowPopup(true);
+            })
+            .catch((err) => {
+                console.error("Error submitting sanitation request:", err);
+            });
+    };
 
     return (
         <>
+            <SubmissionReqPopup open={showPopup} onOpenChange={setShowPopup} />
             {!submitted ?
                 <div className="grid place-items-center h-full items-center">
                     <h2 className="text-4xl fontbold pb-3" >Request Security</h2>

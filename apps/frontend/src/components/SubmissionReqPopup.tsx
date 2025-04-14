@@ -11,30 +11,33 @@ import {
 } from "@/components/ui/alert-dialog"
 
 
-export default function SubmissionReqPopup() {
+export default function SubmissionReqPopup({
+    open,
+    onOpenChange,
+}: {
+    open: boolean;
+    onOpenChange: (open: boolean) => void;
+})  {
     return(
-        <div className="w-50 h-50 text-center bg-blue-500">
-            <AlertDialog>
-                <AlertDialogTrigger>Submit</AlertDialogTrigger>
+            <AlertDialog open={open} onOpenChange={onOpenChange}>
                 <AlertDialogContent>
                     <AlertDialogHeader>
                         <ProgressToCheck /> {/*The Confirmation Animation*/}
                         <div className="delay-1000">
-                        <AlertDialogTitle className="text-2xl font-bold mt-4 animate-in fade-in duration-2000 ease-in-out">Service Request Confirmed!</AlertDialogTitle>
+                        <AlertDialogTitle className="text-2xl font-bold mt-4 animate-in fade-in duration-2000 ease-in-out">Service Request Submitted!</AlertDialogTitle>
                         <AlertDialogDescription className="text-base mt-2 animate-in fade-in duration-2000 ease-in-out">
                             Check your service request listing
                         </AlertDialogDescription>
                         </div>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                            <AlertDialogAction className="mt-6 px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-300 transition">
+                            <AlertDialogAction onClick={() => onOpenChange(false)} className="mt-6 px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-300 transition">
                                 Close
                             </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
-        </div>
-    )
+    );
 }
 
 

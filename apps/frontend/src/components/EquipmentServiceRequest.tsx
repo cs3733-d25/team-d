@@ -6,6 +6,7 @@ import {useState} from "react";
 import {API_ROUTES} from "common/src/constants.ts";
 import axios from "axios";
 import ReturnEquipmentRequest from "@/components/ReturnEquipmentRequest.tsx";
+import SubmissionReqPopup from "@/components/SubmissionReqPopup.tsx";
 
 type equipmentRequestForm = {
     medicalDevice: string;
@@ -38,19 +39,26 @@ export default function EquipmentServiceRequest() {
     });
 
     const [submitted, setSubmitted] = useState(false);
+    const [showPopup, setShowPopup] = useState(false);
 
     const onSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        // console.log(form);
         setSubmitted(false);
-        axios.post(API_ROUTES.SERVICEREQS+'/equipment', form).then(() => {
-            alert("Service request submitted!");
-            setSubmitted(true);
-        });
-    }
+
+        axios
+            .post(API_ROUTES.SERVICEREQS + "/sanitation", form)
+            .then(() => {
+                setSubmitted(true);
+                setShowPopup(true);
+            })
+            .catch((err) => {
+                console.error("Error submitting sanitation request:", err);
+            });
+    };
 
     return (
         <>
+            <SubmissionReqPopup open={showPopup} onOpenChange={setShowPopup} />
             {!submitted ?
                 <div className="grid place-items-center h-full items-center">
                     <h2 className="text-4xl fontbold pb-3" >Request a Medical Device</h2>

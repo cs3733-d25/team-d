@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label.tsx";
 import { API_ROUTES } from "common/src/constants.ts";
 
 import ReturnSanitationRequest from "@/components/ReturnSanitationRequest.tsx";
+import SubmissionReqPopup from "@/components/SubmissionReqPopup.tsx";
 
 type SanitationRequestForm = {
     roomNumber: string;
@@ -31,6 +32,7 @@ export default function SanitationRequest() {
     });
 
     const [submitted, setSubmitted] = useState(false);
+    const [showPopup, setShowPopup] = useState(false);
 
     const onSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -39,8 +41,8 @@ export default function SanitationRequest() {
         axios
             .post(API_ROUTES.SERVICEREQS + "/sanitation", form)
             .then(() => {
-                alert("Sanitation request submitted!");
                 setSubmitted(true);
+                setShowPopup(true);
             })
             .catch((err) => {
                 console.error("Error submitting sanitation request:", err);
@@ -49,6 +51,7 @@ export default function SanitationRequest() {
 
     return (
         <>
+            <SubmissionReqPopup open={showPopup} onOpenChange={setShowPopup} />
             {!submitted ?
                 <div className="grid place-items-center h-full items-center">
                     <h2 className="text-4xl font-bold pb-3">Request Sanitation</h2>

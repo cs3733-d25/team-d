@@ -41,9 +41,6 @@ export default function Home() {
 
                 {/*<Auth0LoginButton />*/}
 
-                <div className="w-200 place-content-center ">
-                    <SubmissionReqPopup />
-                </div>
 
 
             </div>
