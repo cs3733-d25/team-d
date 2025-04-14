@@ -16,31 +16,63 @@ import {
 } from "@/components/ui/select.tsx";
 import {Button} from "@/components/ui/button.tsx";
 
+// export type Hospital = {
+//     hospitalId: number
+//     name: string
+//     placeId: string
+//     defaultZoom: number
+//     defaultLat: number
+//     defaultLng: number
+//     Floors: Floor[]
+// }
+//
+// export type Floor = {
+//     floorId: number
+//     num: number
+//     imageURL: string
+//     north: number
+//     south: number
+//     east: number
+//     west: number
+//     Departments: Department[]
+// }
+//
+// export type Department = {
+//     departmentId: number
+//     name: string
+//     suite: string
+// }
+
 export type Hospital = {
     hospitalId: number
     name: string
+    address: string
     placeId: string
+    defaultLat: string
+    defaultLng: string
     defaultZoom: number
-    defaultLat: number
-    defaultLng: number
-    Floors: Floor[]
-}
-
-export type Floor = {
-    floorId: number
-    num: number
-    imageURL: string
-    north: number
-    south: number
-    east: number
-    west: number
     Departments: Department[]
 }
 
 export type Department = {
     departmentId: number
     name: string
-    suite: string
+    floorNum: number
+    room: string
+    building: string
+    lat: string
+    lng: string
+    Graph: Graph
+}
+
+export type Graph = {
+    graphId: number
+    name: string
+    imageUrl: string
+    north: number
+    south: number
+    east: number
+    west: number
 }
 
 export default function Directions() {
@@ -49,9 +81,11 @@ export default function Directions() {
     const autocompleteRef = useRef<HTMLInputElement>(null);
 
     const [data, setData] = useState<Hospital[]>([]);
+
     const [hospital, setHospital] = useState<Hospital | undefined>();
-    const [floor, setFloor] = useState<Floor | undefined>();
+    const [graph, setGraph] = useState<Graph | undefined>();
     const [department, setDepartment] = useState<Department | undefined>();
+
     const [zoomFlag, setZoomFlag] = useState<boolean>(false);
 
     useEffect(() => {
@@ -66,27 +100,40 @@ export default function Directions() {
     }, []);
 
     const handleHospitalChange = (value: string) => {
-        if (departmentRef.current) {
-            // departmentRef.current.value = '';
-        }
-        for (const h of data) {
-            if (h.name === value) {
-                setHospital(h);
+        // if (departmentRef.current) {
+        //     // departmentRef.current.value = '';
+        // }
+        // for (const h of data) {
+        //     if (h.name === value) {
+        //         setHospital(h);
+        //         break;
+        //     }
+        // }
+        // setDepartment(undefined);
+        for (const hospital of data) {
+            if (hospital.name === value) {
+                setHospital(hospital);
                 break;
             }
         }
-        setDepartment(undefined);
     }
 
     const handleDepartmentChange = (value: string) => {
+        // if (!hospital) return;
+        // for (const f of hospital.Floors) {
+        //     for (const d of f.Departments) {
+        //         if (d.name === value) {
+        //             setDepartment(d);
+        //             setFloor(f);
+        //             break;
+        //         }
+        //     }
+        // }
         if (!hospital) return;
-        for (const f of hospital.Floors) {
-            for (const d of f.Departments) {
-                if (d.name === value) {
-                    setDepartment(d);
-                    setFloor(f);
-                    break;
-                }
+        for (const d of hospital.Departments) {
+            if (d.name === value) {
+                setDepartment(d);
+                setGraph(d.Graph);
             }
         }
     }
@@ -140,10 +187,10 @@ export default function Directions() {
                                 <SelectValue placeholder="Choose a hospital..." defaultValue="0"></SelectValue>
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectGroup>
+                                <SelectGroup key="0">
                                     <SelectLabel>Hospitals</SelectLabel>
-                                    {data.map((hospital: Hospital) => (
-                                        <SelectItem key={hospital.hospitalId + 1} value={hospital.name}>{hospital.name}</SelectItem>
+                                    {data.map((h: Hospital) => (
+                                        <SelectItem key={h.hospitalId + 1} value={h.name}>{h.name}</SelectItem>
                                     ))}
                                 </SelectGroup>
                             </SelectContent>
@@ -159,14 +206,12 @@ export default function Directions() {
                                         <SelectValue defaultValue="0" placeholder="Choose a department..."></SelectValue>
                                     </SelectTrigger>
                                     <SelectContent ref={departmentRef}>
-                                        {hospital.Floors.map((floor: Floor) => (
-                                            <SelectGroup>
-                                                <SelectLabel>Floor {floor.num}</SelectLabel>
-                                                {floor.Departments.map((department: Department) => (
-                                                    <SelectItem key={department.departmentId + 1} value={department.name}>{department.name}</SelectItem>
-                                                ))}
-                                            </SelectGroup>
-                                        ))}
+                                        <SelectGroup>
+                                            <SelectLabel>Departments</SelectLabel>
+                                            {hospital.Departments.map((d: Department) => (
+                                                <SelectItem key={d.departmentId + 1} value={d.name}>{d.name}</SelectItem>
+                                            ))}
+                                        </SelectGroup>
                                     </SelectContent>
                                 </Select>
                             </Label>
@@ -175,7 +220,7 @@ export default function Directions() {
                     }
                 </div>
                 <div className="flex-2">
-                    <GGMap autoCompleteRef={autocompleteRef} hospital={hospital} floor={floor} department={department} zoomFlag={zoomFlag} />
+                    {/*<GGMap autoCompleteRef={autocompleteRef} hospital={hospital} floor={floor} department={department} zoomFlag={zoomFlag} />*/}
                 </div>
             </div>
         </>

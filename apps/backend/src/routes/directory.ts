@@ -6,9 +6,9 @@ const router: Router = express.Router();
 router.get('/', async (req, res) => {
     const data = await PrismaClient.hospital.findMany({
         include: {
-            Floors: {
+            Departments: {
                 include: {
-                    Departments: true,
+                    Graph: true,
                 },
             },
         },

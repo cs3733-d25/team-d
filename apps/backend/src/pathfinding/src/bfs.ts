@@ -73,10 +73,10 @@ class Graph {
     public async makeEdge(startName: string, endName: string): Promise<any> {
         const prisma = new PrismaClient();
         const startNode = await prisma.node.findFirst({
-            where: { name: startName },
+            where: { tags: startName },
         });
         const endNode = await prisma.node.findFirst({
-            where: { name: endName },
+            where: { tags: endName },
         });
         // If no node with the name is found, send 204 and log it
         if (startNode == null || endNode == null) {
