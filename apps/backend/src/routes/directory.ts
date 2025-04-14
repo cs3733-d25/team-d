@@ -10,6 +10,9 @@ router.get('/', async (req, res) => {
                 include: {
                     Graph: true,
                 },
+                orderBy: {
+                    name: 'asc',
+                },
             },
         },
     });
