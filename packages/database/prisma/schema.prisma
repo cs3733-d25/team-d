@@ -87,23 +87,6 @@ model EquipmentRequest {
   serviceRequest   ServiceRequest @relation(fields: [serviceRequestId], references: [requestId])
 }
 
-enum RequestType {
-  TranslatorRequest
-  EquipmentRequest
-  SecurityRequest
-}
-
-model Department {
-  departmentId      Int              @id @default(autoincrement())
-  name              String
-  floor             Int
-  suite             String
-  specialtyServices String
-  hours             String?
-  telephone         String
-  serviceRequests   ServiceRequest[]
-}
-
 // --- The SanitationRequest model ---
 model SanitationRequest {
   roomNumber String
@@ -114,6 +97,12 @@ model SanitationRequest {
   // link to service request:
   serviceRequestId Int            @unique
   ServiceRequest   ServiceRequest @relation(fields: [serviceRequestId], references: [requestId])
+}
+
+enum RequestType {
+  TranslatorRequest
+  EquipmentRequest
+  SecurityRequest
 }
 
 enum Priority {
@@ -135,3 +124,129 @@ enum RoomStatus {
   VACANT
   IN_USE
 }
+
+model Hospital {
+  hospitalId  Int    @id @default(autoincrement())
+  name        String @unique
+  address     String
+  placeId     String
+  defaultLat  Float
+  defaultLng  Float
+  defaultZoom Int
+
+  Departments Department[]
+}
+
+model Department {
+  departmentId Int    @id @default(autoincrement())
+  name         String
+  floorNum     Int
+  room         String
+  building     String
+
+  lat Float
+  lng Float
+
+  hospitalId Int
+  Hospital   Hospital @relation(fields: [hospitalId], references: [hospitalId])
+
+  graphId Int
+  Graph   Graph @relation(fields: [graphId], references: [graphId])
+
+  ServiceRequests ServiceRequest[]
+}
+
+model Graph {
+  graphId Int    @id @default(autoincrement())
+  name    String
+
+  imageURL String
+  north    Float
+  south    Float
+  east     Float
+  west     Float
+
+  Departments Department[]
+  Nodes       Node[]
+}
+
+model Node {
+  nodeId    Int    @id @default(autoincrement())
+  tags      String
+  lat       Float
+  lng       Float
+  edgeStart Edge[] @relation(name: "edgeS")
+  edgeEnd   Edge[] @relation(name: "edgeE")
+  graphId   Int
+  Graph     Graph  @relation(fields: [graphId], references: [graphId])
+}
+
+model Edge {
+  edgeId      Int  @id @default(autoincrement())
+  weight      Int
+  startNodeId Int  @unique
+  endNodeId   Int  @unique
+  startNode   Node @relation(name: "edgeS", fields: [startNodeId], references: [nodeId], onDelete: Cascade)
+  endNode     Node @relation(name: "edgeE", fields: [endNodeId], references: [nodeId], onDelete: Cascade)
+}
+
+// model Hospital {
+//   hospitalId  Int     @id @default(autoincrement())
+//   name        String  @unique
+//   placeId     String
+//   defaultZoom Int
+//   defaultLat  Float
+//   defaultLng  Float
+//   Floors      Floor[]
+// }
+//
+// model Floor {
+//   floorId     Int          @id @default(autoincrement())
+//   num         Int
+//   imageURL    String
+//   north       Float
+//   south       Float
+//   east        Float
+//   west        Float
+//   hospitalId  Int
+//   Hospital    Hospital     @relation(fields: [hospitalId], references: [hospitalId])
+//   Departments Department[]
+//   Graph       Graph?
+// }
+//
+// model Department {
+//   departmentId Int    @id @default(autoincrement())
+//   name         String
+//   suite        String
+//   floorId      Int
+//   Floor        Floor  @relation(fields: [floorId], references: [floorId])
+//   serviceRequests   ServiceRequest[]
+// }
+//
+// model Graph {
+//   graphId Int    @id @default(autoincrement())
+//   name    String
+//   Nodes   Node[]
+//   floorId Int    @unique
+//   Floor   Floor  @relation(fields: [floorId], references: [floorId])
+// }
+//
+// model Node {
+//   nodeId    Int    @id @default(autoincrement())
+//   name      String
+//   lat       Float
+//   lng       Float
+//   edgeStart Edge[] @relation(name: "edgeS")
+//   edgeEnd   Edge[] @relation(name: "edgeE")
+//   graphId   Int
+//   Graph     Graph  @relation(fields: [graphId], references: [graphId])
+// }
+//
+// model Edge {
+//   edgeId      Int  @id @default(autoincrement())
+//   weight      Int
+//   startNodeId Int  @unique
+//   endNodeId   Int  @unique
+//   startNode   Node @relation(name: "edgeS", fields: [startNodeId], references: [nodeId], onDelete: Cascade)
+//   endNode     Node @relation(name: "edgeE", fields: [endNodeId], references: [nodeId], onDelete: Cascade)
+// }
