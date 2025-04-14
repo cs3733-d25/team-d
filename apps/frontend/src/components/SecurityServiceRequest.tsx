@@ -16,6 +16,7 @@ type securityRequestForm = {
     priority: string;
     employeeRequestedById: number;
     departmentUnderId: number;
+    comments: string;
 }
 
 export default function SecurityServiceRequest() {
@@ -29,6 +30,7 @@ export default function SecurityServiceRequest() {
         priority: '',
         employeeRequestedById: 0,
         departmentUnderId: 0,
+        comments: '',
     });
 
     const [submitted, setSubmitted] = useState(false);
@@ -80,15 +82,15 @@ export default function SecurityServiceRequest() {
                         </div>
 
                         <div>
-                            <Label className="pt-3 pb-2" htmlFor="numOfGuards">Number of Guards Needed</Label>
+                            <Label className="pt-3 pb-2" htmlFor="roomNum">Room Number</Label>
                             <Input
                                 required
-                                type="number"
-                                id="numOfGuards"
+                                type="text"
+                                id="roomNum"
                                 onChange={(e) =>
                                     setForm({
                                         ...form,
-                                        numOfGuards: Number(e.target.value),
+                                        roomNum: e.target.value,
                                     })
                                 }
                             />
@@ -108,32 +110,35 @@ export default function SecurityServiceRequest() {
                                 }
                             />
                         </div>
+
                         <div>
-                            <Label className="pt-3 pb-2" htmlFor="roomNum">Room Number</Label>
+                            <Label className="pt-3 pb-2" htmlFor="numOfGuards">Number of Guards Needed</Label>
                             <Input
                                 required
-                                type="text"
-                                id="roomNum"
+                                type="number"
+                                id="numOfGuards"
                                 onChange={(e) =>
                                     setForm({
                                         ...form,
-                                        roomNum: e.target.value,
+                                        numOfGuards: Number(e.target.value),
                                     })
                                 }
                             />
                         </div>
+
                         <div>
                             <Label className="pt-3 pb-2" htmlFor="priority">Priority</Label>
                             <select
                                 required
                                 id="priority"
-                                className='pb-2 border rounded-md'
+                                className='border border-gray-300 rounded-md p-2'
                                 onChange={(e) =>
                                     setForm({
                                         ...form,
                                         priority: e.target.value,
                                     })
                                 }>
+                                <option value="">-- Select Priority --</option>
                                 <option value="Low">Low</option>
                                 <option value="Medium">Medium</option>
                                 <option value="High">High</option>
@@ -145,32 +150,32 @@ export default function SecurityServiceRequest() {
                             <select
                                 required
                                 id="requestStatus"
-                                className='pb-2 border mb-4 rounded-md'
+                                className='border border-gray-300 rounded-md p-2'
                                 onChange={(e) =>
                                     setForm({
                                         ...form,
                                         requestStatus: e.target.value,
                                     })
                                 }>
+                                <option value="">-- Select Status --</option>
                                 <option value="Incomplete">Incomplete</option>
                                 <option value="Pending">Pending</option>
                                 <option value="Complete">Complete</option>
                                 <option value="Unassigned">Unassigned</option>
                             </select>
                         </div>
+
                         <div>
-                            <Label className="pt-3 pb-2" htmlFor="comments">Comments</Label>
-                            <Input
-                                type="textarea"
+                            <Label className="pt-4 pb-2" htmlFor="comments">Comments</Label>
+                            <textarea
                                 id="comments"
+                                className="border border-gray-300 rounded-md p-2 w-60"
                                 onChange={(e) =>
-                                    setForm({
-                                        ...form,
-                                        additionalComments: e.target.value,
-                                    })
+                                    setForm({ ...form, comments: e.target.value })
                                 }
                             />
                         </div>
+
                         <div className="flex flex-row justify-center items-center">
                             <Button type="submit" className="mt-5">Submit</Button>
                         </div>
@@ -181,7 +186,7 @@ export default function SecurityServiceRequest() {
                     roomNum={form.roomNum}
                     numOfGuards={form.numOfGuards}
                     securityType={form.securityType}
-                    additionalComments={form.additionalComments}
+                    comments={form.additionalComments}
                     requestStatus={form.requestStatus}
                     priority={form.priority}
                     employeeRequestedById={form.employeeRequestedById}

@@ -8,7 +8,7 @@ import { API_ROUTES } from "common/src/constants.ts";
 import ReturnSanitationRequest from "@/components/ReturnSanitationRequest.tsx";
 
 type SanitationRequestForm = {
-    roomNumber: string;
+    roomNum: string;
     priority: string;
     type: string;
     status: string;
@@ -20,7 +20,7 @@ type SanitationRequestForm = {
 
 export default function SanitationRequest() {
     const [form, setForm] = useState<SanitationRequestForm>({
-        roomNumber: "",
+        roomNum: "",
         priority: "",
         type: "",
         status: "",
@@ -54,21 +54,8 @@ export default function SanitationRequest() {
                     <h2 className="text-4xl font-bold pb-3">Request Sanitation</h2>
                     <form onSubmit={onSubmit} className="flex flex-col">
 
-                        {/* Room Number */}
-                        <Label className="pb-2" htmlFor="roomNumber">
-                            Room Number
-                        </Label>
-                        <Input
-                            required
-                            type="text"
-                            id="roomNumber"
-                            onChange={(e) =>
-                                setForm({ ...form, roomNumber: e.target.value })
-                            }
-                        />
-
                         <div>
-                            <Label className="pt-3 pb-2" htmlFor="employeeId">Employee ID</Label>
+                            <Label className="pt-4 pb-2" htmlFor="employeeId">Employee ID</Label>
                             <Input
                                 required
                                 type="number"
@@ -83,7 +70,7 @@ export default function SanitationRequest() {
                         </div>
 
                         <div>
-                            <Label className="pt-3 pb-2" htmlFor="departmentId">Department ID</Label>
+                            <Label className="pt-4 pb-2" htmlFor="departmentId">Department ID</Label>
                             <Input
                                 required
                                 type="number"
@@ -97,46 +84,17 @@ export default function SanitationRequest() {
                             />
                         </div>
 
-                        <div>
-                            <Label className="pt-3 pb-2" htmlFor="priority">Priority</Label>
-                            <select
-                                required
-                                id="priority"
-                                className='pb-2 border rounded-md'
-                                onChange={(e) =>
-                                    setForm({
-                                        ...form,
-                                        priority: e.target.value,
-                                    })
-                                }>
-                                <option value="Low">Low</option>
-                                <option value="Medium">Medium</option>
-                                <option value="High">High</option>
-                                <option value="High">Emergency</option>
-                            </select>
-                        </div>
-                        <div>
-                            <Label className="pt-3 pb-2" htmlFor="requestStatus">Request Status</Label>
-                            <select
-                                required
-                                id="requestStatus"
-                                className='pb-2 border mb-4 rounded-md'
-                                onChange={(e) =>
-                                    setForm({
-                                        ...form,
-                                        requestStatus: e.target.value,
-                                    })
-                                }>
-                                <option value="Incomplete">Incomplete</option>
-                                <option value="Pending">Pending</option>
-                                <option value="Complete">Complete</option>
-                                <option value="Unassigned">Unassigned</option>
-                            </select>
-                        </div>
+                        <Label className="pt-4 pb-2" htmlFor="roomNum">Room Number</Label>
+                        <Input
+                            required
+                            type="text"
+                            id="roomNum"
+                            onChange={(e) =>
+                                setForm({ ...form, roomNum: e.target.value })
+                            }
+                        />
 
-                        <Label className="pt-4 pb-2" htmlFor="type">
-                            Type
-                        </Label>
+                        <Label className="pt-4 pb-2" htmlFor="type">Sanitation Type</Label>
                         <select
                             required
                             id="type"
@@ -153,9 +111,7 @@ export default function SanitationRequest() {
                             <option value="PEST_CONTROL">Pest Control</option>
                         </select>
 
-                        <Label className="pt-4 pb-2" htmlFor="status">
-                            Room Status
-                        </Label>
+                        <Label className="pt-4 pb-2" htmlFor="status">Room Status</Label>
                         <select
                             required
                             id="status"
@@ -169,13 +125,51 @@ export default function SanitationRequest() {
                             <option value="IN_USE">In Use</option>
                         </select>
 
+                        <div>
+                            <Label className="pt-4 pb-2" htmlFor="priority">Priority</Label>
+                            <select
+                                required
+                                id="priority"
+                                className='border border-gray-300 rounded-md p-2'
+                                onChange={(e) =>
+                                    setForm({
+                                        ...form,
+                                        priority: e.target.value,
+                                    })
+                                }>
+                                <option value="">-- Select Priority --</option>
+                                <option value="Low">Low</option>
+                                <option value="Medium">Medium</option>
+                                <option value="High">High</option>
+                                <option value="High">Emergency</option>
+                            </select>
+                        </div>
+                        <div>
+                            <Label className="pt-4 pb-2" htmlFor="requestStatus">Request Status</Label>
+                            <select
+                                required
+                                id="requestStatus"
+                                className='border border-gray-300 rounded-md p-2'
+                                onChange={(e) =>
+                                    setForm({
+                                        ...form,
+                                        requestStatus: e.target.value,
+                                    })
+                                }>
+                                <option value="">-- Select Status --</option>
+                                <option value="Incomplete">Incomplete</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Complete">Complete</option>
+                                <option value="Unassigned">Unassigned</option>
+                            </select>
+                        </div>
+
                         <Label className="pt-4 pb-2" htmlFor="comments">
                             Comments
                         </Label>
                         <textarea
-                            required
                             id="comments"
-                            className="border border-gray-300 rounded-md p-2"
+                            className="border border-gray-300 rounded-md p-2 w-60"
                             onChange={(e) =>
                                 setForm({ ...form, comments: e.target.value })
                             }
@@ -188,7 +182,7 @@ export default function SanitationRequest() {
                 </div>
                 :
                 <ReturnSanitationRequest
-                    roomNumber={form.roomNumber}
+                    roomNum={form.roomNum}
                     type={form.type}
                     status={form.status}
                     comments={form.comments}

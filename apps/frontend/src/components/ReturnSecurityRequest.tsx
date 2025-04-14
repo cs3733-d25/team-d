@@ -5,7 +5,7 @@ type securityRequestForm = {
     roomNum: string;
     numOfGuards: number;
     securityType: string;
-    additionalComments: string;
+    comments: string;
     requestStatus: string;
     priority: string;
     employeeRequestedById: number;
@@ -22,23 +22,13 @@ const ReturnSecurityRequest = (props: securityRequestForm) => {
 
                 <div>
                     <div className="my-5">
-                        <Label htmlFor="languageFrom">Employee ID</Label>
+                        <Label htmlFor="employeeRequestedById">Employee ID</Label>
                         <p>{props.employeeRequestedById}</p>
                     </div>
 
                     <div className="my-5">
-                        <Label htmlFor="languageFrom">Department ID</Label>
+                        <Label htmlFor="departmentId">Department ID</Label>
                         <p>{props.departmentUnderId}</p>
-                    </div>
-
-                    <div className="my-5">
-                        <Label htmlFor="languageFrom">Number of Guards Requested</Label>
-                        <p>{props.numOfGuards}</p>
-                    </div>
-
-                    <div className="my-5">
-                        <Label htmlFor="languageTo">Security Type</Label>
-                        <p>{props.securityType}</p>
                     </div>
 
                     <div className="my-5">
@@ -47,8 +37,13 @@ const ReturnSecurityRequest = (props: securityRequestForm) => {
                     </div>
 
                     <div className="my-5">
-                        <Label htmlFor="startDateTime">Additional Comments</Label>
-                        <p>{props.additionalComments}</p>
+                        <Label htmlFor="securityType">Security Type</Label>
+                        <p>{props.securityType}</p>
+                    </div>
+
+                    <div className="my-5">
+                        <Label htmlFor="numOfGuards">Number of Guards Requested</Label>
+                        <p>{props.numOfGuards}</p>
                     </div>
 
                     <div className="my-5">
@@ -59,6 +54,11 @@ const ReturnSecurityRequest = (props: securityRequestForm) => {
                     <div className="my-5">
                         <Label htmlFor="requestStatus">Request Status</Label>
                         <p>{props.requestStatus}</p>
+                    </div>
+
+                    <div className="my-5">
+                        <Label htmlFor="comments">Comments</Label>
+                        <p>{props.comments}</p>
                     </div>
                 </div>
             </div>

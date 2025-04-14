@@ -356,8 +356,6 @@ router.put('/:id', async function (req: Request, res: Response) {
                 signature,
                 numOfGuards,
                 securityType,
-                additionalComments,
-                roomNumber,
                 type,
                 status,
                 comments,
@@ -374,7 +372,6 @@ router.put('/:id', async function (req: Request, res: Response) {
                     data: {
                         languageTo,
                         languageFrom,
-                        roomNum,
                         startDateTime,
                         endDateTime,
                     },
@@ -392,16 +389,13 @@ router.put('/:id', async function (req: Request, res: Response) {
                     data: {
                         numOfGuards,
                         securityType,
-                        additionalComments,
                     },
                 }),
                 PrismaClient.sanitationRequest.update({
                     where: { serviceRequestId: requestId },
                     data: {
-                        roomNumber,
                         type,
                         status,
-                        comments,
                     },
                 }),
                 PrismaClient.serviceRequest.update({
@@ -412,6 +406,8 @@ router.put('/:id', async function (req: Request, res: Response) {
                         requestStatus,
                         employeeRequestedById,
                         departmentUnderId,
+                        roomNum,
+                        comments,
                     },
                 }),
             ]);

@@ -17,6 +17,7 @@ type translatorRequestForm = {
     priority: string;
     employeeRequestedById: number;
     departmentUnderId: number;
+    comments: string;
 }
 
 export default function TranslatorServiceRequest() {
@@ -31,6 +32,7 @@ export default function TranslatorServiceRequest() {
         priority: '',
         employeeRequestedById: 0,
         departmentUnderId: 0,
+        comments: '',
     });
 
     const [submitted, setSubmitted] = useState(false);
@@ -57,6 +59,7 @@ export default function TranslatorServiceRequest() {
                                     required
                                     type="number"
                                     id="employeeId"
+                                    className='border border-gray-300 rounded-md p-2'
                                     onChange={(e) =>
                                         setForm({
                                             ...form,
@@ -72,10 +75,27 @@ export default function TranslatorServiceRequest() {
                                     required
                                     type="number"
                                     id="departmentId"
+                                    className='border border-gray-300 rounded-md p-2'
                                     onChange={(e) =>
                                         setForm({
                                             ...form,
                                             departmentUnderId: Number(e.target.value),
+                                        })
+                                    }
+                                />
+                            </div>
+
+                            <div>
+                                <Label className="pt-3 pb-2" htmlFor="roomNumber">Room Number</Label>
+                                <Input
+                                    required
+                                    type="text"
+                                    id="roomNumber"
+                                    className='border border-gray-300 rounded-md p-2'
+                                    onChange={(e) =>
+                                        setForm({
+                                            ...form,
+                                            roomNum: e.target.value,
                                         })
                                     }
                                 />
@@ -87,6 +107,7 @@ export default function TranslatorServiceRequest() {
                                     required
                                     type="text"
                                     id="languageFrom"
+                                    className='border border-gray-300 rounded-md p-2'
                                     onChange={(e) =>
                                         setForm({
                                             ...form,
@@ -102,6 +123,7 @@ export default function TranslatorServiceRequest() {
                                     required
                                     type="text"
                                     id="languageTo"
+                                    className='border border-gray-300 rounded-md p-2'
                                     onChange={(e) =>
                                         setForm({
                                             ...form,
@@ -110,26 +132,14 @@ export default function TranslatorServiceRequest() {
                                     }
                                 />
                             </div>
-                            <div>
-                                <Label className="pt-3 pb-2" htmlFor="roomNumber">Room Number</Label>
-                                <Input
-                                    required
-                                    type="text"
-                                    id="roomNumber"
-                                    onChange={(e) =>
-                                        setForm({
-                                            ...form,
-                                            roomNum: e.target.value,
-                                        })
-                                    }
-                                />
-                            </div>
+
                             <div>
                                 <Label className="pt-3 pb-2" htmlFor="startDateTime">Start Date and Time</Label>
                                 <Input
                                     required
                                     type="datetime-local"
                                     id="startDateTime"
+                                    className='border border-gray-300 rounded-md p-2'
                                     onChange={(e) =>
                                         setForm({
                                             ...form,
@@ -138,13 +148,14 @@ export default function TranslatorServiceRequest() {
                                     }
                                 />
                             </div>
+
                             <div>
                                 <Label className="pt-3 pb-2" htmlFor="endDateTime">End Date and Time</Label>
                                 <Input
                                     required
                                     type="datetime-local"
                                     id="languageFrom"
-                                    className='pb-2'
+                                    className='border border-gray-300 rounded-md p-2'
                                     onChange={(e) =>
                                         setForm({
                                             ...form,
@@ -153,19 +164,20 @@ export default function TranslatorServiceRequest() {
                                     }
                                 />
                             </div>
+
                             <div>
                                 <Label className="pt-3 pb-2" htmlFor="priority">Priority</Label>
                                 <select
                                     required
                                     id="priority"
-                                    className='pb-2 border rounded-md'
+                                    className='border border-gray-300 rounded-md p-2'
                                     onChange={(e) =>
                                         setForm({
                                             ...form,
                                             priority: e.target.value,
                                         })
                                     }>
-                                    <option value="" disabled selected>Select your option</option>
+                                    <option value="">-- Select Priority --</option>
                                     <option value="Low">Low</option>
                                     <option value="Medium">Medium</option>
                                     <option value="High">High</option>
@@ -177,20 +189,30 @@ export default function TranslatorServiceRequest() {
                                 <select
                                     required
                                     id="requestStatus"
-                                    className='pb-2 border mb-4 rounded-md'
+                                    className='border border-gray-300 rounded-md p-2'
                                     onChange={(e) =>
                                         setForm({
                                             ...form,
                                             requestStatus: e.target.value,
                                         })
                                     }>
-                                    <option value="" disabled selected>Select your option</option>
+                                    <option value="">-- Select Status --</option>
                                     <option value="Incomplete">Incomplete</option>
                                     <option value="Pending">Pending</option>
                                     <option value="Complete">Complete</option>
                                     <option value="Unassigned">Unassigned</option>
                                 </select>
                             </div>
+
+                            <Label className="pt-4 pb-2" htmlFor="comments">Comments</Label>
+                            <textarea
+                                id="comments"
+                                className="border border-gray-300 rounded-md p-2 w-60"
+                                onChange={(e) =>
+                                    setForm({ ...form, comments: e.target.value })
+                                }
+                            />
+
                             <div className="flex flex-row justify-center items-center">
                                 <Button type="submit" className="mt-5">Submit</Button>
                             </div>
@@ -206,6 +228,7 @@ export default function TranslatorServiceRequest() {
                     startDateTime={form.startDateTime}
                     endDateTime={form.endDateTime}
                     priority={form.priority}
+                    comments={form.comments}
                     requestStatus={form.requestStatus}/>
             }
         </>

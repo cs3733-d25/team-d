@@ -1,7 +1,7 @@
 import { CardTitle } from '@/components/ui/card.tsx';
 import { Label } from '@/components/ui/label.tsx';
 interface SanitationRequest {
-    roomNumber: string;
+    roomNum: string;
     type: string;
     status: string;
     comments: string;
@@ -21,33 +21,28 @@ const ReturnSanitationRequest = (props: SanitationRequest) => {
 
                 <div>
                     <div className="my-5">
-                        <Label htmlFor="languageFrom">Employee ID</Label>
+                        <Label htmlFor="employeeRequestedById">Employee ID</Label>
                         <p>{props.employeeRequestedById}</p>
                     </div>
 
                     <div className="my-5">
-                        <Label htmlFor="languageFrom">Department ID</Label>
+                        <Label htmlFor="departmentId">Department ID</Label>
                         <p>{props.departmentUnderId}</p>
                     </div>
 
                     <div className="my-5">
-                        <Label htmlFor="languageFrom">Room num</Label>
-                        <p>{props.roomNumber}</p>
+                        <Label htmlFor="roomNum">Room Number</Label>
+                        <p>{props.roomNum}</p>
                     </div>
 
                     <div className="my-5">
-                        <Label htmlFor="languageTo">Sanitation Type</Label>
+                        <Label htmlFor="type">Sanitation Type</Label>
                         <p>{props.type}</p>
                     </div>
 
                     <div className="my-5">
-                        <Label htmlFor="roomNum">Room status</Label>
+                        <Label htmlFor="status">Room status</Label>
                         <p>{props.status}</p>
-                    </div>
-
-                    <div className="my-5">
-                        <Label htmlFor="startDateTime">Additional Comments</Label>
-                        <p>{props.comments}</p>
                     </div>
 
                     <div className="my-5">
@@ -58,6 +53,11 @@ const ReturnSanitationRequest = (props: SanitationRequest) => {
                     <div className="my-5">
                         <Label htmlFor="requestStatus">Request Status</Label>
                         <p>{props.requestStatus}</p>
+                    </div>
+
+                    <div className="my-5">
+                        <Label htmlFor="comments">Comments</Label>
+                        <p>{props.comments}</p>
                     </div>
                 </div>
             </div>
