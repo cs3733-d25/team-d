@@ -36,7 +36,7 @@ export default function Banner({isLoggedIn}: {isLoggedIn: boolean})  {
 
                             {isLoggedIn && (
                                 <NavigationMenuItem>
-                                    <Link to="/loggedIn/profile" className="inline-block">
+                                    <Link to="/profile" className="inline-block">
                                         <img
                                             src={user.picture}
                                             alt={user.name}
