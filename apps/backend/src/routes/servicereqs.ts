@@ -104,6 +104,7 @@ router.get('/equipment', async function (req: Request, res: Response) {
     }
 });
 
+// GET ALL SANITATION REQUESTS
 router.get('/sanitation', async function (req: Request, res: Response) {
     // Find all service request of type translator request
     const sanitationRequests = await PrismaClient.serviceRequest.findMany({
@@ -129,11 +130,95 @@ router.get('/sanitation', async function (req: Request, res: Response) {
     }
 });
 
-// Post request to add service requests to the database
+// POST TRANSLATOR REQUESTS TO DATABASE
 router.post('/translator', async function (req: Request, res: Response) {
     const {
         languageTo,
         languageFrom,
+        roomNum,
+        employeeRequestedById,
+        departmentUnderId,
+        priority,
+        requestStatus,
+        comments,
+    } = req.body;
+    try {
+        await PrismaClient.serviceRequest.create({
+            data: {
+                assignedEmployeeId: null,
+                roomNum,
+                requestStatus,
+                priority,
+                departmentUnderId,
+                employeeRequestedById,
+                comments,
+                translatorRequest: {
+                    create: {
+                        languageFrom,
+                        languageTo,
+                        startDateTime: req.body.startDateTime + ':00.000Z',
+                        endDateTime: req.body.endDateTime + ':00.000Z',
+                    },
+                },
+            },
+        });
+        console.log('Service request created');
+    } catch (error) {
+        console.error(`Unable to create a new service request: ${error}`);
+        res.sendStatus(400);
+        return;
+    }
+
+    res.sendStatus(200);
+});
+
+// POST SECURITY REQUESTS TO DATABASE
+router.post('/security', async function (req: Request, res: Response) {
+    const {
+        numOfGuards,
+        securityType,
+        roomNum,
+        employeeRequestedById,
+        departmentUnderId,
+        priority,
+        requestStatus,
+        comments,
+    } = req.body;
+    try {
+        await PrismaClient.serviceRequest.create({
+            data: {
+                assignedEmployeeId: null,
+                employeeRequestedById,
+                departmentUnderId,
+                roomNum,
+                priority,
+                requestStatus,
+                comments,
+                securityRequest: {
+                    create: {
+                        numOfGuards,
+                        securityType,
+                    },
+                },
+            },
+        });
+        console.log('Service request created');
+    } catch (error) {
+        console.error(`Unable to create a new service request: ${error}`);
+        res.sendStatus(400);
+        return;
+    }
+
+    res.sendStatus(200);
+});
+
+// POST EQUIPMENT REQUESTS TO DATABASE
+router.post('/equipment', async function (req: Request, res: Response) {
+    const {
+        medicalDevice,
+        quantity,
+        comments,
+        signature,
         roomNum,
         employeeRequestedById,
         departmentUnderId,
@@ -144,30 +229,21 @@ router.post('/translator', async function (req: Request, res: Response) {
         await PrismaClient.serviceRequest.create({
             data: {
                 assignedEmployeeId: null,
-                requestStatus,
-                priority,
-                departmentUnderId,
                 employeeRequestedById,
-                translatorRequest: {
+                departmentUnderId,
+                roomNum,
+                priority,
+                requestStatus,
+                comments,
+                equipmentRequest: {
                     create: {
-                        languageFrom,
-                        languageTo,
-                        roomNum,
+                        medicalDevice,
+                        quantity,
+                        signature,
                         startDateTime: req.body.startDateTime + ':00.000Z',
                         endDateTime: req.body.endDateTime + ':00.000Z',
                     },
                 },
-                // equipmentRequest: {
-                //     create: {
-                //         roomNum: req.body.roomNum,
-                //         medicalDevice: req.body.medicalDevice,
-                //         quantity: req.body.quantity,
-                //         signature: req.body.signature,
-                //         comments: req.body.comments,
-                //         startDateTime: req.body.startDateTime + ':00.000Z',
-                //         endDateTime: req.body.endDateTime + ':00.000Z',
-                //     },
-                // },
             },
         });
         console.log('Service request created');
@@ -176,7 +252,46 @@ router.post('/translator', async function (req: Request, res: Response) {
         res.sendStatus(400);
         return;
     }
+    res.sendStatus(200);
+});
 
+// POST SANITATION REQUESTS TO DATABASE
+router.post('/sanitation', async (req, res) => {
+    const {
+        roomNum,
+        type,
+        status,
+        comments,
+        employeeRequestedById,
+        departmentUnderId,
+        priority,
+        requestStatus,
+    } = req.body;
+
+    try {
+        await PrismaClient.serviceRequest.create({
+            data: {
+                assignedEmployeeId: null,
+                employeeRequestedById,
+                departmentUnderId,
+                roomNum,
+                priority,
+                requestStatus,
+                comments,
+                sanitationRequest: {
+                    create: {
+                        type,
+                        status,
+                    },
+                },
+            },
+        });
+
+        console.log('Service request created');
+    } catch (error) {
+        console.error('Error creating sanitation request:', error);
+        res.status(500).json({ error: 'Error creating sanitation request' });
+    }
     res.sendStatus(200);
 });
 
@@ -393,126 +508,6 @@ router.delete('/:id', async function (req: Request, res: Response) {
     }
 });
 
-// Post request to add security requests to the database
-router.post('/security', async function (req: Request, res: Response) {
-    const {
-        numOfGuards,
-        securityType,
-        additionalComments,
-        roomNum,
-        employeeRequestedById,
-        departmentUnderId,
-        priority,
-        requestStatus,
-    } = req.body;
-    try {
-        await PrismaClient.serviceRequest.create({
-            data: {
-                assignedEmployeeId: null,
-                employeeRequestedById,
-                departmentUnderId,
-                priority,
-                requestStatus,
-                securityRequest: {
-                    create: {
-                        roomNum,
-                        numOfGuards,
-                        securityType,
-                        additionalComments,
-                    },
-                },
-            },
-        });
-        console.log('Service request created');
-    } catch (error) {
-        console.error(`Unable to create a new service request: ${error}`);
-        res.sendStatus(400);
-        return;
-    }
 
-    res.sendStatus(200);
-});
-
-// Post request to add medical device requests to the database
-router.post('/equipment', async function (req: Request, res: Response) {
-    const {
-        medicalDevice,
-        quantity,
-        comments,
-        signature,
-        roomNum,
-        employeeRequestedById,
-        departmentUnderId,
-        priority,
-        requestStatus,
-    } = req.body;
-    try {
-        await PrismaClient.serviceRequest.create({
-            data: {
-                assignedEmployeeId: null,
-                employeeRequestedById,
-                departmentUnderId,
-                priority,
-                requestStatus,
-                equipmentRequest: {
-                    create: {
-                        roomNum,
-                        medicalDevice,
-                        quantity,
-                        signature,
-                        comments,
-                        startDateTime: req.body.startDateTime + ':00.000Z',
-                        endDateTime: req.body.endDateTime + ':00.000Z',
-                    },
-                },
-            },
-        });
-        console.log('Service request created');
-    } catch (error) {
-        console.error(`Unable to create a new service request: ${error}`);
-        res.sendStatus(400);
-        return;
-    }
-    res.sendStatus(200);
-});
-
-router.post('/sanitation', async (req, res) => {
-    const {
-        roomNumber,
-        type,
-        status,
-        comments,
-        employeeRequestedById,
-        departmentUnderId,
-        priority,
-        requestStatus,
-    } = req.body;
-
-    try {
-        await PrismaClient.serviceRequest.create({
-            data: {
-                assignedEmployeeId: null,
-                employeeRequestedById,
-                departmentUnderId,
-                priority,
-                requestStatus,
-                sanitationRequest: {
-                    create: {
-                        roomNumber,
-                        type,
-                        status,
-                        comments,
-                    },
-                },
-            },
-        });
-
-        console.log('Service request created');
-    } catch (error) {
-        console.error('Error creating sanitation request:', error);
-        res.status(500).json({ error: 'Error creating sanitation request' });
-    }
-    res.sendStatus(200);
-});
 
 export default router;

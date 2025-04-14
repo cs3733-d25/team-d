@@ -35,6 +35,8 @@ model ServiceRequest {
   updatedAt     DateTime @updatedAt
   requestStatus String
   priority      String
+  roomNum          String
+  comments         String?
 
   // tables that inherit from ServiceRequest:
   translatorRequest TranslatorRequest?
@@ -56,7 +58,6 @@ model ServiceRequest {
 model TranslatorRequest {
   languageFrom     String
   languageTo       String
-  roomNum          String
   startDateTime    DateTime
   endDateTime      DateTime
   // link to service request:
@@ -65,23 +66,19 @@ model TranslatorRequest {
 }
 
 model SecurityRequest {
-  roomNum            String
   numOfGuards        Int
   securityType       String
-  additionalComments String
   // link to service request:
   serviceRequestId   Int            @unique
   serviceRequest     ServiceRequest @relation(fields: [serviceRequestId], references: [requestId])
 }
 
 model EquipmentRequest {
-  roomNum          String
   startDateTime    DateTime
   endDateTime      DateTime
   medicalDevice    String
   signature        String //picture of signature
   quantity         Int
-  comments         String
   // link to service request
   serviceRequestId Int            @unique
   serviceRequest   ServiceRequest @relation(fields: [serviceRequestId], references: [requestId])
@@ -106,10 +103,8 @@ model Department {
 
 // --- The SanitationRequest model ---
 model SanitationRequest {
-  roomNumber String
   type       SanitationType
   status     RoomStatus
-  comments   String?
 
   // link to service request:
   serviceRequestId Int            @unique
