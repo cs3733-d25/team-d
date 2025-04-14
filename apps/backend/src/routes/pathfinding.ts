@@ -1,7 +1,39 @@
 import express, { Router, Request, Response } from 'express';
 import PrismaClient from '../bin/prisma-client';
 import { Prisma } from 'database';
+import { Graph } from '../pathfinding/src/bfs.ts';
+
 const router: Router = express.Router();
+
+router.get('/pathfind/:graphId', async (req: Request, res: Response) => {
+    const graphDB = await PrismaClient.graph.findUnique({
+        where: {
+            graphId: Number(req.params.graphId),
+        },
+        select: {
+            graphId: true,
+            name: true,
+
+            Nodes: {
+                include: {
+                    edgeStart: true,
+                    edgeEnd: true,
+                },
+            },
+        },
+    });
+    if (!graphDB) {
+        res.sendStatus(404);
+        return;
+    }
+    const graphObj = new Graph();
+    for (const n in graphDB.Nodes) {
+        graphObj.addNode(n.name, {
+            x: n.lat,
+            y: n.lng,
+        });
+    }
+});
 
 router.get('/nodes', async (req: Request, res: Response) => {
     const nodes = await PrismaClient.node.findMany();

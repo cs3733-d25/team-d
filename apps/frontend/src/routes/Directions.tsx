@@ -1,7 +1,7 @@
 import GGMap from "@/GoogleMap/GoogleMap.tsx";
 import React, {useEffect, useRef, useState} from 'react';
 
-import {Input} from "@/components/ui/input.tsx";
+
 import {API_ROUTES} from "common/src/constants.ts";
 import axios from "axios";
 import {Label} from "@/components/ui/label.tsx";
@@ -16,33 +16,6 @@ import {
 } from "@/components/ui/select.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {cn} from "@/lib/utils.ts";
-
-// export type Hospital = {
-//     hospitalId: number
-//     name: string
-//     placeId: string
-//     defaultZoom: number
-//     defaultLat: number
-//     defaultLng: number
-//     Floors: Floor[]
-// }
-//
-// export type Floor = {
-//     floorId: number
-//     num: number
-//     imageURL: string
-//     north: number
-//     south: number
-//     east: number
-//     west: number
-//     Departments: Department[]
-// }
-//
-// export type Department = {
-//     departmentId: number
-//     name: string
-//     suite: string
-// }
 
 export type Hospital = {
     hospitalId: number
@@ -101,16 +74,6 @@ export default function Directions() {
     }, []);
 
     const handleHospitalChange = (value: string) => {
-        // if (departmentRef.current) {
-        //     // departmentRef.current.value = '';
-        // }
-        // for (const h of data) {
-        //     if (h.name === value) {
-        //         setHospital(h);
-        //         break;
-        //     }
-        // }
-        // setDepartment(undefined);
         for (const hospital of data) {
             if (hospital.name === value) {
                 setHospital(hospital);
@@ -120,16 +83,6 @@ export default function Directions() {
     }
 
     const handleDepartmentChange = (value: string) => {
-        // if (!hospital) return;
-        // for (const f of hospital.Floors) {
-        //     for (const d of f.Departments) {
-        //         if (d.name === value) {
-        //             setDepartment(d);
-        //             setFloor(f);
-        //             break;
-        //         }
-        //     }
-        // }
         if (!hospital) return;
         for (const d of hospital.Departments) {
             if (d.name === value) {
