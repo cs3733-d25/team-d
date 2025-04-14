@@ -1,7 +1,5 @@
 import React from 'react';
 
-
-import Login from "@/components/Login.tsx";
 import HeroTextBox from "@/components/HeroPage.tsx";
 import AccessDropMenu from "@/components/accessibility.tsx";
 import Banner from "@/components/Banner.tsx";
@@ -9,6 +7,7 @@ import Auth0LoginButton from "@/components/Auth0LoginButton.tsx";
 import MapButton from "@/components/MapButton.tsx";
 import DirectoryButton from "@/components/DirectoryButton.tsx";
 import Footer from "@/components/Footer.tsx";
+
 
 // Use for comments
 {/**/}
