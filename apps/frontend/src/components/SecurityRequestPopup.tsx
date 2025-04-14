@@ -23,7 +23,7 @@ const SecurityRequestPopup: React.FC<{title: string, iconName: IconDefinition}> 
                 </Card>
             </DialogTrigger>
 
-            <DialogContent className="place-content-center animate-in fade-in zoom-in duration-500 border-none">
+            <DialogContent className="place-content-center animate-in fade-in zoom-in duration-500 border-none h-150">
                 <SecurityServiceRequest />
             </DialogContent>
         </Dialog>

@@ -198,9 +198,9 @@ export default function EquipmentServiceRequest() {
                                 })
                             }
                         />
-
-                        <Button type="submit" className="mt-5">Submit</Button>
-
+                        <div className="flex flex-row justify-center items-center">
+                            <Button type="submit" className="mt-5">Submit</Button>
+                        </div>
                     </form>
                 </div>
                 </ScrollArea>
