@@ -52,6 +52,7 @@ export default function SecurityServiceRequest() {
                         <div>
                             <Label className="pt-3 pb-2" htmlFor="employeeId">Employee ID</Label>
                             <Input
+                                required
                                 type="number"
                                 id="employeeId"
                                 onChange={(e) =>
@@ -66,6 +67,7 @@ export default function SecurityServiceRequest() {
                         <div>
                             <Label className="pt-3 pb-2" htmlFor="departmentId">Department ID</Label>
                             <Input
+                                required
                                 type="number"
                                 id="departmentId"
                                 onChange={(e) =>
@@ -78,10 +80,11 @@ export default function SecurityServiceRequest() {
                         </div>
 
                         <div>
-                            <Label className="pt-3 pb-2" htmlFor="languageFrom">Number of Guards needed:</Label>
+                            <Label className="pt-3 pb-2" htmlFor="numOfGuards">Number of Guards Needed</Label>
                             <Input
+                                required
                                 type="number"
-                                id="languageFrom"
+                                id="numOfGuards"
                                 onChange={(e) =>
                                     setForm({
                                         ...form,
@@ -92,10 +95,11 @@ export default function SecurityServiceRequest() {
                         </div>
 
                         <div>
-                            <Label className="pt-3 pb-2" htmlFor="languageTo">Security Type: </Label>
+                            <Label className="pt-3 pb-2" htmlFor="securityType">Security Type</Label>
                             <Input
+                                required
                                 type="text"
-                                id="languageTo"
+                                id="securityType"
                                 onChange={(e) =>
                                     setForm({
                                         ...form,
@@ -105,10 +109,11 @@ export default function SecurityServiceRequest() {
                             />
                         </div>
                         <div>
-                            <Label className="pt-3 pb-2" htmlFor="roomNumber">Room Number</Label>
+                            <Label className="pt-3 pb-2" htmlFor="roomNum">Room Number</Label>
                             <Input
+                                required
                                 type="text"
-                                id="roomNumber"
+                                id="roomNum"
                                 onChange={(e) =>
                                     setForm({
                                         ...form,
@@ -120,6 +125,7 @@ export default function SecurityServiceRequest() {
                         <div>
                             <Label className="pt-3 pb-2" htmlFor="priority">Priority</Label>
                             <select
+                                required
                                 id="priority"
                                 className='pb-2 border rounded-md'
                                 onChange={(e) =>
@@ -137,6 +143,7 @@ export default function SecurityServiceRequest() {
                         <div>
                             <Label className="pt-3 pb-2" htmlFor="requestStatus">Request Status</Label>
                             <select
+                                required
                                 id="requestStatus"
                                 className='pb-2 border mb-4 rounded-md'
                                 onChange={(e) =>
@@ -152,10 +159,10 @@ export default function SecurityServiceRequest() {
                             </select>
                         </div>
                         <div>
-                            <Label className="pt-3 pb-2" htmlFor="additionalComments">Additional Comments: </Label>
+                            <Label className="pt-3 pb-2" htmlFor="comments">Comments</Label>
                             <Input
                                 type="textarea"
-                                id="additionalComments"
+                                id="comments"
                                 onChange={(e) =>
                                     setForm({
                                         ...form,
