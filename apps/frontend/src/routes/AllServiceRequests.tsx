@@ -52,6 +52,8 @@ export interface ServiceRequest {
     departmentUnderId: number;
     comments: string;
     roomNum: string;
+    // employee name will be displayed in the table in later iterations
+    // employeeName: string;
 }
 
 
@@ -100,6 +102,7 @@ export default function ShowAllRequests() {
                         <TableRow>
                             <TableHead className="w-32">Request ID</TableHead>
                             <TableHead>Requested By</TableHead>
+                            {/*<TableHead>Employee Name</TableHead>*/}
                             <TableHead>Assigned Employee</TableHead>
                             <TableHead>Department</TableHead>
                             <TableHead>Room Number</TableHead>
@@ -118,6 +121,7 @@ export default function ShowAllRequests() {
                             <TableRow key={i}>
                                 <TableCell>{element.requestId}</TableCell>
                                 <TableCell>{element.employeeRequestedById}</TableCell>
+                                {/*<TableCell>{element.employeeName}</TableCell>*/}
                                 <TableCell>{element.assignedEmployeeId}</TableCell>
                                 <TableCell>{element.departmentUnderId}</TableCell>
                                 <TableCell>{element.roomNum}</TableCell>
@@ -140,6 +144,7 @@ export default function ShowAllRequests() {
                         <TableRow>
                             <TableHead className="w-32">Request ID</TableHead>
                             <TableHead>Requested By</TableHead>
+                            {/*<TableHead>Employee Name</TableHead>*/}
                             <TableHead>Assigned Employee</TableHead>
                             <TableHead>Department</TableHead>
                             <TableHead>Room Number</TableHead>
@@ -159,6 +164,7 @@ export default function ShowAllRequests() {
                             <TableRow key={j}>
                                 <TableCell>{element.requestId}</TableCell>
                                 <TableCell>{element.employeeRequestedById}</TableCell>
+                                {/*<TableCell>{element.employeeName}</TableCell>*/}
                                 <TableCell>{element.assignedEmployeeId}</TableCell>
                                 <TableCell>{element.departmentUnderId}</TableCell>
                                 <TableCell>{element.roomNum}</TableCell>
@@ -182,6 +188,7 @@ export default function ShowAllRequests() {
                         <TableRow>
                             <TableHead className="w-32">Request ID</TableHead>
                             <TableHead>Requested By</TableHead>
+                            {/*<TableHead>Employee Name</TableHead>*/}
                             <TableHead>Assigned Employee</TableHead>
                             <TableHead>Department</TableHead>
                             <TableHead>Room Number</TableHead>
@@ -200,6 +207,7 @@ export default function ShowAllRequests() {
                             <TableRow key={j}>
                                 <TableCell>{element.requestId}</TableCell>
                                 <TableCell>{element.employeeRequestedById}</TableCell>
+                                {/*<TableCell>{element.employeeName}</TableCell>*/}
                                 <TableCell>{element.assignedEmployeeId}</TableCell>
                                 <TableCell>{element.departmentUnderId}</TableCell>
                                 <TableCell>{element.roomNum}</TableCell>
@@ -222,6 +230,7 @@ export default function ShowAllRequests() {
                         <TableRow>
                             <TableHead className="w-32">Request ID</TableHead>
                             <TableHead>Requested By</TableHead>
+                            {/*<TableHead>Employee Name</TableHead>*/}
                             <TableHead>Assigned Employee</TableHead>
                             <TableHead>Department</TableHead>
                             <TableHead>Room Number</TableHead>
@@ -240,6 +249,7 @@ export default function ShowAllRequests() {
                             <TableRow key={i}>
                                 <TableCell>{element.requestId}</TableCell>
                                 <TableCell>{element.employeeRequestedById}</TableCell>
+                                {/*<TableCell>{element.employeeName}</TableCell>*/}
                                 <TableCell>{element.departmentUnderId}</TableCell>
                                 <TableCell>{element.assignedEmployeeId}</TableCell>
                                 <TableCell>{element.sanitationRequest.type}</TableCell>

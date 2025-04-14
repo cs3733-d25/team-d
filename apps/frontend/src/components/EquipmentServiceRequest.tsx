@@ -20,6 +20,7 @@ type equipmentRequestForm = {
     priority: string;
     employeeRequestedById: number;
     departmentUnderId: number;
+    employeeName: string;
 }
 
 export default function EquipmentServiceRequest() {
@@ -36,6 +37,7 @@ export default function EquipmentServiceRequest() {
         priority: '',
         employeeRequestedById: 0,
         departmentUnderId: 0,
+        employeeName: '',
     });
 
     const [submitted, setSubmitted] = useState(false);
@@ -73,18 +75,55 @@ export default function EquipmentServiceRequest() {
                         </div>
 
                         <div>
-                            <Label className="pt-4 pb-2" htmlFor="departmentId">Department ID</Label>
+                            <Label className="pt-4 pb-2" htmlFor="employeeName">Employee Name</Label>
                             <Input
                                 required
-                                type="number"
-                                id="departmentId"
+                                type="text"
+                                id="employeeName"
+                                className='border border-gray-300 rounded-md p-2'
+                                onChange={(e) =>
+                                    setForm({
+                                        ...form,
+                                        employeeName: e.target.value,
+                                    })
+                                }
+                            />
+                        </div>
+
+                        <div>
+                            <Label className="pt-4 pb-2" htmlFor="department">Department</Label>
+                            <select
+                                required
+                                id="department"
+                                className='border border-gray-300 rounded-md p-2'
                                 onChange={(e) =>
                                     setForm({
                                         ...form,
                                         departmentUnderId: Number(e.target.value),
                                     })
-                                }
-                            />
+                                }>
+                                <option value="">-- Select Department --</option>
+                                <option value="1">Allergy and Clinical Immunology Floor 3</option>
+                                <option value="2">Allergy and Clinical Immunology Floor 5</option>
+                                <option value="3">Backup Child Care Center</option>
+                                <option value="4">Brigham Dermatology Associates (BDA)</option>
+                                <option value="5">Brigham Obstetrics and Gynecology Group (BOGG)	</option>
+                                <option value="6">Brigham Physicians Group (BPG) Floor 4</option>
+                                <option value="7">Brigham Physicians Group (BPG) Floor 5</option>
+                                <option value="8">Brigham Psychiatric Specialities</option>
+                                <option value="9">Center for Pain Medicine	</option>
+                                <option value="10">Crohn's and Colitis Center</option>
+                                <option value="11">Endoscopy Center</option>
+                                <option value="12">Gretchen S. and Edward A. Fish Center for Women's Health</option>
+                                <option value="13">Laboratory</option>
+                                <option value="14">Multi-Specialty Clinic</option>
+                                <option value="15">Osher Clinical Center for Integrative Health</option>
+                                <option value="16">Patient Financial Services	</option>
+                                <option value="17">Pharmacy</option>
+                                <option value="18">Radiology</option>
+                                <option value="19">Radiology, MRI/CT Scan</option>
+                                <option value="20">Rehabilitation Services</option>
+                            </select>
                         </div>
 
                         <div>
@@ -246,7 +285,9 @@ export default function EquipmentServiceRequest() {
                     endDateTime={form.endDateTime}
                     comments={form.comments}
                     requestStatus={form.requestStatus}
-                    priority={form.priority}/>
+                    employeeName={form.employeeName}
+                    priority={form.priority}
+                />
             }
         </>
     );

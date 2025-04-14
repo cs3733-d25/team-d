@@ -9,6 +9,7 @@ interface SanitationRequest {
     priority: string;
     employeeRequestedById: number;
     departmentUnderId: number;
+    employeeName: string;
 }
 
 const ReturnSanitationRequest = (props: SanitationRequest) => {
@@ -23,6 +24,11 @@ const ReturnSanitationRequest = (props: SanitationRequest) => {
                     <div className="my-5">
                         <Label htmlFor="employeeRequestedById">Employee ID</Label>
                         <p>{props.employeeRequestedById}</p>
+                    </div>
+
+                    <div className="my-5">
+                        <Label htmlFor="employeeName">Employee Name</Label>
+                        <p>{props.employeeName}</p>
                     </div>
 
                     <div className="my-5">
