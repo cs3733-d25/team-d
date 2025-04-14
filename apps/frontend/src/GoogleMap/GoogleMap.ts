@@ -108,7 +108,7 @@ export default class GoogleMap {
     }
 
     update(props: GoogleMapProps): void {
-        console.log('Update method');
+        console.log('Update method: ' + props.graph?.graphId);
         // Reset the currently showing floor map
         if (this.floorMap !== null) {
             this.floorMap.setMap(null);
@@ -121,22 +121,21 @@ export default class GoogleMap {
             this.route();
         }
         // If the floor has changed, show the current floor
-        if (props.floor) {
-            const floorMap = this.floorMaps.get(props.floor.floorId);
+        if (props.graph) {
+            const floorMap = this.floorMaps.get(props.graph.graphId);
             if (!floorMap) {
-                console.log('Getting floor map url from ' + props.floor.imageURL + ' ' + props.floor.north);
-                const newFloorMap = new google.maps.GroundOverlay(props.floor.imageURL, {
-                    north: props.floor.north,
-                    south: props.floor.south,
-                    east: props.floor.east,
-                    west: props.floor.west,
+                console.log('Getting floor map url from ' + props.graph.imageURL);
+                const newFloorMap = new google.maps.GroundOverlay(props.graph.imageURL, {
+                    north: props.graph.north,
+                    south: props.graph.south,
+                    east: props.graph.east,
+                    west: props.graph.west,
                 });
-                this.floorMaps.set(props.floor.floorId, newFloorMap);
+                this.floorMaps.set(props.graph.graphId, newFloorMap);
                 this.floorMap = newFloorMap;
 
                 // TODO: remove later
                 this.floorMap.addListener('click', (e: google.maps.MapMouseEvent) => {
-                    // console.log('click', e);
                     const ll = e.latLng;
                     if (ll) {
                         console.log('Point ' + this.pointNum++ + ':   ' + ll.toJSON().lat + ' ' + ll.toJSON().lng);
@@ -148,6 +147,33 @@ export default class GoogleMap {
             }
             this.floorMap.setMap(this.map);
         }
+        // if (props.floor) {
+        //     const floorMap = this.floorMaps.get(props.floor.floorId);
+        //     if (!floorMap) {
+        //         console.log('Getting floor map url from ' + props.floor.imageURL + ' ' + props.floor.north);
+        //         const newFloorMap = new google.maps.GroundOverlay(props.floor.imageURL, {
+        //             north: props.floor.north,
+        //             south: props.floor.south,
+        //             east: props.floor.east,
+        //             west: props.floor.west,
+        //         });
+        //         this.floorMaps.set(props.floor.floorId, newFloorMap);
+        //         this.floorMap = newFloorMap;
+        //
+        //         // TODO: remove later
+        //         this.floorMap.addListener('click', (e: google.maps.MapMouseEvent) => {
+        //             // console.log('click', e);
+        //             const ll = e.latLng;
+        //             if (ll) {
+        //                 console.log('Point ' + this.pointNum++ + ':   ' + ll.toJSON().lat + ' ' + ll.toJSON().lng);
+        //             }
+        //         });
+        //     }
+        //     else {
+        //         this.floorMap = floorMap;
+        //     }
+        //     this.floorMap.setMap(this.map);
+        // }
         // If the department has changed, re-route
         // the pathfinding to the nearest check-in location
         // to that dept.

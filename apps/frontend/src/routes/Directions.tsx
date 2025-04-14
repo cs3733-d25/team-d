@@ -48,8 +48,8 @@ export type Hospital = {
     name: string
     address: string
     placeId: string
-    defaultLat: string
-    defaultLng: string
+    defaultLat: number
+    defaultLng: number
     defaultZoom: number
     Departments: Department[]
 }
@@ -60,15 +60,15 @@ export type Department = {
     floorNum: number
     room: string
     building: string
-    lat: string
-    lng: string
+    lat: number
+    lng: number
     Graph: Graph
 }
 
 export type Graph = {
     graphId: number
     name: string
-    imageUrl: string
+    imageURL: string
     north: number
     south: number
     east: number
@@ -220,7 +220,7 @@ export default function Directions() {
                     }
                 </div>
                 <div className="flex-2">
-                    {/*<GGMap autoCompleteRef={autocompleteRef} hospital={hospital} floor={floor} department={department} zoomFlag={zoomFlag} />*/}
+                    <GGMap autoCompleteRef={autocompleteRef} hospital={hospital} department={department} graph={graph} zoomFlag={zoomFlag} />
                 </div>
             </div>
         </>

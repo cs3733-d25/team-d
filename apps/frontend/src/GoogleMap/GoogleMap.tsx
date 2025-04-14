@@ -1,6 +1,6 @@
 import React, {RefObject, useEffect, useRef, useState} from 'react';
 import GoogleMap from "@/GoogleMap/GoogleMap.ts";
-import {Hospital, Floor, Department} from '@/routes/Directions.tsx'
+import {Hospital, Department, Graph} from '@/routes/Directions.tsx'
 
 const API_KEY: string = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
@@ -9,8 +9,8 @@ const API_KEY: string = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 export interface GoogleMapProps {
     autoCompleteRef: RefObject<HTMLInputElement | null>;
     hospital: Hospital | undefined;
-    floor: Floor | undefined;
     department: Department | undefined;
+    graph: Graph | undefined;
     zoomFlag: boolean;
 }
 
@@ -58,7 +58,7 @@ const GGMap = (props: GoogleMapProps) => {
         console.log('UseEffect');
         if (!map) return;
         map.update(props);
-    }, [props.department, props.floor, props.hospital, props.zoomFlag]);
+    }, [props.hospital, props.department, props.graph, props.zoomFlag]);
 
     return (
         <div>
