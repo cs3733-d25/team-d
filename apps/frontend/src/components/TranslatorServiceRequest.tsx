@@ -18,6 +18,8 @@ type translatorRequestForm = {
     priority: string;
     employeeRequestedById: number;
     departmentUnderId: number;
+    comments: string;
+    employeeName: string;
 }
 
 export default function TranslatorServiceRequest() {
@@ -32,6 +34,8 @@ export default function TranslatorServiceRequest() {
         priority: '',
         employeeRequestedById: 0,
         departmentUnderId: 0,
+        comments: '',
+        employeeName: '',
     });
 
     const [submitted, setSubmitted] = useState(false);
@@ -54,11 +58,12 @@ export default function TranslatorServiceRequest() {
                     <h2 className="text-4xl fontbold pb-3" >Request a Translator</h2>
                         <form onSubmit={onSubmit}>
                             <div>
-                                <Label className="pt-3 pb-2" htmlFor="employeeId">Employee ID</Label>
+                                <Label className="pt-4 pb-2" htmlFor="employeeId">Employee ID</Label>
                                 <Input
                                     required
                                     type="number"
                                     id="employeeId"
+                                    className='border border-gray-300 rounded-md p-2'
                                     onChange={(e) =>
                                         setForm({
                                             ...form,
@@ -69,26 +74,80 @@ export default function TranslatorServiceRequest() {
                             </div>
 
                             <div>
-                                <Label className="pt-3 pb-2" htmlFor="departmentId">Department ID</Label>
+                                <Label className="pt-4 pb-2" htmlFor="employeeName">Employee Name</Label>
                                 <Input
                                     required
-                                    type="number"
-                                    id="departmentId"
+                                    type="text"
+                                    id="employeeName"
+                                    className='border border-gray-300 rounded-md p-2'
                                     onChange={(e) =>
                                         setForm({
                                             ...form,
-                                            departmentUnderId: Number(e.target.value),
+                                            employeeName: e.target.value,
                                         })
                                     }
                                 />
                             </div>
 
                             <div>
-                                <Label className="pt-3 pb-2" htmlFor="languageFrom">Language From</Label>
+                                <Label className="pt-4 pb-2" htmlFor="department">Department</Label>
+                                <select
+                                    required
+                                    id="department"
+                                    className='border border-gray-300 rounded-md p-2'
+                                    onChange={(e) =>
+                                        setForm({
+                                            ...form,
+                                            departmentUnderId: Number(e.target.value),
+                                        })
+                                    }>
+                                    <option value="">-- Select Department --</option>
+                                    <option value="1">Allergy and Clinical Immunology Floor 3</option>
+                                    <option value="2">Allergy and Clinical Immunology Floor 5</option>
+                                    <option value="3">Backup Child Care Center</option>
+                                    <option value="4">Brigham Dermatology Associates (BDA)</option>
+                                    <option value="5">Brigham Obstetrics and Gynecology Group (BOGG)	</option>
+                                    <option value="6">Brigham Physicians Group (BPG) Floor 4</option>
+                                    <option value="7">Brigham Physicians Group (BPG) Floor 5</option>
+                                    <option value="8">Brigham Psychiatric Specialities</option>
+                                    <option value="9">Center for Pain Medicine	</option>
+                                    <option value="10">Crohn's and Colitis Center</option>
+                                    <option value="11">Endoscopy Center</option>
+                                    <option value="12">Gretchen S. and Edward A. Fish Center for Women's Health</option>
+                                    <option value="13">Laboratory</option>
+                                    <option value="14">Multi-Specialty Clinic</option>
+                                    <option value="15">Osher Clinical Center for Integrative Health</option>
+                                    <option value="16">Patient Financial Services	</option>
+                                    <option value="17">Pharmacy</option>
+                                    <option value="18">Radiology</option>
+                                    <option value="19">Radiology, MRI/CT Scan</option>
+                                    <option value="20">Rehabilitation Services</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <Label className="pt-4 pb-2" htmlFor="roomNumber">Room Number</Label>
+                                <Input
+                                    required
+                                    type="text"
+                                    id="roomNumber"
+                                    className='border border-gray-300 rounded-md p-2'
+                                    onChange={(e) =>
+                                        setForm({
+                                            ...form,
+                                            roomNum: e.target.value,
+                                        })
+                                    }
+                                />
+                            </div>
+
+                            <div>
+                                <Label className="pt-4 pb-2" htmlFor="languageFrom">Language From</Label>
                                 <Input
                                     required
                                     type="text"
                                     id="languageFrom"
+                                    className='border border-gray-300 rounded-md p-2'
                                     onChange={(e) =>
                                         setForm({
                                             ...form,
@@ -99,11 +158,12 @@ export default function TranslatorServiceRequest() {
                             </div>
 
                             <div>
-                                <Label className="pt-3 pb-2" htmlFor="languageTo">Language To</Label>
+                                <Label className="pt-4 pb-2" htmlFor="languageTo">Language To</Label>
                                 <Input
                                     required
                                     type="text"
                                     id="languageTo"
+                                    className='border border-gray-300 rounded-md p-2'
                                     onChange={(e) =>
                                         setForm({
                                             ...form,
@@ -112,26 +172,14 @@ export default function TranslatorServiceRequest() {
                                     }
                                 />
                             </div>
+
                             <div>
-                                <Label className="pt-3 pb-2" htmlFor="roomNumber">Room Number</Label>
-                                <Input
-                                    required
-                                    type="text"
-                                    id="roomNumber"
-                                    onChange={(e) =>
-                                        setForm({
-                                            ...form,
-                                            roomNum: e.target.value,
-                                        })
-                                    }
-                                />
-                            </div>
-                            <div>
-                                <Label className="pt-3 pb-2" htmlFor="startDateTime">Start Date and Time</Label>
+                                <Label className="pt-4 pb-2" htmlFor="startDateTime">Start Date and Time</Label>
                                 <Input
                                     required
                                     type="datetime-local"
                                     id="startDateTime"
+                                    className='border border-gray-300 rounded-md p-2'
                                     onChange={(e) =>
                                         setForm({
                                             ...form,
@@ -140,13 +188,14 @@ export default function TranslatorServiceRequest() {
                                     }
                                 />
                             </div>
+
                             <div>
-                                <Label className="pt-3 pb-2" htmlFor="endDateTime">End Date and Time</Label>
+                                <Label className="pt-4 pb-2" htmlFor="endDateTime">End Date and Time</Label>
                                 <Input
                                     required
                                     type="datetime-local"
                                     id="languageFrom"
-                                    className='pb-2'
+                                    className='border border-gray-300 rounded-md p-2'
                                     onChange={(e) =>
                                         setForm({
                                             ...form,
@@ -155,19 +204,20 @@ export default function TranslatorServiceRequest() {
                                     }
                                 />
                             </div>
+
                             <div>
-                                <Label className="pt-3 pb-2" htmlFor="priority">Priority</Label>
+                                <Label className="pt-4 pb-2" htmlFor="priority">Priority</Label>
                                 <select
                                     required
                                     id="priority"
-                                    className='pb-2 border rounded-md'
+                                    className='border border-gray-300 rounded-md p-2'
                                     onChange={(e) =>
                                         setForm({
                                             ...form,
                                             priority: e.target.value,
                                         })
                                     }>
-                                    <option value="" disabled selected>Select your option</option>
+                                    <option value="">-- Select Priority --</option>
                                     <option value="Low">Low</option>
                                     <option value="Medium">Medium</option>
                                     <option value="High">High</option>
@@ -175,24 +225,34 @@ export default function TranslatorServiceRequest() {
                                 </select>
                             </div>
                             <div>
-                                <Label className="pt-3 pb-2" htmlFor="requestStatus">Request Status</Label>
+                                <Label className="pt-4 pb-2" htmlFor="requestStatus">Request Status</Label>
                                 <select
                                     required
                                     id="requestStatus"
-                                    className='pb-2 border mb-4 rounded-md'
+                                    className='border border-gray-300 rounded-md p-2'
                                     onChange={(e) =>
                                         setForm({
                                             ...form,
                                             requestStatus: e.target.value,
                                         })
                                     }>
-                                    <option value="" disabled selected>Select your option</option>
+                                    <option value="">-- Select Status --</option>
                                     <option value="Incomplete">Incomplete</option>
                                     <option value="Pending">Pending</option>
                                     <option value="Complete">Complete</option>
                                     <option value="Unassigned">Unassigned</option>
                                 </select>
                             </div>
+
+                            <Label className="pt-4 pb-2" htmlFor="comments">Comments</Label>
+                            <textarea
+                                id="comments"
+                                className="border border-gray-300 rounded-md p-2 w-60"
+                                onChange={(e) =>
+                                    setForm({ ...form, comments: e.target.value })
+                                }
+                            />
+
                             <div className="flex flex-row justify-center items-center">
                                 <Button type="submit" className="mt-5">Submit</Button>
                             </div>
@@ -210,7 +270,10 @@ export default function TranslatorServiceRequest() {
                     startDateTime={form.startDateTime}
                     endDateTime={form.endDateTime}
                     priority={form.priority}
-                    requestStatus={form.requestStatus}/>
+                    comments={form.comments}
+                    requestStatus={form.requestStatus}
+                    employeeName={form.employeeName}
+                />
             }
         </>
     );

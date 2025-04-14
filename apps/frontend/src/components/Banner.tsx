@@ -40,8 +40,8 @@ export default function Banner({isLoggedIn}: {isLoggedIn: boolean})  {
                                 <NavigationMenuItem>
                                     <Link to="/profile" className="inline-block">
                                         <img
-                                            src={user.picture}
-                                            alt={user.name}
+                                            src={user?.picture}
+                                            alt={user?.name}
                                             className="w-10 h-10 rounded-full border-2 border-gray-300 hover:opacity-80 transition duration-200"
                                         />
                                     </Link>

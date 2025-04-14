@@ -11,6 +11,8 @@ type translatorRequestForm = {
     priority: string;
     employeeRequestedById: number;
     departmentUnderId: number;
+    comments: string;
+    employeeName: string;
 };
 
 const ReturnTranslatorRequest = (props: translatorRequestForm) => {
@@ -28,8 +30,18 @@ const ReturnTranslatorRequest = (props: translatorRequestForm) => {
                     </div>
 
                     <div className="my-5">
+                        <Label htmlFor="employeeName">Employee Name</Label>
+                        <p>{props.employeeName}</p>
+                    </div>
+
+                    <div className="my-5">
                         <Label htmlFor="departmentId">Department ID</Label>
                         <p>{props.departmentUnderId}</p>
+                    </div>
+
+                    <div className="my-5">
+                        <Label htmlFor="roomNum">Room Number</Label>
+                        <p>{props.roomNum}</p>
                     </div>
 
                     <div className="my-5">
@@ -40,10 +52,6 @@ const ReturnTranslatorRequest = (props: translatorRequestForm) => {
                     <div className="my-5">
                         <Label htmlFor="languageTo">Language To</Label>
                         <p>{props.languageTo}</p>
-                    </div>
-                    <div className="my-5">
-                        <Label htmlFor="roomNum">Room Number</Label>
-                        <p>{props.roomNum}</p>
                     </div>
 
                     <div className="my-5">
@@ -64,6 +72,11 @@ const ReturnTranslatorRequest = (props: translatorRequestForm) => {
                     <div className="my-5">
                         <Label htmlFor="requestStatus">Request Status</Label>
                         <p>{props.requestStatus}</p>
+                    </div>
+
+                    <div className="my-5">
+                        <Label htmlFor="comments">Comments</Label>
+                        <p>{props.comments}</p>
                     </div>
                 </div>
             </div>
