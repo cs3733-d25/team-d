@@ -6,6 +6,7 @@ import {useState} from "react";
 import {API_ROUTES} from "common/src/constants.ts";
 import axios from "axios";
 import ReturnTranslatorRequest from "@/components/ReturnTranslatorRequest.tsx";
+import {ScrollArea} from "@/components/ui/scrollarea.tsx";
 
 type translatorRequestForm = {
     languageFrom: string;
@@ -48,7 +49,8 @@ export default function TranslatorServiceRequest() {
     return (
         <>
             {!submitted ?
-                <div className="grid place-items-center h-full items-center">
+                <ScrollArea className="max-h-[100vh] overflow-y-auto pr-4">
+                <div className="flex flex-col gap-4">
                     <h2 className="text-4xl fontbold pb-3" >Request a Translator</h2>
                         <form onSubmit={onSubmit}>
                             <div>
@@ -196,6 +198,8 @@ export default function TranslatorServiceRequest() {
                             </div>
                         </form>
                 </div>
+                </ScrollArea>
+
             :
                 <ReturnTranslatorRequest
                     employeeRequestedById={form.employeeRequestedById}

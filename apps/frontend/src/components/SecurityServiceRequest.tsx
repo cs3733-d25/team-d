@@ -2,6 +2,7 @@ import {FormEvent} from 'react';
 import {Button} from "@/components/ui/button.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import {Label} from "@/components/ui/label.tsx";
+import {ScrollArea} from "@/components/ui/scrollarea.tsx";
 import {useState} from "react";
 import {API_ROUTES} from "common/src/constants.ts";
 import axios from "axios";
@@ -46,6 +47,7 @@ export default function SecurityServiceRequest() {
     return (
         <>
             {!submitted ?
+                <ScrollArea className="max-h-[100vh] overflow-y-auto pr-4">
                 <div className="grid place-items-center h-full items-center">
                     <h2 className="text-4xl fontbold pb-3" >Request Security</h2>
                     <form onSubmit={onSubmit}>
@@ -176,6 +178,7 @@ export default function SecurityServiceRequest() {
                         </div>
                     </form>
                 </div>
+                </ScrollArea>
                 :
                 <ReturnSecurityRequest
                     roomNum={form.roomNum}
