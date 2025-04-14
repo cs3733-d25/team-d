@@ -49,8 +49,8 @@ model ServiceRequest {
   employeeRequestedById Int
   employeeRequestedBy   Employee   @relation(name: "requestedBy", fields: [employeeRequestedById], references: [employeeId])
   // which department it's made under
-  departmentUnderId     Int
-  departmentUnder       Department @relation(fields: [departmentUnderId], references: [departmentId])
+  departmentUnderId     Int?
+  departmentUnder       Department? @relation(fields: [departmentUnderId], references: [departmentId])
 }
 
 model TranslatorRequest {

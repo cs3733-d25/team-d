@@ -14,24 +14,23 @@ import {GetDirectory} from "@/database/csv-export.ts";
 import {updateDirectory} from "@/database/csv-import.ts";
 import { useState, useEffect } from 'react';
 import axios from "axios";
+import {EquipmentRequest, SanitationRequest, SecurityRequest, TranslatorRequest} from "@/routes/AllServiceRequests.tsx";
 
-type department = {
+type Department = {
     departmentId: number;
     name: string;
-    floor: number;
-    suite: string;
-    specialtyServices: string;
-    hours: string;
-    telephone: string;
+    floorNum: number;
+    room: string;
+    building: string;
 }
 
 const AdminDatabase: React.FC = () => {
-    const [departments, currDepartments] = useState<department[]>([]);
+    const [departments, currDepartments] = useState<Department[]>([]);
     const [loading, setLoading] = React.useState(false); // true means it needs to reload
     //getting department data for display
     const getDepartments = async() => {
         try{
-            const data = await axios.get('api/department');
+            const data = await axios.get('api/department/all');
             currDepartments(data.data);
             setLoading(false);
         }catch (error) {
@@ -70,9 +69,7 @@ const AdminDatabase: React.FC = () => {
                         <TableHead>Name</TableHead>
                         <TableHead>Floor</TableHead>
                         <TableHead>Suite</TableHead>
-                        <TableHead>Specialty Services</TableHead>
-                        <TableHead>Hours</TableHead>
-                        <TableHead>Telephone</TableHead>
+                        <TableHead>Building</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -80,11 +77,9 @@ const AdminDatabase: React.FC = () => {
                         <TableRow key={i}>
                             <TableCell>{department.departmentId}</TableCell>
                             <TableCell>{department.name}</TableCell>
-                            <TableCell>{department.floor}</TableCell>
-                            <TableCell>{department.suite}</TableCell>
-                            <TableCell>{department.specialtyServices}</TableCell>
-                            <TableCell>{department.hours}</TableCell>
-                            <TableCell>{department.telephone}</TableCell>
+                            <TableCell>{department.floorNum}</TableCell>
+                            <TableCell>{department.room}</TableCell>
+                            <TableCell>{department.building}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
