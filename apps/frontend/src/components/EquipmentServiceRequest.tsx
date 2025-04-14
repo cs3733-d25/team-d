@@ -248,10 +248,10 @@ export default function EquipmentServiceRequest() {
                                     })
                                 }>
                                 <option value="">-- Select Status --</option>
-                                <option value="Incomplete">Incomplete</option>
-                                <option value="Pending">Pending</option>
-                                <option value="Complete">Complete</option>
-                                <option value="Unassigned">Unassigned</option>
+                                <option value="Unassigned">Incomplete</option>
+                                <option value="Assigned">Pending</option>
+                                <option value="Working">Complete</option>
+                                <option value="Done">Unassigned</option>
                             </select>
                         </div>
 
