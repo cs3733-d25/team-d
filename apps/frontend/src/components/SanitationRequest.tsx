@@ -1,6 +1,7 @@
 import React, { FormEvent, useState } from "react";
 import axios from "axios";
 import { Button } from "@/components/ui/button.tsx";
+import {ScrollArea} from "@/components/ui/scrollarea.tsx";
 import { Input } from "@/components/ui/input.tsx";
 import { Label } from "@/components/ui/label.tsx";
 import { API_ROUTES } from "common/src/constants.ts";
@@ -50,6 +51,7 @@ export default function SanitationRequest() {
     return (
         <>
             {!submitted ?
+                <ScrollArea className="max-h-[100vh] overflow-y-auto pr-4">
                 <div className="grid place-items-center h-full items-center">
                     <h2 className="text-4xl font-bold pb-3">Request Sanitation</h2>
                     <form onSubmit={onSubmit} className="flex flex-col">
@@ -59,6 +61,7 @@ export default function SanitationRequest() {
                             Room Number
                         </Label>
                         <Input
+                            required
                             type="text"
                             id="roomNumber"
                             onChange={(e) =>
@@ -69,6 +72,7 @@ export default function SanitationRequest() {
                         <div>
                             <Label className="pt-3 pb-2" htmlFor="employeeId">Employee ID</Label>
                             <Input
+                                required
                                 type="number"
                                 id="employeeId"
                                 onChange={(e) =>
@@ -83,6 +87,7 @@ export default function SanitationRequest() {
                         <div>
                             <Label className="pt-3 pb-2" htmlFor="departmentId">Department ID</Label>
                             <Input
+                                required
                                 type="number"
                                 id="departmentId"
                                 onChange={(e) =>
@@ -97,6 +102,7 @@ export default function SanitationRequest() {
                         <div>
                             <Label className="pt-3 pb-2" htmlFor="priority">Priority</Label>
                             <select
+                                required
                                 id="priority"
                                 className='pb-2 border rounded-md'
                                 onChange={(e) =>
@@ -114,6 +120,7 @@ export default function SanitationRequest() {
                         <div>
                             <Label className="pt-3 pb-2" htmlFor="requestStatus">Request Status</Label>
                             <select
+                                required
                                 id="requestStatus"
                                 className='pb-2 border mb-4 rounded-md'
                                 onChange={(e) =>
@@ -133,6 +140,7 @@ export default function SanitationRequest() {
                             Type
                         </Label>
                         <select
+                            required
                             id="type"
                             className="border border-gray-300 rounded-md p-2"
                             onChange={(e) =>
@@ -151,6 +159,7 @@ export default function SanitationRequest() {
                             Room Status
                         </Label>
                         <select
+                            required
                             id="status"
                             className="border border-gray-300 rounded-md p-2"
                             onChange={(e) =>
@@ -166,6 +175,7 @@ export default function SanitationRequest() {
                             Comments
                         </Label>
                         <textarea
+                            required
                             id="comments"
                             className="border border-gray-300 rounded-md p-2"
                             onChange={(e) =>
@@ -178,6 +188,7 @@ export default function SanitationRequest() {
                         </Button>
                     </form>
                 </div>
+                </ScrollArea>
                 :
                 <ReturnSanitationRequest
                     roomNumber={form.roomNumber}

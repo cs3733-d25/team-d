@@ -1,19 +1,23 @@
 import React from "react";
-import { useAuth0 } from "@auth0/auth0-react";
+import {useNavigate} from "react-router-dom";
 
-const LoginButton = () => {
-    const { loginWithRedirect } = useAuth0();
+const DirectoryButton: React.FC = () => {
+    const navigate = useNavigate();
+
+    const redirectToDirectory = () => {
+        navigate("/directory");
+    };
 
     return (
         <div className="">
-            <button onClick={() => loginWithRedirect()}
+            <button onClick={() => redirectToDirectory()}
                     className="text-2xl pd-10 border-4 border-white rounded-full text-center bg-black/30 hover:bg-black/60 text-white
                     animate-in fade-in zoom-in duration-500 p-4 font-nunito hover:scale-110 cursor-pointer"
             >
-                LOGIN
+                DIRECTORY
             </button>
         </div>
     )
 };
 
-export default LoginButton;
+export default DirectoryButton;

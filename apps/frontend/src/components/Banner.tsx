@@ -10,17 +10,23 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faCircleUser} from "@fortawesome/free-solid-svg-icons";
 import hospitalLogo from "@/public/hospital2.png";
 
+import { useAuth0 } from "@auth0/auth0-react";
+
 export default function Banner({isLoggedIn}: {isLoggedIn: boolean})  {
+    const { user, isAuthenticated, isLoading } = useAuth0();
+
     return (
         <>
-            <div className={"flex flex-row bg-[#Addde5] sticky top-0"} >
+            <div className={"flex flex-row bg-[#Addde5]"} >
                 <div className={"basis-1/3"}>
-                    <img
-                        src={hospitalLogo}
-                        alt="Brigham and Women’s Hospital (Founding Member, Mass General Brigham)"
-                        style={{ height: "40px" }}
-                        className={"mx-4 my-4"}
-                    />
+                    <Link to="/profile">
+                        <img
+                            src={hospitalLogo}
+                            alt="Brigham and Women’s Hospital (Founding Member, Mass General Brigham)"
+                            style={{ height: "40px" }}
+                            className={"mx-4 my-4 cursor-pointer hover:scale-105 transition-transform duration-200"}
+                        />
+                    </Link>
                 </div>
 
                 <div className={"basis-2/3"}>
@@ -29,6 +35,17 @@ export default function Banner({isLoggedIn}: {isLoggedIn: boolean})  {
                             <NavigationMenuItem>
                             </NavigationMenuItem>
 
+
+                            {isLoggedIn && (
+                                <NavigationMenuItem>
+                                    <Link to="/profile" className="inline-block">
+                                        <img
+                                            src={user.picture}
+                                            alt={user.name}
+                                            className="w-10 h-10 rounded-full border-2 border-gray-300 hover:opacity-80 transition duration-200"
+                                        />
+                                    </Link>
+                                </NavigationMenuItem>)}
 
                             {!isLoggedIn && (
                                 <NavigationMenuItem>
