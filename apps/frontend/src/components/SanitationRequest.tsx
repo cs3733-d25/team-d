@@ -198,10 +198,10 @@ export default function SanitationRequest() {
                                     })
                                 }>
                                 <option value="">-- Select Status --</option>
-                                <option value="Unassigned">Incomplete</option>
-                                <option value="Assigned">Pending</option>
-                                <option value="Working">Complete</option>
-                                <option value="Done">Unassigned</option>
+                                <option value="Unassigned">Unassigned</option>
+                                <option value="Assigned">Assigned</option>
+                                <option value="Working">Working</option>
+                                <option value="Done">Done</option>
                             </select>
                         </div>
 
