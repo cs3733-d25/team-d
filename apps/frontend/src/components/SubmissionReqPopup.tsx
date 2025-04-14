@@ -19,10 +19,12 @@ export default function SubmissionReqPopup() {
                 <AlertDialogContent>
                     <AlertDialogHeader>
                         <ProgressToCheck /> {/*The Confirmation Animation*/}
-                        <AlertDialogTitle className="text-2xl font-bold mt-4">Service Request Confirmed!</AlertDialogTitle>
-                        <AlertDialogDescription className="text-base mt-2">
+                        <div className="delay-1000">
+                        <AlertDialogTitle className="text-2xl font-bold mt-4 animate-in fade-in duration-2000 ease-in-out">Service Request Confirmed!</AlertDialogTitle>
+                        <AlertDialogDescription className="text-base mt-2 animate-in fade-in duration-2000 ease-in-out">
                             Check your service request listing
                         </AlertDialogDescription>
+                        </div>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                             <AlertDialogAction className="mt-6 px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-300 transition">
@@ -37,6 +39,7 @@ export default function SubmissionReqPopup() {
 
 
 {/*Process into Green Check Animation Blocks*/}
+
 export function ProgressToCheck() {
     const [showCheck, setShowCheck] = useState(false)
 
@@ -67,7 +70,7 @@ function CheckAnimation() {
         <div className="flex justify-center items-center animate-fade-in">
 
             <svg
-                className="w-16 h-16 text-green-500 animate-check"
+                className="w-16 h-16 text-green-500 animate-check duration-5000"
                 viewBox="0 0 52 52"
                 fill="none"
                 stroke="currentColor"
@@ -83,7 +86,7 @@ function CheckAnimation() {
                 .animate-check .path {
                     stroke-dasharray: 48;
                     stroke-dashoffset: 48;
-                    animation: dash 0.5s ease-out forwards;
+                    animation: dash 0.95s ease-out forwards;
                 }
 
                 @keyframes dash {
