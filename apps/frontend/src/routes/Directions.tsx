@@ -15,6 +15,7 @@ import {
     SelectValue,
 } from "@/components/ui/select.tsx";
 import {Button} from "@/components/ui/button.tsx";
+import {cn} from "@/lib/utils.ts";
 
 // export type Hospital = {
 //     hospitalId: number
@@ -139,90 +140,92 @@ export default function Directions() {
     }
 
     return (
-        <>
-            <div className="flex-1 flex flex-row">
-                <div className="flex-1">
-                    <label htmlFor="start-input">Start Location</label>
-                    <br/>
-                    <input id="start-input" ref={autocompleteRef} type="text" />
-                    {/*<hr/>*/}
-                    {/*<br/>*/}
-                    {/*<label htmlFor="location-dropdown">Destination Hospital</label>*/}
-                    {/*<br/>*/}
-                    {/*<select id="location-dropdown" name="location-dropdown" onChange={handleHospitalChange} defaultValue="">*/}
-                    {/*    <option key="0" value="" disabled>Choose a hospital</option>*/}
-                    {/*    {data.map((hospital: Hospital) => (*/}
-                    {/*        <option key={hospital.hospitalId + 1} value={hospital.name}>{hospital.name}</option>*/}
-                    {/*    ))}*/}
-                    {/*</select>*/}
-                    {/*{hospital &&*/}
-                    {/*    <>*/}
-                    {/*        <hr/>*/}
-                    {/*        <br/>*/}
-                    {/*        <label htmlFor="department-dropdown">Choose a location</label>*/}
-                    {/*        <br/>*/}
-                    {/*        <select id="department-dropdown" name="department-dropdown" onChange={handleDepartmentChange} defaultValue="" ref={departmentRef}>*/}
-                    {/*            <option key="0" value="" disabled>Choose here</option>*/}
-                    {/*            {hospital.Floors.map((floor: Floor) => (*/}
-                    {/*                floor.Departments.map((department: Department) => (*/}
-                    {/*                    <option key={department.name + 1} value={department.name}>{department.name}</option>))))}*/}
-                    {/*        </select>*/}
-                    {/*    </>*/}
-                    {/*}*/}
-                    {/*{hospital &&*/}
-                    {/*    <>*/}
-                    {/*        <hr/>*/}
-                    {/*        <br/>*/}
-                    {/*        <button onClick={() => setZoomFlag(!zoomFlag)}>Zoom to Hospital</button>*/}
-                    {/*    </>*/}
-                    {/*}*/}
-                    <br/>
-                    <hr/>
-                    <br/>
+        <div className="flex flex-row flex-1">
+            <div className="flex-1 p-4">
+                <Label className="mb-1">Start Location</Label>
 
-                    <Label>
-                        Destination Hospital
-                        <Select onValueChange={handleHospitalChange}>
-                            <SelectTrigger>
-                                <SelectValue placeholder="Choose a hospital..." defaultValue="0"></SelectValue>
+                {/*TODO: find a better way of doing this, copied from components/ui/input.tsx*/}
+                <input
+                    ref={autocompleteRef}
+                    id="start-input"
+                    type="text"
+                    data-slot="input"
+                    className={cn(
+                        "file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input flex h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
+                        "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
+                        "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive", "mb-4"
+                    )}
+                />
+                {/*end to-do here*/}
+
+                <Label>Destination Hospital</Label>
+                <Select onValueChange={handleHospitalChange}>
+                    <SelectTrigger className="w-full mt-1 mb-4">
+                        <SelectValue placeholder="Choose a hospital..." />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectGroup>
+                            <SelectLabel>Hospitals</SelectLabel>
+                            {data.map((h: Hospital) => (
+                                <SelectItem key={h.hospitalId + 1} value={h.name}>
+                                    {h.name}
+                                </SelectItem>
+                            ))}
+                        </SelectGroup>
+                    </SelectContent>
+                </Select>
+
+                {hospital && (
+                    <>
+                        <Label>Department</Label>
+                        <Select onValueChange={handleDepartmentChange}>
+                            <SelectTrigger className="w-full mt-1 mb-4">
+                                <SelectValue placeholder="Choose a department..." />
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectGroup key="0">
-                                    <SelectLabel>Hospitals</SelectLabel>
-                                    {data.map((h: Hospital) => (
-                                        <SelectItem key={h.hospitalId + 1} value={h.name}>{h.name}</SelectItem>
+                                    <SelectLabel>Departments</SelectLabel>
+                                    {hospital.Departments.map((d: Department) => (
+                                        <SelectItem key={d.departmentId + 1} value={d.name}>
+                                            {d.name}
+                                        </SelectItem>
                                     ))}
                                 </SelectGroup>
                             </SelectContent>
                         </Select>
-                    </Label>
 
-                    {hospital &&
-                        <>
-                            <Label>
-                                Department
-                                <Select onValueChange={handleDepartmentChange}>
-                                    <SelectTrigger>
-                                        <SelectValue defaultValue="0" placeholder="Choose a department..."></SelectValue>
-                                    </SelectTrigger>
-                                    <SelectContent ref={departmentRef}>
-                                        <SelectGroup>
-                                            <SelectLabel>Departments</SelectLabel>
-                                            {hospital.Departments.map((d: Department) => (
-                                                <SelectItem key={d.departmentId + 1} value={d.name}>{d.name}</SelectItem>
-                                            ))}
-                                        </SelectGroup>
-                                    </SelectContent>
-                                </Select>
-                            </Label>
-                            <Button onClick={() => setZoomFlag(!zoomFlag)}>Zoom</Button>
-                        </>
-                    }
-                </div>
-                <div className="flex-2">
-                    <GGMap autoCompleteRef={autocompleteRef} hospital={hospital} department={department} graph={graph} zoomFlag={zoomFlag} />
-                </div>
+                        <Button onClick={() => setZoomFlag(!zoomFlag)} className="mb-4">
+                            Zoom
+                        </Button>
+                    </>
+                )}
+
+                {/* Show Department Info if selected */}
+                {/*{selectedDepartment && (*/}
+                {/*    <div className="mt-4 p-2 border rounded">*/}
+                {/*        <h3 className="font-bold text-lg">{selectedDepartment.service}</h3>*/}
+                {/*        <p>*/}
+                {/*            <strong>Specialties:</strong> {selectedDepartment.specialties}*/}
+                {/*        </p>*/}
+                {/*        <p>*/}
+                {/*            <strong>Floor/Suite:</strong> {selectedDepartment.floorSuite}*/}
+                {/*        </p>*/}
+                {/*        <p>*/}
+                {/*            <strong>Phone:</strong> {selectedDepartment.phone}*/}
+                {/*        </p>*/}
+                {/*    </div>*/}
+                {/*)}*/}
             </div>
-        </>
+
+            <div className="flex-2">
+                <GGMap
+                    autoCompleteRef={autocompleteRef}
+                    hospital={hospital}
+                    department={department}
+                    graph={graph}
+                    zoomFlag={zoomFlag}
+                />
+            </div>
+        </div>
     )
 }

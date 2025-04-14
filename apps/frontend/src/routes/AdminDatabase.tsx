@@ -14,7 +14,6 @@ import {GetDirectory} from "@/database/csv-export.ts";
 import {updateDirectory} from "@/database/csv-import.ts";
 import { useState, useEffect } from 'react';
 import axios from "axios";
-import {EquipmentRequest, SanitationRequest, SecurityRequest, TranslatorRequest} from "@/routes/AllServiceRequests.tsx";
 
 type Department = {
     departmentId: number;
@@ -65,11 +64,11 @@ const AdminDatabase: React.FC = () => {
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead className="w-32">Department ID</TableHead>
-                        <TableHead>Name</TableHead>
-                        <TableHead>Floor</TableHead>
-                        <TableHead>Suite</TableHead>
-                        <TableHead>Building</TableHead>
+                        <TableHead className="px-4 py-2">Department ID</TableHead>
+                        <TableHead className="px-4 py-2">Name</TableHead>
+                        <TableHead className="px-4 py-2">Floor</TableHead>
+                        <TableHead className="px-4 py-2">Room</TableHead>
+                        <TableHead className="px-4 py-2">Building</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
