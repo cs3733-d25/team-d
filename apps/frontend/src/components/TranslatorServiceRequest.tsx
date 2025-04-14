@@ -267,7 +267,9 @@ export default function TranslatorServiceRequest() {
                     endDateTime={form.endDateTime}
                     priority={form.priority}
                     comments={form.comments}
-                    requestStatus={form.requestStatus}/>
+                    requestStatus={form.requestStatus}
+                    employeeName={form.employeeName}
+                />
             }
         </>
     );

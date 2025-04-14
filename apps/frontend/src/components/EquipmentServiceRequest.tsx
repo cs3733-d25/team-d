@@ -282,7 +282,9 @@ export default function EquipmentServiceRequest() {
                     endDateTime={form.endDateTime}
                     comments={form.comments}
                     requestStatus={form.requestStatus}
-                    priority={form.priority}/>
+                    employeeName={form.employeeName}
+                    priority={form.priority}
+                />
             }
         </>
     );

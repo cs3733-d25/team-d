@@ -11,7 +11,6 @@ type securityRequestForm = {
     roomNum: string;
     numOfGuards: number;
     securityType: string;
-    additionalComments: string;
     requestStatus: string;
     priority: string;
     employeeRequestedById: number;
@@ -26,7 +25,6 @@ export default function SecurityServiceRequest() {
         roomNum: '',
         numOfGuards: 0,
         securityType: '',
-        additionalComments: '',
         requestStatus: '',
         priority: '',
         employeeRequestedById: 0,
@@ -225,11 +223,12 @@ export default function SecurityServiceRequest() {
                     roomNum={form.roomNum}
                     numOfGuards={form.numOfGuards}
                     securityType={form.securityType}
-                    comments={form.additionalComments}
+                    comments={form.comments}
                     requestStatus={form.requestStatus}
                     priority={form.priority}
                     employeeRequestedById={form.employeeRequestedById}
                     departmentUnderId={form.departmentUnderId}
+                    employeeName={form.employeeName}
                 />
             }
         </>

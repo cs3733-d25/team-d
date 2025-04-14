@@ -10,6 +10,7 @@ type securityRequestForm = {
     priority: string;
     employeeRequestedById: number;
     departmentUnderId: number;
+    employeeName: string;
 }
 
 const ReturnSecurityRequest = (props: securityRequestForm) => {
@@ -24,6 +25,11 @@ const ReturnSecurityRequest = (props: securityRequestForm) => {
                     <div className="my-5">
                         <Label htmlFor="employeeRequestedById">Employee ID</Label>
                         <p>{props.employeeRequestedById}</p>
+                    </div>
+
+                    <div className="my-5">
+                        <Label htmlFor="employeeName">Employee Name</Label>
+                        <p>{props.employeeName}</p>
                     </div>
 
                     <div className="my-5">
