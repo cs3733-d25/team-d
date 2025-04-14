@@ -50,6 +50,7 @@ export default function SecurityServiceRequest() {
             {!submitted ?
                 <div className="grid place-items-center h-full items-center">
                     <h2 className="text-4xl fontbold pb-3" >Request Security</h2>
+                    <h6 className="pb-3 font-light">Maggie Hosie & Delia Jasper</h6>
                     <form onSubmit={onSubmit}>
                         <div>
                             <Label className="pt-4 pb-2" htmlFor="employeeId">Employee ID</Label>
@@ -206,7 +207,7 @@ export default function SecurityServiceRequest() {
                             <Label className="pt-4 pb-2" htmlFor="comments">Comments</Label>
                             <textarea
                                 id="comments"
-                                className="border border-gray-300 rounded-md p-2 w-60"
+                                className="border border-gray-300 rounded-md p-2 w-90"
                                 onChange={(e) =>
                                     setForm({ ...form, comments: e.target.value })
                                 }

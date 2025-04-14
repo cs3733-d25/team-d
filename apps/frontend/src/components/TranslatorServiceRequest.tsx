@@ -245,7 +245,7 @@ export default function TranslatorServiceRequest() {
                             <Label className="pt-4 pb-2" htmlFor="comments">Comments</Label>
                             <textarea
                                 id="comments"
-                                className="border border-gray-300 rounded-md p-2 w-60"
+                                className="border border-gray-300 rounded-md p-2 w-90"
                                 onChange={(e) =>
                                     setForm({ ...form, comments: e.target.value })
                                 }

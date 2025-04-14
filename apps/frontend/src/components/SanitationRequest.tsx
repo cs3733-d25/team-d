@@ -54,6 +54,7 @@ export default function SanitationRequest() {
             {!submitted ?
                 <div className="grid place-items-center h-full items-center">
                     <h2 className="text-4xl font-bold pb-3">Request Sanitation</h2>
+                    <h6 className="pb-3 font-light">Stuvat Dash & Brandon Small</h6>
                     <form onSubmit={onSubmit} className="flex flex-col">
 
                         <div>
@@ -209,7 +210,7 @@ export default function SanitationRequest() {
                         </Label>
                         <textarea
                             id="comments"
-                            className="border border-gray-300 rounded-md p-2 w-60"
+                            className="border border-gray-300 rounded-md p-2 w-90"
                             onChange={(e) =>
                                 setForm({ ...form, comments: e.target.value })
                             }
