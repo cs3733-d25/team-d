@@ -6,15 +6,20 @@ import healthcheckRouter from './routes/healthcheck';
 import employeeRouter from './routes/employee.ts';
 import assignedRouter from './routes/assigned.ts';
 import servicereqsRouter from './routes/servicereqs.ts';
-import directoryRouter from './routes/directory.ts';
 import pathfindRouter from './routes/pathfind.ts';
 import pathfindingRouter from './routes/pathfinding.ts';
+import directoryRouter from './routes/directory.ts';
+// import cors from 'cors';
 
 // const { auth, requiresAuth } = require('express-openid-connect');
 
 import { API_ROUTES } from 'common/src/constants';
 
 const app: Express = express(); // Setup the backend
+
+// Enable CORS before any routes
+// app.use(cors());
+
 // Setup generic middlewear
 app.use(
     logger('dev', {
