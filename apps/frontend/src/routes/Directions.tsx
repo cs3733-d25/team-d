@@ -141,12 +141,13 @@ export default function Directions() {
     return (
         <div className="flex flex-row flex-1">
             <div className="flex-1 p-4">
-                <label htmlFor="start-input">Start Location</label>
-                <br />
+                <Label htmlFor="start-input">Start Location</Label>
+                {/*<br />*/}
                 <input id="start-input" ref={autocompleteRef} type="text" />
 
                 <br />
-                <hr className="my-4" />
+                <br />
+                {/*<hr className="my-4" />*/}
 
                 <Label>Destination Hospital</Label>
                 <Select onValueChange={handleHospitalChange}>
@@ -173,16 +174,14 @@ export default function Directions() {
                                 <SelectValue placeholder="Choose a department..." />
                             </SelectTrigger>
                             <SelectContent>
-                                {hospital.Floors.map((f: Floor) => (
-                                    <SelectGroup key={f.floorId}>
-                                        <SelectLabel>Floor {f.num}</SelectLabel>
-                                        {f.Departments.map((d: Department) => (
-                                            <SelectItem key={d.departmentId + 1} value={d.name}>
-                                                {d.name}
-                                            </SelectItem>
-                                        ))}
-                                    </SelectGroup>
-                                ))}
+                                <SelectGroup key="0">
+                                    <SelectLabel>Departments</SelectLabel>
+                                    {hospital.Departments.map((d: Department) => (
+                                        <SelectItem key={d.departmentId + 1} value={d.name}>
+                                            {d.name}
+                                        </SelectItem>
+                                    ))}
+                                </SelectGroup>
                             </SelectContent>
                         </Select>
 
@@ -213,8 +212,8 @@ export default function Directions() {
                 <GGMap
                     autoCompleteRef={autocompleteRef}
                     hospital={hospital}
-                    floor={floor}
                     department={department}
+                    graph={graph}
                     zoomFlag={zoomFlag}
                 />
             </div>
