@@ -104,6 +104,31 @@ router.get('/equipment', async function (req: Request, res: Response) {
     }
 });
 
+router.get('/sanitation', async function (req: Request, res: Response) {
+    // Find all service request of type translator request
+    const sanitationRequests = await PrismaClient.serviceRequest.findMany({
+        where: {
+            sanitationRequest: {
+                isNot: null,
+            },
+        },
+        include: {
+            sanitationRequest: true,
+        },
+    });
+
+    // If no service request with the ID is found, send 204 and log it
+    if (sanitationRequests == null) {
+        console.error(`No sanitation requests found in database!`);
+        res.sendStatus(204);
+    }
+    // Otherwise send 200 and the data
+    else {
+        console.log(sanitationRequests);
+        res.json(sanitationRequests);
+    }
+});
+
 // Post request to add service requests to the database
 router.post('/translator', async function (req: Request, res: Response) {
     const {
@@ -488,31 +513,6 @@ router.post('/sanitation', async (req, res) => {
         res.status(500).json({ error: 'Error creating sanitation request' });
     }
     res.sendStatus(200);
-});
-
-router.get('/sanitation', async (req, res) => {
-    // Find all service request of type translator request
-    const sanitationRequests = await PrismaClient.serviceRequest.findMany({
-        where: {
-            sanitationRequest: {
-                isNot: null,
-            },
-        },
-        include: {
-            sanitationRequest: true,
-        },
-    });
-
-    // If no service request with the ID is found, send 204 and log it
-    if (sanitationRequests == null) {
-        console.error(`No sanitation requests found in database!`);
-        res.sendStatus(204);
-    }
-    // Otherwise send 200 and the data
-    else {
-        console.log(sanitationRequests);
-        res.json(sanitationRequests);
-    }
 });
 
 export default router;

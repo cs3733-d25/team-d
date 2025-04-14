@@ -1,4 +1,4 @@
-# Softeng Starter Code Repo
+i# Softeng Starter Code Repo
 
 This document contains an outline of
 the entire repo, the tooling in the
