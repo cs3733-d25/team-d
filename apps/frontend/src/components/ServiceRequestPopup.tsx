@@ -4,6 +4,7 @@ import {
     DialogContent,
     DialogTrigger,
 } from '@/components/ui/dialog';
+import {ScrollArea} from "@radix-ui/react-scroll-area";
 import {Card, CardHeader, CardTitle} from "@/components/ui/card.tsx";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
@@ -24,10 +25,9 @@ const ServiceRequestPopup: React.FC<{title: string, iconName: IconDefinition}> =
                     </CardHeader>
                 </Card>
             </DialogTrigger>
-
-            <DialogContent className="place-content-center animate-in fade-in zoom-in duration-500 border-none">
-                <TranslatorServiceRequest />
-            </DialogContent>
+                <DialogContent className="place-content-center animate-in fade-in zoom-in duration-500 border-none">
+                    <TranslatorServiceRequest />
+                </DialogContent>
         </Dialog>
     );
 }
