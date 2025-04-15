@@ -3,16 +3,14 @@ import axios from 'axios';
 interface Department{
     departmentId: number;
     name: string;
-    floor: number;
-    suite: string;
-    specialtyServices: string;
-    hours: string;
-    telephone: string;
+    floorNum: number;
+    room: string;
+    building: string;
 }
 
 export async function GetDirectory() {
     //get department data using get request
-    const data = (await axios.get('/api/department')).data;
+    const data = (await axios.get('/api/department/all')).data;
     //converting data from JSON format to CSV format
     const cols = Object.keys(data[0]);
     const colsString = cols.join(',');
