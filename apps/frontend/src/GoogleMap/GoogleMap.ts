@@ -230,8 +230,8 @@ export default class GoogleMap {
                 const pathData: google.maps.LatLngLiteral[][] = rawData.map((path): google.maps.LatLngLiteral[] => {
                     return path.map((coord): google.maps.LatLngLiteral => {
                         return {
-                            lat: coord.x,
-                            lng: coord.y,
+                            lat: coord.lat,
+                            lng: coord.lng,
                         }
                     });
                 });

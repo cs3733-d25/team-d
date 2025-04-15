@@ -168,7 +168,7 @@ class Graph {
         console.log(doorCanidates);
 
         // TODO: select the node with the shortest distance to departmentCoords instead of just the first one
-        const doorNode = doorCanidates[0];
+        const doorNode = doorCanidates[1];
 
         const entranceNode = this.nodesList.find((node) => {
             return (

@@ -27,13 +27,13 @@ export default function Path({coords, bkWidth, bkHeight}: PathProps) {
 
     return (
         <>
-            <circle cx={coords[0].x * 100 / bkWidth + '%'} cy={coords[0].y * 100 / bkHeight + '%'} r={6} />
+            <circle cx={coords[0].lat * 100 / bkWidth + '%'} cy={coords[0].lng * 100 / bkHeight + '%'} r={6} />
             {/*Draw the lines*/}
             {path.map((line) =>
-                <line x1={line.start.x * 100 / bkWidth + '%'} y1={line.start.y * 100 / bkHeight + '%'}
-                      x2={line.end.x * 100 / bkWidth + '%'} y2={line.end.y * 100 / bkHeight + '%'} width={3} />
+                <line x1={line.start.lat * 100 / bkWidth + '%'} y1={line.start.lng * 100 / bkHeight + '%'}
+                      x2={line.end.lat * 100 / bkWidth + '%'} y2={line.end.lng * 100 / bkHeight + '%'} width={3} />
             )}
-            <circle cx={coords[coords.length - 1].x * 100 / bkWidth + '%'} cy={coords[coords.length - 1].y * 100 / bkHeight + '%'} r={6} />
+            <circle cx={coords[coords.length - 1].lat * 100 / bkWidth + '%'} cy={coords[coords.length - 1].lng * 100 / bkHeight + '%'} r={6} />
         </>
     );
 }

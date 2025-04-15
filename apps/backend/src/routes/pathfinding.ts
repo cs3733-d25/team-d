@@ -5,7 +5,7 @@ import { Graph } from '../pathfinding/src/bfs.ts';
 
 const router: Router = express.Router();
 
-router.get('/pathfind/:graphId', async (req: Request, res: Response) => {
+router.get('/pathfind/:graphId/', async (req: Request, res: Response) => {
     // get the graph
     const graphDB = await PrismaClient.graph.findUnique({
         where: {
@@ -31,8 +31,8 @@ router.get('/pathfind/:graphId', async (req: Request, res: Response) => {
 
     graphDB.Nodes.map((node) => {
         graphObj.addNode(node.nodeId, node.tags, {
-            x: node.lat,
-            y: node.lng,
+            lat: node.lat,
+            lng: node.lng,
         });
     });
 
@@ -54,7 +54,7 @@ router.get('/pathfind/:graphId', async (req: Request, res: Response) => {
     //     graphObj.addEdge()
     // }
 
-    res.json(graphObj.pathFind({ x: 0, y: 0 }));
+    res.json(graphObj.pathFind({ lat: 0, lng: 0 }));
 });
 
 router.get('/nodes', async (req: Request, res: Response) => {
