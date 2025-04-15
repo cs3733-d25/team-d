@@ -54,7 +54,7 @@ export default function TranslatorServiceRequest() {
                 setShowPopup(true);
             })
             .catch((err) => {
-                console.error("Error submitting sanitation request:", err);
+                console.error("Error submitting translator request:", err);
             });
     };
     return (
