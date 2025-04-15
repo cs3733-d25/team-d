@@ -36,7 +36,7 @@ export default function Banner({isLoggedIn}: {isLoggedIn: boolean})  {
                             <NavigationMenuItem>
                             </NavigationMenuItem>
 
-
+                            <SearchBar />
                             {isLoggedIn && (
                                 <NavigationMenuItem>
                                     <Link to="/profile" className="inline-block">
@@ -50,7 +50,7 @@ export default function Banner({isLoggedIn}: {isLoggedIn: boolean})  {
 
                             {!isLoggedIn && (
                                 <>
-                                    <SearchBar />
+
                                     <NavigationMenuItem>
                                         <button onClick={() => loginWithRedirect()}>
                                             <FontAwesomeIcon icon={faCircleUser} size="2x" color="black"/>
