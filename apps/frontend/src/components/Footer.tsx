@@ -43,7 +43,7 @@ export default function Footer() {
                                     href="#"
                                     className=" hover:text-gray-400 transition-all duration-500 ease-in-out"
                                 >
-                                    Serivces </a
+                                    Services </a
                                 >
                             </li>
                             <li>
