@@ -1,17 +1,18 @@
 import React from 'react';
 import { Outlet, Link } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     NavigationMenu,
     NavigationMenuItem,
     NavigationMenuLink,
     NavigationMenuList,
 } from "@/components/ui/navigation-menu"
-import hospitalLogo from "@/public/hospital2.png";
-import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
+
 import Banner from "@/components/Banner";
 import Auth0LogoutButton from "@/components/Auth0LogoutButton.tsx";
+import AccessDropMenu from "@/components/Accessibility.tsx";
+
+import {HoverCard, HoverCardContent, HoverCardTrigger} from "@radix-ui/react-hover-card";
 
 export default function Navbar() {
     const { isAuthenticated, isLoading } = useAuth0();
@@ -28,11 +29,11 @@ export default function Navbar() {
                         <NavigationMenuList className={'flex flex-row space-x-5'}>
 
                             {!isAuthenticated &&
-                                <NavigationMenuItem>
-                                    <NavigationMenuLink className={'text-base hover:bg-[rgba(0,31,63,0.8)] hover:text-white'}>
-                                        <Link to={`/`}><b>Home</b></Link>
-                                    </NavigationMenuLink>
-                                </NavigationMenuItem>
+                                        <NavigationMenuItem>
+                                                <NavigationMenuLink className="text-base hover:bg-blue-950 py-1">
+                                                    <b><AccessDropMenu /></b>
+                                                </NavigationMenuLink>
+                                        </NavigationMenuItem>
                             }
 
 
