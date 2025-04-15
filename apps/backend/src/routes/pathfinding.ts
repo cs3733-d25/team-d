@@ -1,7 +1,61 @@
 import express, { Router, Request, Response } from 'express';
 import PrismaClient from '../bin/prisma-client';
 import { Prisma } from 'database';
+import { Graph } from '../pathfinding/src/bfs.ts';
+
 const router: Router = express.Router();
+
+router.get('/pathfind/:graphId/', async (req: Request, res: Response) => {
+    // get the graph
+    const graphDB = await PrismaClient.graph.findUnique({
+        where: {
+            graphId: Number(req.params.graphId),
+        },
+        include: {
+            Nodes: {
+                include: {
+                    edgeStart: true,
+                    edgeEnd: true,
+                },
+            },
+        },
+    });
+
+    // if graph DNE or no nodes in graph return 404
+    if (!graphDB || graphDB.Nodes.length === 0) {
+        res.sendStatus(404);
+        return;
+    }
+
+    const graphObj = new Graph();
+
+    graphDB.Nodes.map((node) => {
+        graphObj.addNode(node.nodeId, node.tags, {
+            lat: node.lat,
+            lng: node.lng,
+        });
+    });
+
+    graphDB.Nodes.map((node) => {
+        node.edgeStart.map((edge) => {
+            graphObj.addEdge(edge.startNodeId, edge.endNodeId);
+        });
+    });
+
+    // console.log(graphDB);
+    // const graphObj = new Graph();
+    // for (const node in graphDB.Nodes) {
+    //     graphObj.addNode(node.nodeId, node.tags, {
+    //         x: node.lat,
+    //         y: node.lng,
+    //     });
+    // }
+    // for (const node in graphDB.Nodes) {
+    //     graphObj.addEdge()
+    // }
+
+    res.json(graphObj.pathFind({ lat: 0, lng: 0 }));
+});
 
 router.get('/nodes', async (req: Request, res: Response) => {
     const nodes = await PrismaClient.node.findMany();

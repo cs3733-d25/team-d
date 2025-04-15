@@ -7,6 +7,7 @@ const API_KEY: string = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
 
 export interface GoogleMapProps {
+    editor: boolean
     autoCompleteRef: RefObject<HTMLInputElement | null>;
     hospital: Hospital | undefined;
     department: Department | undefined;
@@ -41,7 +42,7 @@ const GGMap = (props: GoogleMapProps) => {
 
         // Attach initMap to window for Google callback
         window.initMap = () => {
-            if (!mapRef.current || !props.autoCompleteRef.current || !window.google) return;
+            if (!mapRef.current || !window.google) return;
 
             setMap(new GoogleMap(mapRef.current, props));
 
