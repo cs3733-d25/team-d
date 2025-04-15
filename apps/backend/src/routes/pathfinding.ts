@@ -6,6 +6,7 @@ import { Graph } from '../pathfinding/src/bfs.ts';
 const router: Router = express.Router();
 
 router.get('/pathfind/:graphId', async (req: Request, res: Response) => {
+    // get the graph
     const graphDB = await PrismaClient.graph.findUnique({
         where: {
             graphId: Number(req.params.graphId),
@@ -19,7 +20,9 @@ router.get('/pathfind/:graphId', async (req: Request, res: Response) => {
             },
         },
     });
-    if (!graphDB) {
+
+    // if graph DNE or no nodes in graph return 404
+    if (!graphDB || graphDB.Nodes.length === 0) {
         res.sendStatus(404);
         return;
     }

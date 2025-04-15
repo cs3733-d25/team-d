@@ -941,7 +941,7 @@ async function main() {
             where: {departmentId: 20},
             update: {
                 departmentId: 20,
-                name: 'Blood Draw / Phlebotomy',
+                name: 'Blood Draw / Phlebotomy (20 Patriot Pl)',
                 floorNum: 1,
                 room: '',
                 building: '20 Patriot Pl',
@@ -952,7 +952,7 @@ async function main() {
             },
             create: {
                 departmentId: 20,
-                name: 'Blood Draw / Phlebotomy',
+                name: 'Blood Draw / Phlebotomy (20 Patriot Pl)',
                 floorNum: 1,
                 room: '',
                 building: '20 Patriot Pl',
@@ -1441,7 +1441,7 @@ async function main() {
             where: {departmentId: 40},
             update: {
                 departmentId: 40,
-                name: 'Blood Draw / Phlebotomy',
+                name: 'Blood Draw / Phlebotomy (22 Patriot Pl)',
                 floorNum: 4,
                 room: '',
                 building: '22 Patriot Pl',
@@ -1452,7 +1452,7 @@ async function main() {
             },
             create: {
                 departmentId: 40,
-                name: 'Blood Draw / Phlebotomy',
+                name: 'Blood Draw / Phlebotomy (22 Patriot Pl)',
                 floorNum: 4,
                 room: '',
                 building: '22 Patriot Pl',
@@ -1837,6 +1837,9 @@ async function main() {
 
     ];
 
+    console.log('Nodes seeded!');
+    console.log(nodes);
+
     console.log('Seeding edges...');
     const edges = [
 
@@ -2118,6 +2121,9 @@ async function main() {
             }
         }),
     ];
+
+    console.log('Edges seeded!');
+    console.log(edges);
 
 
 

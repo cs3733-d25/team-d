@@ -220,7 +220,7 @@ export default class GoogleMap {
                 pathData.map(path => {
                     this.paths.push(new google.maps.Polyline({
                         path: path,
-                        strokeColor: '#0099FF',
+                        strokeColor: '#CC3300',
                         strokeOpacity: 1.0,
                         strokeWeight: 5,
                         map: this.map,
