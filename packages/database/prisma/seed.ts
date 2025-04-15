@@ -1519,6 +1519,11 @@ async function main() {
     console.log(departments);
 
     console.log('Seeding nodes...');
+
+    await prisma.node.deleteMany();
+    await prisma.edge.deleteMany();
+
+
     const nodes = [
         // await prisma.node.upsert({
         //     where: {nodeId: 0},
@@ -1832,6 +1837,146 @@ async function main() {
                 graphId: 1,
             }
         }),
+        // await prisma.node.upsert({
+        //     where: {nodeId: 100},
+        //     create: {
+        //         nodeId: 100,
+        //         tags: '[Parking1]',
+        //         lat: 42.091061004913655,
+        //         lng: -71.26682002463103,
+        //         graphId: 1,
+        //     },
+        //     update: {
+        //         nodeId: 100,
+        //         tags: '[Parking1]',
+        //         lat: 42.091061004913655,
+        //         lng: -71.26682002463103,
+        //         graphId: 1,
+        //     }
+        // }),
+        // await prisma.node.upsert({
+        //     where: {nodeId: 101},
+        //     create: {
+        //         nodeId: 101,
+        //         tags: 'turn on p lot',
+        //         lat: 42.0915152410756,
+        //         lng: -71.26701719023977,
+        //         graphId: 1,
+        //     },
+        //     update: {
+        //         nodeId: 101,
+        //         tags: 'turn on p lot',
+        //         lat: 42.0915152410756,
+        //         lng: -71.26701719023977,
+        //         graphId: 1,
+        //     }
+        // }),
+        //
+        // await prisma.node.upsert({
+        //     where: {nodeId: 102},
+        //     create: {
+        //         nodeId: 102,
+        //         tags: 'about to cross',
+        //         lat: 42.09193261714922,
+        //         lng: -71.26677678348538,
+        //         graphId: 1,
+        //     },
+        //     update: {
+        //         nodeId: 102,
+        //         tags: 'about to cross',
+        //         lat: 42.09193261714922,
+        //         lng: -71.26677678348538,
+        //         graphId: 1,
+        //     }
+        // }),
+        // await prisma.node.upsert({
+        //     where: {nodeId: 103},
+        //     create: {
+        //         nodeId: 103,
+        //         tags: 'entering path',
+        //         lat: 42.0919989211762,
+        //         lng: -71.26694594670606,
+        //         graphId: 1,
+        //     },
+        //     update: {
+        //         nodeId: 103,
+        //         tags: 'entering path',
+        //         lat: 42.0919989211762,
+        //         lng: -71.26694594670606,
+        //         graphId: 1,
+        //     }
+        // }),
+        // await prisma.node.upsert({
+        //     where: {nodeId: 104},
+        //     create: {
+        //         nodeId: 104,
+        //         tags: 'Path 1 end point',
+        //         lat: 42.09207738041204,
+        //         lng: -71.26688483608865,
+        //         graphId: 1,
+        //     },
+        //     update: {
+        //         nodeId: 104,
+        //         tags: 'Path 1 end point',
+        //         lat: 42.09207738041204,
+        //         lng: -71.26688483608865,
+        //         graphId: 1,
+        //     }
+        // }),
+        // await prisma.node.upsert({
+        //     where: {nodeId: 105},
+        //     create: {
+        //         nodeId: 105,
+        //         tags: 'Point beside entrance',
+        //         lat: 42.09251097266492,
+        //         lng: -71.26650997752694,
+        //         graphId: 1,
+        //     },
+        //     update: {
+        //         nodeId: 105,
+        //         tags: 'Point beside entrance',
+        //         lat: 42.09251097266492,
+        //         lng: -71.26650997752694,
+        //         graphId: 1,
+        //     }
+        // }),
+        // await prisma.node.upsert({
+        //     where: {nodeId: 106},
+        //     create: {
+        //         nodeId: 106,
+        //         tags: 'Point in front of entrance',
+        //         lat: 42.09247813156273,
+        //         lng: -71.266430852361,
+        //         graphId: 1,
+        //     },
+        //     update: {
+        //         nodeId: 106,
+        //         tags: 'Point in front of entrance',
+        //         lat: 42.09247813156273,
+        //         lng: -71.266430852361,
+        //         graphId: 1,
+        //     }
+        // }),
+        // await prisma.node.upsert({
+        //     where: {nodeId: 107},
+        //     create: {
+        //         nodeId: 107,
+        //         tags: '[Entrance1]',
+        //         lat: 42.092501020817565,
+        //         lng: -71.26636647934464,
+        //         graphId: 1,
+        //     },
+        //     update: {
+        //         nodeId: 107,
+        //         tags: '[Entrance1]',
+        //         lat: 42.092501020817565,
+        //         lng: -71.26636647934464,
+        //         graphId: 1,
+        //     }
+        // }),
+
+
+
         await prisma.node.upsert({
             where: {nodeId: 100},
             create: {
@@ -1866,7 +2011,6 @@ async function main() {
                 graphId: 1,
             }
         }),
-
         await prisma.node.upsert({
             where: {nodeId: 102},
             create: {
@@ -1888,16 +2032,16 @@ async function main() {
             where: {nodeId: 103},
             create: {
                 nodeId: 103,
-                tags: 'entering path',
-                lat: 42.0919989211762,
-                lng: -71.26694594670606,
+                tags: 'cross st 1',
+                lat: 42.092053035476496,
+                lng: -71.26707182647702,
                 graphId: 1,
             },
             update: {
                 nodeId: 103,
-                tags: 'entering path',
-                lat: 42.0919989211762,
-                lng: -71.26694594670606,
+                tags: 'cross st 1',
+                lat: 42.092053035476496,
+                lng: -71.26707182647702,
                 graphId: 1,
             }
         }),
@@ -1905,16 +2049,16 @@ async function main() {
             where: {nodeId: 104},
             create: {
                 nodeId: 104,
-                tags: 'Path 1 end point',
-                lat: 42.09207738041204,
-                lng: -71.26688483608865,
+                tags: 'cross st 2',
+                lat: 42.09222321305328,
+                lng: -71.26694039823529,
                 graphId: 1,
             },
             update: {
                 nodeId: 104,
-                tags: 'Path 1 end point',
-                lat: 42.09207738041204,
-                lng: -71.26688483608865,
+                tags: 'cross st 2',
+                lat: 42.09222321305328,
+                lng: -71.26694039823529,
                 graphId: 1,
             }
         }),
@@ -1922,16 +2066,16 @@ async function main() {
             where: {nodeId: 105},
             create: {
                 nodeId: 105,
-                tags: 'Point beside entrance',
-                lat: 42.09251097266492,
-                lng: -71.26650997752694,
+                tags: '',
+                lat: 42.09251119430022,
+                lng: -71.26667594984119,
                 graphId: 1,
             },
             update: {
                 nodeId: 105,
-                tags: 'Point beside entrance',
-                lat: 42.09251097266492,
-                lng: -71.26650997752694,
+                tags: '',
+                lat: 42.09251119430022,
+                lng: -71.26667594984119,
                 graphId: 1,
             }
         }),
@@ -1939,16 +2083,16 @@ async function main() {
             where: {nodeId: 106},
             create: {
                 nodeId: 106,
-                tags: 'Point in front of entrance',
-                lat: 42.09247813156273,
-                lng: -71.266430852361,
+                tags: '',
+                lat: 42.092609349545725,
+                lng: -71.26655339465918,
                 graphId: 1,
             },
             update: {
                 nodeId: 106,
-                tags: 'Point in front of entrance',
-                lat: 42.09247813156273,
-                lng: -71.266430852361,
+                tags: '',
+                lat: 42.092609349545725,
+                lng: -71.26655339465918,
                 graphId: 1,
             }
         }),
@@ -1957,15 +2101,15 @@ async function main() {
             create: {
                 nodeId: 107,
                 tags: '[Entrance1]',
-                lat: 42.092501020817565,
-                lng: -71.26636647934464,
+                lat: 42.0926342291187,
+                lng: -71.26656010018172,
                 graphId: 1,
             },
             update: {
                 nodeId: 107,
                 tags: '[Entrance1]',
-                lat: 42.092501020817565,
-                lng: -71.26636647934464,
+                lat: 42.0926342291187,
+                lng: -71.26656010018172,
                 graphId: 1,
             }
         }),
@@ -2106,6 +2250,76 @@ async function main() {
                 graphId: 2,
             }
         }),
+
+        await prisma.node.upsert({
+            where: {nodeId: 208},
+            create: {
+                nodeId: 208,
+                tags: '[Door1]',
+                lat: 42.09262561259546,
+                lng: -71.26674472281589,
+                graphId: 2,
+            },
+            update: {
+                nodeId: 208,
+                tags: '[Door1]',
+                lat: 42.09262561259546,
+                lng: -71.26674472281589,
+                graphId: 2,
+            }
+        }),
+        await prisma.node.upsert({
+            where: {nodeId: 209},
+            create: {
+                nodeId: 209,
+                tags: '',
+                lat: 42.09261780145996,
+                lng: -71.2667328170303,
+                graphId: 2,
+            },
+            update: {
+                nodeId: 209,
+                tags: '',
+                lat: 42.09261780145996,
+                lng: -71.2667328170303,
+                graphId: 2,
+            }
+        }),
+        await prisma.node.upsert({
+            where: {nodeId: 210},
+            create: {
+                nodeId: 210,
+                tags: '',
+                lat: 42.092540425935965,
+                lng: -71.26680925998723,
+                graphId: 2,
+            },
+            update: {
+                nodeId: 210,
+                tags: '',
+                lat: 42.092540425935965,
+                lng: -71.26680925998723,
+                graphId: 2,
+            }
+        }),
+        await prisma.node.upsert({
+            where: {nodeId: 211},
+            create: {
+                nodeId: 211,
+                tags: '[Checkpoint1]',
+                lat: 42.09250061855566,
+                lng: -71.26680255446469,
+                graphId: 2,
+            },
+            update: {
+                nodeId: 211,
+                tags: '[Checkpoint1]',
+                lat: 42.09250061855566,
+                lng: -71.26680255446469,
+                graphId: 2,
+            }
+        }),
+
 
 
 
@@ -2582,143 +2796,143 @@ async function main() {
     const edges = [
 
         //OUTSIDE: from garage to entrance path below
-        await prisma.edge.upsert({
-            where: {edgeId: 0},
-            create: {
-                edgeId: 0,
-                weight: 0,
-                startNodeId: 0,
-                endNodeId: 1,
-            },
-            update: {
-                edgeId: 0,
-                weight: 0,
-                startNodeId: 0,
-                endNodeId: 1,
-            }
-        }),
-        await prisma.edge.upsert({
-            where: {edgeId: 1},
-            create: {
-                edgeId: 1,
-                weight: 0,
-                startNodeId: 1,
-                endNodeId: 2,
-            },
-            update: {
-                edgeId: 1,
-                weight: 0,
-                startNodeId: 1,
-                endNodeId: 2,
-            }
-        }),
-        await prisma.edge.upsert({
-            where: {edgeId: 2},
-            create: {
-                edgeId: 2,
-                weight: 0,
-                startNodeId: 2,
-                endNodeId: 3,
-            },
-            update: {
-                edgeId: 2,
-                weight: 0,
-                startNodeId: 2,
-                endNodeId: 3,
-            }
-        }),
-        await prisma.edge.upsert({
-            where: {edgeId: 3},
-            create: {
-                edgeId: 3,
-                weight: 0,
-                startNodeId: 3,
-                endNodeId: 4,
-            },
-            update: {
-                edgeId: 3,
-                weight: 0,
-                startNodeId: 3,
-                endNodeId: 4,
-            }
-        }),
-        await prisma.edge.upsert({
-            where: {edgeId: 4},
-            create: {
-                edgeId: 4,
-                weight: 0,
-                startNodeId: 4,
-                endNodeId: 5,
-            },
-            update: {
-                edgeId: 4,
-                weight: 0,
-                startNodeId: 4,
-                endNodeId: 5,
-            }
-        }),
-        await prisma.edge.upsert({
-            where: {edgeId: 5},
-            create: {
-                edgeId: 5,
-                weight: 0,
-                startNodeId: 5,
-                endNodeId: 6,
-            },
-            update: {
-                edgeId: 5,
-                weight: 0,
-                startNodeId: 5,
-                endNodeId: 6,
-            }
-        }),
-
-        await prisma.edge.upsert({
-            where: {edgeId: 6},
-            create: {
-                edgeId: 6,
-                weight: 0,
-                startNodeId: 6,
-                endNodeId: 7,
-            },
-            update: {
-                edgeId: 6,
-                weight: 0,
-                startNodeId: 6,
-                endNodeId: 7,
-            }
-        }),
-        await prisma.edge.upsert({
-            where: {edgeId: 7},
-            create: {
-                edgeId: 7,
-                weight: 0,
-                startNodeId: 7,
-                endNodeId: 8,
-            },
-            update: {
-                edgeId: 7,
-                weight: 0,
-                startNodeId: 7,
-                endNodeId: 8,
-            }
-        }),
-
-        await prisma.edge.upsert({
-            where: {edgeId: 8},
-            create: {
-                edgeId: 8,
-                weight: 0,
-                startNodeId: 8,
-                endNodeId: 9,
-            },
-            update: {
-                edgeId: 8,
-                weight: 0,
-                startNodeId: 8,
-                endNodeId: 9,
-            }
-        }),
+        // await prisma.edge.upsert({
+        //     where: {edgeId: 0},
+        //     create: {
+        //         edgeId: 0,
+        //         weight: 0,
+        //         startNodeId: 0,
+        //         endNodeId: 1,
+        //     },
+        //     update: {
+        //         edgeId: 0,
+        //         weight: 0,
+        //         startNodeId: 0,
+        //         endNodeId: 1,
+        //     }
+        // }),
+        // await prisma.edge.upsert({
+        //     where: {edgeId: 1},
+        //     create: {
+        //         edgeId: 1,
+        //         weight: 0,
+        //         startNodeId: 1,
+        //         endNodeId: 2,
+        //     },
+        //     update: {
+        //         edgeId: 1,
+        //         weight: 0,
+        //         startNodeId: 1,
+        //         endNodeId: 2,
+        //     }
+        // }),
+        // await prisma.edge.upsert({
+        //     where: {edgeId: 2},
+        //     create: {
+        //         edgeId: 2,
+        //         weight: 0,
+        //         startNodeId: 2,
+        //         endNodeId: 3,
+        //     },
+        //     update: {
+        //         edgeId: 2,
+        //         weight: 0,
+        //         startNodeId: 2,
+        //         endNodeId: 3,
+        //     }
+        // }),
+        // await prisma.edge.upsert({
+        //     where: {edgeId: 3},
+        //     create: {
+        //         edgeId: 3,
+        //         weight: 0,
+        //         startNodeId: 3,
+        //         endNodeId: 4,
+        //     },
+        //     update: {
+        //         edgeId: 3,
+        //         weight: 0,
+        //         startNodeId: 3,
+        //         endNodeId: 4,
+        //     }
+        // }),
+        // await prisma.edge.upsert({
+        //     where: {edgeId: 4},
+        //     create: {
+        //         edgeId: 4,
+        //         weight: 0,
+        //         startNodeId: 4,
+        //         endNodeId: 5,
+        //     },
+        //     update: {
+        //         edgeId: 4,
+        //         weight: 0,
+        //         startNodeId: 4,
+        //         endNodeId: 5,
+        //     }
+        // }),
+        // await prisma.edge.upsert({
+        //     where: {edgeId: 5},
+        //     create: {
+        //         edgeId: 5,
+        //         weight: 0,
+        //         startNodeId: 5,
+        //         endNodeId: 6,
+        //     },
+        //     update: {
+        //         edgeId: 5,
+        //         weight: 0,
+        //         startNodeId: 5,
+        //         endNodeId: 6,
+        //     }
+        // }),
+        //
+        // await prisma.edge.upsert({
+        //     where: {edgeId: 6},
+        //     create: {
+        //         edgeId: 6,
+        //         weight: 0,
+        //         startNodeId: 6,
+        //         endNodeId: 7,
+        //     },
+        //     update: {
+        //         edgeId: 6,
+        //         weight: 0,
+        //         startNodeId: 6,
+        //         endNodeId: 7,
+        //     }
+        // }),
+        // await prisma.edge.upsert({
+        //     where: {edgeId: 7},
+        //     create: {
+        //         edgeId: 7,
+        //         weight: 0,
+        //         startNodeId: 7,
+        //         endNodeId: 8,
+        //     },
+        //     update: {
+        //         edgeId: 7,
+        //         weight: 0,
+        //         startNodeId: 7,
+        //         endNodeId: 8,
+        //     }
+        // }),
+        //
+        // await prisma.edge.upsert({
+        //     where: {edgeId: 8},
+        //     create: {
+        //         edgeId: 8,
+        //         weight: 0,
+        //         startNodeId: 8,
+        //         endNodeId: 9,
+        //     },
+        //     update: {
+        //         edgeId: 8,
+        //         weight: 0,
+        //         startNodeId: 8,
+        //         endNodeId: 9,
+        //     }
+        // }),
         //OUTSIDE: end of path from garage to entrance ABOVE^^
 
 
@@ -2859,6 +3073,112 @@ async function main() {
             }
         }),
 
+        await prisma.edge.upsert({
+            where: {edgeId: 100},
+            create: {
+                edgeId: 100,
+                weight: 0,
+                startNodeId: 100,
+                endNodeId: 101, //checkpoint 3 node
+            },
+            update: {
+                edgeId: 100,
+                weight: 0,
+                startNodeId: 100,
+                endNodeId: 101,
+            }
+        }),
+        await prisma.edge.upsert({
+            where: {edgeId: 101},
+            create: {
+                edgeId: 101,
+                weight: 0,
+                startNodeId: 101,
+                endNodeId: 102, //checkpoint 3 node
+            },
+            update: {
+                edgeId: 101,
+                weight: 0,
+                startNodeId: 101,
+                endNodeId: 102,
+            }
+        }),
+        await prisma.edge.upsert({
+            where: {edgeId: 102},
+            create: {
+                edgeId: 102,
+                weight: 0,
+                startNodeId: 102,
+                endNodeId: 103, //checkpoint 3 node
+            },
+            update: {
+                edgeId: 102,
+                weight: 0,
+                startNodeId: 102,
+                endNodeId: 103,
+            }
+        }),
+        await prisma.edge.upsert({
+            where: {edgeId: 103},
+            create: {
+                edgeId: 103,
+                weight: 0,
+                startNodeId: 103,
+                endNodeId: 104, //checkpoint 3 node
+            },
+            update: {
+                edgeId: 103,
+                weight: 0,
+                startNodeId: 103,
+                endNodeId: 104,
+            }
+        }),
+        await prisma.edge.upsert({
+            where: {edgeId: 104},
+            create: {
+                edgeId: 104,
+                weight: 0,
+                startNodeId: 104,
+                endNodeId: 105, //checkpoint 3 node
+            },
+            update: {
+                edgeId: 104,
+                weight: 0,
+                startNodeId: 104,
+                endNodeId: 105,
+            }
+        }),
+        await prisma.edge.upsert({
+            where: {edgeId: 105},
+            create: {
+                edgeId: 105,
+                weight: 0,
+                startNodeId: 105,
+                endNodeId: 106, //checkpoint 3 node
+            },
+            update: {
+                edgeId: 105,
+                weight: 0,
+                startNodeId: 105,
+                endNodeId: 106,
+            }
+        }),
+        await prisma.edge.upsert({
+            where: {edgeId: 106},
+            create: {
+                edgeId: 106,
+                weight: 0,
+                startNodeId: 106,
+                endNodeId: 107, //checkpoint 3 node
+            },
+            update: {
+                edgeId: 106,
+                weight: 0,
+                startNodeId: 106,
+                endNodeId: 107,
+            }
+        }),
+
 
 
         await prisma.edge.upsert({
@@ -2964,6 +3284,53 @@ async function main() {
                 weight: 0,
                 startNodeId: 206,
                 endNodeId: 207,
+            }
+        }),
+
+
+        await prisma.edge.upsert({
+            where: {edgeId: 208},
+            create: {
+                edgeId: 208,
+                weight: 0,
+                startNodeId: 208,
+                endNodeId: 209, //checkpoint 3 node
+            },
+            update: {
+                edgeId: 208,
+                weight: 0,
+                startNodeId: 208,
+                endNodeId: 209,
+            }
+        }),
+        await prisma.edge.upsert({
+            where: {edgeId: 209},
+            create: {
+                edgeId: 209,
+                weight: 0,
+                startNodeId: 209,
+                endNodeId: 210, //checkpoint 3 node
+            },
+            update: {
+                edgeId: 209,
+                weight: 0,
+                startNodeId: 209,
+                endNodeId: 210,
+            }
+        }),
+        await prisma.edge.upsert({
+            where: {edgeId: 210},
+            create: {
+                edgeId: 210,
+                weight: 0,
+                startNodeId: 210,
+                endNodeId: 211, //checkpoint 3 node
+            },
+            update: {
+                edgeId: 210,
+                weight: 0,
+                startNodeId: 210,
+                endNodeId: 211,
             }
         }),
 
@@ -3075,6 +3442,8 @@ async function main() {
                 endNodeId: 307,
             }
         }),
+
+
     ];
 
     console.log('Edges seeded!');
