@@ -57,9 +57,11 @@ export default function SecurityServiceRequest() {
         <>
             <SubmissionReqPopup open={showPopup} onOpenChange={setShowPopup} />
             {!submitted ?
-                <ScrollArea className="max-h-[95vh] overflow-y-auto pr-4">
+                <ScrollArea className="max-h-[95vh] overflow-y-auto pr-4 w-full max-w-screen-lg mx-auto bg-zinc-200">
                 <div className="grid place-items-center h-full items-center">
-                    <h2 className="text-4xl fontbold pb-3" >Request Security</h2>
+                    <div className="bg-blue-200 bg-opacity-60 rounded-3xl px-6 py-4 max-w-5xl w-full mx-auto">
+                        <h2 className="text-4xl font-bold text-left">Request Security Presence</h2>
+                    </div>
                     <h6 className="pb-3 font-light">Maggie Hosie & Delia Jasper</h6>
                     <form onSubmit={onSubmit}>
                         <div>
@@ -68,6 +70,7 @@ export default function SecurityServiceRequest() {
                                 required
                                 type="number"
                                 id="employeeId"
+                                className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                 onChange={(e) =>
                                     setForm({
                                         ...form,
@@ -83,8 +86,7 @@ export default function SecurityServiceRequest() {
                                 required
                                 type="text"
                                 id="employeeName"
-                                className='border border-gray-300 rounded-md p-2'
-                                onChange={(e) =>
+                                className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"                                onChange={(e) =>
                                     setForm({
                                         ...form,
                                         employeeName: e.target.value,
@@ -98,7 +100,7 @@ export default function SecurityServiceRequest() {
                             <select
                                 required
                                 id="department"
-                                className='border border-gray-300 rounded-md p-2'
+                                className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                 onChange={(e) =>
                                     setForm({
                                         ...form,
@@ -135,6 +137,7 @@ export default function SecurityServiceRequest() {
                                 required
                                 type="text"
                                 id="roomNum"
+                                className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                 onChange={(e) =>
                                     setForm({
                                         ...form,
@@ -150,6 +153,7 @@ export default function SecurityServiceRequest() {
                                 required
                                 type="text"
                                 id="securityType"
+                                className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                 onChange={(e) =>
                                     setForm({
                                         ...form,
@@ -165,6 +169,7 @@ export default function SecurityServiceRequest() {
                                 required
                                 type="number"
                                 id="numOfGuards"
+                                className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                 onChange={(e) =>
                                     setForm({
                                         ...form,
@@ -179,7 +184,7 @@ export default function SecurityServiceRequest() {
                             <select
                                 required
                                 id="priority"
-                                className='border border-gray-300 rounded-md p-2'
+                                className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                 onChange={(e) =>
                                     setForm({
                                         ...form,
@@ -198,7 +203,7 @@ export default function SecurityServiceRequest() {
                             <select
                                 required
                                 id="requestStatus"
-                                className='border border-gray-300 rounded-md p-2'
+                                className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                 onChange={(e) =>
                                     setForm({
                                         ...form,
@@ -217,7 +222,7 @@ export default function SecurityServiceRequest() {
                             <Label className="pt-4 pb-2" htmlFor="comments">Comments</Label>
                             <textarea
                                 id="comments"
-                                className="border border-gray-300 rounded-md p-2 w-90"
+                                className = "w-80 h-8 rounded-md border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                 onChange={(e) =>
                                     setForm({ ...form, comments: e.target.value })
                                 }

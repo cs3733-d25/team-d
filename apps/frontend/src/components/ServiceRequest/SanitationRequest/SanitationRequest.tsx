@@ -53,9 +53,11 @@ export default function SanitationRequest() {
     return (
         <>
             {!submitted ?
-                <ScrollArea className="max-h-[95vh] overflow-y-auto pr-4 w-full max-w-screen-md mx-auto bg-zinc-200">
+                <ScrollArea className="max-h-[95vh] overflow-y-auto pr-4 w-full max-w-screen-lg mx-auto bg-zinc-200">
                 <div className="grid items-start px-4 h-full w-full max-w-screen-md mx-auto">
-                    <h2 className="text-4xl font-bold pb-3 text-left">Request Sanitation</h2>
+                    <div className="bg-blue-200 bg-opacity-60 rounded-3xl px-6 py-4 max-w-5xl w-full mx-auto">
+                        <h2 className="text-4xl font-bold text-left">Request Sanitation</h2>
+                    </div>
                     <h6 className="pb-3 font-light">Stuvat Dash & Brandon Small</h6>
                     <form onSubmit={onSubmit} className="flex flex-col">
 
@@ -226,7 +228,7 @@ export default function SanitationRequest() {
                         <textarea
                             id="comments"
                             // className="border border-gray-300 rounded-md p-2 w-90"
-                            className = "w-80 h-8 rounded-xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
+                            className = "w-80 h-8 rounded-md border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                             onChange={(e) =>
                                 setForm({ ...form, comments: e.target.value })
                             }
