@@ -21,13 +21,15 @@ export default function Banner({isLoggedIn}: {isLoggedIn: boolean})  {
     return (
         <>
             <div className={"flex flex-row bg-[#Addde5]"} >
-                <div className={"basis-1/3"}>
-                    <img
-                        src={hospitalLogo}
-                        alt="Brigham and Women’s Hospital (Founding Member, Mass General Brigham)"
-                        style={{ height: "40px" }}
-                        className={"mx-4 my-4"}
-                    />
+                <div className={"basis-1/3 className=transition duration-500 ease-in-out hover:scale-104"}>
+                    <Link to="/profile">
+                        <img
+                            src={hospitalLogo}
+                            alt="Brigham and Women’s Hospital (Founding Member, Mass General Brigham)"
+                            style={{ height: "40px" }}
+                            className={"mx-4 my-4"}
+                        />
+                    </Link>
                 </div>
 
                 <div className={"basis-2/3"}>
