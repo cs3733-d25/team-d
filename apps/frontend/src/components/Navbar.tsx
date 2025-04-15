@@ -27,14 +27,14 @@ export default function Navbar() {
                     <NavigationMenu className={'ml-auto p-4'}>
                         <NavigationMenuList className={'flex flex-row space-x-5'}>
                             <NavigationMenuItem>
-                                <NavigationMenuLink className={'text-base hover:bg-[rgba(0,31,63,0.8)] hover:text-white'}>
-                                    <Link to={`/directory`}><b>Directions</b></Link>
+                                <NavigationMenuLink className={'font-nunito hover:bg-[rgba(0,31,63,0.8)] hover:text-white'}>
+                                    <Link to={`/directory`}>Directions</Link>
                                 </NavigationMenuLink>
                             </NavigationMenuItem>
 
                             <NavigationMenuItem>
-                                <NavigationMenuLink className={'text-base hover:bg-[rgba(0,31,63,0.8)] hover:text-white'}>
-                                    <Link to={`/servicerequesthub`}><b>Request Service</b></Link>
+                                <NavigationMenuLink className={'font-nunito hover:bg-[rgba(0,31,63,0.8)] hover:text-white'}>
+                                    <Link to={`/servicerequesthub`}>Request Service</Link>
                                 </NavigationMenuLink>
                             </NavigationMenuItem>
 
@@ -42,13 +42,13 @@ export default function Navbar() {
                                 <>
                                     <NavigationMenuItem>
                                         <NavigationMenuLink className={'text-base hover:bg-[rgba(0,31,63,0.8)] hover:text-white'}>
-                                            <Link to={`/all-service-requests`}><b>All Requests</b></Link>
+                                            <Link to={`/all-service-requests`}>All Requests</Link>
                                         </NavigationMenuLink>
                                     </NavigationMenuItem>
 
                                     <NavigationMenuItem>
                                         <NavigationMenuLink className={'text-base hover:bg-[rgba(0,31,63,0.8)] hover:text-white'}>
-                                            <Link to={`/admin-database`}><b>Directory Management</b></Link>
+                                            <Link to={`/admin-database`}>Directory Management</Link>
                                         </NavigationMenuLink>
                                     </NavigationMenuItem>
 
