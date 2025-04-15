@@ -234,7 +234,7 @@ export default class GoogleMap {
                     this.nodes.push(new google.maps.Circle({
                         strokeColor: '#00FF88',
                         strokeOpacity: 1,
-                        strokeWeight: 3,
+                        strokeWeight: 1,
                         fillColor: '#00FF88',
                         fillOpacity: 1,
                         map: this.map,
@@ -242,7 +242,7 @@ export default class GoogleMap {
                             lat: point.lat,
                             lng: point.lng,
                         },
-                        radius: 1,
+                        radius: 0.3,
                     }));
                 }));
             })
