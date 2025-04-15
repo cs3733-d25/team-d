@@ -16,6 +16,9 @@ import { API_ROUTES } from 'common/src/constants';
 
 const app: Express = express(); // Setup the backend
 
+// Enable CORS before any routes
+// app.use(cors());
+
 // Setup generic middlewear
 app.use(
     logger('dev', {

@@ -3099,6 +3099,7 @@ async function main() {
                 departmentUnderId: 3,
                 priority: 'Low',
                 requestStatus: 'Unassigned',
+                roomNum: '111',
             },
         }),
         await prisma.serviceRequest.upsert({
@@ -3110,6 +3111,7 @@ async function main() {
                 departmentUnderId: 11,
                 priority: 'Medium',
                 requestStatus: 'Pending',
+                roomNum: '121',
             },
         }),
         await prisma.serviceRequest.upsert({
@@ -3121,6 +3123,7 @@ async function main() {
                 departmentUnderId: 7,
                 priority: 'High',
                 requestStatus: 'Incomplete',
+                roomNum: '232',
             },
         }),
         await prisma.serviceRequest.upsert({
@@ -3132,6 +3135,7 @@ async function main() {
                 departmentUnderId: 8,
                 priority: 'Medium',
                 requestStatus: 'Unassigned',
+                roomNum: '301',
             },
         }),
         await prisma.serviceRequest.upsert({
@@ -3143,6 +3147,7 @@ async function main() {
                 departmentUnderId: 12,
                 priority: 'High',
                 requestStatus: 'Incomplete',
+                roomNum: '130',
             },
         }),
         await prisma.serviceRequest.upsert({
@@ -3154,6 +3159,7 @@ async function main() {
                 departmentUnderId: 11,
                 priority: 'Emergency',
                 requestStatus: 'Unassigned',
+                roomNum: '211',
             },
         }),
         await prisma.serviceRequest.upsert({
@@ -3165,6 +3171,7 @@ async function main() {
                 departmentUnderId: 11,
                 priority: 'Low',
                 requestStatus: 'Complete',
+                roomNum: '123',
             },
         }),
         await prisma.serviceRequest.upsert({
@@ -3176,6 +3183,7 @@ async function main() {
                 departmentUnderId: 10,
                 priority: 'Medium',
                 requestStatus: 'Pending',
+                roomNum: '312',
             },
         }),
         await prisma.serviceRequest.upsert({
@@ -3187,6 +3195,7 @@ async function main() {
                 departmentUnderId: 5,
                 priority: 'Low',
                 requestStatus: 'Unassigned',
+                roomNum: '133',
             },
         }),
         await prisma.serviceRequest.upsert({
@@ -3198,6 +3207,7 @@ async function main() {
                 departmentUnderId: 3,
                 priority: 'Low',
                 requestStatus: 'Unassigned',
+                roomNum: '112',
             },
         }),
         await prisma.serviceRequest.upsert({
@@ -3209,6 +3219,7 @@ async function main() {
                 departmentUnderId: 12,
                 priority: 'Emergency',
                 requestStatus: 'Unassigned',
+                roomNum: '113',
             },
         }),
         await prisma.serviceRequest.upsert({
@@ -3220,6 +3231,8 @@ async function main() {
                 departmentUnderId: 10,
                 priority: 'Low',
                 requestStatus: 'Pending',
+                roomNum: '201',
+                comments: 'Please calibrate prior to appointment.',
             },
         }),
         await prisma.serviceRequest.upsert({
@@ -3231,6 +3244,8 @@ async function main() {
                 departmentUnderId: 7,
                 priority: 'High',
                 requestStatus: 'Unassigned',
+                roomNum: '204',
+                comments: 'Please set up system.',
             },
         }),
         await prisma.serviceRequest.upsert({
@@ -3242,6 +3257,8 @@ async function main() {
                 departmentUnderId: 11,
                 priority: 'Emergency',
                 requestStatus: 'Unassigned',
+                roomNum: '318',
+                comments: "Send help!",
             },
         }),
         await prisma.serviceRequest.upsert({
@@ -3253,6 +3270,8 @@ async function main() {
                 departmentUnderId: 2,
                 priority: 'Low',
                 requestStatus: 'Unassigned',
+                roomNum: '241',
+                comments: "They ran out the west door.",
             },
         }),
         await prisma.serviceRequest.upsert({
@@ -3264,6 +3283,7 @@ async function main() {
                 departmentUnderId: 3,
                 priority: 'Medium',
                 requestStatus: 'Unassigned',
+                roomNum: '118',
             },
         }),
     ];
@@ -3281,7 +3301,6 @@ async function main() {
                 serviceRequestId: serviceRequests[0].requestId,
                 languageFrom: 'Vietnamese',
                 languageTo: 'English',
-                roomNum: '302',
                 startDateTime: new Date('2025-04-01T22:07:00.639Z'),
                 endDateTime: new Date('2025-04-01T22:07:45.639Z'),
             }
@@ -3293,7 +3312,6 @@ async function main() {
                 serviceRequestId: serviceRequests[1].requestId,
                 languageFrom: 'Spanish',
                 languageTo: 'English',
-                roomNum: '207',
                 startDateTime: new Date('2025-04-11T22:04:30.639Z'),
                 endDateTime: new Date('2025-04-11T22:05:00.639Z'),
             },
@@ -3305,7 +3323,6 @@ async function main() {
                 serviceRequestId: serviceRequests[2].requestId,
                 languageFrom: 'English',
                 languageTo: 'Portuguese',
-                roomNum: '119',
                 startDateTime: new Date('2025-04-18T22:05:00.639Z'),
                 endDateTime: new Date('2025-04-18T22:05:40.639Z'),
             },
@@ -3317,7 +3334,6 @@ async function main() {
                 serviceRequestId: serviceRequests[3].requestId,
                 languageFrom: 'Chinese',
                 languageTo: 'English',
-                roomNum: '222',
                 startDateTime: new Date('2025-04-02T22:01:15.639Z'),
                 endDateTime: new Date('2025-04-02T22:02:00.639Z'),
             },
@@ -3329,7 +3345,6 @@ async function main() {
                 serviceRequestId: serviceRequests[4].requestId,
                 languageFrom: 'English',
                 languageTo: 'Vietnamese',
-                roomNum: '129',
                 startDateTime: new Date('2025-05-27T22:09:00.639Z'),
                 endDateTime: new Date('2025-05-27T22:09:45.639Z'),
             },
@@ -3341,7 +3356,6 @@ async function main() {
                 serviceRequestId: serviceRequests[5].requestId,
                 languageFrom: 'German',
                 languageTo: 'Spanish',
-                roomNum: '311',
                 startDateTime: new Date('2025-04-15T22:09:20.639Z'),
                 endDateTime: new Date('2025-04-15T22:08:45.639Z'),
             },
@@ -3353,7 +3367,6 @@ async function main() {
                 serviceRequestId: serviceRequests[6].requestId,
                 languageFrom: 'Korean',
                 languageTo: 'English',
-                roomNum: '104',
                 startDateTime: new Date('2025-06-01T22:02:30.639Z'),
                 endDateTime: new Date('2025-06-01T22:03:30.639Z'),
             },
@@ -3365,7 +3378,6 @@ async function main() {
                 serviceRequestId: serviceRequests[7].requestId,
                 languageFrom: 'English',
                 languageTo: 'Russian',
-                roomNum: '333',
                 startDateTime: new Date('2025-05-11T22:04:00.639Z'),
                 endDateTime: new Date('2025-05-11T22:04:45.639Z'),
             },
@@ -3377,7 +3389,6 @@ async function main() {
                 serviceRequestId: serviceRequests[8].requestId,
                 languageFrom: 'French',
                 languageTo: 'English',
-                roomNum: '234',
                 startDateTime: new Date('2025-04-28T22:07:00.639Z'),
                 endDateTime: new Date('2025-04-28T22:07:45.639Z'),
             },
@@ -3389,7 +3400,6 @@ async function main() {
                 serviceRequestId: serviceRequests[9].requestId,
                 languageFrom: 'English',
                 languageTo: 'Chinese',
-                roomNum: '232',
                 startDateTime: new Date('2025-05-29T22:09:00.639Z'),
                 endDateTime: new Date('2025-05-29T22:10:30.639Z'),
             },
@@ -3401,7 +3411,6 @@ async function main() {
                 serviceRequestId: serviceRequests[10].requestId,
                 languageFrom: 'Spanish',
                 languageTo: 'French',
-                roomNum: '119',
                 startDateTime: new Date('2025-06-20T22:10:30.639Z'),
                 endDateTime: new Date('2025-06-20T22:11:15.639Z'),
             },
@@ -3420,9 +3429,7 @@ async function main() {
                 serviceRequestId: serviceRequests[11].requestId,
                 medicalDevice: 'MRI',
                 quantity: 1,
-                comments: 'Please calibrate prior to appointment.',
                 signature: 'Jen',
-                roomNum: '303',
                 startDateTime: new Date('2025-04-01T22:07:00.639Z'),
                 endDateTime: new Date('2025-04-01T22:07:45.639Z'),
             }
@@ -3434,9 +3441,7 @@ async function main() {
                 serviceRequestId: serviceRequests[12].requestId,
                 medicalDevice: 'EKG',
                 quantity: 2,
-                comments: 'Please set up system.',
                 signature: 'Karina',
-                roomNum: '111',
                 startDateTime: new Date('2025-04-07T22:07:00.639Z'),
                 endDateTime: new Date('2025-04-07T22:08:05.639Z'),
             }
@@ -3453,10 +3458,8 @@ async function main() {
             update: {},
             create: {
                 serviceRequestId: serviceRequests[13].requestId,
-                roomNum: '111',
                 numOfGuards: 3,
                 securityType: "Violent Patient",
-                additionalComments: "Send help!",
             }
         }),
         await prisma.securityRequest.upsert({
@@ -3464,10 +3467,8 @@ async function main() {
             update: {},
             create: {
                 serviceRequestId: serviceRequests[14].requestId,
-                roomNum: '222',
                 numOfGuards: 3,
                 securityType: "Elopement",
-                additionalComments: "They ran out the west door.",
             },
         }),
     ];
@@ -3482,10 +3483,8 @@ async function main() {
             update: {},
             create: {
                 serviceRequestId: serviceRequests[15].requestId,
-                roomNumber: '111',
                 type: 'GENERAL',
                 status: 'IN_USE',
-                comments: "idk",
             }
         }),
     ];

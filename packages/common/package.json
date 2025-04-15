@@ -7,6 +7,7 @@
         "lint:fix": "yarn shared:prettier:fix && yarn shared:eslint:fix && yarn shared:tslint"
     },
     "devDependencies": {
+        "@radix-ui/react-scroll-area": "^1.0.0",
         "eslint": "*",
         "eslint-config-custom": "workspace:*",
         "prettier": "*",

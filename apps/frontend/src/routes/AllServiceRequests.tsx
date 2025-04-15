@@ -15,7 +15,6 @@ import axios from "axios";
 export interface TranslatorRequest{
     languageFrom: string;
     languageTo: string;
-    roomNum: number;
     startDateTime: number;
     endDateTime: number;
 }
@@ -24,8 +23,6 @@ export interface EquipmentRequest {
     medicalDevice: string;
     signature: string;
     quantity: number;
-    comments: string;
-    roomNum: string;
     startDateTime: string;
     endDateTime: string;
 }
@@ -33,16 +30,11 @@ export interface EquipmentRequest {
 export interface SecurityRequest {
     numOfGuards: number;
     securityType: string;
-    additionalComments: string;
-    roomNum: string;
 }
 
 export interface SanitationRequest {
-    roomNumber: string;
-    date: string;
     type: string;
     status: string;
-    comments: string;
 }
 
 export interface ServiceRequest {
@@ -58,6 +50,10 @@ export interface ServiceRequest {
     priority: string;
     employeeRequestedById: number;
     departmentUnderId: number;
+    comments: string;
+    roomNum: string;
+    // employee name will be displayed in the table in later iterations
+    // employeeName: string;
 }
 
 
@@ -106,11 +102,13 @@ export default function ShowAllRequests() {
                         <TableRow>
                             <TableHead className="w-32">Request ID</TableHead>
                             <TableHead>Requested By</TableHead>
-                            <TableHead>Department</TableHead>
+                            {/*<TableHead>Employee Name</TableHead>*/}
                             <TableHead>Assigned Employee</TableHead>
+                            <TableHead>Department</TableHead>
+                            <TableHead>Room Number</TableHead>
                             <TableHead>Language To</TableHead>
                             <TableHead>Language From</TableHead>
-                            <TableHead>Room Number</TableHead>
+                            <TableHead>Comments</TableHead>
                             <TableHead>Priority</TableHead>
                             <TableHead>Status</TableHead>
                             <TableHead>Created At</TableHead>
@@ -123,11 +121,13 @@ export default function ShowAllRequests() {
                             <TableRow key={i}>
                                 <TableCell>{element.requestId}</TableCell>
                                 <TableCell>{element.employeeRequestedById}</TableCell>
-                                <TableCell>{element.departmentUnderId}</TableCell>
+                                {/*<TableCell>{element.employeeName}</TableCell>*/}
                                 <TableCell>{element.assignedEmployeeId}</TableCell>
+                                <TableCell>{element.departmentUnderId}</TableCell>
+                                <TableCell>{element.roomNum}</TableCell>
                                 <TableCell>{element.translatorRequest.languageTo}</TableCell>
                                 <TableCell>{element.translatorRequest.languageFrom}</TableCell>
-                                <TableCell>{element.translatorRequest.roomNum}</TableCell>
+                                <TableCell>{element.comments}</TableCell>
                                 <TableCell>{element.priority}</TableCell>
                                 <TableCell>{element.requestStatus}</TableCell>
                                 <TableCell>{element.createdAt}</TableCell>
@@ -144,13 +144,14 @@ export default function ShowAllRequests() {
                         <TableRow>
                             <TableHead className="w-32">Request ID</TableHead>
                             <TableHead>Requested By</TableHead>
-                            <TableHead>Department</TableHead>
+                            {/*<TableHead>Employee Name</TableHead>*/}
                             <TableHead>Assigned Employee</TableHead>
+                            <TableHead>Department</TableHead>
+                            <TableHead>Room Number</TableHead>
                             <TableHead>Medical Device</TableHead>
                             <TableHead>Quantity</TableHead>
-                            <TableHead>Room Number</TableHead>
-                            <TableHead>Comments</TableHead>
                             <TableHead>Signature</TableHead>
+                            <TableHead>Comments</TableHead>
                             <TableHead>Priority</TableHead>
                             <TableHead>Status</TableHead>
                             <TableHead>Created At</TableHead>
@@ -163,13 +164,14 @@ export default function ShowAllRequests() {
                             <TableRow key={j}>
                                 <TableCell>{element.requestId}</TableCell>
                                 <TableCell>{element.employeeRequestedById}</TableCell>
-                                <TableCell>{element.departmentUnderId}</TableCell>
+                                {/*<TableCell>{element.employeeName}</TableCell>*/}
                                 <TableCell>{element.assignedEmployeeId}</TableCell>
+                                <TableCell>{element.departmentUnderId}</TableCell>
+                                <TableCell>{element.roomNum}</TableCell>
                                 <TableCell>{element.equipmentRequest.medicalDevice}</TableCell>
                                 <TableCell>{element.equipmentRequest.quantity}</TableCell>
-                                <TableCell>{element.equipmentRequest.roomNum}</TableCell>
-                                <TableCell>{element.equipmentRequest.comments}</TableCell>
                                 <TableCell>{element.equipmentRequest.signature}</TableCell>
+                                <TableCell>{element.comments}</TableCell>
                                 <TableCell>{element.priority}</TableCell>
                                 <TableCell>{element.requestStatus}</TableCell>
                                 <TableCell>{element.createdAt}</TableCell>
@@ -186,12 +188,13 @@ export default function ShowAllRequests() {
                         <TableRow>
                             <TableHead className="w-32">Request ID</TableHead>
                             <TableHead>Requested By</TableHead>
-                            <TableHead>Department</TableHead>
+                            {/*<TableHead>Employee Name</TableHead>*/}
                             <TableHead>Assigned Employee</TableHead>
+                            <TableHead>Department</TableHead>
+                            <TableHead>Room Number</TableHead>
                             <TableHead>Security Type</TableHead>
                             <TableHead>Guards Needed</TableHead>
-                            <TableHead>Room Number</TableHead>
-                            <TableHead>Additional Comments</TableHead>
+                            <TableHead>Comments</TableHead>
                             <TableHead>Priority</TableHead>
                             <TableHead>Status</TableHead>
                             <TableHead>Created At</TableHead>
@@ -204,12 +207,13 @@ export default function ShowAllRequests() {
                             <TableRow key={j}>
                                 <TableCell>{element.requestId}</TableCell>
                                 <TableCell>{element.employeeRequestedById}</TableCell>
-                                <TableCell>{element.departmentUnderId}</TableCell>
+                                {/*<TableCell>{element.employeeName}</TableCell>*/}
                                 <TableCell>{element.assignedEmployeeId}</TableCell>
+                                <TableCell>{element.departmentUnderId}</TableCell>
+                                <TableCell>{element.roomNum}</TableCell>
                                 <TableCell>{element.securityRequest.securityType}</TableCell>
                                 <TableCell>{element.securityRequest.numOfGuards}</TableCell>
-                                <TableCell>{element.securityRequest.roomNum}</TableCell>
-                                <TableCell>{element.securityRequest.additionalComments}</TableCell>
+                                <TableCell>{element.comments}</TableCell>
                                 <TableCell>{element.priority}</TableCell>
                                 <TableCell>{element.requestStatus}</TableCell>
                                 <TableCell>{element.createdAt}</TableCell>
@@ -226,13 +230,13 @@ export default function ShowAllRequests() {
                         <TableRow>
                             <TableHead className="w-32">Request ID</TableHead>
                             <TableHead>Requested By</TableHead>
-                            <TableHead>Department</TableHead>
+                            {/*<TableHead>Employee Name</TableHead>*/}
                             <TableHead>Assigned Employee</TableHead>
+                            <TableHead>Department</TableHead>
+                            <TableHead>Room Number</TableHead>
                             <TableHead>Sanitation Type</TableHead>
-                            <TableHead>Date</TableHead>
                             <TableHead>Room Status</TableHead>
                             <TableHead>Comments</TableHead>
-                            <TableHead>Room Number</TableHead>
                             <TableHead>Priority</TableHead>
                             <TableHead>Status</TableHead>
                             <TableHead>Created At</TableHead>
@@ -245,13 +249,13 @@ export default function ShowAllRequests() {
                             <TableRow key={i}>
                                 <TableCell>{element.requestId}</TableCell>
                                 <TableCell>{element.employeeRequestedById}</TableCell>
+                                {/*<TableCell>{element.employeeName}</TableCell>*/}
                                 <TableCell>{element.departmentUnderId}</TableCell>
                                 <TableCell>{element.assignedEmployeeId}</TableCell>
                                 <TableCell>{element.sanitationRequest.type}</TableCell>
-                                <TableCell>{element.sanitationRequest.date}</TableCell>
                                 <TableCell>{element.sanitationRequest.status}</TableCell>
-                                <TableCell>{element.sanitationRequest.comments}</TableCell>
-                                <TableCell>{element.sanitationRequest.roomNumber}</TableCell>
+                                <TableCell>{element.comments}</TableCell>
+                                <TableCell>{element.roomNum}</TableCell>
                                 <TableCell>{element.priority}</TableCell>
                                 <TableCell>{element.requestStatus}</TableCell>
                                 <TableCell>{element.createdAt}</TableCell>

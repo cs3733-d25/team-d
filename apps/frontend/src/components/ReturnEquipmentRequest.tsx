@@ -13,6 +13,7 @@ type equipmentRequestForm = {
     priority: string;
     employeeRequestedById: number;
     departmentUnderId: number;
+    employeeName: string;
 }
 
 const ReturnEquipmentRequest = (props: equipmentRequestForm) => {
@@ -30,8 +31,18 @@ const ReturnEquipmentRequest = (props: equipmentRequestForm) => {
                     </div>
 
                     <div className="my-5">
+                        <Label htmlFor="employeeName">Employee Name</Label>
+                        <p>{props.employeeName}</p>
+                    </div>
+
+                    <div className="my-5">
                         <Label htmlFor="departmentId">Department ID</Label>
                         <p>{props.departmentUnderId}</p>
+                    </div>
+
+                    <div className="my-5">
+                        <Label htmlFor="roomNum">Room Number</Label>
+                        <p>{props.roomNum}</p>
                     </div>
 
                     <div className="my-5">
@@ -45,11 +56,6 @@ const ReturnEquipmentRequest = (props: equipmentRequestForm) => {
                     </div>
 
                     <div className="my-5">
-                        <Label htmlFor="roomNum">Room Number</Label>
-                        <p>{props.roomNum}</p>
-                    </div>
-
-                    <div className="my-5">
                         <Label htmlFor="startDateTime">Start Date and Time</Label>
                         <p>{props.startDateTime}</p>
                     </div>
@@ -57,6 +63,11 @@ const ReturnEquipmentRequest = (props: equipmentRequestForm) => {
                     <div className="my-5">
                         <Label htmlFor="endDateTime">End Date and Time</Label>
                         <p>{props.endDateTime}</p>
+                    </div>
+
+                    <div className="my-5">
+                        <Label htmlFor="signature">Signature</Label>
+                        <p>{props.signature}</p>
                     </div>
 
                     <div className="my-5">
@@ -72,11 +83,6 @@ const ReturnEquipmentRequest = (props: equipmentRequestForm) => {
                     <div className="my-5">
                         <Label htmlFor="comments">Comments</Label>
                         <p>{props.comments}</p>
-                    </div>
-
-                    <div className="my-5">
-                        <Label htmlFor="signature">Signature</Label>
-                        <p>{props.signature}</p>
                     </div>
                 </div>
             </div>

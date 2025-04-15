@@ -10,8 +10,10 @@ import MapButton from "@/components/MapButton.tsx";
 import DirectoryButton from "@/components/DirectoryButton.tsx";
 import Footer from "@/components/Footer.tsx";
 
+
 // Use for comments
 {/**/}
+import SubmissionReqPopup from "@/components/SubmissionReqPopup.tsx";
 
 export default function Home() {
     return (
