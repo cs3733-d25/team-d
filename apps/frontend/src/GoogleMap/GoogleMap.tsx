@@ -1,44 +1,28 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {RefObject, useEffect, useRef, useState} from 'react';
+import GoogleMap from "@/GoogleMap/GoogleMap.ts";
+import {Hospital, Department, Graph} from '@/routes/Directions.tsx'
 
-const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+const API_KEY: string = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
-import AutocompleteDirectionsHandler from "@/GoogleMap/GoogleMapHelper.ts";
-import floor_1_map from "@/public/rotated-solid.png";
 
-// Declare window type extension
-declare global {
-    interface Window {
-        initMap: () => void;
-        google: typeof google;
-    }
+
+export interface GoogleMapProps {
+    autoCompleteRef: RefObject<HTMLInputElement | null>;
+    hospital: Hospital | undefined;
+    department: Department | undefined;
+    graph: Graph | undefined;
+    zoomFlag: boolean;
 }
 
-let historicalOverlay: google.maps.GroundOverlay | null = null;
-let mapInstance: google.maps.Map | null = null;
 
-const GGMap: React.FC = () => {
+
+const GGMap = (props: GoogleMapProps) => {
     const mapRef = useRef<HTMLDivElement | null>(null);
-    const [overlayVisible, setOverlayVisible] = useState(true);
 
-    const toggleOverlay = () => {
-        if (historicalOverlay) {
-            if (overlayVisible) {
-                historicalOverlay.setMap(null);
-            } else {
-                historicalOverlay.setMap(mapInstance);
-            }
-            setOverlayVisible(!overlayVisible);
-        }
-    };
-
-    const resetView = () => {
-        if (mapInstance) {
-            mapInstance.setZoom(20);
-            mapInstance.setCenter({ lat: 42.32610824896946, lng: -71.14955534500426 });
-        }
-    };
+    const [map, setMap] = React.useState<GoogleMap | undefined>();
 
 
+    // Used to load the script that google maps API uses
     useEffect(() => {
         const loadScript = (url: string) => {
             const existingScript = document.querySelector(`script[src="${url}"]`);
@@ -50,77 +34,34 @@ const GGMap: React.FC = () => {
                 script.onload = () => window.initMap?.();
                 document.body.appendChild(script);
             } else {
+                // Already loaded
                 window.initMap?.();
             }
         };
 
+        // Attach initMap to window for Google callback
         window.initMap = () => {
-            if (!mapRef.current || !window.google) return;
+            if (!mapRef.current || !props.autoCompleteRef.current || !window.google) return;
 
-            const map = new window.google.maps.Map(mapRef.current, {
-                mapTypeControl: false,
-                center: { lat: 42.32610824896946, lng: -71.14955534500426 },
-                zoom: 20,
-            });
+            setMap(new GoogleMap(mapRef.current, props));
 
-            mapInstance = map;
-
-            const imageBounds = {
-                north: 42.32629629062394,
-                south: 42.32566563128395,
-                east: -71.14918542914931,
-                west: -71.15015356316003,
-            };
-
-            historicalOverlay = new window.google.maps.GroundOverlay(
-                floor_1_map,
-                imageBounds
-            );
-
-            historicalOverlay.setMap(map);
-
-            new AutocompleteDirectionsHandler(map);
         };
 
+        // Load Google Maps JS API with Places library
         loadScript(
-            `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&libraries=places,geometry,drawing&callback=initMap`
+            `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&libraries=places&callback=initMap`
         );
     }, []);
 
+    // Update the map when new hospital/dept selected
+    useEffect(() => {
+        console.log('UseEffect');
+        if (!map) return;
+        map.update(props);
+    }, [props.hospital, props.department, props.graph, props.zoomFlag]);
+
     return (
         <div>
-            <div style={{ display: 'flex', gap: '10px', padding: '10px' }}>
-                <button
-                    onClick={toggleOverlay}
-                    style={{
-                        zIndex: 1000,
-                        padding: '8px 12px',
-                        borderRadius: '4px',
-                        backgroundColor: '#007BFF',
-                        color: '#fff',
-                        border: 'none',
-                        cursor: 'pointer',
-                    }}
-                >
-                    {overlayVisible ? 'Hide Overlay' : 'Show Overlay'}
-                </button>
-
-                <button
-                    onClick={resetView}
-                    style={{
-                        zIndex: 1000,
-                        padding: '8px 12px',
-                        borderRadius: '4px',
-                        backgroundColor: '#28a745',
-                        color: '#fff',
-                        border: 'none',
-                        cursor: 'pointer',
-                    }}
-                >
-                    Reset View
-                </button>
-            </div>
-
             <div
                 id="ggl-map"
                 ref={mapRef}
@@ -130,4 +71,17 @@ const GGMap: React.FC = () => {
     );
 };
 
+declare global {
+    interface Window {
+        initMap: () => void;
+        google: typeof google;
+    }
+}
+
 export default GGMap;
+
+
+
+
+
+

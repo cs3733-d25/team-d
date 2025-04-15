@@ -1,5 +1,7 @@
 import React from 'react';
 
+
+import Login from "@/components/Login.tsx";
 import HeroTextBox from "@/components/HeroPage.tsx";
 import AccessDropMenu from "@/components/accessibility.tsx";
 import Banner from "@/components/Banner.tsx";
@@ -11,6 +13,7 @@ import Footer from "@/components/Footer.tsx";
 
 // Use for comments
 {/**/}
+import SubmissionReqPopup from "@/components/SubmissionReqPopup.tsx";
 
 export default function Home() {
     return (
