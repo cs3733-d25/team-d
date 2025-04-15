@@ -53,7 +53,7 @@ export default function SanitationRequest() {
     return (
         <>
             {!submitted ?
-                <ScrollArea className="max-h-[100vh] overflow-y-auto pr-4">
+                <ScrollArea className="max-h-[95vh] overflow-y-auto pr-4">
                 <div className="grid place-items-center h-full items-center">
                     <h2 className="text-4xl font-bold pb-3">Request Sanitation</h2>
                     <form onSubmit={onSubmit} className="flex flex-col">

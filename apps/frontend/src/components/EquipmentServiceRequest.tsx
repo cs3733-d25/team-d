@@ -55,7 +55,7 @@ export default function EquipmentServiceRequest() {
     return (
         <>
             {!submitted ?
-                <ScrollArea className="max-h-[100vh] overflow-y-auto pr-4">
+                <ScrollArea className="max-h-[95vh] overflow-y-auto pr-4">
                 <div className="grid place-items-center h-full items-center">
                     <h2 className="text-4xl fontbold pb-3" >Request a Medical Device</h2>
                     <form onSubmit={onSubmit}>
