@@ -49,7 +49,7 @@ export default function EquipmentServiceRequest() {
         setSubmitted(false);
 
         axios
-            .post(API_ROUTES.SERVICEREQS + "/sanitation", form)
+            .post(API_ROUTES.SERVICEREQS + "/equipment", form)
             .then(() => {
                 setSubmitted(true);
                 setShowPopup(true);

@@ -43,13 +43,13 @@ export default function SecurityServiceRequest() {
         setSubmitted(false);
 
         axios
-            .post(API_ROUTES.SERVICEREQS + "/sanitation", form)
+            .post(API_ROUTES.SERVICEREQS + "/security", form)
             .then(() => {
                 setSubmitted(true);
                 setShowPopup(true);
             })
             .catch((err) => {
-                console.error("Error submitting sanitation request:", err);
+                console.error("Error submitting security request:", err);
             });
     };
 
