@@ -38,7 +38,7 @@ export async function updateDirectory(){
     });
     //delete previous department data entries
     try {
-        await axios.delete('/api/department/');
+        await axios.delete('/api/department');
         console.log("Department data deleted successfully");
     }catch(err) {
         console.error(err);

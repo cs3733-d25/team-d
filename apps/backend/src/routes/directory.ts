@@ -26,7 +26,7 @@ router.get('/', async (req, res) => {
 });
 
 // Returns all departments in the directory, if any
-router.get('/:id/old', async function (req: Request, res: Response) {
+router.get('/:id/all', async function (req: Request, res: Response) {
     const hospitalId: number = Number(req.params.id);
     const departments = await PrismaClient.department.findMany({
         where: { hospitalId: hospitalId },
