@@ -14,6 +14,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 export default function Banner({isLoggedIn}: {isLoggedIn: boolean})  {
     const { user, isAuthenticated, isLoading } = useAuth0();
+    const { loginWithRedirect } = useAuth0();
+
 
     return (
         <>
@@ -49,7 +51,9 @@ export default function Banner({isLoggedIn}: {isLoggedIn: boolean})  {
 
                             {!isLoggedIn && (
                                 <NavigationMenuItem>
-                                <Link to={`/`}> <FontAwesomeIcon icon={faCircleUser} size="2x" color="black"/> </Link>
+                                    <button onClick={() => loginWithRedirect()}>
+                                        <FontAwesomeIcon icon={faCircleUser} size="2x" color="black"/>
+                                    </button>
                             </NavigationMenuItem>)}
 
 
