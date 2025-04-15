@@ -6,7 +6,7 @@ import {ScrollArea} from "@/components/ui/scrollarea.tsx";
 import {useState} from "react";
 import {API_ROUTES} from "common/src/constants.ts";
 import axios from "axios";
-import ReturnSecurityRequest from "@/components/ReturnSecurityRequest.tsx";
+import ReturnSecurityRequest from "@/components/ServiceRequest/SecurityRequest/ReturnSecurityRequest.tsx";
 import SubmissionReqPopup from "@/components/SubmissionReqPopup.tsx";
 
 type securityRequestForm = {

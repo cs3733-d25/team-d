@@ -5,7 +5,7 @@ import {Label} from "@/components/ui/label.tsx";
 import {useState} from "react";
 import {API_ROUTES} from "common/src/constants.ts";
 import axios from "axios";
-import ReturnTranslatorRequest from "@/components/ReturnTranslatorRequest.tsx";
+import ReturnTranslatorRequest from "@/components/ServiceRequest/TranslatorRequest/ReturnTranslatorRequest.tsx";
 import {ScrollArea} from "@/components/ui/scrollarea.tsx";
 import SubmissionReqPopup from "@/components/SubmissionReqPopup.tsx";
 

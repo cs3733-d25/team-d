@@ -1764,7 +1764,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@radix-ui/react-scroll-area@npm:^1.0.0, @radix-ui/react-scroll-area@npm:^1.2.4":
+"@radix-ui/react-scroll-area@npm:^1.2.4":
   version: 1.2.4
   resolution: "@radix-ui/react-scroll-area@npm:1.2.4"
   dependencies:
@@ -4056,7 +4056,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "common@workspace:packages/common"
   dependencies:
-    "@radix-ui/react-scroll-area": "npm:^1.0.0"
     eslint: "npm:*"
     eslint-config-custom: "workspace:*"
     prettier: "npm:*"
@@ -5175,7 +5174,7 @@ __metadata:
     "@radix-ui/react-hover-card": "npm:^1.1.6"
     "@radix-ui/react-label": "npm:^2.1.2"
     "@radix-ui/react-navigation-menu": "npm:^1.2.5"
-    "@radix-ui/react-scroll-area": "npm:^1.0.0"
+    "@radix-ui/react-scroll-area": "npm:^1.2.4"
     "@radix-ui/react-select": "npm:^2.1.7"
     "@radix-ui/react-slot": "npm:^1.1.2"
     "@tailwindcss/vite": "npm:^4.0.17"
@@ -6164,15 +6163,6 @@ __metadata:
   peerDependencies:
     react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
   checksum: 10c0/7177778c584b8e9545957bef28e95841c4be1b3bf473f9e2e64454c3e183d7ed0bc977c9f7b5446088023c7000151b7a3b27398d4f70025bf343782192f653ca
-  languageName: node
-  linkType: hard
-
-"lucide-react@npm:^0.488.0":
-  version: 0.488.0
-  resolution: "lucide-react@npm:0.488.0"
-  peerDependencies:
-    react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
-  checksum: 10c0/076eab8084a2febdab792cfd9511702643d6af506f7b46e7be2997ccc3a8f5a9c95b03f8e9dcecfbb75822811ff7d425b90aa6d0cf3d86b9994a18ca4d45a146
   languageName: node
   linkType: hard
 
@@ -7945,8 +7935,6 @@ __metadata:
   dependencies:
     "@fortawesome/fontawesome-free": "npm:^6.7.2"
     "@prisma/client": "npm:^6.5.0"
-    "@radix-ui/react-alert-dialog": "npm:^1.1.7"
-    "@radix-ui/react-scroll-area": "npm:^1.2.4"
     "@types/google.maps": "npm:^3.58.1"
     "@types/node": "npm:^22.13.13"
     "@vitest/ui": "npm:^3.0.9"
@@ -7960,7 +7948,6 @@ __metadata:
     eslint: "npm:^9.23.0"
     eslint-config-custom: "workspace:*"
     husky: "npm:^9.1.7"
-    lucide-react: "npm:^0.488.0"
     postcss: "npm:^8.5.3"
     prettier: "npm:^3.5.3"
     prettier-config-custom: "workspace:*"

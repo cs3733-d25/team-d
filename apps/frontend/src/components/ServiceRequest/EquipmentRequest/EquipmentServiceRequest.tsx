@@ -6,7 +6,7 @@ import {ScrollArea} from "@/components/ui/scrollarea.tsx";
 import {useState} from "react";
 import {API_ROUTES} from "common/src/constants.ts";
 import axios from "axios";
-import ReturnEquipmentRequest from "@/components/ReturnEquipmentRequest.tsx";
+import ReturnEquipmentRequest from "@/components/ServiceRequest/EquipmentRequest/ReturnEquipmentRequest.tsx";
 import SubmissionReqPopup from "@/components/SubmissionReqPopup.tsx";
 
 type equipmentRequestForm = {
