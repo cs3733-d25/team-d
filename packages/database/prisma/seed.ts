@@ -1367,19 +1367,200 @@ async function main() {
             where: { nodeId: 6 },
             update: {
                 nodeId: 6,
-                name: 'PP Parking lot',
-                lat: 42.326144473580044,
-                lng: -71.14964645901148,
+                name: 'PP Parking lot: Gillette Stadium: Lot 22',
+                lat: 42.09124112074461 ,
+                lng: -71.26697356796514,
                 graphId: 0,
             },
             create: {
                 nodeId: 5,
-                name: 'PP Parking lot',
-                lat: 42.326144473580044,
-                lng: -71.14964645901148,
+                name: 'PP Parking lot: Gillette Stadium: Lot 22',
+                lat: 42.09124112074461 ,
+                lng: -71.26697356796514,
                 graphId: 0,
             },
         }),
+
+        await prisma.node.upsert({
+            where: { nodeId: 6 },
+            update: {
+                nodeId: 6,
+                name: 'PP Parking lot: Gillette Stadium: Lot 23',
+                lat: 42.09124112074461,
+                lng: -71.26697356796514,
+                graphId: 0,
+            },
+            create: {
+                nodeId: 6,
+                name: 'PP Parking lot: Gillette Stadium: Lot 23',
+                lat: 42.09124112074461,
+                lng: -71.26697356796514,
+                graphId: 0,
+            },
+        }),
+
+        await prisma.node.upsert({
+            where: { nodeId: 7 },
+            update: {
+                nodeId: 7,
+                name: 'PP Parking lot: Gillette Stadium',
+                lat: 42.08912260935516,
+                lng: -71.27005934715271,
+                graphId: 0,
+            },
+            create: {
+                nodeId: 7,
+                name: 'PP Parking lot: Gillette Stadium',
+                lat: 42.08912260935516,
+                lng: -71.27005934715271,
+                graphId: 0,
+            },
+        }),
+
+        await prisma.node.upsert({
+            where: { nodeId: 8 },
+            update: {
+                nodeId: 8,
+                name: 'PP Parking lot: Limo Parking',
+                lat: 42.09305236722215,
+                lng: -71.26820996403694,
+                graphId: 0,
+            },
+            create: {
+                nodeId: 8,
+                name: 'PP Parking lot: Limo Parking',
+                lat: 42.09305236722215,
+                lng: -71.26820996403694,
+                graphId: 0,
+            },
+        }),
+
+        await prisma.node.upsert({
+            where: { nodeId: 9 },
+            update: {
+                nodeId: 9,
+                name: 'PP Parking lot: ADA Parking',
+                lat: 42.095880863598175,
+                lng: -71.26509811861098,
+                graphId: 0,
+            },
+            create: {
+                nodeId: 9,
+                name: 'PP Parking lot: ADA Parking',
+                lat: 42.095880863598175,
+                lng: -71.26509811861098,
+                graphId: 0,
+            },
+        }),
+
+        await prisma.node.upsert({
+            where: { nodeId: 10 },
+            update: {
+                nodeId: 10,
+                name: 'PP Parking lot: Gillette Stadium: Lot 6',
+                lat: 42.093978143089934,
+                lng: -71.26427199823439,
+                graphId: 0,
+            },
+            create: {
+                nodeId: 10,
+                name: 'PP Parking lot: Gillette Stadium: Lot 6',
+                lat: 42.093978143089934,
+                lng: -71.26427199823439,
+                graphId: 0,
+            },
+        }),
+
+        await prisma.node.upsert({
+            where: { nodeId: 11 },
+            update: {
+                nodeId: 11,
+                name: 'PP Parking lot: Gillette Stadium: Lot 13\n',
+                lat: 42.09378707176781,
+                lng: -71.26363899690688,
+                graphId: 0,
+            },
+            create: {
+                nodeId: 11,
+                name: 'PP Parking lot: Gillette Stadium: Lot 13\n',
+                lat: 42.09378707176781,
+                lng: -71.26363899690688,
+                graphId: 0,
+            },
+        }),
+
+        await prisma.node.upsert({
+            where: { nodeId: 12 },
+            update: {
+                nodeId: 12,
+                name: 'PP Parking lot :Gillette Stadium: Lot 14B',
+                lat: 42.094368232456105,
+                lng: -71.26248580910168,
+                graphId: 0,
+            },
+            create: {
+                nodeId: 12,
+                name: 'PP Parking lot: Gillette Stadium: Lot 14B',
+                lat: 42.094368232456105,
+                lng: -71.26248580910168,
+                graphId: 0,
+            },
+        }),
+
+        await prisma.node.upsert({
+            where: { nodeId: 13 },
+            update: {
+                nodeId: 13,
+                name: 'PP Parking lot: P9 Gate Gillette Stadium\n',
+                lat: 42.09437221307804,
+                lng: -71.26248580910168,
+                graphId: 0,
+            },
+            create: {
+                nodeId: 13,
+                name: 'PP Parking lot: P9 Gate Gillette Stadium\n',
+                lat: 42.09437221307804,
+                lng: -71.26248580910168,
+                graphId: 0,
+            },
+        }),
+
+        await prisma.node.upsert({
+            where: { nodeId: 14 },
+            update: {
+                nodeId: 14,
+                name: 'PP Parking lot: Gillette Stadium Lot 20',
+                lat: 42.08998291637353,
+                lng: -71.26123851882737,
+                graphId: 0,
+            },
+            create: {
+                nodeId: 14,
+                name: 'PP Parking lot: Gillette Stadium Lot 20',
+                lat: 42.08998291637353,
+                lng: -71.26123851882737,
+                graphId: 0,
+            },
+        }),
+
+        await prisma.node.upsert({
+            where: { nodeId: 15 },
+            update: {
+                nodeId: 15,
+                name: 'PP Parking lot: Parking Lot 51',
+                lat: 42.08745647675202,
+                lng: -71.26928676055769,
+                graphId: 0,
+            },
+            create: {
+                nodeId: 15,
+                name: 'PP Parking lot: Parking Lot 51',
+                lat: 42.08745647675202,
+                lng: -71.26928676055769,
+                graphId: 0,
+            },
+        }),
+
 
 
 
