@@ -19,12 +19,14 @@ export default function Banner({isLoggedIn}: {isLoggedIn: boolean})  {
         <>
             <div className={"flex flex-row bg-[#Addde5]"} >
                 <div className={"basis-1/3"}>
-                    <img
-                        src={hospitalLogo}
-                        alt="Brigham and Women’s Hospital (Founding Member, Mass General Brigham)"
-                        style={{ height: "40px" }}
-                        className={"mx-4 my-4"}
-                    />
+                    <Link to="/profile">
+                        <img
+                            src={hospitalLogo}
+                            alt="Brigham and Women’s Hospital (Founding Member, Mass General Brigham)"
+                            style={{ height: "40px" }}
+                            className={"mx-4 my-4 cursor-pointer hover:scale-105 transition-transform duration-200"}
+                        />
+                    </Link>
                 </div>
 
                 <div className={"basis-2/3"}>
@@ -36,10 +38,10 @@ export default function Banner({isLoggedIn}: {isLoggedIn: boolean})  {
 
                             {isLoggedIn && (
                                 <NavigationMenuItem>
-                                    <Link to="/loggedIn/profile" className="inline-block">
+                                    <Link to="/profile" className="inline-block">
                                         <img
-                                            src={user.picture}
-                                            alt={user.name}
+                                            src={user?.picture}
+                                            alt={user?.name}
                                             className="w-10 h-10 rounded-full border-2 border-gray-300 hover:opacity-80 transition duration-200"
                                         />
                                     </Link>
