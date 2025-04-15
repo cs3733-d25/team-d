@@ -27,11 +27,14 @@ export default function Navbar() {
                     <NavigationMenu className={'ml-auto p-4'}>
                         <NavigationMenuList className={'flex flex-row space-x-5'}>
 
-                            <NavigationMenuItem>
-                                <NavigationMenuLink className={'text-base hover:bg-[rgba(0,31,63,0.8)] hover:text-white'}>
-                                    <Link to={`/`}><b>Home</b></Link>
-                                </NavigationMenuLink>
-                            </NavigationMenuItem>
+                            {!isAuthenticated &&
+                                <NavigationMenuItem>
+                                    <NavigationMenuLink className={'text-base hover:bg-[rgba(0,31,63,0.8)] hover:text-white'}>
+                                        <Link to={`/`}><b>Home</b></Link>
+                                    </NavigationMenuLink>
+                                </NavigationMenuItem>
+                            }
+
 
                             <NavigationMenuItem>
                                 <NavigationMenuLink className={'text-base hover:bg-[rgba(0,31,63,0.8)] hover:text-white'}>
