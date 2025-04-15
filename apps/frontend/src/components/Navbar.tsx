@@ -63,6 +63,12 @@ export default function Navbar() {
                                     </NavigationMenuItem>
 
                                     <NavigationMenuItem>
+                                        <NavigationMenuLink className={'text-base hover:bg-[rgba(0,31,63,0.8)] hover:text-white'}>
+                                            <Link to={`/map-editor`}><b>Map Editor</b></Link>
+                                        </NavigationMenuLink>
+                                    </NavigationMenuItem>
+
+                                    <NavigationMenuItem>
                                         <Auth0LogoutButton />
                                     </NavigationMenuItem>
                                 </>

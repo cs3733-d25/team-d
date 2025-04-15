@@ -23,12 +23,13 @@ function App() {
                 <Routes>
                     <Route path="/" element={<Navbar />}>
                         <Route index element={<Home />} />
-                        <Route path="directory" element={<Directions />} />
+                        <Route path="directory" element={<Directions editor={false} />} />
                         <Route path="servicerequesthub" element={<ServiceRequestHub />} />
 
                         {/* Protected routes wrapped in ProtectedRoute */}
                         <Route element={<ProtectedRoute />}>
                             <Route path="admin-database" element={<AdminDatabase />} />
+                            <Route path="map-editor" element={<Directions editor={true} />} />
                             <Route path="all-service-requests" element={<AllServiceRequests />} />
                             <Route path="profile" element={<Auth0Profile />} />
                         </Route>

@@ -66,11 +66,11 @@ model TranslatorRequest {
 }
 
 model SecurityRequest {
-  numOfGuards        Int
-  securityType       String
+  numOfGuards      Int
+  securityType     String
   // link to service request:
-  serviceRequestId   Int            @unique
-  serviceRequest     ServiceRequest @relation(fields: [serviceRequestId], references: [requestId])
+  serviceRequestId Int            @unique
+  serviceRequest   ServiceRequest @relation(fields: [serviceRequestId], references: [requestId])
 }
 
 model EquipmentRequest {
@@ -86,8 +86,8 @@ model EquipmentRequest {
 
 // --- The SanitationRequest model ---
 model SanitationRequest {
-  type       SanitationType
-  status     RoomStatus
+  type   SanitationType
+  status RoomStatus
 
   // link to service request:
   serviceRequestId Int            @unique
@@ -179,8 +179,8 @@ model Node {
 model Edge {
   edgeId      Int  @id @default(autoincrement())
   weight      Int
-  startNodeId Int  @unique
-  endNodeId   Int  @unique
+  startNodeId Int
+  endNodeId   Int
   startNode   Node @relation(name: "edgeS", fields: [startNodeId], references: [nodeId], onDelete: Cascade)
   endNode     Node @relation(name: "edgeE", fields: [endNodeId], references: [nodeId], onDelete: Cascade)
 }

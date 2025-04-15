@@ -9,6 +9,6 @@ export const API_ROUTES = {
 };
 
 export type Coordinates = {
-    x: number;
-    y: number;
+    lat: number;
+    lng: number;
 };
