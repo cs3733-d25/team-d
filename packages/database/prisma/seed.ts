@@ -1831,7 +1831,318 @@ async function main() {
                 lng: -71.26586226214057,
                 graphId: 1,
             }
-        })
+        }),
+
+
+        // await prisma.node.upsert({
+        //     where: {nodeId: 0},
+        //     update: {
+        //         nodeId: 0,
+        //         tags: 'Start',
+        //         lat: 42.32628328491628 ,
+        //         lng: -71.14950027862017,
+        //         graphId: 0,
+        //     },
+        //     create: {
+        //         nodeId: 0,
+        //         tags: 'Start',
+        //         lat: 42.32628328491628 ,
+        //         lng: 71.14950027862017,
+        //         graphId: 0,
+        //     },
+        // }),
+        //
+        // await prisma.node.upsert({
+        //     where: {nodeId: 1},
+        //     update: {
+        //         nodeId: 1,
+        //         tags: '',
+        //         lat: 42.326241641547554 ,
+        //         lng: 71.14951100745623,
+        //         graphId: 0,
+        //     },
+        //     create: {
+        //         nodeId: 1,
+        //         tags: '',
+        //         lat: 42.326241641547554 ,
+        //         lng: 71.14951100745623,
+        //         graphId: 0,
+        //     },
+        // }),
+        //
+        //
+        //
+        // await prisma.node.upsert({
+        //     where: { nodeId: 2 },
+        //     update: {
+        //         nodeId: 2,
+        //         tags: '',
+        //         lat: 42.32620495569991,
+        //         lng: -71.14950832524721,
+        //         graphId: 0,
+        //     },
+        //     create: {
+        //         nodeId: 2,
+        //         tags: '',
+        //         lat: 42.32620495569991,
+        //         lng: -71.14950832524721,
+        //         graphId: 0,
+        //     },
+        // }),
+        //
+        // await prisma.node.upsert({
+        //     where: { nodeId: 3 },
+        //     update: {
+        //         nodeId: 3,
+        //         tags: '',
+        //         lat: 42.3262019811708,
+        //         lng: -71.14959013262217,
+        //         graphId: 0,
+        //     },
+        //     create: {
+        //         nodeId: 3,
+        //         tags: '',
+        //         lat: 42.3262019811708,
+        //         lng: -71.14959013262217,
+        //         graphId: 0,
+        //     },
+        // }),
+        //
+        // await prisma.node.upsert({
+        //     where: { nodeId: 4 },
+        //     update: {
+        //         nodeId: 4,
+        //         tags: '',
+        //         lat: 42.32616926134112,
+        //         lng: -71.14958745041315,
+        //         graphId: 0,
+        //     },
+        //     create: {
+        //         nodeId: 4,
+        //         tags: '',
+        //         lat: 42.32616926134112,
+        //         lng: -71.14958745041315,
+        //         graphId: 0,
+        //     },
+        // }),
+        //
+        // await prisma.node.upsert({
+        //     where: { nodeId: 5 },
+        //     update: {
+        //         nodeId: 5,
+        //         tags: 'Check in',
+        //         lat: 42.326144473580044,
+        //         lng: -71.14964645901148,
+        //         graphId: 0,
+        //     },
+        //     create: {
+        //         nodeId: 5,
+        //         tags: 'Check in',
+        //         lat: 42.326144473580044,
+        //         lng: -71.14964645901148,
+        //         graphId: 0,
+        //     },
+        // }),
+        //
+        //
+        // //Patriot Place
+        // await prisma.node.upsert({
+        //     where: { nodeId: 6 },
+        //     update: {
+        //         nodeId: 6,
+        //         tags: 'PP Parking lot: Gillette Stadium: Lot 22',
+        //         lat: 42.09124112074461 ,
+        //         lng: -71.26697356796514,
+        //         graphId: 0,
+        //     },
+        //     create: {
+        //         nodeId: 5,
+        //         tags: 'PP Parking lot: Gillette Stadium: Lot 22',
+        //         lat: 42.09124112074461 ,
+        //         lng: -71.26697356796514,
+        //         graphId: 0,
+        //     },
+        // }),
+        //
+        // await prisma.node.upsert({
+        //     where: { nodeId: 6 },
+        //     update: {
+        //         nodeId: 6,
+        //         name: 'PP Parking lot: Gillette Stadium: Lot 23',
+        //         lat: 42.09124112074461,
+        //         lng: -71.26697356796514,
+        //         graphId: 0,
+        //     },
+        //     create: {
+        //         nodeId: 6,
+        //         name: 'PP Parking lot: Gillette Stadium: Lot 23',
+        //         lat: 42.09124112074461,
+        //         lng: -71.26697356796514,
+        //         graphId: 0,
+        //     },
+        // }),
+        //
+        // await prisma.node.upsert({
+        //     where: { nodeId: 7 },
+        //     update: {
+        //         nodeId: 7,
+        //         name: 'PP Parking lot: Gillette Stadium',
+        //         lat: 42.08912260935516,
+        //         lng: -71.27005934715271,
+        //         graphId: 0,
+        //     },
+        //     create: {
+        //         nodeId: 7,
+        //         name: 'PP Parking lot: Gillette Stadium',
+        //         lat: 42.08912260935516,
+        //         lng: -71.27005934715271,
+        //         graphId: 0,
+        //     },
+        // }),
+        //
+        // await prisma.node.upsert({
+        //     where: { nodeId: 8 },
+        //     update: {
+        //         nodeId: 8,
+        //         name: 'PP Parking lot: Limo Parking',
+        //         lat: 42.09305236722215,
+        //         lng: -71.26820996403694,
+        //         graphId: 0,
+        //     },
+        //     create: {
+        //         nodeId: 8,
+        //         name: 'PP Parking lot: Limo Parking',
+        //         lat: 42.09305236722215,
+        //         lng: -71.26820996403694,
+        //         graphId: 0,
+        //     },
+        // }),
+        //
+        // await prisma.node.upsert({
+        //     where: { nodeId: 9 },
+        //     update: {
+        //         nodeId: 9,
+        //         name: 'PP Parking lot: ADA Parking',
+        //         lat: 42.095880863598175,
+        //         lng: -71.26509811861098,
+        //         graphId: 0,
+        //     },
+        //     create: {
+        //         nodeId: 9,
+        //         name: 'PP Parking lot: ADA Parking',
+        //         lat: 42.095880863598175,
+        //         lng: -71.26509811861098,
+        //         graphId: 0,
+        //     },
+        // }),
+        //
+        // await prisma.node.upsert({
+        //     where: { nodeId: 10 },
+        //     update: {
+        //         nodeId: 10,
+        //         name: 'PP Parking lot: Gillette Stadium: Lot 6',
+        //         lat: 42.093978143089934,
+        //         lng: -71.26427199823439,
+        //         graphId: 0,
+        //     },
+        //     create: {
+        //         nodeId: 10,
+        //         name: 'PP Parking lot: Gillette Stadium: Lot 6',
+        //         lat: 42.093978143089934,
+        //         lng: -71.26427199823439,
+        //         graphId: 0,
+        //     },
+        // }),
+        //
+        // await prisma.node.upsert({
+        //     where: { nodeId: 11 },
+        //     update: {
+        //         nodeId: 11,
+        //         name: 'PP Parking lot: Gillette Stadium: Lot 13\n',
+        //         lat: 42.09378707176781,
+        //         lng: -71.26363899690688,
+        //         graphId: 0,
+        //     },
+        //     create: {
+        //         nodeId: 11,
+        //         name: 'PP Parking lot: Gillette Stadium: Lot 13\n',
+        //         lat: 42.09378707176781,
+        //         lng: -71.26363899690688,
+        //         graphId: 0,
+        //     },
+        // }),
+        //
+        // await prisma.node.upsert({
+        //     where: { nodeId: 12 },
+        //     update: {
+        //         nodeId: 12,
+        //         name: 'PP Parking lot :Gillette Stadium: Lot 14B',
+        //         lat: 42.094368232456105,
+        //         lng: -71.26248580910168,
+        //         graphId: 0,
+        //     },
+        //     create: {
+        //         nodeId: 12,
+        //         name: 'PP Parking lot: Gillette Stadium: Lot 14B',
+        //         lat: 42.094368232456105,
+        //         lng: -71.26248580910168,
+        //         graphId: 0,
+        //     },
+        // }),
+        //
+        // await prisma.node.upsert({
+        //     where: { nodeId: 13 },
+        //     update: {
+        //         nodeId: 13,
+        //         name: 'PP Parking lot: P9 Gate Gillette Stadium\n',
+        //         lat: 42.09437221307804,
+        //         lng: -71.26248580910168,
+        //         graphId: 0,
+        //     },
+        //     create: {
+        //         nodeId: 13,
+        //         name: 'PP Parking lot: P9 Gate Gillette Stadium\n',
+        //         lat: 42.09437221307804,
+        //         lng: -71.26248580910168,
+        //         graphId: 0,
+        //     },
+        // }),
+        //
+        // await prisma.node.upsert({
+        //     where: { nodeId: 14 },
+        //     update: {
+        //         nodeId: 14,
+        //         name: 'PP Parking lot: Gillette Stadium Lot 20',
+        //         lat: 42.08998291637353,
+        //         lng: -71.26123851882737,
+        //         graphId: 0,
+        //     },
+        //     create: {
+        //         nodeId: 14,
+        //         name: 'PP Parking lot: Gillette Stadium Lot 20',
+        //         lat: 42.08998291637353,
+        //         lng: -71.26123851882737,
+        //         graphId: 0,
+        //     },
+        // }),
+        //
+        // await prisma.node.upsert({
+        //     where: { nodeId: 15 },
+        //     update: {
+        //         nodeId: 15,
+        //         name: 'PP Parking lot: Parking Lot 51',
+        //         lat: 42.08745647675202,
+        //         lng: -71.26928676055769,
+        //         graphId: 0,
+        //     },
+        //     create: {
+        //         nodeId: 15,
+        //         name: 'PP Parking lot: Parking Lot 51',
+        //         lat: 42.08745647675202,
+        //         lng: -71.26928676055769,
+        //         graphId: 0,
+        //     },
+        // }),
 
 
 
