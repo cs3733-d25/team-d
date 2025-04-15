@@ -2084,14 +2084,14 @@ async function main() {
             where: {nodeId: 106},
             create: {
                 nodeId: 106,
-                tags: '[Entrance1]',
+                tags: 'front of entrance',
                 lat: 42.092479272750566,
                 lng: -71.2663831928498,
                 graphId: 1,
             },
             update: {
                 nodeId: 106,
-                tags: '[Entrance1]',
+                tags: 'front of entrance',
                 lat: 42.092479272750566,
                 lng: -71.2663831928498,
                 graphId: 1,
@@ -2101,14 +2101,14 @@ async function main() {
             where: {nodeId: 107},
             create: {
                 nodeId: 107,
-                tags: '[Door1, path outside]',
+                tags: '[Entrance1]',
                 lat: 42.092512979448315,
                 lng: -71.26632207406375,
                 graphId: 1,
             },
             update: {
                 nodeId: 107,
-                tags: '[Door1, path outside]',
+                tags: '[Entrance1]',
                 lat: 42.092512979448315,
                 lng: -71.26632207406375,
                 graphId: 1,
