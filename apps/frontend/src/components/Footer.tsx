@@ -21,7 +21,7 @@ export default function Footer() {
                             />
                         </a>
                         <p className="mt-6">
-                            FOOTER
+                            CS 3733 - Team D
                         </p>
                     </div>
                     {/*Company*/}

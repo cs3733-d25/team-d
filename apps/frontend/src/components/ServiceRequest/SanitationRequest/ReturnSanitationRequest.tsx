@@ -1,18 +1,18 @@
 import { CardTitle } from '@/components/ui/card.tsx';
 import { Label } from '@/components/ui/label.tsx';
-
-type securityRequestForm = {
+interface SanitationRequest {
     roomNum: string;
-    numOfGuards: number;
-    securityType: string;
-    additionalComments: string;
+    type: string;
+    status: string;
+    comments: string;
     requestStatus: string;
     priority: string;
     employeeRequestedById: number;
     departmentUnderId: number;
+    employeeName: string;
 }
 
-const ReturnSecurityRequest = (props: securityRequestForm) => {
+const ReturnSanitationRequest = (props: SanitationRequest) => {
     return (
         <div className="grid  h-full items-center">
             <div className="">
@@ -22,23 +22,18 @@ const ReturnSecurityRequest = (props: securityRequestForm) => {
 
                 <div>
                     <div className="my-5">
-                        <Label htmlFor="languageFrom">Employee ID</Label>
+                        <Label htmlFor="employeeRequestedById">Employee ID</Label>
                         <p>{props.employeeRequestedById}</p>
                     </div>
 
                     <div className="my-5">
-                        <Label htmlFor="languageFrom">Department ID</Label>
+                        <Label htmlFor="employeeName">Employee Name</Label>
+                        <p>{props.employeeName}</p>
+                    </div>
+
+                    <div className="my-5">
+                        <Label htmlFor="departmentId">Department ID</Label>
                         <p>{props.departmentUnderId}</p>
-                    </div>
-
-                    <div className="my-5">
-                        <Label htmlFor="languageFrom">Number of Guards Requested</Label>
-                        <p>{props.numOfGuards}</p>
-                    </div>
-
-                    <div className="my-5">
-                        <Label htmlFor="languageTo">Security Type</Label>
-                        <p>{props.securityType}</p>
                     </div>
 
                     <div className="my-5">
@@ -47,8 +42,13 @@ const ReturnSecurityRequest = (props: securityRequestForm) => {
                     </div>
 
                     <div className="my-5">
-                        <Label htmlFor="startDateTime">Additional Comments</Label>
-                        <p>{props.additionalComments}</p>
+                        <Label htmlFor="type">Sanitation Type</Label>
+                        <p>{props.type}</p>
+                    </div>
+
+                    <div className="my-5">
+                        <Label htmlFor="status">Room status</Label>
+                        <p>{props.status}</p>
                     </div>
 
                     <div className="my-5">
@@ -60,10 +60,15 @@ const ReturnSecurityRequest = (props: securityRequestForm) => {
                         <Label htmlFor="requestStatus">Request Status</Label>
                         <p>{props.requestStatus}</p>
                     </div>
+
+                    <div className="my-5">
+                        <Label htmlFor="comments">Comments</Label>
+                        <p>{props.comments}</p>
+                    </div>
                 </div>
             </div>
         </div>
     );
 };
 
-export default ReturnSecurityRequest;
+export default ReturnSanitationRequest;

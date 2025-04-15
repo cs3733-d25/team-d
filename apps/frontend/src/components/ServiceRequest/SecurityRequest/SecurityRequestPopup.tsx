@@ -3,19 +3,19 @@ import {
     Dialog,
     DialogContent,
     DialogTrigger,
-} from '@/components/ui/dialog';
+} from '@/components/ui/dialog.tsx';
 import {Card, CardHeader, CardTitle} from "@/components/ui/card.tsx";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
-import TranslatorServiceRequest from "@/components/TranslatorServiceRequest.tsx";
+import SecurityServiceRequest from "@/components/ServiceRequest/SecurityRequest/SecurityServiceRequest.tsx";
 
-const TranslatorRequestPopup: React.FC<{title: string, iconName: IconDefinition}> = ({title, iconName}) => {
+const SecurityRequestPopup: React.FC<{title: string, iconName: IconDefinition}> = ({title, iconName}) => {
     return (
         <Dialog>
             <DialogTrigger asChild>
                 <Card className="relative bg-[#d0ccd0] hover:bg-[#addde5] justify-center h-70 w-60 text-black">
-                    <FontAwesomeIcon icon={iconName} size="2x" className="text-6xl" />
-                    <CardHeader>
+                    <FontAwesomeIcon icon={iconName} size="2x" className="text-6xl"/>
+                    <CardHeader className="place-content-center">
                         <CardTitle className="text-3xl">
                             <p>{title}</p>
                         </CardTitle>
@@ -23,11 +23,11 @@ const TranslatorRequestPopup: React.FC<{title: string, iconName: IconDefinition}
                 </Card>
             </DialogTrigger>
 
-            <DialogContent className="place-content-center animate-in fade-in zoom-in duration-500 border-none">
-                <TranslatorServiceRequest />
+            <DialogContent className="place-content-center animate-in fade-in zoom-in duration-500 border-none h-150">
+                <SecurityServiceRequest />
             </DialogContent>
         </Dialog>
     );
 }
 
-export default TranslatorRequestPopup;
+export default SecurityRequestPopup;

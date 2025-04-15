@@ -3,10 +3,10 @@ import {faLanguage} from "@fortawesome/free-solid-svg-icons";
 import {faHandHoldingDroplet} from "@fortawesome/free-solid-svg-icons";
 import {faScrewdriverWrench} from "@fortawesome/free-solid-svg-icons";
 import {faShield} from "@fortawesome/free-solid-svg-icons";
-import TranslatorRequestPopup from "@/components/TranslatorRequestPopup.tsx";
-import SanitationPopup  from "@/components/SanitationPopup.tsx";
-import EquipmentRequestPopup from "@/components/EquipmentRequestPopup.tsx";
-import SecurityRequestPopup from "@/components/SecurityRequestPopup.tsx";
+import TranslatorRequestPopup from "@/components/ServiceRequest/TranslatorRequest/TranslatorRequestPopup.tsx";
+import SanitationPopup  from "@/components/ServiceRequest/SanitationRequest/SanitationPopup.tsx";
+import EquipmentRequestPopup from "@/components/ServiceRequest/EquipmentRequest/EquipmentRequestPopup.tsx";
+import SecurityRequestPopup from "@/components/ServiceRequest/SecurityRequest/SecurityRequestPopup.tsx";
 import ServiceHubBackground from "../public/ServiceHubBackground.png";
 
 
