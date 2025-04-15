@@ -19,7 +19,7 @@ export default class GoogleMap {
     private readonly floorMaps: Map<number, google.maps.GroundOverlay>;
     private floorMap: google.maps.GroundOverlay | null;
 
-    private path: google.maps.Polyline | null;
+    private paths: google.maps.Polyline[];
 
     private startPlaceId: string;
     private destinationPlaceId: string;
@@ -77,7 +77,7 @@ export default class GoogleMap {
         this.floorMaps = new Map<number, google.maps.GroundOverlay>();
         this.floorMap = null;
 
-        this.path = null;
+        this.paths = [];
 
         // Set start and finish locations
         this.startPlaceId = '';
@@ -120,9 +120,9 @@ export default class GoogleMap {
             this.floorMap.setMap(null);
             this.floorMap = null;
         }
-        if (this.path !== null) {
-            this.path.setMap(null);
-            this.path = null;
+        if (this.paths.length > 0) {
+            this.paths.map(path => path.setMap(null));
+            this.paths = [];
         }
 
         // If the destination hospital has changed, re-route via
@@ -190,23 +190,43 @@ export default class GoogleMap {
         // to that dept.
         if (props.department) {
             axios.get(API_ROUTES.PATHFINDING + '/pathfind/' + props.graph?.graphId).then((response) => {
-                const points: Coordinates[] = response.data[0];
+            //     const points: Coordinates[] = response.data[0];
+            //
+            //     const line: google.maps.LatLngLiteral[] = points.map((point) => {
+            //         return {
+            //             lat: point.x,
+            //             lng: point.y,
+            //         };
+            //     });
+            //
+            //     this.path = new google.maps.Polyline({
+            //         path: line,
+            //         strokeColor: '#0077FF',
+            //         strokeOpacity: 1.0,
+            //         strokeWeight: 2,
+            //         map: this.map,
+            //     })
+            // });
+                const rawData: Coordinates[][] = response.data;
 
-                const line: google.maps.LatLngLiteral[] = points.map((point) => {
-                    return {
-                        lat: point.x,
-                        lng: point.y,
-                    };
+                const pathData: google.maps.LatLngLiteral[][] = rawData.map((path): google.maps.LatLngLiteral[] => {
+                    return path.map((coord): google.maps.LatLngLiteral => {
+                        return {
+                            lat: coord.x,
+                            lng: coord.y,
+                        }
+                    });
                 });
-
-                this.path = new google.maps.Polyline({
-                    path: line,
-                    strokeColor: '#0077FF',
-                    strokeOpacity: 1.0,
-                    strokeWeight: 2,
-                    map: this.map,
-                })
-            });
+                pathData.map(path => {
+                    this.paths.push(new google.maps.Polyline({
+                        path: path,
+                        strokeColor: '#0099FF',
+                        strokeOpacity: 1.0,
+                        strokeWeight: 5,
+                        map: this.map,
+                    }));
+                });
+            })
         }
 
         if (props.hospital && props.zoomFlag !== this.zoomFlag) {
