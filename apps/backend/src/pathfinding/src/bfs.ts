@@ -68,7 +68,12 @@ class Graph {
         const node2 = this.nodesMap.get(id2);
         if (!node1 || !node2) {
             throw new Error(`Node ${id2} or Node ${id2} does not exist`);
-        } else {
+        } else if (
+            node1
+                .getNeighbors()
+                .map((node) => node.id)
+                .indexOf(id2) === -1
+        ) {
             node1.addNeighbor(node2);
             node2.addNeighbor(node1);
         }
@@ -143,15 +148,16 @@ class Graph {
     // }
 
     pathFind(departmentCoords: Coordinates): Coordinates[][] {
-        const endCanidates: GraphNode[] = this.nodesList.filter((node) => {
-            return node.tags.indexOf('Entrance Point') >= 0;
+        const entranceCanidates: GraphNode[] = this.nodesList.filter((node) => {
+            return node.tags === 'Garage';
         });
 
-        const startCanidates: GraphNode[] = this.nodesList.filter((node) => {
-            return node.tags.indexOf('Parking') >= 0;
+        const parkingCanidates: GraphNode[] = this.nodesList.filter((node) => {
+            // return node.tags.indexOf('Parking') >= 0;
+            return node.tags === 'Entrance point';
         });
 
-        return [this.bfs(startCanidates[0], endCanidates[0])];
+        return [this.bfs(parkingCanidates[0], entranceCanidates[0])];
     }
 
     bfs(start: GraphNode, end: GraphNode): Coordinates[] {

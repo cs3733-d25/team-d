@@ -10,10 +10,7 @@ router.get('/pathfind/:graphId', async (req: Request, res: Response) => {
         where: {
             graphId: Number(req.params.graphId),
         },
-        select: {
-            graphId: true,
-            name: true,
-
+        include: {
             Nodes: {
                 include: {
                     edgeStart: true,
@@ -26,13 +23,35 @@ router.get('/pathfind/:graphId', async (req: Request, res: Response) => {
         res.sendStatus(404);
         return;
     }
+
     const graphObj = new Graph();
-    for (const n in graphDB.Nodes) {
-        graphObj.addNode(n.name, {
-            x: n.lat,
-            y: n.lng,
+
+    graphDB.Nodes.map((node) => {
+        graphObj.addNode(node.nodeId, node.tags, {
+            x: node.lat,
+            y: node.lng,
         });
-    }
+    });
+
+    graphDB.Nodes.map((node) => {
+        node.edgeStart.map((edge) => {
+            graphObj.addEdge(edge.startNodeId, edge.endNodeId);
+        });
+    });
+
+    // console.log(graphDB);
+    // const graphObj = new Graph();
+    // for (const node in graphDB.Nodes) {
+    //     graphObj.addNode(node.nodeId, node.tags, {
+    //         x: node.lat,
+    //         y: node.lng,
+    //     });
+    // }
+    // for (const node in graphDB.Nodes) {
+    //     graphObj.addEdge()
+    // }
+
+    res.json(graphObj.pathFind({ x: 0, y: 0 }));
 });
 
 router.get('/nodes', async (req: Request, res: Response) => {

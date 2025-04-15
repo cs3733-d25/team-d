@@ -1742,7 +1742,7 @@ async function main() {
         await prisma.edge.upsert({
             where: {edgeId: 3},
             create: {
-                edgeId: 0,
+                edgeId: 3,
                 weight: 0,
                 startNodeId: 3,
                 endNodeId: 4,
@@ -1757,7 +1757,7 @@ async function main() {
         await prisma.edge.upsert({
             where: {edgeId: 4},
             create: {
-                edgeId: 0,
+                edgeId: 4,
                 weight: 0,
                 startNodeId: 4,
                 endNodeId: 5,
@@ -1772,7 +1772,7 @@ async function main() {
         await prisma.edge.upsert({
             where: {edgeId: 5},
             create: {
-                edgeId: 0,
+                edgeId: 5,
                 weight: 0,
                 startNodeId: 5,
                 endNodeId: 6,

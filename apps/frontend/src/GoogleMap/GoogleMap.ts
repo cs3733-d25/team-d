@@ -1,4 +1,6 @@
 import {GoogleMapProps} from "@/GoogleMap/GoogleMap.tsx"
+import axios from "axios";
+import {API_ROUTES, Coordinates} from "common/src/constants.ts";
 
 const DEFAULT_CENTER: google.maps.LatLngLiteral = {
     lat: 42.31934987791928,
@@ -16,6 +18,8 @@ export default class GoogleMap {
 
     private readonly floorMaps: Map<number, google.maps.GroundOverlay>;
     private floorMap: google.maps.GroundOverlay | null;
+
+    private path: google.maps.Polyline | null;
 
     private startPlaceId: string;
     private destinationPlaceId: string;
@@ -73,6 +77,8 @@ export default class GoogleMap {
         this.floorMaps = new Map<number, google.maps.GroundOverlay>();
         this.floorMap = null;
 
+        this.path = null;
+
         // Set start and finish locations
         this.startPlaceId = '';
         this.destinationPlaceId = '';
@@ -109,11 +115,16 @@ export default class GoogleMap {
 
     update(props: GoogleMapProps): void {
         console.log('Update method: ' + props.graph?.graphId);
-        // Reset the currently showing floor map
+        // Reset the currently showing floor map and path
         if (this.floorMap !== null) {
             this.floorMap.setMap(null);
             this.floorMap = null;
         }
+        if (this.path !== null) {
+            this.path.setMap(null);
+            this.path = null;
+        }
+
         // If the destination hospital has changed, re-route via
         // Google Maps to the new hospital
         if (props.hospital && (props.hospital.placeId !== this.destinationPlaceId)) {
@@ -178,7 +189,24 @@ export default class GoogleMap {
         // the pathfinding to the nearest check-in location
         // to that dept.
         if (props.department) {
-            // TODO: implement
+            axios.get(API_ROUTES.PATHFINDING + '/pathfind/' + props.graph?.graphId).then((response) => {
+                const points: Coordinates[] = response.data[0];
+
+                const line: google.maps.LatLngLiteral[] = points.map((point) => {
+                    return {
+                        lat: point.x,
+                        lng: point.y,
+                    };
+                });
+
+                this.path = new google.maps.Polyline({
+                    path: line,
+                    strokeColor: '#0077FF',
+                    strokeOpacity: 1.0,
+                    strokeWeight: 2,
+                    map: this.map,
+                })
+            });
         }
 
         if (props.hospital && props.zoomFlag !== this.zoomFlag) {
