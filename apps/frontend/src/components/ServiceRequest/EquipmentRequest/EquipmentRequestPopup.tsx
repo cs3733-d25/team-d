@@ -3,11 +3,11 @@ import {
     Dialog,
     DialogContent,
     DialogTrigger,
-} from '@/components/ui/dialog';
+} from '@/components/ui/dialog.tsx';
 import {Card, CardHeader, CardTitle} from "@/components/ui/card.tsx";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
-import EquipmentServiceRequest from "@/components/EquipmentServiceRequest.tsx";
+import EquipmentServiceRequest from "@/components/ServiceRequest/EquipmentRequest/EquipmentServiceRequest.tsx";
 
 const EquipmentRequestPopup: React.FC<{title: string, iconName: IconDefinition}> = ({title, iconName}) => {
     return (

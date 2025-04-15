@@ -3,11 +3,11 @@ import {
     Dialog,
     DialogContent,
     DialogTrigger,
-} from "@/components/ui/dialog";
-import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+} from "@/components/ui/dialog.tsx";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card.tsx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
-import SanitationRequest from "@/components/SanitationRequest.tsx";
+import SanitationRequest from "@/components/ServiceRequest/SanitationRequest/SanitationRequest.tsx";
 
 type SanitationPopupProps = {
     title: string;

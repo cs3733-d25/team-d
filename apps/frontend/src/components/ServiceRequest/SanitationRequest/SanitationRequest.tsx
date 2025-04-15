@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input.tsx";
 import { Label } from "@/components/ui/label.tsx";
 import { API_ROUTES } from "common/src/constants.ts";
 
-import ReturnSanitationRequest from "@/components/ReturnSanitationRequest.tsx";
+import ReturnSanitationRequest from "@/components/ServiceRequest/SanitationRequest/ReturnSanitationRequest.tsx";
 
 type SanitationRequestForm = {
     roomNum: string;

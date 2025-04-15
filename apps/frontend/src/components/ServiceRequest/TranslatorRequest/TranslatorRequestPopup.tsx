@@ -3,12 +3,12 @@ import {
     Dialog,
     DialogContent,
     DialogTrigger,
-} from '@/components/ui/dialog';
+} from '@/components/ui/dialog.tsx';
 import {ScrollArea} from "@radix-ui/react-scroll-area";
 import {Card, CardHeader, CardTitle} from "@/components/ui/card.tsx";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
-import TranslatorServiceRequest from "@/components/TranslatorServiceRequest.tsx";
+import TranslatorServiceRequest from "@/components/ServiceRequest/TranslatorRequest/TranslatorServiceRequest.tsx";
 
 const TranslatorRequestPopup: React.FC<{title: string, iconName: IconDefinition}> = ({title, iconName}) => {
     return (

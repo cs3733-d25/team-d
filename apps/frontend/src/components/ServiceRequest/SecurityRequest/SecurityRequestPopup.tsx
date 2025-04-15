@@ -3,11 +3,11 @@ import {
     Dialog,
     DialogContent,
     DialogTrigger,
-} from '@/components/ui/dialog';
+} from '@/components/ui/dialog.tsx';
 import {Card, CardHeader, CardTitle} from "@/components/ui/card.tsx";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
-import SecurityServiceRequest from "@/components/SecurityServiceRequest.tsx";
+import SecurityServiceRequest from "@/components/ServiceRequest/SecurityRequest/SecurityServiceRequest.tsx";
 
 const SecurityRequestPopup: React.FC<{title: string, iconName: IconDefinition}> = ({title, iconName}) => {
     return (
