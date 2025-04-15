@@ -26,6 +26,16 @@ export default function Navbar() {
                 <div className={"ml-auto"}>
                     <NavigationMenu className={'ml-auto p-4'}>
                         <NavigationMenuList className={'flex flex-row space-x-5'}>
+
+                            {!isAuthenticated &&
+                                <NavigationMenuItem>
+                                    <NavigationMenuLink className={'text-base hover:bg-[rgba(0,31,63,0.8)] hover:text-white'}>
+                                        <Link to={`/`}><b>Home</b></Link>
+                                    </NavigationMenuLink>
+                                </NavigationMenuItem>
+                            }
+
+
                             <NavigationMenuItem>
                                 <NavigationMenuLink className={'font-nunito hover:bg-[rgba(0,31,63,0.8)] hover:text-white'}>
                                     <Link to={`/directory`}>Directions</Link>

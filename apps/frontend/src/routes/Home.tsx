@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-
+import Login from "@/components/Login.tsx";
 import HeroTextBox from "@/components/HeroPage.tsx";
 import AccessDropMenu from "@/components/accessibility.tsx";
 import Banner from "@/components/Banner.tsx";
@@ -10,8 +10,10 @@ import MapButton from "@/components/MapButton.tsx";
 import DirectoryButton from "@/components/DirectoryButton.tsx";
 import Footer from "@/components/Footer.tsx";
 
+
 // Use for comments
 {/**/}
+import SubmissionReqPopup from "@/components/SubmissionReqPopup.tsx";
 
 export default function Home() {
     return (
@@ -25,7 +27,7 @@ export default function Home() {
                 </div>
 
                 <div className="relative z-10 flex flex-row justify-around w-full max-w-4xl p-4">
-                    {/*This is the call of the component HeroTextBox for the home page*/}
+
                     <div className="w-40">
                         <Auth0LoginButton />
                     </div>
@@ -40,7 +42,7 @@ export default function Home() {
 
 
             </div>
-            <div className="place">
+            <div>
                 <Footer />
             </div>
         </div>

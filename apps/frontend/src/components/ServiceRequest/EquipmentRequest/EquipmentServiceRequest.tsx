@@ -6,52 +6,67 @@ import {ScrollArea} from "@/components/ui/scrollarea.tsx";
 import {useState} from "react";
 import {API_ROUTES} from "common/src/constants.ts";
 import axios from "axios";
-import ReturnSecurityRequest from "@/components/ReturnSecurityRequest.tsx";
+import ReturnEquipmentRequest from "@/components/ServiceRequest/EquipmentRequest/ReturnEquipmentRequest.tsx";
+import SubmissionReqPopup from "@/components/SubmissionReqPopup.tsx";
 
-type securityRequestForm = {
+type equipmentRequestForm = {
+    medicalDevice: string;
+    signature: string;
+    quantity: number;
+    comments: string;
     roomNum: string;
-    numOfGuards: number;
-    securityType: string;
+    startDateTime: string;
+    endDateTime: string;
     requestStatus: string;
     priority: string;
     employeeRequestedById: number;
     departmentUnderId: number;
-    comments: string;
     employeeName: string;
 }
 
-export default function SecurityServiceRequest() {
+export default function EquipmentServiceRequest() {
 
-    const [form, setForm] = useState<securityRequestForm>({
+    const [form, setForm] = useState<equipmentRequestForm>({
+        medicalDevice: '',
+        signature: '',
+        quantity: 0,
+        comments: '',
         roomNum: '',
-        numOfGuards: 0,
-        securityType: '',
+        startDateTime: '',
+        endDateTime: '',
         requestStatus: '',
         priority: '',
         employeeRequestedById: 0,
         departmentUnderId: 0,
-        comments: '',
         employeeName: '',
     });
 
     const [submitted, setSubmitted] = useState(false);
+    const [showPopup, setShowPopup] = useState(false);
 
     const onSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        // console.log(form);
         setSubmitted(false);
-        axios.post(API_ROUTES.SERVICEREQS+'/security', form).then(() => {
-            alert("Service request submitted!");
-            setSubmitted(true);
-        });
-    }
+
+        axios
+            .post(API_ROUTES.SERVICEREQS + "/equipment", form)
+            .then(() => {
+                setSubmitted(true);
+                setShowPopup(true);
+            })
+            .catch((err) => {
+                console.error("Error submitting sanitation request:", err);
+            });
+    };
 
     return (
         <>
+            <SubmissionReqPopup open={showPopup} onOpenChange={setShowPopup} />
             {!submitted ?
-                <ScrollArea className="max-h-[100vh] overflow-y-auto pr-4">
+                <ScrollArea className="max-h-[95vh] overflow-y-auto pr-4">
                 <div className="grid place-items-center h-full items-center">
-                    <h2 className="text-4xl fontbold pb-3" >Request Security</h2>
+                    <h2 className="text-4xl fontbold pb-3" >Request a Medical Device</h2>
+                    <h6 className="pb-3 font-light">Christine Ngo & Keethu Jayamoorthy</h6>
                     <form onSubmit={onSubmit}>
                         <div>
                             <Label className="pt-4 pb-2" htmlFor="employeeId">Employee ID</Label>
@@ -121,11 +136,11 @@ export default function SecurityServiceRequest() {
                         </div>
 
                         <div>
-                            <Label className="pt-4 pb-2" htmlFor="roomNum">Room Number</Label>
+                            <Label className="pt-4 pb-2" htmlFor="roomNumber">Room Number</Label>
                             <Input
                                 required
                                 type="text"
-                                id="roomNum"
+                                id="roomNumber"
                                 onChange={(e) =>
                                     setForm({
                                         ...form,
@@ -136,30 +151,76 @@ export default function SecurityServiceRequest() {
                         </div>
 
                         <div>
-                            <Label className="pt-4 pb-2" htmlFor="securityType">Security Type</Label>
+                            <Label className="pt-4 pb-2" htmlFor="medicalDevice">Medical Device</Label>
                             <Input
                                 required
                                 type="text"
-                                id="securityType"
+                                id="medicalDevice"
                                 onChange={(e) =>
                                     setForm({
                                         ...form,
-                                        securityType: e.target.value,
+                                        medicalDevice: e.target.value,
                                     })
                                 }
                             />
                         </div>
 
                         <div>
-                            <Label className="pt-4 pb-2" htmlFor="numOfGuards">Number of Guards Needed</Label>
+                            <Label className="pt-4 pb-2" htmlFor="quantity">Quantity</Label>
                             <Input
                                 required
                                 type="number"
-                                id="numOfGuards"
+                                id="quantity"
                                 onChange={(e) =>
                                     setForm({
                                         ...form,
-                                        numOfGuards: Number(e.target.value),
+                                        quantity: Number(e.target.value),
+                                    })
+                                }
+                            />
+                        </div>
+
+                        <div>
+                            <Label className="pt-4 pb-2" htmlFor="startDateTime">Start Date and Time</Label>
+                            <Input
+                                required
+                                type="datetime-local"
+                                id="startDateTime"
+                                onChange={(e) =>
+                                    setForm({
+                                        ...form,
+                                        startDateTime: e.target.value,
+                                    })
+                                }
+                            />
+                        </div>
+
+                        <div>
+                            <Label className="pt-4 pb-2" htmlFor="endDateTime">End Date and Time</Label>
+                            <Input
+                                required
+                                type="datetime-local"
+                                id="languageFrom"
+                                className='pb-2'
+                                onChange={(e) =>
+                                    setForm({
+                                        ...form,
+                                        endDateTime: e.target.value,
+                                    })
+                                }
+                            />
+                        </div>
+
+                        <div>
+                            <Label className="pt-4 pb-2" htmlFor="signature">Signature</Label>
+                            <Input
+                                required
+                                type="text"
+                                id="signature"
+                                onChange={(e) =>
+                                    setForm({
+                                        ...form,
+                                        signature: e.target.value,
                                     })
                                 }
                             />
@@ -197,10 +258,10 @@ export default function SecurityServiceRequest() {
                                     })
                                 }>
                                 <option value="">-- Select Status --</option>
-                                <option value="Incomplete">Incomplete</option>
-                                <option value="Pending">Pending</option>
-                                <option value="Complete">Complete</option>
                                 <option value="Unassigned">Unassigned</option>
+                                <option value="Assigned">Assigned</option>
+                                <option value="Working">Working</option>
+                                <option value="Done">Done</option>
                             </select>
                         </div>
 
@@ -208,7 +269,7 @@ export default function SecurityServiceRequest() {
                             <Label className="pt-4 pb-2" htmlFor="comments">Comments</Label>
                             <textarea
                                 id="comments"
-                                className="border border-gray-300 rounded-md p-2 w-60"
+                                className="border border-gray-300 rounded-md p-2 w-90"
                                 onChange={(e) =>
                                     setForm({ ...form, comments: e.target.value })
                                 }
@@ -216,22 +277,27 @@ export default function SecurityServiceRequest() {
                         </div>
 
                         <div className="flex flex-row justify-center items-center">
-                            <Button type="submit" className="mt-5">Submit</Button>
+                            <Button type="submit" className="mt-6 w-full">
+                                Submit
+                            </Button>
                         </div>
                     </form>
                 </div>
                 </ScrollArea>
                 :
-                <ReturnSecurityRequest
-                    roomNum={form.roomNum}
-                    numOfGuards={form.numOfGuards}
-                    securityType={form.securityType}
-                    comments={form.comments}
-                    requestStatus={form.requestStatus}
-                    priority={form.priority}
+                <ReturnEquipmentRequest
                     employeeRequestedById={form.employeeRequestedById}
                     departmentUnderId={form.departmentUnderId}
+                    medicalDevice={form.medicalDevice}
+                    quantity={form.quantity}
+                    signature={form.signature}
+                    roomNum={form.roomNum}
+                    startDateTime={form.startDateTime}
+                    endDateTime={form.endDateTime}
+                    comments={form.comments}
+                    requestStatus={form.requestStatus}
                     employeeName={form.employeeName}
+                    priority={form.priority}
                 />
             }
         </>

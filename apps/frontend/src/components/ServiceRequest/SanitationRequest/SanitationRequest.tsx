@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input.tsx";
 import { Label } from "@/components/ui/label.tsx";
 import { API_ROUTES } from "common/src/constants.ts";
 
-import ReturnSanitationRequest from "@/components/ReturnSanitationRequest.tsx";
+import ReturnSanitationRequest from "@/components/ServiceRequest/SanitationRequest/ReturnSanitationRequest.tsx";
 
 type SanitationRequestForm = {
     roomNum: string;
@@ -53,9 +53,10 @@ export default function SanitationRequest() {
     return (
         <>
             {!submitted ?
-                <ScrollArea className="max-h-[100vh] overflow-y-auto pr-4">
+                <ScrollArea className="max-h-[95vh] overflow-y-auto pr-4">
                 <div className="grid place-items-center h-full items-center">
                     <h2 className="text-4xl font-bold pb-3">Request Sanitation</h2>
+                    <h6 className="pb-3 font-light">Stuvat Dash & Brandon Small</h6>
                     <form onSubmit={onSubmit} className="flex flex-col">
 
                         <div>
@@ -124,7 +125,7 @@ export default function SanitationRequest() {
                                 <option value="20">Rehabilitation Services</option>
                             </select>
                         </div>
-
+                        <div>
                         <Label className="pt-4 pb-2" htmlFor="roomNum">Room Number</Label>
                         <Input
                             required
@@ -134,7 +135,8 @@ export default function SanitationRequest() {
                                 setForm({ ...form, roomNum: e.target.value })
                             }
                         />
-
+                        </div>
+                        <div>
                         <Label className="pt-4 pb-2" htmlFor="type">Sanitation Type</Label>
                         <select
                             required
@@ -151,7 +153,9 @@ export default function SanitationRequest() {
                             <option value="WASTE_REMOVAL">Waste Removal</option>
                             <option value="PEST_CONTROL">Pest Control</option>
                         </select>
+                        </div>
 
+                        <div>
                         <Label className="pt-4 pb-2" htmlFor="status">Room Status</Label>
                         <select
                             required
@@ -165,6 +169,7 @@ export default function SanitationRequest() {
                             <option value="VACANT">Vacant</option>
                             <option value="IN_USE">In Use</option>
                         </select>
+                        </div>
 
                         <div>
                             <Label className="pt-4 pb-2" htmlFor="priority">Priority</Label>
@@ -199,25 +204,28 @@ export default function SanitationRequest() {
                                     })
                                 }>
                                 <option value="">-- Select Status --</option>
-                                <option value="Incomplete">Incomplete</option>
-                                <option value="Pending">Pending</option>
-                                <option value="Complete">Complete</option>
                                 <option value="Unassigned">Unassigned</option>
+                                <option value="Assigned">Assigned</option>
+                                <option value="Working">Working</option>
+                                <option value="Done">Done</option>
                             </select>
                         </div>
 
+                        <div>
                         <Label className="pt-4 pb-2" htmlFor="comments">
                             Comments
                         </Label>
                         <textarea
                             id="comments"
-                            className="border border-gray-300 rounded-md p-2 w-60"
+                            className="border border-gray-300 rounded-md p-2 w-90"
                             onChange={(e) =>
                                 setForm({ ...form, comments: e.target.value })
                             }
                         />
+                        </div>
 
-                        <Button type="submit" className="mt-6">
+
+                        <Button type="submit" className="mt-6 w-full">
                             Submit
                         </Button>
                     </form>

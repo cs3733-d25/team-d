@@ -3,31 +3,31 @@ import {
     Dialog,
     DialogContent,
     DialogTrigger,
-} from '@/components/ui/dialog';
+} from '@/components/ui/dialog.tsx';
+import {ScrollArea} from "@radix-ui/react-scroll-area";
 import {Card, CardHeader, CardTitle} from "@/components/ui/card.tsx";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
-import SecurityServiceRequest from "@/components/SecurityServiceRequest.tsx";
+import TranslatorServiceRequest from "@/components/ServiceRequest/TranslatorRequest/TranslatorServiceRequest.tsx";
 
-const SecurityRequestPopup: React.FC<{title: string, iconName: IconDefinition}> = ({title, iconName}) => {
+const TranslatorRequestPopup: React.FC<{title: string, iconName: IconDefinition}> = ({title, iconName}) => {
     return (
         <Dialog>
             <DialogTrigger asChild>
                 <Card className="relative bg-[#d0ccd0] hover:bg-[#addde5] justify-center h-70 w-60 text-black">
-                    <FontAwesomeIcon icon={iconName} size="2x" className="text-6xl"/>
-                    <CardHeader className="place-content-center">
+                    <FontAwesomeIcon icon={iconName} size="2x" className="text-6xl" />
+                    <CardHeader>
                         <CardTitle className="text-3xl">
                             <p>{title}</p>
                         </CardTitle>
                     </CardHeader>
                 </Card>
             </DialogTrigger>
-
-            <DialogContent className="place-content-center animate-in fade-in zoom-in duration-500 border-none">
-                <SecurityServiceRequest />
-            </DialogContent>
+                <DialogContent className="place-content-center animate-in fade-in zoom-in duration-500 border-none h-150">
+                    <TranslatorServiceRequest />
+                </DialogContent>
         </Dialog>
     );
 }
 
-export default SecurityRequestPopup;
+export default TranslatorRequestPopup;

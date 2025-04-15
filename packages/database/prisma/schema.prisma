@@ -35,8 +35,8 @@ model ServiceRequest {
   updatedAt     DateTime @updatedAt
   requestStatus String
   priority      String
-  roomNum          String
-  comments         String?
+  roomNum       String
+  comments      String?
 
   // tables that inherit from ServiceRequest:
   translatorRequest TranslatorRequest?
@@ -51,8 +51,8 @@ model ServiceRequest {
   employeeRequestedById Int
   employeeRequestedBy   Employee   @relation(name: "requestedBy", fields: [employeeRequestedById], references: [employeeId])
   // which department it's made under
-  departmentUnderId     Int
-  departmentUnder       Department @relation(fields: [departmentUnderId], references: [departmentId])
+  departmentUnderId     Int?
+  departmentUnder       Department? @relation(fields: [departmentUnderId], references: [departmentId], onDelete: SetNull)
 }
 
 model TranslatorRequest {
