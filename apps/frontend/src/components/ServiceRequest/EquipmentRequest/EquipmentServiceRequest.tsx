@@ -8,6 +8,7 @@ import {API_ROUTES} from "common/src/constants.ts";
 import axios from "axios";
 import ReturnEquipmentRequest from "@/components/ServiceRequest/EquipmentRequest/ReturnEquipmentRequest.tsx";
 import SubmissionReqPopup from "@/components/SubmissionReqPopup.tsx";
+import ReturnSanitationRequest from "@/components/ServiceRequest/SanitationRequest/ReturnSanitationRequest.tsx";
 
 type equipmentRequestForm = {
     medicalDevice: string;
@@ -61,7 +62,6 @@ export default function EquipmentServiceRequest() {
 
     return (
         <>
-            <SubmissionReqPopup open={showPopup} onOpenChange={setShowPopup} />
             {!submitted ?
                 <ScrollArea className="max-h-[95vh] overflow-y-auto pr-4">
                 <div className="grid place-items-center h-full items-center">
@@ -285,20 +285,9 @@ export default function EquipmentServiceRequest() {
                 </div>
                 </ScrollArea>
                 :
-                <ReturnEquipmentRequest
-                    employeeRequestedById={form.employeeRequestedById}
-                    departmentUnderId={form.departmentUnderId}
-                    medicalDevice={form.medicalDevice}
-                    quantity={form.quantity}
-                    signature={form.signature}
-                    roomNum={form.roomNum}
-                    startDateTime={form.startDateTime}
-                    endDateTime={form.endDateTime}
-                    comments={form.comments}
-                    requestStatus={form.requestStatus}
-                    employeeName={form.employeeName}
-                    priority={form.priority}
-                />
+                <SubmissionReqPopup open={showPopup} onOpenChange={setShowPopup}>
+                    <ReturnEquipmentRequest {...form} />
+                </SubmissionReqPopup>
             }
         </>
     );

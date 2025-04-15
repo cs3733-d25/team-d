@@ -7,26 +7,31 @@ import {
     AlertDialogFooter,
     AlertDialogHeader,
     AlertDialogTitle,
-    AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+
+type SubmissionReqProps = {
+    open: boolean;
+    onOpenChange: (open: boolean) => void;
+    children?: React.ReactNode;
+};
 
 
 export default function SubmissionReqPopup({
     open,
     onOpenChange,
-}: {
-    open: boolean;
-    onOpenChange: (open: boolean) => void;
-})  {
+    children
+}: SubmissionReqProps) {
     return(
             <AlertDialog open={open} onOpenChange={onOpenChange}>
                 <AlertDialogContent>
-                    <AlertDialogHeader>
+                    <AlertDialogHeader className="flex justify-center items-center">
                         <ProgressToCheck /> {/*The Confirmation Animation*/}
                         <div className="delay-1000">
-                        <AlertDialogTitle className="text-2xl font-bold mt-4 animate-in fade-in duration-2000 ease-in-out">Service Request Submitted!</AlertDialogTitle>
+                        <AlertDialogTitle className="text-2xl font-bold mt-4 flex justify-center items-center animate-in fade-in duration-2000 ease-in-out">Service Request Submitted!</AlertDialogTitle>
                         <AlertDialogDescription className="text-base mt-2 animate-in fade-in duration-2000 ease-in-out">
-                            Check your service request listing
+                                <p>---------------------------------------------------------------</p>
+                                <p></p>
+                                { children }
                         </AlertDialogDescription>
                         </div>
                     </AlertDialogHeader>
@@ -49,7 +54,7 @@ export function ProgressToCheck() {
     useEffect(() => {
         const timer = setTimeout(() => {
             setShowCheck(true)
-        }, 1000) // simulate a 2-second loading
+        }, 800) // simulate a 1-second loading
 
         return () => clearTimeout(timer)
         }, [])
@@ -74,15 +79,15 @@ function CheckAnimation() {
 
             <svg
                 className="w-16 h-16 text-green-500 animate-check duration-5000"
-                viewBox="0 0 52 52"
+                viewBox="0 0 60 60"
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="5"
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 >
-                <circle cx="26" cy="25" r="25" className="stroke-current opacity-20" />
-                <path d="M14 27 l7 7 l17 -17" className="path stroke-current" />
+                <circle cx="30" cy="30" r="28" className="stroke-current opacity-20" />
+                <path d="M18 27 l8 8 l16 -16" className="path stroke-current" />
             </svg>
 
             <style>{`
