@@ -148,16 +148,64 @@ class Graph {
     // }
 
     pathFind(departmentCoords: Coordinates): Coordinates[][] {
-        const entranceCanidates: GraphNode[] = this.nodesList.filter((node) => {
-            return node.tags === 'Garage';
+        const checkpointCanidates: GraphNode[] = this.nodesList.filter((node) => {
+            return node.tags.indexOf('[Checkpoint') >= 0;
         });
+
+        if (checkpointCanidates.length === 0) return [[]];
+
+        console.log(checkpointCanidates);
+
+        // TODO: select the node with the shortest distance to departmentCoords instead of just the first one
+        const checkpointNode = checkpointCanidates[0];
+
+        const doorCanidates: GraphNode[] = this.nodesList.filter((node) => {
+            return node.tags.indexOf('[Door') >= 0;
+        });
+
+        if (doorCanidates.length === 0) return [[]];
+
+        console.log(doorCanidates);
+
+        // TODO: select the node with the shortest distance to departmentCoords instead of just the first one
+        const doorNode = doorCanidates[0];
+
+        const entranceNode = this.nodesList.find((node) => {
+            return (
+                node.tags.indexOf('[Entrance' + doorNode.tags.charAt(doorNode.tags.length - 2)) >= 0
+            );
+        });
+
+        if (!entranceNode) return [[]];
+
+        console.log(entranceNode);
 
         const parkingCanidates: GraphNode[] = this.nodesList.filter((node) => {
-            // return node.tags.indexOf('Parking') >= 0;
-            return node.tags === 'Entrance point';
+            return node.tags.indexOf('[Parking') >= 0;
         });
 
-        return [this.bfs(parkingCanidates[0], entranceCanidates[0])];
+        if (parkingCanidates.length === 0) return [[]];
+
+        const parkingNode = parkingCanidates[0];
+
+        console.log(parkingNode);
+
+        return [this.bfs(doorNode, checkpointNode), this.bfs(parkingNode, entranceNode)];
+
+        // const entranceCanidates: GraphNode[] = this.nodesList.filter((node) => {
+        //     return node.tags.indexOf('[Entrance') >= 0;
+        // });
+        // console.log(entranceCanidates.length);
+        //
+        // const parkingCanidates: GraphNode[] = this.nodesList.filter((node) => {
+        //     return node.tags.indexOf('[Parking') >= 0;
+        //     // return node.tags === 'Entrance point';
+        // });
+        // console.log(parkingCanidates.length);
+        //
+        //
+
+        // return [this.bfs(parkingCanidates[0], entranceCanidates[0])];
     }
 
     bfs(start: GraphNode, end: GraphNode): Coordinates[] {
