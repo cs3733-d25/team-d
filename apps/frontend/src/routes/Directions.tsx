@@ -49,7 +49,11 @@ export type Graph = {
     west: number
 }
 
-export default function Directions() {
+interface DirectionsProps {
+    editor: boolean
+}
+
+export default function Directions(props: DirectionsProps) {
 
     const departmentRef = useRef(null);
     const autocompleteRef = useRef<HTMLInputElement>(null);
@@ -59,6 +63,8 @@ export default function Directions() {
     const [hospital, setHospital] = useState<Hospital | undefined>();
     const [graph, setGraph] = useState<Graph | undefined>();
     const [department, setDepartment] = useState<Department | undefined>();
+
+    const [allGraphs, setAllGraphs] = useState<Graph[]>([]);
 
     const [zoomFlag, setZoomFlag] = useState<boolean>(false);
 
@@ -74,9 +80,36 @@ export default function Directions() {
     }, []);
 
     const handleHospitalChange = (value: string) => {
+        let newHospital: Hospital | null = null;
         for (const hospital of data) {
             if (hospital.name === value) {
                 setHospital(hospital);
+                newHospital = hospital;
+                break;
+            }
+        }
+        console.log('Hospital change: ', hospital);
+        if (newHospital) {
+            const newAllGraphs: Graph[] = [];
+            const graphIds = new Set<number>();
+            for (const graph of newHospital.Departments.map(d => d.Graph)) {
+                console.log('Trying ', graph.graphId);
+                if (!graphIds.has(graph.graphId)) {
+                    graphIds.add(graph.graphId);
+                    newAllGraphs.push(graph);
+                    console.log('Added ' + graph.graphId);
+                }
+            }
+            setAllGraphs(newAllGraphs);
+        }
+    }
+
+    const handleGraphChange = (value: string) => {
+        if (!hospital) return;
+
+        for (const graph of allGraphs) {
+            if (graph.name === value) {
+                setGraph(graph);
                 break;
             }
         }
@@ -95,20 +128,25 @@ export default function Directions() {
     return (
         <div className="flex flex-row flex-1">
             <div className="flex-1 p-4">
-                <Label className="mb-1">Start Location</Label>
 
                 {/*TODO: find a better way of doing this, copied from components/ui/input.tsx*/}
-                <input
-                    ref={autocompleteRef}
-                    id="start-input"
-                    type="text"
-                    data-slot="input"
-                    className={cn(
-                        "file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input flex h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
-                        "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
-                        "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive", "mb-4"
-                    )}
-                />
+                {!props.editor &&
+                    <>
+                        <Label className="mb-1">Start Location</Label>
+                        <input
+                            ref={autocompleteRef}
+                            id="start-input"
+                            type="text"
+                            data-slot="input"
+                            className={cn(
+                                "file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input flex h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
+                                "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
+                                "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive", "mb-4"
+                            )}
+                        />
+                    </>
+                }
+
                 {/*end to-do here*/}
 
                 <Label>Destination Hospital</Label>
@@ -128,30 +166,50 @@ export default function Directions() {
                     </SelectContent>
                 </Select>
 
-                {hospital && (
+                {hospital &&
                     <>
-                        <Label>Department</Label>
-                        <Select onValueChange={handleDepartmentChange}>
-                            <SelectTrigger className="w-full mt-1 mb-4">
-                                <SelectValue placeholder="Choose a department..." />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectGroup key="0">
-                                    <SelectLabel>Departments</SelectLabel>
-                                    {hospital.Departments.map((d: Department) => (
-                                        <SelectItem key={d.departmentId + 1} value={d.name}>
-                                            {d.name}
-                                        </SelectItem>
-                                    ))}
-                                </SelectGroup>
-                            </SelectContent>
-                        </Select>
-
+                        {props.editor ?
+                            <>
+                                <Label>Graph</Label>
+                                <Select onValueChange={handleGraphChange}>
+                                    <SelectTrigger className="w-full mt-1 mb-4">
+                                        <SelectValue placeholder="Choose a graph..." />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectGroup key="0">
+                                            <SelectLabel>Graphs</SelectLabel>
+                                            {allGraphs.map(graph => (
+                                                <SelectItem key={graph.graphId} value={graph.name}>
+                                                    {graph.name}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectGroup>
+                                    </SelectContent>
+                                </Select>
+                            </> : <>
+                                <Label>Department</Label>
+                                <Select onValueChange={handleDepartmentChange}>
+                                    <SelectTrigger className="w-full mt-1 mb-4">
+                                        <SelectValue placeholder="Choose a department..." />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectGroup key="0">
+                                            <SelectLabel>Departments</SelectLabel>
+                                            {hospital.Departments.map((d: Department) => (
+                                                <SelectItem key={d.departmentId + 1} value={d.name}>
+                                                    {d.name}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectGroup>
+                                    </SelectContent>
+                                </Select>
+                            </>
+                        }
                         <Button onClick={() => setZoomFlag(!zoomFlag)} className="mb-4">
                             Zoom
                         </Button>
                     </>
-                )}
+                }
 
                 {/* Show Department Info if selected */}
                 {/*{selectedDepartment && (*/}
@@ -172,6 +230,7 @@ export default function Directions() {
 
             <div className="flex-2">
                 <GGMap
+                    editor={props.editor}
                     autoCompleteRef={autocompleteRef}
                     hospital={hospital}
                     department={department}

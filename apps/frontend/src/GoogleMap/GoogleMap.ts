@@ -11,10 +11,12 @@ const DEFAULT_ZOOM = 10;
 
 export default class GoogleMap {
 
+    private readonly editor: boolean;
+
     private readonly map: google.maps.Map;
-    private readonly directionsService: google.maps.DirectionsService;
-    private readonly directionsRenderer: google.maps.DirectionsRenderer;
-    private readonly autocomplete: google.maps.places.Autocomplete;
+    private readonly directionsService: google.maps.DirectionsService | null;
+    private readonly directionsRenderer: google.maps.DirectionsRenderer | null;
+    private readonly autocomplete: google.maps.places.Autocomplete | null;
 
     private readonly floorMaps: Map<number, google.maps.GroundOverlay>;
     private floorMap: google.maps.GroundOverlay | null;
@@ -31,8 +33,10 @@ export default class GoogleMap {
 
     constructor(mapRef: HTMLDivElement, props: GoogleMapProps) {
 
+        this.editor = props.editor;
 
-        if (!mapRef || !props.autoCompleteRef.current) throw new Error('Missing References');
+
+        if (!mapRef) throw new Error('Missing References');
 
         // Make map
         this.map = new google.maps.Map(mapRef, {
@@ -52,26 +56,37 @@ export default class GoogleMap {
         });
 
         // Make directions
-        this.directionsService = new google.maps.DirectionsService();
-        this.directionsRenderer = new google.maps.DirectionsRenderer({
-            map: this.map
-        });
+
 
         // Make autocomplete for origin
-        this.autocomplete = new google.maps.places.Autocomplete(props.autoCompleteRef.current, {
-            fields: ['place_id'],
-        });
-        this.autocomplete.addListener('place_changed', () => {
-            const placeId = this.autocomplete.getPlace().place_id;
-            if (!placeId) {
-                window.alert('Please select an option from the dropdown list.');
-                return;
-            } else {
-                this.startPlaceId = placeId;
-                console.log('Start is now ' + this.startPlaceId);
-                this.route();
-            }
-        });
+        if (!this.editor && props.autoCompleteRef.current) {
+
+            this.directionsService = new google.maps.DirectionsService();
+            this.directionsRenderer = new google.maps.DirectionsRenderer({
+                map: this.map
+            });
+
+            this.autocomplete = new google.maps.places.Autocomplete(props.autoCompleteRef.current, {
+                fields: ['place_id'],
+            });
+            this.autocomplete.addListener('place_changed', () => {
+                // @ts-expect-error already defined it above
+                const placeId = this.autocomplete.getPlace().place_id;
+                if (!placeId) {
+                    window.alert('Please select an option from the dropdown list.');
+                    return;
+                } else {
+                    this.startPlaceId = placeId;
+                    console.log('Start is now ' + this.startPlaceId);
+                    this.route();
+                }
+            });
+        }
+        else {
+            this.directionsService = null;
+            this.directionsRenderer = null;
+            this.autocomplete = null;
+        }
 
         // Set floor maps
         this.floorMaps = new Map<number, google.maps.GroundOverlay>();
@@ -90,27 +105,30 @@ export default class GoogleMap {
     }
 
     private route(): void {
-        // can't go anywhere without start and end
-        if (!this.startPlaceId || !this.destinationPlaceId) {
-            console.log('Insufficient fields')
-            return;
-        }
-        console.log('Routing ' + this.startPlaceId + ' to ' + this.destinationPlaceId);
-        this.directionsService.route(
-            {
-                origin: {placeId: this.startPlaceId},
-                destination: {placeId: this.destinationPlaceId},
-                travelMode: google.maps.TravelMode.DRIVING,
-            },
-            (response, status) => {
-                if (status === 'OK') {
-                    console.log('Routed!');
-                    this.directionsRenderer.setDirections(response);
-                } else {
-                    window.alert('Directions request failed due to ' + status);
-                }
+        if (!this.editor && this.directionsService && this.directionsRenderer) {
+            // can't go anywhere without start and end
+            if (!this.startPlaceId || !this.destinationPlaceId) {
+                console.log('Insufficient fields')
+                return;
             }
-        );
+            console.log('Routing ' + this.startPlaceId + ' to ' + this.destinationPlaceId);
+            this.directionsService.route(
+                {
+                    origin: {placeId: this.startPlaceId},
+                    destination: {placeId: this.destinationPlaceId},
+                    travelMode: google.maps.TravelMode.DRIVING,
+                },
+                (response, status) => {
+                    if (status === 'OK') {
+                        console.log('Routed!');
+                        // @ts-expect-error already checked that its not null above
+                        this.directionsRenderer.setDirections(response);
+                    } else {
+                        window.alert('Directions request failed due to ' + status);
+                    }
+                }
+            );
+        }
     }
 
     update(props: GoogleMapProps): void {
