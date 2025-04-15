@@ -52,7 +52,7 @@ export default class GoogleMap {
         this.map.addListener('click', (e: google.maps.MapMouseEvent) => {
             const ll = e.latLng;
             if (ll) {
-                console.log('Point ' + this.pointNum++ + ':   ' + ll.toJSON().lat + ' ' + ll.toJSON().lng);
+                console.log('Point ' + this.pointNum++ + ':   \nlat: ' + ll.toJSON().lat + ',\nlng: ' + ll.toJSON().lng + ',');
             }
         });
 
@@ -173,7 +173,7 @@ export default class GoogleMap {
                 this.floorMap.addListener('click', (e: google.maps.MapMouseEvent) => {
                     const ll = e.latLng;
                     if (ll) {
-                        console.log('Point ' + this.pointNum++ + ':   ' + ll.toJSON().lat + ' ' + ll.toJSON().lng);
+                        console.log('Point ' + this.pointNum++ + ':   \nlat: ' + ll.toJSON().lat + ',\nlng: ' + ll.toJSON().lng + ',');
                     }
                 });
             }
@@ -182,36 +182,6 @@ export default class GoogleMap {
             }
             this.floorMap.setMap(this.map);
         }
-        // if (props.floor) {
-        //     const floorMap = this.floorMaps.get(props.floor.floorId);
-        //     if (!floorMap) {
-        //         console.log('Getting floor map url from ' + props.floor.imageURL + ' ' + props.floor.north);
-        //         const newFloorMap = new google.maps.GroundOverlay(props.floor.imageURL, {
-        //             north: props.floor.north,
-        //             south: props.floor.south,
-        //             east: props.floor.east,
-        //             west: props.floor.west,
-        //         });
-        //         this.floorMaps.set(props.floor.floorId, newFloorMap);
-        //         this.floorMap = newFloorMap;
-        //
-        //         // TODO: remove later
-        //         this.floorMap.addListener('click', (e: google.maps.MapMouseEvent) => {
-        //             // console.log('click', e);
-        //             const ll = e.latLng;
-        //             if (ll) {
-        //                 console.log('Point ' + this.pointNum++ + ':   ' + ll.toJSON().lat + ' ' + ll.toJSON().lng);
-        //             }
-        //         });
-        //     }
-        //     else {
-        //         this.floorMap = floorMap;
-        //     }
-        //     this.floorMap.setMap(this.map);
-        // }
-        // If the department has changed, re-route
-        // the pathfinding to the nearest check-in location
-        // to that dept.
         if (props.department || props.graph) {
 
             const route = this.editor ?

@@ -1,8 +1,7 @@
 import { Coordinates } from 'common/src/constants.ts';
 import { readFileSync } from 'fs';
 import { PrismaClient } from 'database';
-import { euclideanDistance } from './distances';
-
+import { euclideanDistance } from './distance.ts';
 
 class GraphNode {
     private readonly neighbors: GraphNode[];
@@ -160,14 +159,15 @@ class Graph {
 
         // TODO: select the node with the shortest distance to departmentCoords instead of just the first one
         const checkpointNode = checkpointCanidates.reduce((closest, node) => {
-            if (euclideanDistance(node.coords, departmentCoords) < euclideanDistance(closest.coords, departmentCoords)
+            if (
+                euclideanDistance(node.coords, departmentCoords) <
+                euclideanDistance(closest.coords, departmentCoords)
             ) {
                 return node;
             } else {
                 return closest;
             }
         });
-
 
         const doorCanidates: GraphNode[] = this.nodesList.filter((node) => {
             return node.tags.indexOf('[Door') >= 0;
@@ -179,14 +179,15 @@ class Graph {
 
         // TODO: select the node with the shortest distance to departmentCoords instead of just the first one
         const doorNode = doorCanidates.reduce((closest, node) => {
-            if (euclideanDistance(node.coords, departmentCoords) < euclideanDistance(closest.coords, departmentCoords)
+            if (
+                euclideanDistance(node.coords, departmentCoords) <
+                euclideanDistance(closest.coords, departmentCoords)
             ) {
                 return node;
             } else {
                 return closest;
             }
         });
-
 
         const entranceNode = this.nodesList.find((node) => {
             return (
