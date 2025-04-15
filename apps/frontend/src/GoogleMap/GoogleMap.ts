@@ -22,6 +22,7 @@ export default class GoogleMap {
     private floorMap: google.maps.GroundOverlay | null;
 
     private paths: google.maps.Polyline[];
+    private nodes: google.maps.Circle[];
 
     private startPlaceId: string;
     private destinationPlaceId: string;
@@ -93,6 +94,7 @@ export default class GoogleMap {
         this.floorMap = null;
 
         this.paths = [];
+        this.nodes = [];
 
         // Set start and finish locations
         this.startPlaceId = '';
@@ -141,6 +143,10 @@ export default class GoogleMap {
         if (this.paths.length > 0) {
             this.paths.map(path => path.setMap(null));
             this.paths = [];
+        }
+        if (this.nodes.length > 0) {
+            this.nodes.map(node => node.setMap(null));
+            this.nodes = [];
         }
 
         // If the destination hospital has changed, re-route via
@@ -206,8 +212,17 @@ export default class GoogleMap {
         // If the department has changed, re-route
         // the pathfinding to the nearest check-in location
         // to that dept.
-        if (props.department) {
-            axios.get(API_ROUTES.PATHFINDING + '/pathfind/' + props.graph?.graphId).then((response) => {
+        if (props.department || props.graph) {
+
+            const route = this.editor ?
+                API_ROUTES.PATHFINDING + '/edit/' + props.graph?.graphId :
+                API_ROUTES.PATHFINDING + '/pathfind/' + props.graph?.graphId + '/' + props.department?.departmentId;
+
+            console.log('Get route ' + route);
+
+            axios.get(route).then((response) => {
+
+                console.log('Got route');
             //     const points: Coordinates[] = response.data[0];
             //
             //     const line: google.maps.LatLngLiteral[] = points.map((point) => {
@@ -244,6 +259,22 @@ export default class GoogleMap {
                         map: this.map,
                     }));
                 });
+
+                rawData.map(pair => pair.map(point => {
+                    this.nodes.push(new google.maps.Circle({
+                        strokeColor: '#00FF88',
+                        strokeOpacity: 1,
+                        strokeWeight: 3,
+                        fillColor: '#00FF88',
+                        fillOpacity: 1,
+                        map: this.map,
+                        center: {
+                            lat: point.lat,
+                            lng: point.lng,
+                        },
+                        radius: 1,
+                    }));
+                }));
             })
         }
 

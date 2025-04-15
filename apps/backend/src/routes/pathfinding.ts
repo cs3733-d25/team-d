@@ -2,10 +2,61 @@ import express, { Router, Request, Response } from 'express';
 import PrismaClient from '../bin/prisma-client';
 import { Prisma } from 'database';
 import { Graph } from '../pathfinding/src/bfs.ts';
+import { Coordinates } from 'common/src/constants.ts';
 
 const router: Router = express.Router();
 
-router.get('/pathfind/:graphId/', async (req: Request, res: Response) => {
+router.get('/edit/:graphId', async (req: Request, res: Response) => {
+    const graphDB = await PrismaClient.graph.findUnique({
+        where: {
+            graphId: Number(req.params.graphId),
+        },
+        include: {
+            Nodes: {
+                include: {
+                    edgeStart: {
+                        include: {
+                            startNode: true,
+                            endNode: true,
+                        },
+                    },
+                },
+            },
+        },
+    });
+
+    if (!graphDB || graphDB.Nodes.length === 0) {
+        console.log('No graph found');
+        res.sendStatus(404);
+        return;
+    }
+
+    const checkedEdgeIds = new Set<number>();
+
+    const edges: Coordinates[][] = [];
+
+    graphDB.Nodes.map((node) => {
+        node.edgeStart.map((edge) => {
+            if (!checkedEdgeIds.has(edge.edgeId)) {
+                checkedEdgeIds.add(edge.edgeId);
+                edges.push([
+                    {
+                        lat: edge.startNode.lat,
+                        lng: edge.startNode.lng,
+                    },
+                    {
+                        lat: edge.endNode.lat,
+                        lng: edge.endNode.lng,
+                    },
+                ]);
+            }
+        });
+    });
+
+    res.json(edges);
+});
+
+router.get('/pathfind/:graphId/:departmentId', async (req: Request, res: Response) => {
     // get the graph
     const graphDB = await PrismaClient.graph.findUnique({
         where: {
@@ -23,9 +74,31 @@ router.get('/pathfind/:graphId/', async (req: Request, res: Response) => {
 
     // if graph DNE or no nodes in graph return 404
     if (!graphDB || graphDB.Nodes.length === 0) {
+        console.log('No graph found');
         res.sendStatus(404);
         return;
     }
+
+    const department = await PrismaClient.department.findUnique({
+        where: {
+            departmentId: Number(req.params.departmentId),
+        },
+        select: {
+            lat: true,
+            lng: true,
+        },
+    });
+
+    if (!department) {
+        console.log('No dept. found');
+        res.sendStatus(404);
+        return;
+    }
+
+    console.log('Department found: ', {
+        lat: department.lat,
+        lng: department.lng,
+    });
 
     const graphObj = new Graph();
 
@@ -53,8 +126,12 @@ router.get('/pathfind/:graphId/', async (req: Request, res: Response) => {
     // for (const node in graphDB.Nodes) {
     //     graphObj.addEdge()
     // }
-
-    res.json(graphObj.pathFind({ lat: 0, lng: 0 }));
+    res.json(
+        graphObj.pathFind({
+            lat: department.lat,
+            lng: department.lng,
+        })
+    );
 });
 
 router.get('/nodes', async (req: Request, res: Response) => {
