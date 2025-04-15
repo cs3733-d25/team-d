@@ -2,10 +2,12 @@ import {FormEvent} from 'react';
 import {Button} from "@/components/ui/button.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import {Label} from "@/components/ui/label.tsx";
+import {ScrollArea} from "@/components/ui/scrollarea.tsx";
 import {useState} from "react";
 import {API_ROUTES} from "common/src/constants.ts";
 import axios from "axios";
 import ReturnEquipmentRequest from "@/components/ReturnEquipmentRequest.tsx";
+import SubmissionReqPopup from "@/components/SubmissionReqPopup.tsx";
 
 type equipmentRequestForm = {
     medicalDevice: string;
@@ -40,20 +42,28 @@ export default function EquipmentServiceRequest() {
     });
 
     const [submitted, setSubmitted] = useState(false);
+    const [showPopup, setShowPopup] = useState(false);
 
     const onSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        // console.log(form);
         setSubmitted(false);
-        axios.post(API_ROUTES.SERVICEREQS+'/equipment', form).then(() => {
-            alert("Service request submitted!");
-            setSubmitted(true);
-        });
-    }
+
+        axios
+            .post(API_ROUTES.SERVICEREQS + "/equipment", form)
+            .then(() => {
+                setSubmitted(true);
+                setShowPopup(true);
+            })
+            .catch((err) => {
+                console.error("Error submitting sanitation request:", err);
+            });
+    };
 
     return (
         <>
+            <SubmissionReqPopup open={showPopup} onOpenChange={setShowPopup} />
             {!submitted ?
+                <ScrollArea className="max-h-[95vh] overflow-y-auto pr-4">
                 <div className="grid place-items-center h-full items-center">
                     <h2 className="text-4xl fontbold pb-3" >Request a Medical Device</h2>
                     <h6 className="pb-3 font-light">Christine Ngo & Keethu Jayamoorthy</h6>
@@ -267,10 +277,13 @@ export default function EquipmentServiceRequest() {
                         </div>
 
                         <div className="flex flex-row justify-center items-center">
-                            <Button type="submit" className="mt-5">Submit</Button>
+                            <Button type="submit" className="mt-6 w-full">
+                                Submit
+                            </Button>
                         </div>
                     </form>
                 </div>
+                </ScrollArea>
                 :
                 <ReturnEquipmentRequest
                     employeeRequestedById={form.employeeRequestedById}

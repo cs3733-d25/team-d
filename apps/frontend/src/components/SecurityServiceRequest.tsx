@@ -2,10 +2,12 @@ import {FormEvent} from 'react';
 import {Button} from "@/components/ui/button.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import {Label} from "@/components/ui/label.tsx";
+import {ScrollArea} from "@/components/ui/scrollarea.tsx";
 import {useState} from "react";
 import {API_ROUTES} from "common/src/constants.ts";
 import axios from "axios";
 import ReturnSecurityRequest from "@/components/ReturnSecurityRequest.tsx";
+import SubmissionReqPopup from "@/components/SubmissionReqPopup.tsx";
 
 type securityRequestForm = {
     roomNum: string;
@@ -34,20 +36,28 @@ export default function SecurityServiceRequest() {
     });
 
     const [submitted, setSubmitted] = useState(false);
+    const [showPopup, setShowPopup] = useState(false);
 
     const onSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        // console.log(form);
         setSubmitted(false);
-        axios.post(API_ROUTES.SERVICEREQS+'/security', form).then(() => {
-            alert("Service request submitted!");
-            setSubmitted(true);
-        });
-    }
+
+        axios
+            .post(API_ROUTES.SERVICEREQS + "/security", form)
+            .then(() => {
+                setSubmitted(true);
+                setShowPopup(true);
+            })
+            .catch((err) => {
+                console.error("Error submitting security request:", err);
+            });
+    };
 
     return (
         <>
+            <SubmissionReqPopup open={showPopup} onOpenChange={setShowPopup} />
             {!submitted ?
+                <ScrollArea className="max-h-[95vh] overflow-y-auto pr-4">
                 <div className="grid place-items-center h-full items-center">
                     <h2 className="text-4xl fontbold pb-3" >Request Security</h2>
                     <h6 className="pb-3 font-light">Maggie Hosie & Delia Jasper</h6>
@@ -203,7 +213,7 @@ export default function SecurityServiceRequest() {
                             </select>
                         </div>
 
-                        <div>
+
                             <Label className="pt-4 pb-2" htmlFor="comments">Comments</Label>
                             <textarea
                                 id="comments"
@@ -212,13 +222,14 @@ export default function SecurityServiceRequest() {
                                     setForm({ ...form, comments: e.target.value })
                                 }
                             />
-                        </div>
 
-                        <div className="flex flex-row justify-center items-center">
-                            <Button type="submit" className="mt-5">Submit</Button>
-                        </div>
+
+                            <Button type="submit" className="mt-6 w-full">
+                                Submit
+                            </Button>
                     </form>
                 </div>
+                </ScrollArea>
                 :
                 <ReturnSecurityRequest
                     roomNum={form.roomNum}

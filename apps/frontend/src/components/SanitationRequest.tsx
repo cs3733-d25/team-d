@@ -1,6 +1,7 @@
 import React, { FormEvent, useState } from "react";
 import axios from "axios";
 import { Button } from "@/components/ui/button.tsx";
+import {ScrollArea} from "@/components/ui/scrollarea.tsx";
 import { Input } from "@/components/ui/input.tsx";
 import { Label } from "@/components/ui/label.tsx";
 import { API_ROUTES } from "common/src/constants.ts";
@@ -52,6 +53,7 @@ export default function SanitationRequest() {
     return (
         <>
             {!submitted ?
+                <ScrollArea className="max-h-[95vh] overflow-y-auto pr-4">
                 <div className="grid place-items-center h-full items-center">
                     <h2 className="text-4xl font-bold pb-3">Request Sanitation</h2>
                     <h6 className="pb-3 font-light">Stuvat Dash & Brandon Small</h6>
@@ -123,7 +125,7 @@ export default function SanitationRequest() {
                                 <option value="20">Rehabilitation Services</option>
                             </select>
                         </div>
-
+                        <div>
                         <Label className="pt-4 pb-2" htmlFor="roomNum">Room Number</Label>
                         <Input
                             required
@@ -133,7 +135,8 @@ export default function SanitationRequest() {
                                 setForm({ ...form, roomNum: e.target.value })
                             }
                         />
-
+                        </div>
+                        <div>
                         <Label className="pt-4 pb-2" htmlFor="type">Sanitation Type</Label>
                         <select
                             required
@@ -150,7 +153,9 @@ export default function SanitationRequest() {
                             <option value="WASTE_REMOVAL">Waste Removal</option>
                             <option value="PEST_CONTROL">Pest Control</option>
                         </select>
+                        </div>
 
+                        <div>
                         <Label className="pt-4 pb-2" htmlFor="status">Room Status</Label>
                         <select
                             required
@@ -164,6 +169,7 @@ export default function SanitationRequest() {
                             <option value="VACANT">Vacant</option>
                             <option value="IN_USE">In Use</option>
                         </select>
+                        </div>
 
                         <div>
                             <Label className="pt-4 pb-2" htmlFor="priority">Priority</Label>
@@ -205,6 +211,7 @@ export default function SanitationRequest() {
                             </select>
                         </div>
 
+                        <div>
                         <Label className="pt-4 pb-2" htmlFor="comments">
                             Comments
                         </Label>
@@ -215,12 +222,15 @@ export default function SanitationRequest() {
                                 setForm({ ...form, comments: e.target.value })
                             }
                         />
+                        </div>
 
-                        <Button type="submit" className="mt-6">
+
+                        <Button type="submit" className="mt-6 w-full">
                             Submit
                         </Button>
                     </form>
                 </div>
+                </ScrollArea>
                 :
                 <ReturnSanitationRequest
                     roomNum={form.roomNum}
