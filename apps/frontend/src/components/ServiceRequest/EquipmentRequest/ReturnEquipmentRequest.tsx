@@ -1,9 +1,11 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card.tsx';
 import { Label } from '@/components/ui/label.tsx';
 
-type translatorRequestForm = {
-    languageFrom: string;
-    languageTo: string;
+type equipmentRequestForm = {
+    medicalDevice: string;
+    signature: string;
+    quantity: number;
+    comments: string;
     roomNum: string;
     startDateTime: string;
     endDateTime: string;
@@ -11,9 +13,10 @@ type translatorRequestForm = {
     priority: string;
     employeeRequestedById: number;
     departmentUnderId: number;
-};
+    employeeName: string;
+}
 
-const ReturnTranslatorRequest = (props: translatorRequestForm) => {
+const ReturnEquipmentRequest = (props: equipmentRequestForm) => {
     return (
         <div className="grid  h-full items-center">
             <div className="">
@@ -28,22 +31,28 @@ const ReturnTranslatorRequest = (props: translatorRequestForm) => {
                     </div>
 
                     <div className="my-5">
+                        <Label htmlFor="employeeName">Employee Name</Label>
+                        <p>{props.employeeName}</p>
+                    </div>
+
+                    <div className="my-5">
                         <Label htmlFor="departmentId">Department ID</Label>
                         <p>{props.departmentUnderId}</p>
                     </div>
 
                     <div className="my-5">
-                        <Label htmlFor="languageFrom">Language From</Label>
-                        <p>{props.languageFrom}</p>
+                        <Label htmlFor="roomNum">Room Number</Label>
+                        <p>{props.roomNum}</p>
                     </div>
 
                     <div className="my-5">
-                        <Label htmlFor="languageTo">Language To</Label>
-                        <p>{props.languageTo}</p>
+                        <Label htmlFor="medicalDevice">Medical Device</Label>
+                        <p>{props.medicalDevice}</p>
                     </div>
+
                     <div className="my-5">
-                        <Label htmlFor="roomNum">Room Number</Label>
-                        <p>{props.roomNum}</p>
+                        <Label htmlFor="quantity">Quantity</Label>
+                        <p>{props.quantity}</p>
                     </div>
 
                     <div className="my-5">
@@ -57,6 +66,11 @@ const ReturnTranslatorRequest = (props: translatorRequestForm) => {
                     </div>
 
                     <div className="my-5">
+                        <Label htmlFor="signature">Signature</Label>
+                        <p>{props.signature}</p>
+                    </div>
+
+                    <div className="my-5">
                         <Label htmlFor="priority">Priority</Label>
                         <p>{props.priority}</p>
                     </div>
@@ -65,10 +79,15 @@ const ReturnTranslatorRequest = (props: translatorRequestForm) => {
                         <Label htmlFor="requestStatus">Request Status</Label>
                         <p>{props.requestStatus}</p>
                     </div>
+
+                    <div className="my-5">
+                        <Label htmlFor="comments">Comments</Label>
+                        <p>{props.comments}</p>
+                    </div>
                 </div>
             </div>
         </div>
     );
 };
 
-export default ReturnTranslatorRequest;
+export default ReturnEquipmentRequest;

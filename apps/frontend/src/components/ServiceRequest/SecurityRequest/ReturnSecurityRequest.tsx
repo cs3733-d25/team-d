@@ -1,21 +1,19 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card.tsx';
+import { CardTitle } from '@/components/ui/card.tsx';
 import { Label } from '@/components/ui/label.tsx';
 
-type equipmentRequestForm = {
-    medicalDevice: string;
-    signature: string;
-    quantity: number;
-    comments: string;
+type securityRequestForm = {
     roomNum: string;
-    startDateTime: string;
-    endDateTime: string;
+    numOfGuards: number;
+    securityType: string;
+    comments: string;
     requestStatus: string;
     priority: string;
     employeeRequestedById: number;
     departmentUnderId: number;
+    employeeName: string;
 }
 
-const ReturnEquipmentRequest = (props: equipmentRequestForm) => {
+const ReturnSecurityRequest = (props: securityRequestForm) => {
     return (
         <div className="grid  h-full items-center">
             <div className="">
@@ -25,8 +23,13 @@ const ReturnEquipmentRequest = (props: equipmentRequestForm) => {
 
                 <div>
                     <div className="my-5">
-                        <Label htmlFor="employeeId">Requested By</Label>
+                        <Label htmlFor="employeeRequestedById">Employee ID</Label>
                         <p>{props.employeeRequestedById}</p>
+                    </div>
+
+                    <div className="my-5">
+                        <Label htmlFor="employeeName">Employee Name</Label>
+                        <p>{props.employeeName}</p>
                     </div>
 
                     <div className="my-5">
@@ -35,28 +38,18 @@ const ReturnEquipmentRequest = (props: equipmentRequestForm) => {
                     </div>
 
                     <div className="my-5">
-                        <Label htmlFor="medicalDevice">Medical Device</Label>
-                        <p>{props.medicalDevice}</p>
-                    </div>
-
-                    <div className="my-5">
-                        <Label htmlFor="quantity">Quantity</Label>
-                        <p>{props.quantity}</p>
-                    </div>
-
-                    <div className="my-5">
                         <Label htmlFor="roomNum">Room Number</Label>
                         <p>{props.roomNum}</p>
                     </div>
 
                     <div className="my-5">
-                        <Label htmlFor="startDateTime">Start Date and Time</Label>
-                        <p>{props.startDateTime}</p>
+                        <Label htmlFor="securityType">Security Type</Label>
+                        <p>{props.securityType}</p>
                     </div>
 
                     <div className="my-5">
-                        <Label htmlFor="endDateTime">End Date and Time</Label>
-                        <p>{props.endDateTime}</p>
+                        <Label htmlFor="numOfGuards">Number of Guards Requested</Label>
+                        <p>{props.numOfGuards}</p>
                     </div>
 
                     <div className="my-5">
@@ -73,15 +66,10 @@ const ReturnEquipmentRequest = (props: equipmentRequestForm) => {
                         <Label htmlFor="comments">Comments</Label>
                         <p>{props.comments}</p>
                     </div>
-
-                    <div className="my-5">
-                        <Label htmlFor="signature">Signature</Label>
-                        <p>{props.signature}</p>
-                    </div>
                 </div>
             </div>
         </div>
     );
 };
 
-export default ReturnEquipmentRequest;
+export default ReturnSecurityRequest;
