@@ -1764,7 +1764,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@radix-ui/react-scroll-area@npm:^1.0.0":
+"@radix-ui/react-scroll-area@npm:^1.0.0, @radix-ui/react-scroll-area@npm:^1.2.4":
   version: 1.2.4
   resolution: "@radix-ui/react-scroll-area@npm:1.2.4"
   dependencies:
@@ -4056,6 +4056,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "common@workspace:packages/common"
   dependencies:
+    "@radix-ui/react-scroll-area": "npm:^1.0.0"
     eslint: "npm:*"
     eslint-config-custom: "workspace:*"
     prettier: "npm:*"
@@ -6166,6 +6167,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lucide-react@npm:^0.488.0":
+  version: 0.488.0
+  resolution: "lucide-react@npm:0.488.0"
+  peerDependencies:
+    react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
+  checksum: 10c0/076eab8084a2febdab792cfd9511702643d6af506f7b46e7be2997ccc3a8f5a9c95b03f8e9dcecfbb75822811ff7d425b90aa6d0cf3d86b9994a18ca4d45a146
+  languageName: node
+  linkType: hard
+
 "magic-string@npm:^0.30.17":
   version: 0.30.17
   resolution: "magic-string@npm:0.30.17"
@@ -7936,24 +7946,31 @@ __metadata:
     "@fortawesome/fontawesome-free": "npm:^6.7.2"
     "@prisma/client": "npm:^6.5.0"
     "@radix-ui/react-alert-dialog": "npm:^1.1.7"
+    "@radix-ui/react-scroll-area": "npm:^1.2.4"
     "@types/google.maps": "npm:^3.58.1"
     "@types/node": "npm:^22.13.13"
     "@vitest/ui": "npm:^3.0.9"
     "@yarnpkg/pnpify": "npm:^4.1.4"
     autoprefixer: "npm:^10.4.21"
+    class-variance-authority: "npm:^0.7.1"
+    clsx: "npm:^2.1.1"
     common: "workspace:*"
     dotenv: "npm:^16.4.7"
     dotenv-cli: "npm:^7.4.4"
     eslint: "npm:^9.23.0"
     eslint-config-custom: "workspace:*"
     husky: "npm:^9.1.7"
+    lucide-react: "npm:^0.488.0"
     postcss: "npm:^8.5.3"
     prettier: "npm:^3.5.3"
     prettier-config-custom: "workspace:*"
     prisma: "npm:^6.5.0"
+    tailwind-merge: "npm:^3.2.0"
+    tailwind-variants: "npm:^1.0.0"
     tailwindcss: "npm:^4.1.3"
     ts-config-custom: "workspace:*"
     turbo: "npm:*"
+    tw-animate-css: "npm:^1.2.5"
     typescript: "npm:^5.8.2"
     vitest: "npm:^3.0.9"
   languageName: unknown
@@ -8131,10 +8148,35 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tailwind-merge@npm:3.0.2":
+  version: 3.0.2
+  resolution: "tailwind-merge@npm:3.0.2"
+  checksum: 10c0/73f528345e5130e7690c5c57701155849ae4f0834e0a4bf56bc03e25d4563d45d4905ff9c487a7dce9efdfa18689a223e78365962105ad0e2f2d1226216c66ef
+  languageName: node
+  linkType: hard
+
 "tailwind-merge@npm:^3.1.0":
   version: 3.1.0
   resolution: "tailwind-merge@npm:3.1.0"
   checksum: 10c0/71d6dc5f8bae2f87950eefa2605a391ffef45a09759de22ba0e90976180ab3cd4fc48ed37063a617dc2ff0f48768c0006090a78bcd1f5ad0ae1c373aad16d2b6
+  languageName: node
+  linkType: hard
+
+"tailwind-merge@npm:^3.2.0":
+  version: 3.2.0
+  resolution: "tailwind-merge@npm:3.2.0"
+  checksum: 10c0/294f6c2db0df74405bff126107107426c3126a70a1717d78e8d6811db65546c9bb3d61282bdb8d9fbded23f6bc8ec3e8e61031a4f53265f90b7f3dba558f88f4
+  languageName: node
+  linkType: hard
+
+"tailwind-variants@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "tailwind-variants@npm:1.0.0"
+  dependencies:
+    tailwind-merge: "npm:3.0.2"
+  peerDependencies:
+    tailwindcss: "*"
+  checksum: 10c0/404b88293067009c72b5c22e662ad6994438278b7ebcf4dedf9782832d98206f56f2918e39e202c590e7bb4a99b6272e3482fae3058fcd1cb7cc6e1c9ccf2435
   languageName: node
   linkType: hard
 
