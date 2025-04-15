@@ -271,7 +271,7 @@ export default function TranslatorServiceRequest() {
                 </ScrollArea>
 
             :
-                <SubmissionReqPopup open={showPopup} onOpenChange={setShowPopup}>
+                <SubmissionReqPopup>
                     <ReturnTranslatorRequest {...form} />
                 </SubmissionReqPopup>
             }

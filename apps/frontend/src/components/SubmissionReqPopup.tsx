@@ -10,38 +10,23 @@ import {
 } from "@/components/ui/alert-dialog"
 
 type SubmissionReqProps = {
-    open: boolean;
-    onOpenChange: (open: boolean) => void;
     children?: React.ReactNode;
 };
 
 
 export default function SubmissionReqPopup({
-    open,
-    onOpenChange,
     children
 }: SubmissionReqProps) {
     return(
-            <AlertDialog open={open} onOpenChange={onOpenChange}>
-                <AlertDialogContent>
-                    <AlertDialogHeader className="flex justify-center items-center">
-                        <ProgressToCheck /> {/*The Confirmation Animation*/}
-                        <div className="delay-1000">
-                        <AlertDialogTitle className="text-2xl font-bold mt-4 flex justify-center items-center animate-in fade-in duration-2000 ease-in-out">Service Request Submitted!</AlertDialogTitle>
-                        <AlertDialogDescription className="text-base mt-2 animate-in fade-in duration-2000 ease-in-out">
-                                <p>---------------------------------------------------------------</p>
-                                <p></p>
-                                { children }
-                        </AlertDialogDescription>
-                        </div>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                            <AlertDialogAction onClick={() => onOpenChange(false)} className="mt-6 px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-300 transition">
-                                Close
-                            </AlertDialogAction>
-                    </AlertDialogFooter>
-                </AlertDialogContent>
-            </AlertDialog>
+        <div>
+            <div className="flex justify-center items-center font-bold">
+                <ProgressToCheck />
+                Service Request Submitted!
+            </div>
+            <p>---------------------------------------------------------------</p>
+            <p></p>
+            { children }
+        </div>
     );
 }
 

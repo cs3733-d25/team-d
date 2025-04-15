@@ -4,7 +4,6 @@ import {
     DialogContent,
     DialogTrigger,
 } from '@/components/ui/dialog.tsx';
-import {ScrollArea} from "@radix-ui/react-scroll-area";
 import {Card, CardHeader, CardTitle} from "@/components/ui/card.tsx";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
