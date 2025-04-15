@@ -268,7 +268,9 @@ export default function EquipmentServiceRequest() {
                         </div>
 
                         <div className="flex flex-row justify-center items-center">
-                            <Button type="submit" className="mt-5">Submit</Button>
+                            <Button type="submit" className="mt-6 w-full">
+                                Submit
+                            </Button>
                         </div>
                     </form>
                 </div>

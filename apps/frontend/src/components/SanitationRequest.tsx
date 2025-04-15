@@ -124,7 +124,7 @@ export default function SanitationRequest() {
                                 <option value="20">Rehabilitation Services</option>
                             </select>
                         </div>
-
+                        <div>
                         <Label className="pt-4 pb-2" htmlFor="roomNum">Room Number</Label>
                         <Input
                             required
@@ -134,7 +134,8 @@ export default function SanitationRequest() {
                                 setForm({ ...form, roomNum: e.target.value })
                             }
                         />
-
+                        </div>
+                        <div>
                         <Label className="pt-4 pb-2" htmlFor="type">Sanitation Type</Label>
                         <select
                             required
@@ -151,7 +152,9 @@ export default function SanitationRequest() {
                             <option value="WASTE_REMOVAL">Waste Removal</option>
                             <option value="PEST_CONTROL">Pest Control</option>
                         </select>
+                        </div>
 
+                        <div>
                         <Label className="pt-4 pb-2" htmlFor="status">Room Status</Label>
                         <select
                             required
@@ -165,6 +168,7 @@ export default function SanitationRequest() {
                             <option value="VACANT">Vacant</option>
                             <option value="IN_USE">In Use</option>
                         </select>
+                        </div>
 
                         <div>
                             <Label className="pt-4 pb-2" htmlFor="priority">Priority</Label>
@@ -206,6 +210,7 @@ export default function SanitationRequest() {
                             </select>
                         </div>
 
+                        <div>
                         <Label className="pt-4 pb-2" htmlFor="comments">
                             Comments
                         </Label>
@@ -216,8 +221,10 @@ export default function SanitationRequest() {
                                 setForm({ ...form, comments: e.target.value })
                             }
                         />
+                        </div>
 
-                        <Button type="submit" className="mt-6">
+
+                        <Button type="submit" className="mt-6 w-full">
                             Submit
                         </Button>
                     </form>

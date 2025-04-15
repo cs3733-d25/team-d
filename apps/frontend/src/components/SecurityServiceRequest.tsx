@@ -204,7 +204,7 @@ export default function SecurityServiceRequest() {
                             </select>
                         </div>
 
-                        <div>
+
                             <Label className="pt-4 pb-2" htmlFor="comments">Comments</Label>
                             <textarea
                                 id="comments"
@@ -213,11 +213,11 @@ export default function SecurityServiceRequest() {
                                     setForm({ ...form, comments: e.target.value })
                                 }
                             />
-                        </div>
 
-                        <div className="flex flex-row justify-center items-center">
-                            <Button type="submit" className="mt-5">Submit</Button>
-                        </div>
+
+                            <Button type="submit" className="mt-6 w-full">
+                                Submit
+                            </Button>
                     </form>
                 </div>
                 </ScrollArea>
