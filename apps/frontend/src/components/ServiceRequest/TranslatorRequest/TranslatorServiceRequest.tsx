@@ -8,6 +8,7 @@ import axios from "axios";
 import ReturnTranslatorRequest from "@/components/ServiceRequest/TranslatorRequest/ReturnTranslatorRequest.tsx";
 import {ScrollArea} from "@/components/ui/scrollarea.tsx";
 import SubmissionReqPopup from "@/components/SubmissionReqPopup.tsx";
+import ReturnSanitationRequest from "@/components/ServiceRequest/SanitationRequest/ReturnSanitationRequest.tsx";
 
 type translatorRequestForm = {
     languageFrom: string;
@@ -59,7 +60,6 @@ export default function TranslatorServiceRequest() {
     };
     return (
         <>
-            <SubmissionReqPopup open={showPopup} onOpenChange={setShowPopup} />
             {!submitted ?
                 <ScrollArea className="max-h-[95vh] overflow-y-auto pr-4">
                 <div className="flex flex-col gap-4">
@@ -271,19 +271,9 @@ export default function TranslatorServiceRequest() {
                 </ScrollArea>
 
             :
-                <ReturnTranslatorRequest
-                    employeeRequestedById={form.employeeRequestedById}
-                    departmentUnderId={form.departmentUnderId}
-                    languageFrom={form.languageFrom}
-                    languageTo={form.languageTo}
-                    roomNum={form.roomNum}
-                    startDateTime={form.startDateTime}
-                    endDateTime={form.endDateTime}
-                    priority={form.priority}
-                    comments={form.comments}
-                    requestStatus={form.requestStatus}
-                    employeeName={form.employeeName}
-                />
+                <SubmissionReqPopup open={showPopup} onOpenChange={setShowPopup}>
+                    <ReturnTranslatorRequest {...form} />
+                </SubmissionReqPopup>
             }
         </>
     );
