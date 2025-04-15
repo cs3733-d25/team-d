@@ -12,6 +12,7 @@ import Footer from "@/components/Footer.tsx";
 
 // Use for comments
 {/**/}
+import SubmissionReqPopup from "@/components/SubmissionReqPopup.tsx";
 
 export default function Home() {
     return (
@@ -37,6 +38,9 @@ export default function Home() {
                         <DirectoryButton />
                     </div>
                 </div>
+
+                {/*<Auth0LoginButton />*/}
+
 
 
             </div>

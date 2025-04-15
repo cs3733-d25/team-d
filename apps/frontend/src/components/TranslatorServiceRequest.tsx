@@ -7,6 +7,7 @@ import {API_ROUTES} from "common/src/constants.ts";
 import axios from "axios";
 import ReturnTranslatorRequest from "@/components/ReturnTranslatorRequest.tsx";
 import {ScrollArea} from "@/components/ui/scrollarea.tsx";
+import SubmissionReqPopup from "@/components/SubmissionReqPopup.tsx";
 
 type translatorRequestForm = {
     languageFrom: string;
@@ -39,19 +40,26 @@ export default function TranslatorServiceRequest() {
     });
 
     const [submitted, setSubmitted] = useState(false);
+    const [showPopup, setShowPopup] = useState(false);
 
     const onSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         // console.log(form);
         setSubmitted(false);
-        axios.post(API_ROUTES.SERVICEREQS+'/translator', form).then(() => {
-            alert("Service request submitted!");
-            setSubmitted(true);
-        });
-    }
 
+        axios
+            .post(API_ROUTES.SERVICEREQS + "/translator", form)
+            .then(() => {
+                setSubmitted(true);
+                setShowPopup(true);
+            })
+            .catch((err) => {
+                console.error("Error submitting translator request:", err);
+            });
+    };
     return (
         <>
+            <SubmissionReqPopup open={showPopup} onOpenChange={setShowPopup} />
             {!submitted ?
                 <ScrollArea className="max-h-[100vh] overflow-y-auto pr-4">
                 <div className="flex flex-col gap-4">
