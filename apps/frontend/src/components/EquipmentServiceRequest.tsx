@@ -63,7 +63,7 @@ export default function EquipmentServiceRequest() {
         <>
             <SubmissionReqPopup open={showPopup} onOpenChange={setShowPopup} />
             {!submitted ?
-                <ScrollArea className="max-h-[100vh] overflow-y-auto pr-4">
+                <ScrollArea className="max-h-[95vh] overflow-y-auto pr-4">
                 <div className="grid place-items-center h-full items-center">
                     <h2 className="text-4xl fontbold pb-3" >Request a Medical Device</h2>
                     <form onSubmit={onSubmit}>
@@ -276,7 +276,9 @@ export default function EquipmentServiceRequest() {
                         </div>
 
                         <div className="flex flex-row justify-center items-center">
-                            <Button type="submit" className="mt-5">Submit</Button>
+                            <Button type="submit" className="mt-6 w-full">
+                                Submit
+                            </Button>
                         </div>
                     </form>
                 </div>

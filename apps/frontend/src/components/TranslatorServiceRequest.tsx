@@ -61,7 +61,7 @@ export default function TranslatorServiceRequest() {
         <>
             <SubmissionReqPopup open={showPopup} onOpenChange={setShowPopup} />
             {!submitted ?
-                <ScrollArea className="max-h-[100vh] overflow-y-auto pr-4">
+                <ScrollArea className="max-h-[95vh] overflow-y-auto pr-4">
                 <div className="flex flex-col gap-4">
                     <h2 className="text-4xl fontbold pb-3" >Request a Translator</h2>
                         <form onSubmit={onSubmit}>
@@ -262,7 +262,9 @@ export default function TranslatorServiceRequest() {
                             />
 
                             <div className="flex flex-row justify-center items-center">
-                                <Button type="submit" className="mt-5">Submit</Button>
+                                <Button type="submit" className="mt-6 w-full">
+                                    Submit
+                                </Button>
                             </div>
                         </form>
                 </div>

@@ -57,7 +57,7 @@ export default function SecurityServiceRequest() {
         <>
             <SubmissionReqPopup open={showPopup} onOpenChange={setShowPopup} />
             {!submitted ?
-                <ScrollArea className="max-h-[100vh] overflow-y-auto pr-4">
+                <ScrollArea className="max-h-[95vh] overflow-y-auto pr-4">
                 <div className="grid place-items-center h-full items-center">
                     <h2 className="text-4xl fontbold pb-3" >Request Security</h2>
                     <form onSubmit={onSubmit}>
@@ -212,7 +212,7 @@ export default function SecurityServiceRequest() {
                             </select>
                         </div>
 
-                        <div>
+
                             <Label className="pt-4 pb-2" htmlFor="comments">Comments</Label>
                             <textarea
                                 id="comments"
@@ -221,11 +221,11 @@ export default function SecurityServiceRequest() {
                                     setForm({ ...form, comments: e.target.value })
                                 }
                             />
-                        </div>
 
-                        <div className="flex flex-row justify-center items-center">
-                            <Button type="submit" className="mt-5">Submit</Button>
-                        </div>
+
+                            <Button type="submit" className="mt-6 w-full">
+                                Submit
+                            </Button>
                     </form>
                 </div>
                 </ScrollArea>
