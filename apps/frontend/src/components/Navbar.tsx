@@ -12,7 +12,7 @@ import Banner from "@/components/Banner";
 import Auth0LogoutButton from "@/components/Auth0LogoutButton.tsx";
 import AccessDropMenu from "@/components/Accessibility.tsx";
 
-import {HoverCard, HoverCardContent, HoverCardTrigger} from "@radix-ui/react-hover-card";
+
 
 export default function Navbar() {
     const { isAuthenticated, isLoading } = useAuth0();

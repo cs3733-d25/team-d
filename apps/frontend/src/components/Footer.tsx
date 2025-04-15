@@ -1,7 +1,5 @@
 import React from 'react';
-import { Outlet, Link } from "react-router-dom";
-import Banner from "@/components/Banner";
-import hospitalLogo from "@/public/hospital2.png";
+
 
 // Use for comments
 {/**/}
