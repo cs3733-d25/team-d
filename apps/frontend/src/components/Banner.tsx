@@ -11,22 +11,23 @@ import {faCircleUser} from "@fortawesome/free-solid-svg-icons";
 import hospitalLogo from "@/public/hospital2.png";
 
 import { useAuth0 } from "@auth0/auth0-react";
+import SearchBar from "@/components/SearchStuff/SearchBar.tsx";
 
 export default function Banner({isLoggedIn}: {isLoggedIn: boolean})  {
     const { user, isAuthenticated, isLoading } = useAuth0();
+    const { loginWithRedirect } = useAuth0();
+
 
     return (
         <>
             <div className={"flex flex-row bg-[#Addde5]"} >
                 <div className={"basis-1/3"}>
-                    <Link to="/profile">
-                        <img
-                            src={hospitalLogo}
-                            alt="Brigham and Women’s Hospital (Founding Member, Mass General Brigham)"
-                            style={{ height: "40px" }}
-                            className={"mx-4 my-4 cursor-pointer hover:scale-105 transition-transform duration-200"}
-                        />
-                    </Link>
+                    <img
+                        src={hospitalLogo}
+                        alt="Brigham and Women’s Hospital (Founding Member, Mass General Brigham)"
+                        style={{ height: "40px" }}
+                        className={"mx-4 my-4"}
+                    />
                 </div>
 
                 <div className={"basis-2/3"}>
@@ -35,22 +36,28 @@ export default function Banner({isLoggedIn}: {isLoggedIn: boolean})  {
                             <NavigationMenuItem>
                             </NavigationMenuItem>
 
-
+                            <SearchBar />
                             {isLoggedIn && (
                                 <NavigationMenuItem>
                                     <Link to="/profile" className="inline-block">
                                         <img
-                                            src={user.picture}
-                                            alt={user.name}
+                                            src={user?.picture}
+                                            alt={user?.name}
                                             className="w-10 h-10 rounded-full border-2 border-gray-300 hover:opacity-80 transition duration-200"
                                         />
                                     </Link>
                                 </NavigationMenuItem>)}
 
                             {!isLoggedIn && (
-                                <NavigationMenuItem>
-                                <Link to={`/`}> <FontAwesomeIcon icon={faCircleUser} size="2x" color="black"/> </Link>
-                            </NavigationMenuItem>)}
+                                <>
+
+                                    <NavigationMenuItem>
+                                        <button onClick={() => loginWithRedirect()}>
+                                            <FontAwesomeIcon icon={faCircleUser} size="2x" color="black"/>
+                                        </button>
+                                    </NavigationMenuItem>
+                                </>
+                                )}
 
 
                         </NavigationMenuList>
