@@ -62,7 +62,7 @@ export default function Directions(props: DirectionsProps) {
     const [data, setData] = useState<Hospital[]>([]);
 
     const [hospital, setHospital] = useState<Hospital | undefined>();
-    const [mode, setMode] = useState<string | undefined>();
+    const [mode, setMode] = useState<string | undefined>("DRIVING");
     const [graph, setGraph] = useState<Graph | undefined>();
     const [department, setDepartment] = useState<Department | undefined>();
 
