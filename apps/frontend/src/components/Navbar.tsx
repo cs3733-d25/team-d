@@ -65,7 +65,7 @@ export default function Navbar() {
 
                                     <NavigationMenuItem>
                                         <NavigationMenuLink className={'text-base hover:bg-[rgba(0,31,63,0.8)] hover:text-white'}>
-                                            <Link to={`/map-editor`}><b>Map Editor</b></Link>
+                                            <Link to={`/map-editor`}>Map Editor</Link>
                                         </NavigationMenuLink>
                                     </NavigationMenuItem>
 
