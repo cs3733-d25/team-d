@@ -8,13 +8,15 @@ import Auth0LoginButton from "@/components/Auth0LoginButton.tsx";
 import MapButton from "@/components/MapButton.tsx";
 import DirectoryButton from "@/components/DirectoryButton.tsx";
 import Footer from "@/components/Footer.tsx";
-
+import { useAuth0 } from "@auth0/auth0-react";
 
 // Use for comments
 {/**/}
 
 
 export default function Home() {
+    const { user, isAuthenticated, isLoading } = useAuth0();
+
     return (
         <div>
             <div className="object-left bg-[url(../public/Hospital.jpg)] bg-no-repeat bg-cover h-screen filter saturate-200 flex flex-col items-center justify-center overflow-hidden">
@@ -25,16 +27,19 @@ export default function Home() {
                     <HeroTextBox />
                 </div>
 
-                <div className="relative z-10 flex flex-row justify-around w-full max-w-4xl p-4">
+                <div className="relative flex flex-row w-full max-w-4xl p-4 gap-10">
 
-                    <div className="w-40">
-                        <Auth0LoginButton />
-                    </div>
-                    <div className="w-40">
+                    {!isAuthenticated  && (
+                        <div className="w-100">
+                            <Auth0LoginButton />
+                        </div>
+                        )}
+
+                    <div className="w-100">
                         <MapButton />
                     </div>
 
-                    <div className="w-40">
+                    <div className="w-100">
                         <DirectoryButton />
                     </div>
                 </div>
