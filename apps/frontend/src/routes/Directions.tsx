@@ -249,16 +249,16 @@ export default function Directions(props: DirectionsProps) {
                     <>
                         <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
                             <h2 className="text-xl font-semibold mb-3 text-gray-700 flex items-center">
-                                Mode of Transport
+                                Legend
                             </h2>
                             <ul className="space-y-2">
                                 <li className="flex items-center text-lg">
                                     <FontAwesomeIcon icon={faCar} className="text-blue-500 w-4 h-4 mr-3" />
-                                    Driving
+                                    To Hospital
                                 </li>
                                 <li className="flex items-center text-lg">
                                     <FontAwesomeIcon icon={faWalking} className="text-red-600 w-4 h-4 mr-3" />
-                                    Walking
+                                    Within Hospital
                                 </li>
                             </ul>
                         </div>
