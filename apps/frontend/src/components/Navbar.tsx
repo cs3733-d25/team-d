@@ -28,13 +28,6 @@ export default function Navbar() {
                     <NavigationMenu className={'ml-auto p-4'}>
                         <NavigationMenuList className={'flex flex-row space-x-5'}>
 
-                            {!isAuthenticated &&
-                                        <NavigationMenuItem>
-                                                <NavigationMenuLink className="text-base hover:bg-blue-950 py-1">
-                                                    <b><AccessDropMenu /></b>
-                                                </NavigationMenuLink>
-                                        </NavigationMenuItem>
-                            }
 
                             <NavigationMenuItem>
                                 <NavigationMenuLink className="text-base hover:bg-blue-950 py-1">
