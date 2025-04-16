@@ -20,7 +20,7 @@ export async function updateDirectory(){
             console.log(rows);
             attributes = rows[0].split(',');
             for (let i = 1; i < rows.length; i++) {
-                const columns = rows[i].split(/,(?!\s)(?=\d|"|null)/);
+                const columns = rows[i].split(/,(?=\d|"|null)/);
                 csvData.push(columns);
             }
             console.log(csvData);
@@ -38,7 +38,7 @@ export async function updateDirectory(){
     });
     //delete previous department data entries
     try {
-        await axios.delete('/api/department/');
+        await axios.delete('/api/department');
         console.log("Department data deleted successfully");
     }catch(err) {
         console.error(err);

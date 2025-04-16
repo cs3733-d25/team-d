@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
@@ -10,84 +10,87 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
+import {GetDirectory} from "@/database/csv-export.ts";
+import {updateDirectory} from "@/database/csv-import.ts";
+import { useState, useEffect } from 'react';
 import axios from "axios";
 
-import { updateDirectory } from "@/database/csv-import.ts";
-import { GetDirectory } from "@/database/csv-export.ts";
-
-type department = {
+type Department = {
     departmentId: number;
     name: string;
-    floor: number;
-    suite: string;
-    specialtyServices: string;
-    hours: string;
-    telephone: string;
-};
+    floorNum: number;
+    room: string;
+    building: string;
+}
 
 const AdminDatabase: React.FC = () => {
-    const [departments, setDepartments] = useState<department[]>([]);
-    const [loading, setLoading] = useState(false);
-    const [selectedHospital, setSelectedHospital] = useState<"Patriot Place" | "Chestnut Hill">("Patriot Place");
+    const [departments, currDepartments] = useState<Department[]>([]);
+    const [loading, setLoading] = React.useState(false); // true means it needs to reload
+    const [selectedHospital, setSelectedHospital] = useState<0 | 1 | 2>(2);
 
-    const getDepartments = async () => {
-        try {
-            const { data } = await axios.get("api/department");
-            setDepartments(data);
+
+    //getting department data for display
+    const getDepartments = async() => {
+        try{
+            let data;
+            if(selectedHospital == 2){
+                data = await axios.get('api/department/all');
+            }else {
+                data = await axios.get('api/department/'+selectedHospital+'/all');
+            }
+            currDepartments(data.data);
             setLoading(false);
-        } catch (error) {
+        }catch (error) {
             console.error(error);
         }
-    };
-
+    }
     useEffect(() => {
-        getDepartments();
-    }, [loading]);
-
-    const importOnClick = async () => {
+        getDepartments().then();
+    }, [loading,selectedHospital]);
+    //makes sure that the display updates everytime new data is imported
+    const  importOnClick = async () => {
         await updateDirectory();
-        setLoading(true);
-        const fileInput = document.getElementById("directory") as HTMLInputElement | null;
-        if (fileInput) {
-            fileInput.value = "";
-        }
-    };
-
-    const exportOnClick = () => {
-        GetDirectory();
-    };
-
+        await setLoading(true);
+    }
     return (
         <div className="min-h-screen w-full p-6 bg-white">
             <div className="flex items-center gap-4 mb-6">
 
                 {/* Hospital selection buttons */}
                 <Button
-                    className={selectedHospital === "Patriot Place" ? "bg-blue-500 text-white" : "bg-gray-200"}
-                    onClick={() => setSelectedHospital("Patriot Place")}
-                >
-                    Patriot Place
-                </Button>
-                <Button
-                    className={selectedHospital === "Chestnut Hill" ? "bg-blue-500 text-white" : "bg-gray-200"}
-                    onClick={() => setSelectedHospital("Chestnut Hill")}
+                    className={selectedHospital === 0 ? "bg-blue-500 text-white" : "bg-gray-200"}
+                    onClick={() => setSelectedHospital(0)}
                 >
                     Chestnut Hill
                 </Button>
+                <Button
+                    className={selectedHospital === 1 ? "bg-blue-500 text-white" : "bg-gray-200"}
+                    onClick={() => setSelectedHospital(1)}
+                >
+                    Patriots Place
+                </Button>
+
+                <Button
+                    className={selectedHospital === 2 ? "bg-blue-500 text-white" : "bg-gray-200"}
+                    onClick={() => setSelectedHospital(2)}
+                >
+                    All
+                </Button>
 
                 <Separator orientation="vertical" className="h-8 mx-4" />
-
                 {/* Export/Import buttons and file input */}
-                <Button onClick={exportOnClick}>Export as CSV</Button>
-                <Input type="file" accept=".csv" className="max-w-xs" id="directory" />
-                <Button onClick={importOnClick}>Import CSV</Button>
+                <Button onClick={() => GetDirectory()}>Export as CSV</Button>
+                <Input type="file" accept=".csv" className="max-w-xs" id="directory"/>
+                <Button onClick={() => importOnClick()}>Import CSV</Button>
 
+                {/* Vertical Separator */}
                 <Separator orientation="vertical" className="h-8 mx-4" />
 
                 {/* Table Title */}
                 <h2 className="text-xl font-bold">Department Database</h2>
             </div>
 
+            {/* Data table (headers only for now) */}
             <Table>
                 <TableHeader>
                     <TableRow>
@@ -99,13 +102,13 @@ const AdminDatabase: React.FC = () => {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {departments.map((department, i) => (
+                    {departments.map((department,i) => (
                         <TableRow key={i}>
-                            <TableCell className="px-4 py-2">{department.departmentId}</TableCell>
-                            <TableCell className="px-4 py-2">{department.name}</TableCell>
-                            <TableCell className="px-4 py-2">{department.floor}</TableCell>
-                            <TableCell className="px-4 py-2">{department.suite}</TableCell>
-                            <TableCell className="px-4 py-2">{department.specialtyServices}</TableCell>
+                            <TableCell>{department.departmentId}</TableCell>
+                            <TableCell>{department.name}</TableCell>
+                            <TableCell>{department.floorNum}</TableCell>
+                            <TableCell>{department.room}</TableCell>
+                            <TableCell>{department.building}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
@@ -115,20 +118,6 @@ const AdminDatabase: React.FC = () => {
 };
 
 export default AdminDatabase;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

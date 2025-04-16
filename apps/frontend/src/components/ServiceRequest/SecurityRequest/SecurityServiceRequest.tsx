@@ -8,6 +8,7 @@ import {API_ROUTES} from "common/src/constants.ts";
 import axios from "axios";
 import ReturnSecurityRequest from "@/components/ServiceRequest/SecurityRequest/ReturnSecurityRequest.tsx";
 import SubmissionReqPopup from "@/components/SubmissionReqPopup.tsx";
+import ReturnSanitationRequest from "@/components/ServiceRequest/SanitationRequest/ReturnSanitationRequest.tsx";
 
 type securityRequestForm = {
     roomNum: string;
@@ -36,7 +37,6 @@ export default function SecurityServiceRequest() {
     });
 
     const [submitted, setSubmitted] = useState(false);
-    const [showPopup, setShowPopup] = useState(false);
 
     const onSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -46,7 +46,6 @@ export default function SecurityServiceRequest() {
             .post(API_ROUTES.SERVICEREQS + "/security", form)
             .then(() => {
                 setSubmitted(true);
-                setShowPopup(true);
             })
             .catch((err) => {
                 console.error("Error submitting security request:", err);
@@ -55,7 +54,6 @@ export default function SecurityServiceRequest() {
 
     return (
         <>
-            <SubmissionReqPopup open={showPopup} onOpenChange={setShowPopup} />
             {!submitted ?
                 <ScrollArea className="max-h-[95vh] overflow-y-auto pr-4 w-full max-w-screen-lg mx-auto bg-zinc-200">
                 <div className="grid place-items-center h-full items-center">
@@ -236,17 +234,9 @@ export default function SecurityServiceRequest() {
                 </div>
                 </ScrollArea>
                 :
-                <ReturnSecurityRequest
-                    roomNum={form.roomNum}
-                    numOfGuards={form.numOfGuards}
-                    securityType={form.securityType}
-                    comments={form.comments}
-                    requestStatus={form.requestStatus}
-                    priority={form.priority}
-                    employeeRequestedById={form.employeeRequestedById}
-                    departmentUnderId={form.departmentUnderId}
-                    employeeName={form.employeeName}
-                />
+                <SubmissionReqPopup>
+                    <ReturnSecurityRequest {...form} />
+                </SubmissionReqPopup>
             }
         </>
     );

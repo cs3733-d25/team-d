@@ -1,4 +1,6 @@
 import {GoogleMapProps} from "@/GoogleMap/GoogleMap.tsx"
+import axios from "axios";
+import {API_ROUTES, Coordinates} from "common/src/constants.ts";
 
 const DEFAULT_CENTER: google.maps.LatLngLiteral = {
     lat: 42.31934987791928,
@@ -9,13 +11,17 @@ const DEFAULT_ZOOM = 10;
 
 export default class GoogleMap {
 
+    private readonly editor: boolean;
+
     private readonly map: google.maps.Map;
-    private readonly directionsService: google.maps.DirectionsService;
-    private readonly directionsRenderer: google.maps.DirectionsRenderer;
-    private readonly autocomplete: google.maps.places.Autocomplete;
+    private readonly directionsService: google.maps.DirectionsService | null;
+    private readonly directionsRenderer: google.maps.DirectionsRenderer | null;
+    private readonly autocomplete: google.maps.places.Autocomplete | null;
 
     private readonly floorMaps: Map<number, google.maps.GroundOverlay>;
     private floorMap: google.maps.GroundOverlay | null;
+
+    private paths: google.maps.Polyline[];
 
     private startPlaceId: string;
     private destinationPlaceId: string;
@@ -27,8 +33,10 @@ export default class GoogleMap {
 
     constructor(mapRef: HTMLDivElement, props: GoogleMapProps) {
 
+        this.editor = props.editor;
 
-        if (!mapRef || !props.autoCompleteRef.current) throw new Error('Missing References');
+
+        if (!mapRef) throw new Error('Missing References');
 
         // Make map
         this.map = new google.maps.Map(mapRef, {
@@ -48,30 +56,43 @@ export default class GoogleMap {
         });
 
         // Make directions
-        this.directionsService = new google.maps.DirectionsService();
-        this.directionsRenderer = new google.maps.DirectionsRenderer({
-            map: this.map
-        });
+
 
         // Make autocomplete for origin
-        this.autocomplete = new google.maps.places.Autocomplete(props.autoCompleteRef.current, {
-            fields: ['place_id'],
-        });
-        this.autocomplete.addListener('place_changed', () => {
-            const placeId = this.autocomplete.getPlace().place_id;
-            if (!placeId) {
-                window.alert('Please select an option from the dropdown list.');
-                return;
-            } else {
-                this.startPlaceId = placeId;
-                console.log('Start is now ' + this.startPlaceId);
-                this.route();
-            }
-        });
+        if (!this.editor && props.autoCompleteRef.current) {
+
+            this.directionsService = new google.maps.DirectionsService();
+            this.directionsRenderer = new google.maps.DirectionsRenderer({
+                map: this.map
+            });
+
+            this.autocomplete = new google.maps.places.Autocomplete(props.autoCompleteRef.current, {
+                fields: ['place_id'],
+            });
+            this.autocomplete.addListener('place_changed', () => {
+                // @ts-expect-error already defined it above
+                const placeId = this.autocomplete.getPlace().place_id;
+                if (!placeId) {
+                    window.alert('Please select an option from the dropdown list.');
+                    return;
+                } else {
+                    this.startPlaceId = placeId;
+                    console.log('Start is now ' + this.startPlaceId);
+                    this.route();
+                }
+            });
+        }
+        else {
+            this.directionsService = null;
+            this.directionsRenderer = null;
+            this.autocomplete = null;
+        }
 
         // Set floor maps
         this.floorMaps = new Map<number, google.maps.GroundOverlay>();
         this.floorMap = null;
+
+        this.paths = [];
 
         // Set start and finish locations
         this.startPlaceId = '';
@@ -84,36 +105,44 @@ export default class GoogleMap {
     }
 
     private route(): void {
-        // can't go anywhere without start and end
-        if (!this.startPlaceId || !this.destinationPlaceId) {
-            console.log('Insufficient fields')
-            return;
-        }
-        console.log('Routing ' + this.startPlaceId + ' to ' + this.destinationPlaceId);
-        this.directionsService.route(
-            {
-                origin: {placeId: this.startPlaceId},
-                destination: {placeId: this.destinationPlaceId},
-                travelMode: google.maps.TravelMode.DRIVING,
-            },
-            (response, status) => {
-                if (status === 'OK') {
-                    console.log('Routed!');
-                    this.directionsRenderer.setDirections(response);
-                } else {
-                    window.alert('Directions request failed due to ' + status);
-                }
+        if (!this.editor && this.directionsService && this.directionsRenderer) {
+            // can't go anywhere without start and end
+            if (!this.startPlaceId || !this.destinationPlaceId) {
+                console.log('Insufficient fields')
+                return;
             }
-        );
+            console.log('Routing ' + this.startPlaceId + ' to ' + this.destinationPlaceId);
+            this.directionsService.route(
+                {
+                    origin: {placeId: this.startPlaceId},
+                    destination: {placeId: this.destinationPlaceId},
+                    travelMode: google.maps.TravelMode.DRIVING,
+                },
+                (response, status) => {
+                    if (status === 'OK') {
+                        console.log('Routed!');
+                        // @ts-expect-error already checked that its not null above
+                        this.directionsRenderer.setDirections(response);
+                    } else {
+                        window.alert('Directions request failed due to ' + status);
+                    }
+                }
+            );
+        }
     }
 
     update(props: GoogleMapProps): void {
         console.log('Update method: ' + props.graph?.graphId);
-        // Reset the currently showing floor map
+        // Reset the currently showing floor map and path
         if (this.floorMap !== null) {
             this.floorMap.setMap(null);
             this.floorMap = null;
         }
+        if (this.paths.length > 0) {
+            this.paths.map(path => path.setMap(null));
+            this.paths = [];
+        }
+
         // If the destination hospital has changed, re-route via
         // Google Maps to the new hospital
         if (props.hospital && (props.hospital.placeId !== this.destinationPlaceId)) {
@@ -178,7 +207,44 @@ export default class GoogleMap {
         // the pathfinding to the nearest check-in location
         // to that dept.
         if (props.department) {
-            // TODO: implement
+            axios.get(API_ROUTES.PATHFINDING + '/pathfind/' + props.graph?.graphId).then((response) => {
+            //     const points: Coordinates[] = response.data[0];
+            //
+            //     const line: google.maps.LatLngLiteral[] = points.map((point) => {
+            //         return {
+            //             lat: point.x,
+            //             lng: point.y,
+            //         };
+            //     });
+            //
+            //     this.path = new google.maps.Polyline({
+            //         path: line,
+            //         strokeColor: '#0077FF',
+            //         strokeOpacity: 1.0,
+            //         strokeWeight: 2,
+            //         map: this.map,
+            //     })
+            // });
+                const rawData: Coordinates[][] = response.data;
+
+                const pathData: google.maps.LatLngLiteral[][] = rawData.map((path): google.maps.LatLngLiteral[] => {
+                    return path.map((coord): google.maps.LatLngLiteral => {
+                        return {
+                            lat: coord.lat,
+                            lng: coord.lng,
+                        }
+                    });
+                });
+                pathData.map(path => {
+                    this.paths.push(new google.maps.Polyline({
+                        path: path,
+                        strokeColor: '#CC3300',
+                        strokeOpacity: 1.0,
+                        strokeWeight: 5,
+                        map: this.map,
+                    }));
+                });
+            })
         }
 
         if (props.hospital && props.zoomFlag !== this.zoomFlag) {

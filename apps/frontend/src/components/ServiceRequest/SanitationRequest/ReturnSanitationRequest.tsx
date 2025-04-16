@@ -1,5 +1,7 @@
 import { CardTitle } from '@/components/ui/card.tsx';
 import { Label } from '@/components/ui/label.tsx';
+import {ScrollArea} from "@/components/ui/scrollarea.tsx";
+
 interface SanitationRequest {
     roomNum: string;
     type: string;
@@ -14,7 +16,8 @@ interface SanitationRequest {
 
 const ReturnSanitationRequest = (props: SanitationRequest) => {
     return (
-        <div className="grid  h-full items-center">
+        <ScrollArea>
+        <div className="grid  h-100 items-center">
             <div className="">
                 <div className="place-content-center">
                     <CardTitle className="text-3xl">Request Summary</CardTitle>
@@ -68,6 +71,7 @@ const ReturnSanitationRequest = (props: SanitationRequest) => {
                 </div>
             </div>
         </div>
+        </ScrollArea>
     );
 };
 
