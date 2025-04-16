@@ -37,7 +37,6 @@ export default function SecurityServiceRequest() {
     });
 
     const [submitted, setSubmitted] = useState(false);
-    const [showPopup, setShowPopup] = useState(false);
 
     const onSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -47,7 +46,6 @@ export default function SecurityServiceRequest() {
             .post(API_ROUTES.SERVICEREQS + "/security", form)
             .then(() => {
                 setSubmitted(true);
-                setShowPopup(true);
             })
             .catch((err) => {
                 console.error("Error submitting security request:", err);
@@ -231,7 +229,7 @@ export default function SecurityServiceRequest() {
                 </div>
                 </ScrollArea>
                 :
-                <SubmissionReqPopup open={showPopup} onOpenChange={setShowPopup}>
+                <SubmissionReqPopup>
                     <ReturnSecurityRequest {...form} />
                 </SubmissionReqPopup>
             }

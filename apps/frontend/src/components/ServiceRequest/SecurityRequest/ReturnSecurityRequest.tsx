@@ -1,5 +1,6 @@
 import { CardTitle } from '@/components/ui/card.tsx';
 import { Label } from '@/components/ui/label.tsx';
+import { ScrollArea } from '@/components/ui/scrollarea.tsx';
 
 type securityRequestForm = {
     roomNum: string;
@@ -15,7 +16,8 @@ type securityRequestForm = {
 
 const ReturnSecurityRequest = (props: securityRequestForm) => {
     return (
-        <div className="grid  h-full items-center">
+        <ScrollArea>
+        <div className="grid  h-100 items-center">
             <div className="">
                 <div className="place-content-center">
                     <CardTitle className="text-3xl">Request Summary</CardTitle>
@@ -69,6 +71,7 @@ const ReturnSecurityRequest = (props: securityRequestForm) => {
                 </div>
             </div>
         </div>
+        </ScrollArea>
     );
 };
 

@@ -43,7 +43,6 @@ export default function EquipmentServiceRequest() {
     });
 
     const [submitted, setSubmitted] = useState(false);
-    const [showPopup, setShowPopup] = useState(false);
 
     const onSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -53,7 +52,6 @@ export default function EquipmentServiceRequest() {
             .post(API_ROUTES.SERVICEREQS + "/equipment", form)
             .then(() => {
                 setSubmitted(true);
-                setShowPopup(true);
             })
             .catch((err) => {
                 console.error("Error submitting sanitation request:", err);
@@ -285,7 +283,7 @@ export default function EquipmentServiceRequest() {
                 </div>
                 </ScrollArea>
                 :
-                <SubmissionReqPopup open={showPopup} onOpenChange={setShowPopup}>
+                <SubmissionReqPopup>
                     <ReturnEquipmentRequest {...form} />
                 </SubmissionReqPopup>
             }

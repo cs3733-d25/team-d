@@ -35,7 +35,6 @@ export default function SanitationRequest() {
     });
 
     const [submitted, setSubmitted] = useState(false);
-    const [showPopup, setShowPopup] = useState(false);
 
     const onSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -46,7 +45,6 @@ export default function SanitationRequest() {
             .post(API_ROUTES.SERVICEREQS + "/sanitation", form)
             .then(() => {
                 setSubmitted(true);
-                setShowPopup(true);
             })
             .catch((err) => {
                 console.error("Error submitting sanitation request:", err);
@@ -234,10 +232,8 @@ export default function SanitationRequest() {
                 </div>
                 </ScrollArea>
                 :
-                <SubmissionReqPopup open={showPopup} onOpenChange={setShowPopup}>
-                    <div className="flex flex-col items-center justify-center">
-                        <ReturnSanitationRequest {...form} />
-                    </div>
+                <SubmissionReqPopup>
+                    <ReturnSanitationRequest {...form} />
                 </SubmissionReqPopup>
             }
         </>
