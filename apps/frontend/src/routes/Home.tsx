@@ -27,19 +27,19 @@ export default function Home() {
                     <HeroTextBox />
                 </div>
 
-                <div className="relative flex flex-row w-full max-w-4xl p-4 gap-10">
+                <div className="relative flex flex-row w-full  items-center justify-center p-4 gap-10">
 
                     {!isAuthenticated  && (
-                        <div className="w-100">
+                        <div className="w-100 p-10">
                             <Auth0LoginButton />
                         </div>
                         )}
 
-                    <div className="w-100">
+                    <div className="w-100 p-10">
                         <MapButton />
                     </div>
 
-                    <div className="w-100">
+                    <div className="w-100 p-10">
                         <DirectoryButton />
                     </div>
                 </div>
