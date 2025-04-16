@@ -62,6 +62,7 @@ export default function Directions(props: DirectionsProps) {
     const [data, setData] = useState<Hospital[]>([]);
 
     const [hospital, setHospital] = useState<Hospital | undefined>();
+    const [mode, setMode] = useState<string | undefined>();
     const [graph, setGraph] = useState<Graph | undefined>();
     const [department, setDepartment] = useState<Department | undefined>();
 
@@ -126,6 +127,10 @@ export default function Directions(props: DirectionsProps) {
         }
     }
 
+    const handleModeChange = (value: string) => {
+        setMode(value);
+    }
+
     return (
         <div className="flex flex-row flex-1">
             <div className="flex-1 p-4">
@@ -171,8 +176,29 @@ export default function Directions(props: DirectionsProps) {
                     </SelectContent>
                 </Select>
 
+                {!props.editor &&
+                    <>
+                        <Label>Transport Mode</Label>
+                        <Select onValueChange={handleModeChange} defaultValue="DRIVING">
+                            <SelectTrigger className="w-full mt-1 mb-4">
+                                <SelectValue placeholder="Choose a mode of transport..." />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectGroup>
+                                    <SelectLabel>Transport Modes</SelectLabel>
+                                    {['Driving', 'Walking', 'Transit', 'Bicycling'].map((mode, i) => (
+                                        <SelectItem key={i} value={mode.toUpperCase()}>{mode}</SelectItem>
+                                    ))}
+                                </SelectGroup>
+                            </SelectContent>
+                        </Select>
+                    </>
+                }
+
                 {hospital &&
                     <>
+                        <Separator className="mt-4 mb-4" />
+
                         {props.editor ?
                             <>
                                 <Label>Graph</Label>
@@ -251,6 +277,7 @@ export default function Directions(props: DirectionsProps) {
                     hospital={hospital}
                     department={department}
                     graph={graph}
+                    mode={mode}
                     zoomFlag={zoomFlag}
                 />
             </div>

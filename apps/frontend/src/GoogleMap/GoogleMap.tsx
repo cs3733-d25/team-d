@@ -12,6 +12,7 @@ export interface GoogleMapProps {
     hospital: Hospital | undefined;
     department: Department | undefined;
     graph: Graph | undefined;
+    mode: string | undefined;
     zoomFlag: boolean;
 }
 
@@ -59,7 +60,7 @@ const GGMap = (props: GoogleMapProps) => {
         console.log('UseEffect');
         if (!map) return;
         map.update(props);
-    }, [props.hospital, props.department, props.graph, props.zoomFlag]);
+    }, [props.hospital, props.department, props.graph, props.mode, props.zoomFlag]);
 
     return (
         <div
