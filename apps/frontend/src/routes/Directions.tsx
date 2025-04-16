@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/select.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {cn} from "@/lib/utils.ts";
+import {Separator} from "@/components/ui/separator.tsx";
 
 export type Hospital = {
     hospitalId: number
@@ -128,6 +129,10 @@ export default function Directions(props: DirectionsProps) {
     return (
         <div className="flex flex-row flex-1">
             <div className="flex-1 p-4">
+                <h2 className="text-3xl font-bold">
+                    {props.editor ? 'Map Editor' : 'Get Directions'}
+                </h2>
+                <Separator className="mt-4 mb-4" />
 
                 {/*TODO: find a better way of doing this, copied from components/ui/input.tsx*/}
                 {!props.editor &&
@@ -210,6 +215,17 @@ export default function Directions(props: DirectionsProps) {
                         </Button>
                     </>
                 }
+                <Separator className="mt-4 mb-4" />
+                {/*TODO: make a legend*/}
+                {!props.editor &&
+                    <>
+                        <h2 className="text-2xl mb-4">Legend</h2>
+                        <ul>
+                            <li className="list-disc marker:text-blue-500 ml-4 text-xl">Driving</li>
+                            <li className="list-disc marker:text-red-600 ml-4 text-xl">Walking</li>
+                        </ul>
+                    </>
+                }
 
                 {/* Show Department Info if selected */}
                 {/*{selectedDepartment && (*/}
@@ -228,7 +244,7 @@ export default function Directions(props: DirectionsProps) {
                 {/*)}*/}
             </div>
 
-            <div className="flex-2">
+            <div className="flex-3">
                 <GGMap
                     editor={props.editor}
                     autoCompleteRef={autocompleteRef}
