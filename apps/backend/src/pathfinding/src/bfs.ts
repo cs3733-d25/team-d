@@ -1,6 +1,7 @@
 import { Coordinates } from 'common/src/constants.ts';
 import { readFileSync } from 'fs';
 import { PrismaClient } from 'database';
+import { euclideanDistance } from './distance.ts';
 
 class GraphNode {
     private readonly neighbors: GraphNode[];
@@ -154,10 +155,19 @@ class Graph {
 
         if (checkpointCanidates.length === 0) return [[]];
 
-        console.log(checkpointCanidates);
+        // console.log(checkpointCanidates);
 
         // TODO: select the node with the shortest distance to departmentCoords instead of just the first one
-        const checkpointNode = checkpointCanidates[0];
+        const checkpointNode = checkpointCanidates.reduce((closest, node) => {
+            if (
+                euclideanDistance(node.coords, departmentCoords) <
+                euclideanDistance(closest.coords, departmentCoords)
+            ) {
+                return node;
+            } else {
+                return closest;
+            }
+        });
 
         const doorCanidates: GraphNode[] = this.nodesList.filter((node) => {
             return node.tags.indexOf('[Door') >= 0;
@@ -165,10 +175,19 @@ class Graph {
 
         if (doorCanidates.length === 0) return [[]];
 
-        console.log(doorCanidates);
+        // console.log(doorCanidates);
 
         // TODO: select the node with the shortest distance to departmentCoords instead of just the first one
-        const doorNode = doorCanidates[0];
+        const doorNode = doorCanidates.reduce((closest, node) => {
+            if (
+                euclideanDistance(node.coords, departmentCoords) <
+                euclideanDistance(closest.coords, departmentCoords)
+            ) {
+                return node;
+            } else {
+                return closest;
+            }
+        });
 
         const entranceNode = this.nodesList.find((node) => {
             return (
@@ -178,7 +197,7 @@ class Graph {
 
         if (!entranceNode) return [[]];
 
-        console.log(entranceNode);
+        // console.log(entranceNode);
 
         const parkingCanidates: GraphNode[] = this.nodesList.filter((node) => {
             return node.tags.indexOf('[Parking') >= 0;
@@ -188,7 +207,7 @@ class Graph {
 
         const parkingNode = parkingCanidates[0];
 
-        console.log(parkingNode);
+        // console.log(parkingNode);
 
         return [this.bfs(doorNode, checkpointNode), this.bfs(parkingNode, entranceNode)];
 

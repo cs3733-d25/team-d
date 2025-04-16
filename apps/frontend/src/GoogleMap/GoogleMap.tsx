@@ -62,13 +62,12 @@ const GGMap = (props: GoogleMapProps) => {
     }, [props.hospital, props.department, props.graph, props.zoomFlag]);
 
     return (
-        <div>
-            <div
-                id="ggl-map"
-                ref={mapRef}
-                style={{ width: '65vw', height: '100vh' }}
-            ></div>
-        </div>
+        <div
+            id="ggl-map"
+            ref={mapRef}
+            // style={{ width: '65vw', height: '100vh' }}
+            className="flex-1 h-screen overflow-y-hidden"
+        ></div>
     );
 };
 
