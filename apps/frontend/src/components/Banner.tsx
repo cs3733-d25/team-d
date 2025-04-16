@@ -3,15 +3,23 @@ import { Outlet, Link } from "react-router-dom";
 import {
     NavigationMenu,
     NavigationMenuItem,
-    NavigationMenuLink,
     NavigationMenuList
 } from "@/components/ui/navigation-menu.tsx";
+
+import {
+    HoverCard,
+    HoverCardContent,
+    HoverCardTrigger
+} from '@radix-ui/react-hover-card';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faCircleUser} from "@fortawesome/free-solid-svg-icons";
 import hospitalLogo from "@/public/hospital2.png";
 
 import { useAuth0 } from "@auth0/auth0-react";
 import SearchBar from "@/components/SearchStuff/SearchBar.tsx";
+import AccessDropMenu from "@/components/Accessibility.tsx";
+
 
 export default function Banner({isLoggedIn}: {isLoggedIn: boolean})  {
     const { user, isAuthenticated, isLoading } = useAuth0();
@@ -54,14 +62,21 @@ export default function Banner({isLoggedIn}: {isLoggedIn: boolean})  {
                                 <>
 
                                     <NavigationMenuItem>
-                                        <button onClick={() => loginWithRedirect()}>
-                                            <FontAwesomeIcon icon={faCircleUser} size="2x" color="black"/>
-                                        </button>
+                                        <HoverCard>
+                                            <HoverCardTrigger asChild>
+                                                <div className=" className=transition duration-300 ease-in-out hover:scale-115">
+                                                    <button onClick={() => loginWithRedirect()}>
+                                                        <FontAwesomeIcon icon={faCircleUser} size="2x" color="black"/>
+                                                            <HoverCardContent className="w-20 bg-white rounded animate-in fade-in duration-200">
+                                                                Profile
+                                                            </HoverCardContent>
+                                                    </button>
+                                                </div>
+                                            </HoverCardTrigger>
+                                        </HoverCard>
                                     </NavigationMenuItem>
                                 </>
                                 )}
-
-
                         </NavigationMenuList>
                     </NavigationMenu>
                 </div>
