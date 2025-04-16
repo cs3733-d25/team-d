@@ -22,6 +22,7 @@ export default class GoogleMap {
     private floorMap: google.maps.GroundOverlay | null;
 
     private paths: google.maps.Polyline[];
+    private nodes: google.maps.Circle[];
 
     private startPlaceId: string;
     private destinationPlaceId: string;
@@ -51,7 +52,7 @@ export default class GoogleMap {
         this.map.addListener('click', (e: google.maps.MapMouseEvent) => {
             const ll = e.latLng;
             if (ll) {
-                console.log('Point ' + this.pointNum++ + ':   ' + ll.toJSON().lat + ' ' + ll.toJSON().lng);
+                console.log('Point ' + this.pointNum++ + ':   \nlat: ' + ll.toJSON().lat + ',\nlng: ' + ll.toJSON().lng + ',');
             }
         });
 
@@ -93,6 +94,7 @@ export default class GoogleMap {
         this.floorMap = null;
 
         this.paths = [];
+        this.nodes = [];
 
         // Set start and finish locations
         this.startPlaceId = '';
@@ -142,6 +144,10 @@ export default class GoogleMap {
             this.paths.map(path => path.setMap(null));
             this.paths = [];
         }
+        if (this.nodes.length > 0) {
+            this.nodes.map(node => node.setMap(null));
+            this.nodes = [];
+        }
 
         // If the destination hospital has changed, re-route via
         // Google Maps to the new hospital
@@ -167,7 +173,7 @@ export default class GoogleMap {
                 this.floorMap.addListener('click', (e: google.maps.MapMouseEvent) => {
                     const ll = e.latLng;
                     if (ll) {
-                        console.log('Point ' + this.pointNum++ + ':   ' + ll.toJSON().lat + ' ' + ll.toJSON().lng);
+                        console.log('Point ' + this.pointNum++ + ':   \nlat: ' + ll.toJSON().lat + ',\nlng: ' + ll.toJSON().lng + ',');
                     }
                 });
             }
@@ -176,38 +182,17 @@ export default class GoogleMap {
             }
             this.floorMap.setMap(this.map);
         }
-        // if (props.floor) {
-        //     const floorMap = this.floorMaps.get(props.floor.floorId);
-        //     if (!floorMap) {
-        //         console.log('Getting floor map url from ' + props.floor.imageURL + ' ' + props.floor.north);
-        //         const newFloorMap = new google.maps.GroundOverlay(props.floor.imageURL, {
-        //             north: props.floor.north,
-        //             south: props.floor.south,
-        //             east: props.floor.east,
-        //             west: props.floor.west,
-        //         });
-        //         this.floorMaps.set(props.floor.floorId, newFloorMap);
-        //         this.floorMap = newFloorMap;
-        //
-        //         // TODO: remove later
-        //         this.floorMap.addListener('click', (e: google.maps.MapMouseEvent) => {
-        //             // console.log('click', e);
-        //             const ll = e.latLng;
-        //             if (ll) {
-        //                 console.log('Point ' + this.pointNum++ + ':   ' + ll.toJSON().lat + ' ' + ll.toJSON().lng);
-        //             }
-        //         });
-        //     }
-        //     else {
-        //         this.floorMap = floorMap;
-        //     }
-        //     this.floorMap.setMap(this.map);
-        // }
-        // If the department has changed, re-route
-        // the pathfinding to the nearest check-in location
-        // to that dept.
-        if (props.department) {
-            axios.get(API_ROUTES.PATHFINDING + '/pathfind/' + props.graph?.graphId).then((response) => {
+        if (props.department || props.graph) {
+
+            const route = this.editor ?
+                API_ROUTES.PATHFINDING + '/edit/' + props.graph?.graphId :
+                API_ROUTES.PATHFINDING + '/pathfind/' + props.graph?.graphId + '/' + props.department?.departmentId;
+
+            console.log('Get route ' + route);
+
+            axios.get(route).then((response) => {
+
+                console.log('Got route');
             //     const points: Coordinates[] = response.data[0];
             //
             //     const line: google.maps.LatLngLiteral[] = points.map((point) => {
@@ -244,6 +229,22 @@ export default class GoogleMap {
                         map: this.map,
                     }));
                 });
+
+                rawData.map(pair => pair.map(point => {
+                    this.nodes.push(new google.maps.Circle({
+                        strokeColor: '#00FF88',
+                        strokeOpacity: 1,
+                        strokeWeight: 1,
+                        fillColor: '#00FF88',
+                        fillOpacity: 1,
+                        map: this.map,
+                        center: {
+                            lat: point.lat,
+                            lng: point.lng,
+                        },
+                        radius: 0.3,
+                    }));
+                }));
             })
         }
 

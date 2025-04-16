@@ -7954,6 +7954,7 @@ __metadata:
   dependencies:
     "@fortawesome/fontawesome-free": "npm:^6.7.2"
     "@prisma/client": "npm:^6.5.0"
+    "@radix-ui/react-select": "npm:^2.1.7"
     "@types/cors": "npm:^2"
     "@types/google.maps": "npm:^3.58.1"
     "@types/node": "npm:^22.13.13"
