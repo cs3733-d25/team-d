@@ -26,6 +26,7 @@ export default class GoogleMap {
 
     private startPlaceId: string;
     private destinationPlaceId: string;
+    private travelMode: google.maps.TravelMode;
 
     private zoomFlag: boolean;
 
@@ -99,6 +100,7 @@ export default class GoogleMap {
         // Set start and finish locations
         this.startPlaceId = '';
         this.destinationPlaceId = '';
+        this.travelMode = google.maps.TravelMode.DRIVING;
 
         this.zoomFlag = false;
 
@@ -118,7 +120,7 @@ export default class GoogleMap {
                 {
                     origin: {placeId: this.startPlaceId},
                     destination: {placeId: this.destinationPlaceId},
-                    travelMode: google.maps.TravelMode.DRIVING,
+                    travelMode: this.travelMode,
                 },
                 (response, status) => {
                     if (status === 'OK') {
@@ -149,10 +151,26 @@ export default class GoogleMap {
             this.nodes = [];
         }
 
-        // If the destination hospital has changed, re-route via
+        // If the destination hospital has changed,
+        // or mode of transport changed, re-route via
         // Google Maps to the new hospital
-        if (props.hospital && (props.hospital.placeId !== this.destinationPlaceId)) {
+        if ((props.hospital && (props.hospital.placeId !== this.destinationPlaceId || props.mode !== this.travelMode.toString()))) {
             this.destinationPlaceId = props.hospital.placeId;
+            console.log(props.mode);
+            switch (props.mode) {
+                case 'DRIVING':
+                    this.travelMode = google.maps.TravelMode.DRIVING;
+                    break;
+                case 'WALKING':
+                    this.travelMode = google.maps.TravelMode.WALKING;
+                    break;
+                case 'TRANSIT':
+                    this.travelMode = google.maps.TravelMode.TRANSIT;
+                    break;
+                case 'BICYCLING':
+                    this.travelMode = google.maps.TravelMode.BICYCLING;
+                    break;
+            }
             this.route();
         }
         // If the floor has changed, show the current floor
