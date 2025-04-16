@@ -37,13 +37,13 @@ export default function Navbar() {
 
 
                             <NavigationMenuItem>
-                                <NavigationMenuLink className={'font-nunito hover:bg-[rgba(0,31,63,0.8)] hover:text-white'}>
+                                <NavigationMenuLink className={'text-base hover:bg-[rgba(0,31,63,0.8)] hover:text-white'}>
                                     <Link to={`/directory`}>Directions</Link>
                                 </NavigationMenuLink>
                             </NavigationMenuItem>
 
                             <NavigationMenuItem>
-                                <NavigationMenuLink className={'font-nunito hover:bg-[rgba(0,31,63,0.8)] hover:text-white'}>
+                                <NavigationMenuLink className={'text-base hover:bg-[rgba(0,31,63,0.8)] hover:text-white'}>
                                     <Link to={`/servicerequesthub`}>Request Service</Link>
                                 </NavigationMenuLink>
                             </NavigationMenuItem>
