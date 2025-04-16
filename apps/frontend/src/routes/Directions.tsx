@@ -1,5 +1,7 @@
 import GGMap from "@/GoogleMap/GoogleMap.tsx";
 import React, {useEffect, useRef, useState} from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCar, faWalking, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
 
 import {API_ROUTES} from "common/src/constants.ts";
@@ -219,11 +221,21 @@ export default function Directions(props: DirectionsProps) {
                 {/*TODO: make a legend*/}
                 {!props.editor &&
                     <>
-                        <h2 className="text-2xl mb-4">Legend</h2>
-                        <ul>
-                            <li className="list-disc marker:text-blue-500 ml-4 text-xl">Driving</li>
-                            <li className="list-disc marker:text-red-600 ml-4 text-xl">Walking</li>
-                        </ul>
+                        <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
+                            <h2 className="text-xl font-semibold mb-3 text-gray-700 flex items-center">
+                                Mode of Transport
+                            </h2>
+                            <ul className="space-y-2">
+                                <li className="flex items-center text-lg">
+                                    <FontAwesomeIcon icon={faCar} className="text-blue-500 w-4 h-4 mr-3" />
+                                    Driving
+                                </li>
+                                <li className="flex items-center text-lg">
+                                    <FontAwesomeIcon icon={faWalking} className="text-red-600 w-4 h-4 mr-3" />
+                                    Walking
+                                </li>
+                            </ul>
+                        </div>
                     </>
                 }
 
