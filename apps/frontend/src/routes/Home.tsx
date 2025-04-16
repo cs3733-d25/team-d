@@ -27,7 +27,7 @@ export default function Home() {
                 </div>
 
                 <div className="relative z-10 flex flex-row justify-around w-full max-w-4xl p-4">
-                    {/*This is the call of the component HeroTextBox for the home page*/}
+
                     <div className="w-40">
                         <Auth0LoginButton />
                     </div>
@@ -42,7 +42,7 @@ export default function Home() {
 
 
             </div>
-            <div className="place">
+            <div>
                 <Footer />
             </div>
         </div>

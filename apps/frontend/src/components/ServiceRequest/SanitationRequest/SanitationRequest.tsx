@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label.tsx";
 import { API_ROUTES } from "common/src/constants.ts";
 
 import ReturnSanitationRequest from "@/components/ServiceRequest/SanitationRequest/ReturnSanitationRequest.tsx";
+import SubmissionReqPopup from "@/components/SubmissionReqPopup.tsx";
 
 type SanitationRequestForm = {
     roomNum: string;
@@ -34,22 +35,23 @@ export default function SanitationRequest() {
     });
 
     const [submitted, setSubmitted] = useState(false);
+    const [showPopup, setShowPopup] = useState(false);
 
     const onSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        // console.log(form);
         setSubmitted(false);
 
         axios
             .post(API_ROUTES.SERVICEREQS + "/sanitation", form)
             .then(() => {
-                alert("Sanitation request submitted!");
                 setSubmitted(true);
+                setShowPopup(true);
             })
             .catch((err) => {
                 console.error("Error submitting sanitation request:", err);
             });
     };
-
     return (
         <>
             {!submitted ?
@@ -232,17 +234,11 @@ export default function SanitationRequest() {
                 </div>
                 </ScrollArea>
                 :
-                <ReturnSanitationRequest
-                    roomNum={form.roomNum}
-                    type={form.type}
-                    status={form.status}
-                    comments={form.comments}
-                    requestStatus={form.requestStatus}
-                    priority={form.priority}
-                    employeeRequestedById={form.employeeRequestedById}
-                    departmentUnderId={form.departmentUnderId}
-                    employeeName={form.employeeName}
-                />
+                <SubmissionReqPopup open={showPopup} onOpenChange={setShowPopup}>
+                    <div className="flex flex-col items-center justify-center">
+                        <ReturnSanitationRequest {...form} />
+                    </div>
+                </SubmissionReqPopup>
             }
         </>
     );
