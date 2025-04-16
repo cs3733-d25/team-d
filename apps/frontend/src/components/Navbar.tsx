@@ -36,6 +36,12 @@ export default function Navbar() {
                                         </NavigationMenuItem>
                             }
 
+                            <NavigationMenuItem>
+                                <NavigationMenuLink className="text-base hover:bg-blue-950 py-1">
+                                    <b><AccessDropMenu /></b>
+                                </NavigationMenuLink>
+                            </NavigationMenuItem>
+
 
                             <NavigationMenuItem>
                                 <NavigationMenuLink className={'font-nunito hover:bg-[rgba(0,31,63,0.8)] hover:text-white'}>
