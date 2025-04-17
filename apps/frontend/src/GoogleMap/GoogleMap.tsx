@@ -1,12 +1,30 @@
-import React, { useEffect, useRef } from 'react';
+import React, {RefObject, useEffect, useRef, useState} from 'react';
+import GoogleMap from "@/GoogleMap/GoogleMap.ts";
+import {Hospital, Department, Graph} from '@/routes/Directions.tsx'
 
-const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+const API_KEY: string = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
-import AutocompleteDirectionsHandler from "@/GoogleMap/GoogleMapHelper.ts";
 
-const GGMap: React.FC = () => {
+
+export interface GoogleMapProps {
+    editor: boolean
+    autoCompleteRef: RefObject<HTMLInputElement | null>;
+    hospital: Hospital | undefined;
+    department: Department | undefined;
+    graph: Graph | undefined;
+    mode: string | undefined;
+    zoomFlag: boolean;
+}
+
+
+
+const GGMap = (props: GoogleMapProps) => {
     const mapRef = useRef<HTMLDivElement | null>(null);
 
+    const [map, setMap] = React.useState<GoogleMap | undefined>();
+
+
+    // Used to load the script that google maps API uses
     useEffect(() => {
         const loadScript = (url: string) => {
             const existingScript = document.querySelector(`script[src="${url}"]`);
@@ -15,10 +33,7 @@ const GGMap: React.FC = () => {
                 script.src = url;
                 script.async = true;
                 script.defer = true;
-                script.onload = () => {
-                    // After script loads, initialize map
-                    window.initMap?.();
-                };
+                script.onload = () => window.initMap?.();
                 document.body.appendChild(script);
             } else {
                 // Already loaded
@@ -30,13 +45,8 @@ const GGMap: React.FC = () => {
         window.initMap = () => {
             if (!mapRef.current || !window.google) return;
 
-            const map = new window.google.maps.Map(mapRef.current, {
-                mapTypeControl: false,
-                center: { lat: 42.32610824896946, lng: -71.14955534500426},
-                zoom: 19,
-            });
+            setMap(new GoogleMap(mapRef.current, props));
 
-            new AutocompleteDirectionsHandler(map);
         };
 
         // Load Google Maps JS API with Places library
@@ -45,46 +55,32 @@ const GGMap: React.FC = () => {
         );
     }, []);
 
+    // Update the map when new hospital/dept selected
+    useEffect(() => {
+        console.log('UseEffect');
+        if (!map) return;
+        map.update(props);
+    }, [props.hospital, props.department, props.graph, props.mode, props.zoomFlag]);
+
     return (
-        <div>
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-                {/*<input id="origin-input" type="text" placeholder="Origin" />*/}
-                {/*<input id="destination-input" type="text" placeholder="Destination" />*/}
-
-                {/*This currently is not working because we have yet to implement the path to any of the option*/}
-
-
-                {/*<select id="mode-selector">*/}
-                {/*    <option value="WALKING" id="changemode-walking">*/}
-                {/*        Walking*/}
-                {/*    </option>*/}
-                {/*    <option value="TRANSIT" id="changemode-transit">*/}
-                {/*        Transit*/}
-                {/*    </option>*/}
-                {/*    <option value="DRIVING" id="changemode-driving">*/}
-                {/*        Driving*/}
-                {/*    </option>*/}
-                {/*</select>*/}
-            </div>
-
-            <div
-                id="ggl-map"
-                ref={mapRef}
-                style={{ width: '65vw', height: '100vh' }}
-            ></div>
-        </div>
+        <div
+            id="ggl-map"
+            ref={mapRef}
+            // style={{ width: '65vw', height: '100vh' }}
+            className="flex-1 h-screen overflow-y-hidden"
+        ></div>
     );
 };
 
-export default GGMap;
-
-// Declare window type extension
 declare global {
     interface Window {
         initMap: () => void;
         google: typeof google;
     }
 }
+
+export default GGMap;
+
 
 
 

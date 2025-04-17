@@ -143,7 +143,7 @@ const Directory: React.FC = () => {
             </header>
 
             <main className="max-w-2xl mx-auto p-6 mt-10 bg-white border rounded-lg shadow">
-                <h2 className="text-center text-2xl text-blue-700 mb-6">Find Your Care</h2>
+                <h2 className="text-center text-2xl text-blue-900 mb-6">Find Your Care</h2>
 
                 <label htmlFor="service" className="block font-semibold mb-2">
                     Select a Service

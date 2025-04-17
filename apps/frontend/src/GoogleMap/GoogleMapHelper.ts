@@ -1,5 +1,10 @@
 const chestNutHillId: string = 'ChIJLwkLvP5444kRGTnWxi0zsnM';
-
+declare global {
+    interface Window {
+        initMap: () => void;
+        google: typeof google;
+    }
+}
 class AutocompleteDirectionsHandler {
     map: google.maps.Map;
     originPlaceId: string;
@@ -89,7 +94,6 @@ class AutocompleteDirectionsHandler {
     // This draws the line between origin and destination
     route() {
 
-        // if (!this.originPlaceId || !this.destinationPlaceId) return;
 
         if (!this.originPlaceId) return;
 
@@ -110,5 +114,6 @@ class AutocompleteDirectionsHandler {
         );
     }
 }
+
 
 export default AutocompleteDirectionsHandler;
