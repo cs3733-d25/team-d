@@ -123,6 +123,7 @@ export default function ShowAllRequests() {
     const [dataEquipment, setDataEquipment] = useState<ServiceRequest[]>([]);
     const [dataSecurity, setDataSecurity] = useState<ServiceRequest[]>([]);
     const [dataSanitation, setDataSanitation] = useState<ServiceRequest[]>([]);
+    const [data, setData] = useState<ServiceRequest[]>([]);
 
     const fetchData = async () => {
         try {
@@ -137,6 +138,9 @@ export default function ShowAllRequests() {
 
             const sanitationResponse = await axios.get('/api/servicereqs/sanitation');
             setDataSanitation(sanitationResponse.data);
+
+            const dataResponse = await axios.get('/api/servicereqs');
+            setData(dataResponse.data);
         } catch (error) {
             console.error('Error fetching data:', error);
         }
@@ -151,38 +155,46 @@ export default function ShowAllRequests() {
         []
     )
     const table = useReactTable({
-        dataTranslator,
+        data,
         columns,
         onSortingChange: setSorting,
         onColumnFiltersChange: setColumnFilters,
+        getCoreRowModel: getCoreRowModel(),
+        getPaginationRowModel: getPaginationRowModel(),
         getSortedRowModel: getSortedRowModel(),
-        getFilteredRowModel: getFilteredRowModel()
+        getFilteredRowModel: getFilteredRowModel(),
+        state: {
+            sorting,
+            columnFilters,
+        }
     })
 
     return (
-        <div className="rounded-md border">
-            <Table>
-                <TableHeader>
-                    {table.getHeaderGroups().map((headerGroup) => (
-                        <TableRow key={headerGroup.id}>
-                            {headerGroup.headers.map((header) => {
-                                return (
-                                    <TableHead key={header.id}>
-                                        {header.isPlaceholder
-                                            ? null
-                                            : flexRender(
-                                                header.column.columnDef.header,
-                                                header.getContext()
-                                            )}
-                                    </TableHead>
-                                )
-                            })}
-                        </TableRow>
-                    ))}
-                </TableHeader>
+        <div className="w-full">
+            <div className="rounded-md border">
+                <Table>
+                    <TableHeader>
+                        {table.getHeaderGroups().map((headerGroup) => (
+                            <TableRow key={headerGroup.id}>
+                                {headerGroup.headers.map((header) => {
+                                    return (
+                                        <TableHead key={header.id}>
+                                            {header.isPlaceholder
+                                                ? null
+                                                : flexRender(
+                                                    header.column.columnDef.header,
+                                                    header.getContext()
+                                                )}
+                                        </TableHead>
+                                    )
+                                })}
+                            </TableRow>
+                        ))}
+                    </TableHeader>
 
 
-            </Table>
+                </Table>
+            </div>
         </div>
     )
         // <div className="min-h-screen w-full p-6 bg-white">
