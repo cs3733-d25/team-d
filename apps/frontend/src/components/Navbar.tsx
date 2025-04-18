@@ -25,7 +25,7 @@ export default function Navbar() {
 
             <div className="bg-blue-900 text-white flex justify-between items-center h-10">
                 <div className={"ml-auto"}>
-                    <NavigationMenu className={'ml-auto p-4'}>
+                    <NavigationMenu className={'ml-auto'}>
                         <NavigationMenuList className={'flex flex-row space-x-5'}>
 
 
