@@ -12,6 +12,8 @@ import {
     getPaginationRowModel,
     getSortedRowModel,
     useReactTable,
+    FilterFn,
+    Row,
 } from "@tanstack/react-table"
 import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react"
 
@@ -27,6 +29,8 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
+
+const priorityList = ["Low", "Medium", "High", "Emergency"];
 
 export type TranslatorRequest = {
     languageFrom: string;
@@ -113,7 +117,112 @@ export const columns: ColumnDef<ServiceRequest>[] = [
                 </Button>
             )
         }
-    }
+    },
+    {
+        accessorKey: "departmentUnderId",
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    Department
+                    <ArrowUpDown />
+                </Button>
+            )
+        }
+    },
+    {
+        accessorKey: "roomNum",
+        header: ({ column }) => {
+            return (
+                <Button variant="ghost">Room Number</Button>
+            )
+        }
+    },
+    {
+        accessorKey: "comments",
+        header: ({ column }) => {
+            return (
+                <Button variant="ghost">Comments</Button>
+            )
+        }
+    },
+    {
+        accessorKey: "priority",
+        header: 'Priority',
+        meta: {
+            filterVariant: 'select',
+        },
+    },
+        // <DropdownMenu>
+        //     <DropdownMenuTrigger asChild>
+        //         <Button variant="ghost" className="ml-auto">
+        //             Priority <ChevronDown />
+        //         </Button>
+        //     </DropdownMenuTrigger>
+        //     <DropdownMenuContent align="end">
+        //         {table
+        //             .getAllColumns()
+        //             .filter((column) => column.getCanHide())
+        //             .map((column) => {
+        //                 return (
+        //                     <DropdownMenuCheckboxItem
+        //                         key={column.id}
+        //                         className="capitalize"
+        //                         checked={column.getIsVisible()}
+        //                         onCheckedChange={(value) =>
+        //                             column.toggleVisibility(!!value)
+        //                         }
+        //                     >
+        //                         {column.id}
+        //                     </DropdownMenuCheckboxItem>
+        //                 )
+        //             })}
+        //     </DropdownMenuContent>
+        // </DropdownMenu>
+    {
+        accessorKey: "requestStatus",
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    Status
+                    <ArrowUpDown />
+                </Button>
+            )
+        }
+    },
+    {
+        accessorKey: "createdAt",
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    Created At
+                    <ArrowUpDown />
+                </Button>
+            )
+        }
+    },
+    {
+        accessorKey: "updatedAt",
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    Updated At
+                    <ArrowUpDown />
+                </Button>
+            )
+        }
+    },
 ]
 
 
@@ -170,7 +279,7 @@ export default function ShowAllRequests() {
     })
 
     return (
-        <div className="w-full">
+        <div className="p-10">
             <div className="rounded-md border">
                 <Table>
                     <TableHeader>
