@@ -13,7 +13,7 @@ import {
     getSortedRowModel,
     useReactTable,
     FilterFn,
-    Row,
+    Row, Column, RowData,
 } from "@tanstack/react-table"
 import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react"
 
@@ -31,6 +31,13 @@ import {
 import { Input } from "@/components/ui/input"
 
 const priorityList = ["Low", "Medium", "High", "Emergency"];
+
+declare module '@tanstack/react-table' {
+    //allows us to define custom properties for our columns
+    interface ColumnMeta<TData extends RowData, TValue> {
+        filterVariant?: 'text' | 'range' | 'select'
+    }
+}
 
 export type TranslatorRequest = {
     languageFrom: string;
@@ -286,15 +293,46 @@ export default function ShowAllRequests() {
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
                                 {headerGroup.headers.map((header) => {
+                                    // return (
+                                    //     <TableHead key={header.id}>
+                                    //         {header.isPlaceholder
+                                    //             ? null
+                                    //             : flexRender(
+                                    //                 header.column.columnDef.header,
+                                    //                 header.getContext()
+                                    //             )}
+                                    //     </TableHead>
+                                    // )
+
                                     return (
-                                        <TableHead key={header.id}>
-                                            {header.isPlaceholder
-                                                ? null
-                                                : flexRender(
-                                                    header.column.columnDef.header,
-                                                    header.getContext()
-                                                )}
-                                        </TableHead>
+                                        <th key={header.id} colSpan={header.colSpan}>
+                                            {header.isPlaceholder ? null : (
+                                                <>
+                                                    <div
+                                                        {...{
+                                                            className: header.column.getCanSort()
+                                                                ? 'cursor-pointer select-none'
+                                                                : '',
+                                                            onClick: header.column.getToggleSortingHandler(),
+                                                        }}
+                                                    >
+                                                        {flexRender(
+                                                            header.column.columnDef.header,
+                                                            header.getContext()
+                                                        )}
+                                                        {{
+                                                            asc: ' 🔼',
+                                                            desc: ' 🔽',
+                                                        }[header.column.getIsSorted() as string] ?? null}
+                                                    </div>
+                                                    {header.column.getCanFilter() ? (
+                                                        <div>
+                                                            <Filter column={header.column} />
+                                                        </div>
+                                                    ) : null}
+                                                </>
+                                            )}
+                                        </th>
                                     )
                                 })}
                             </TableRow>
@@ -488,4 +526,59 @@ export default function ShowAllRequests() {
     // );
 }
 
+function Filter({ column }: { column: Column<any, unknown> }) {
+    const columnFilterValue = column.getFilterValue()
+    const { filterVariant } = column.columnDef.meta ?? {}
+
+    return filterVariant === "select" ? (
+        <select
+            onChange={e => column.setFilterValue(e.target.value)}
+            value={columnFilterValue?.toString()}
+        >
+            {}
+            <option value="">All</option>
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
+            <option value="Emergency">Emergency</option>
+        </select>
+    ) : (
+        <DebouncedInput
+            className="w-36 border shadow rounded"
+            onChange={value => column.setFilterValue(value)}
+            placeholder={`Search...`}
+            type="text"
+            value={(columnFilterValue ?? '') as string}
+        />
+    )
+}
+
+function DebouncedInput({
+                            value: initialValue,
+                            onChange,
+                            debounce = 500,
+                            ...props
+                        }: {
+    value: string | number
+    onChange: (value: string | number) => void
+    debounce?: number
+} & Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'>) {
+    const [value, setValue] = React.useState(initialValue)
+
+    React.useEffect(() => {
+        setValue(initialValue)
+    }, [initialValue])
+
+    React.useEffect(() => {
+        const timeout = setTimeout(() => {
+            onChange(value)
+        }, debounce)
+
+        return () => clearTimeout(timeout)
+    }, [value])
+
+    return (
+        <input {...props} value={value} onChange={e => setValue(e.target.value)} />
+    )
+}
 
