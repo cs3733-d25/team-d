@@ -6,9 +6,9 @@ import HeroTextBox from "@/components/HeroPage.tsx";
 
 import Auth0LoginButton from "@/components/Auth0LoginButton.tsx";
 import MapButton from "@/components/MapButton.tsx";
-import DirectoryButton from "@/components/DirectoryButton.tsx";
 import Footer from "@/components/Footer.tsx";
 import { useAuth0 } from "@auth0/auth0-react";
+import ServiceRequestbutton from "@/components/ServiceRequestbutton.tsx";
 
 // Use for comments
 {/**/}
@@ -40,7 +40,7 @@ export default function Home() {
                     </div>
 
                     <div className="w-100 p-10">
-                        <DirectoryButton />
+                        <ServiceRequestbutton />
                     </div>
                 </div>
 
