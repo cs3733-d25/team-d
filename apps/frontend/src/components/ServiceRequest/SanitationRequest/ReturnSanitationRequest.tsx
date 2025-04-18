@@ -1,10 +1,11 @@
 import { CardTitle } from '@/components/ui/card.tsx';
 import { Label } from '@/components/ui/label.tsx';
+import {ScrollArea} from "@/components/ui/scrollarea.tsx";
 
-type securityRequestForm = {
+interface SanitationRequest {
     roomNum: string;
-    numOfGuards: number;
-    securityType: string;
+    type: string;
+    status: string;
     comments: string;
     requestStatus: string;
     priority: string;
@@ -13,9 +14,10 @@ type securityRequestForm = {
     employeeName: string;
 }
 
-const ReturnSecurityRequest = (props: securityRequestForm) => {
+const ReturnSanitationRequest = (props: SanitationRequest) => {
     return (
-        <div className="grid  h-full items-center">
+        <ScrollArea>
+        <div className="grid  h-100 items-center">
             <div className="">
                 <div className="place-content-center">
                     <CardTitle className="text-3xl">Request Summary</CardTitle>
@@ -43,13 +45,13 @@ const ReturnSecurityRequest = (props: securityRequestForm) => {
                     </div>
 
                     <div className="my-5">
-                        <Label htmlFor="securityType">Security Type</Label>
-                        <p>{props.securityType}</p>
+                        <Label htmlFor="type">Sanitation Type</Label>
+                        <p>{props.type}</p>
                     </div>
 
                     <div className="my-5">
-                        <Label htmlFor="numOfGuards">Number of Guards Requested</Label>
-                        <p>{props.numOfGuards}</p>
+                        <Label htmlFor="status">Room status</Label>
+                        <p>{props.status}</p>
                     </div>
 
                     <div className="my-5">
@@ -69,7 +71,8 @@ const ReturnSecurityRequest = (props: securityRequestForm) => {
                 </div>
             </div>
         </div>
+        </ScrollArea>
     );
 };
 
-export default ReturnSecurityRequest;
+export default ReturnSanitationRequest;

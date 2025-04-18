@@ -10,12 +10,12 @@ export function findClosestParking(
     let closestParking = '';
 
     for (const parking of parkingNodes) {
-        const path = graph.bfs(parking, departmentNode);
-
-        if (path && (!shortestPath || path.length < shortestPath.length)) {
-            shortestPath = path;
-            closestParking = parking;
-        }
+        // const path = graph.bfs(parking, departmentNode);
+        //
+        // if (path && (!shortestPath || path.length < shortestPath.length)) {
+        //     shortestPath = path;
+        //     closestParking = parking;
+        // }
     }
     return { path: shortestPath, from: closestParking };
 }

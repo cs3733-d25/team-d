@@ -6,7 +6,9 @@ import {ScrollArea} from "@/components/ui/scrollarea.tsx";
 import {useState} from "react";
 import {API_ROUTES} from "common/src/constants.ts";
 import axios from "axios";
-import ReturnEquipmentRequest from "@/components/ReturnEquipmentRequest.tsx";
+import ReturnEquipmentRequest from "@/components/ServiceRequest/EquipmentRequest/ReturnEquipmentRequest.tsx";
+import SubmissionReqPopup from "@/components/SubmissionReqPopup.tsx";
+import ReturnSanitationRequest from "@/components/ServiceRequest/SanitationRequest/ReturnSanitationRequest.tsx";
 
 type equipmentRequestForm = {
     medicalDevice: string;
@@ -44,20 +46,27 @@ export default function EquipmentServiceRequest() {
 
     const onSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        // console.log(form);
         setSubmitted(false);
-        axios.post(API_ROUTES.SERVICEREQS+'/equipment', form).then(() => {
-            alert("Service request submitted!");
-            setSubmitted(true);
-        });
-    }
+
+        axios
+            .post(API_ROUTES.SERVICEREQS + "/equipment", form)
+            .then(() => {
+                setSubmitted(true);
+            })
+            .catch((err) => {
+                console.error("Error submitting sanitation request:", err);
+            });
+    };
 
     return (
         <>
             {!submitted ?
-                <ScrollArea className="max-h-[100vh] overflow-y-auto pr-4">
+                <ScrollArea className="max-h-[95vh] overflow-y-auto pr-4 w-full max-w-screen-lg mx-auto bg-zinc-200">
                 <div className="grid place-items-center h-full items-center">
-                    <h2 className="text-4xl fontbold pb-3" >Request a Medical Device</h2>
+                    <div className="bg-blue-200 bg-opacity-60 rounded-3xl px-6 py-4 max-w-5xl w-full mx-auto">
+                        <h2 className="text-4xl font-bold text-left">Request a Medical Device</h2>
+                    </div>
+                    <h6 className="pb-3 font-light">Christine Ngo & Keethu Jayamoorthy</h6>
                     <form onSubmit={onSubmit}>
                         <div>
                             <Label className="pt-4 pb-2" htmlFor="employeeId">Employee ID</Label>
@@ -65,6 +74,7 @@ export default function EquipmentServiceRequest() {
                                 required
                                 type="number"
                                 id="employeeId"
+                                className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                 onChange={(e) =>
                                     setForm({
                                         ...form,
@@ -80,7 +90,7 @@ export default function EquipmentServiceRequest() {
                                 required
                                 type="text"
                                 id="employeeName"
-                                className='border border-gray-300 rounded-md p-2'
+                                className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                 onChange={(e) =>
                                     setForm({
                                         ...form,
@@ -95,7 +105,7 @@ export default function EquipmentServiceRequest() {
                             <select
                                 required
                                 id="department"
-                                className='border border-gray-300 rounded-md p-2'
+                                className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                 onChange={(e) =>
                                     setForm({
                                         ...form,
@@ -130,6 +140,7 @@ export default function EquipmentServiceRequest() {
                             <Label className="pt-4 pb-2" htmlFor="roomNumber">Room Number</Label>
                             <Input
                                 required
+                                className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                 type="text"
                                 id="roomNumber"
                                 onChange={(e) =>
@@ -145,6 +156,7 @@ export default function EquipmentServiceRequest() {
                             <Label className="pt-4 pb-2" htmlFor="medicalDevice">Medical Device</Label>
                             <Input
                                 required
+                                className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                 type="text"
                                 id="medicalDevice"
                                 onChange={(e) =>
@@ -160,6 +172,7 @@ export default function EquipmentServiceRequest() {
                             <Label className="pt-4 pb-2" htmlFor="quantity">Quantity</Label>
                             <Input
                                 required
+                                className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                 type="number"
                                 id="quantity"
                                 onChange={(e) =>
@@ -175,6 +188,7 @@ export default function EquipmentServiceRequest() {
                             <Label className="pt-4 pb-2" htmlFor="startDateTime">Start Date and Time</Label>
                             <Input
                                 required
+                                className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                 type="datetime-local"
                                 id="startDateTime"
                                 onChange={(e) =>
@@ -192,7 +206,7 @@ export default function EquipmentServiceRequest() {
                                 required
                                 type="datetime-local"
                                 id="languageFrom"
-                                className='pb-2'
+                                className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                 onChange={(e) =>
                                     setForm({
                                         ...form,
@@ -206,6 +220,7 @@ export default function EquipmentServiceRequest() {
                             <Label className="pt-4 pb-2" htmlFor="signature">Signature</Label>
                             <Input
                                 required
+                                className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                 type="text"
                                 id="signature"
                                 onChange={(e) =>
@@ -222,7 +237,7 @@ export default function EquipmentServiceRequest() {
                             <select
                                 required
                                 id="priority"
-                                className='border border-gray-300 rounded-md p-2'
+                                className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                 onChange={(e) =>
                                     setForm({
                                         ...form,
@@ -241,7 +256,7 @@ export default function EquipmentServiceRequest() {
                             <select
                                 required
                                 id="requestStatus"
-                                className='border border-gray-300 rounded-md p-2'
+                                className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                 onChange={(e) =>
                                     setForm({
                                         ...form,
@@ -249,10 +264,10 @@ export default function EquipmentServiceRequest() {
                                     })
                                 }>
                                 <option value="">-- Select Status --</option>
-                                <option value="Incomplete">Incomplete</option>
-                                <option value="Pending">Pending</option>
-                                <option value="Complete">Complete</option>
                                 <option value="Unassigned">Unassigned</option>
+                                <option value="Assigned">Assigned</option>
+                                <option value="Working">Working</option>
+                                <option value="Done">Done</option>
                             </select>
                         </div>
 
@@ -260,7 +275,7 @@ export default function EquipmentServiceRequest() {
                             <Label className="pt-4 pb-2" htmlFor="comments">Comments</Label>
                             <textarea
                                 id="comments"
-                                className="border border-gray-300 rounded-md p-2 w-60"
+                                className = "w-80 h-8 rounded-md border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                 onChange={(e) =>
                                     setForm({ ...form, comments: e.target.value })
                                 }
@@ -268,26 +283,17 @@ export default function EquipmentServiceRequest() {
                         </div>
 
                         <div className="flex flex-row justify-center items-center">
-                            <Button type="submit" className="mt-5">Submit</Button>
+                            <Button type="submit" className="mt-6 w-full">
+                                Submit
+                            </Button>
                         </div>
                     </form>
                 </div>
                 </ScrollArea>
                 :
-                <ReturnEquipmentRequest
-                    employeeRequestedById={form.employeeRequestedById}
-                    departmentUnderId={form.departmentUnderId}
-                    medicalDevice={form.medicalDevice}
-                    quantity={form.quantity}
-                    signature={form.signature}
-                    roomNum={form.roomNum}
-                    startDateTime={form.startDateTime}
-                    endDateTime={form.endDateTime}
-                    comments={form.comments}
-                    requestStatus={form.requestStatus}
-                    employeeName={form.employeeName}
-                    priority={form.priority}
-                />
+                <SubmissionReqPopup>
+                    <ReturnEquipmentRequest {...form} />
+                </SubmissionReqPopup>
             }
         </>
     );

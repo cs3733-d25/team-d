@@ -1,7 +1,9 @@
 import GGMap from "@/GoogleMap/GoogleMap.tsx";
 import React, {useEffect, useRef, useState} from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCar, faWalking, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
-import {Input} from "@/components/ui/input.tsx";
+
 import {API_ROUTES} from "common/src/constants.ts";
 import axios from "axios";
 import {Label} from "@/components/ui/label.tsx";
@@ -16,33 +18,7 @@ import {
 } from "@/components/ui/select.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {cn} from "@/lib/utils.ts";
-
-// export type Hospital = {
-//     hospitalId: number
-//     name: string
-//     placeId: string
-//     defaultZoom: number
-//     defaultLat: number
-//     defaultLng: number
-//     Floors: Floor[]
-// }
-//
-// export type Floor = {
-//     floorId: number
-//     num: number
-//     imageURL: string
-//     north: number
-//     south: number
-//     east: number
-//     west: number
-//     Departments: Department[]
-// }
-//
-// export type Department = {
-//     departmentId: number
-//     name: string
-//     suite: string
-// }
+import {Separator} from "@/components/ui/separator.tsx";
 
 export type Hospital = {
     hospitalId: number
@@ -76,7 +52,11 @@ export type Graph = {
     west: number
 }
 
-export default function Directions() {
+interface DirectionsProps {
+    editor: boolean
+}
+
+export default function Directions(props: DirectionsProps) {
 
     const departmentRef = useRef(null);
     const autocompleteRef = useRef<HTMLInputElement>(null);
@@ -84,8 +64,11 @@ export default function Directions() {
     const [data, setData] = useState<Hospital[]>([]);
 
     const [hospital, setHospital] = useState<Hospital | undefined>();
+    const [mode, setMode] = useState<string | undefined>("DRIVING");
     const [graph, setGraph] = useState<Graph | undefined>();
     const [department, setDepartment] = useState<Department | undefined>();
+
+    const [allGraphs, setAllGraphs] = useState<Graph[]>([]);
 
     const [zoomFlag, setZoomFlag] = useState<boolean>(false);
 
@@ -101,35 +84,42 @@ export default function Directions() {
     }, []);
 
     const handleHospitalChange = (value: string) => {
-        // if (departmentRef.current) {
-        //     // departmentRef.current.value = '';
-        // }
-        // for (const h of data) {
-        //     if (h.name === value) {
-        //         setHospital(h);
-        //         break;
-        //     }
-        // }
-        // setDepartment(undefined);
+        let newHospital: Hospital | null = null;
         for (const hospital of data) {
             if (hospital.name === value) {
                 setHospital(hospital);
+                newHospital = hospital;
+                break;
+            }
+        }
+        console.log('Hospital change: ', hospital);
+        if (newHospital) {
+            const newAllGraphs: Graph[] = [];
+            const graphIds = new Set<number>();
+            for (const graph of newHospital.Departments.map(d => d.Graph)) {
+                console.log('Trying ', graph.graphId);
+                if (!graphIds.has(graph.graphId)) {
+                    graphIds.add(graph.graphId);
+                    newAllGraphs.push(graph);
+                    console.log('Added ' + graph.graphId);
+                }
+            }
+            setAllGraphs(newAllGraphs);
+        }
+    }
+
+    const handleGraphChange = (value: string) => {
+        if (!hospital) return;
+
+        for (const graph of allGraphs) {
+            if (graph.name === value) {
+                setGraph(graph);
                 break;
             }
         }
     }
 
     const handleDepartmentChange = (value: string) => {
-        // if (!hospital) return;
-        // for (const f of hospital.Floors) {
-        //     for (const d of f.Departments) {
-        //         if (d.name === value) {
-        //             setDepartment(d);
-        //             setFloor(f);
-        //             break;
-        //         }
-        //     }
-        // }
         if (!hospital) return;
         for (const d of hospital.Departments) {
             if (d.name === value) {
@@ -139,23 +129,36 @@ export default function Directions() {
         }
     }
 
+    const handleModeChange = (value: string) => {
+        setMode(value);
+    }
+
     return (
         <div className="flex flex-row flex-1">
             <div className="flex-1 p-4">
-                <Label className="mb-1">Start Location</Label>
+                <h2 className="text-3xl font-bold">
+                    {props.editor ? 'Map Editor' : 'Get Directions'}
+                </h2>
+                <Separator className="mt-4 mb-4" />
 
                 {/*TODO: find a better way of doing this, copied from components/ui/input.tsx*/}
-                <input
-                    ref={autocompleteRef}
-                    id="start-input"
-                    type="text"
-                    data-slot="input"
-                    className={cn(
-                        "file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input flex h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
-                        "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
-                        "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive", "mb-4"
-                    )}
-                />
+                {!props.editor &&
+                    <>
+                        <Label className="mb-1">Start Location</Label>
+                        <input
+                            ref={autocompleteRef}
+                            id="start-input"
+                            type="text"
+                            data-slot="input"
+                            className={cn(
+                                "file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input flex h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
+                                "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
+                                "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive", "mb-4"
+                            )}
+                        />
+                    </>
+                }
+
                 {/*end to-do here*/}
 
                 <Label>Destination Hospital</Label>
@@ -175,30 +178,92 @@ export default function Directions() {
                     </SelectContent>
                 </Select>
 
-                {hospital && (
+                {!props.editor &&
                     <>
-                        <Label>Department</Label>
-                        <Select onValueChange={handleDepartmentChange}>
+                        <Label>Transport Mode</Label>
+                        <Select onValueChange={handleModeChange} defaultValue="DRIVING">
                             <SelectTrigger className="w-full mt-1 mb-4">
-                                <SelectValue placeholder="Choose a department..." />
+                                <SelectValue placeholder="Choose a mode of transport..." />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectGroup key="0">
-                                    <SelectLabel>Departments</SelectLabel>
-                                    {hospital.Departments.map((d: Department) => (
-                                        <SelectItem key={d.departmentId + 1} value={d.name}>
-                                            {d.name}
-                                        </SelectItem>
+                                <SelectGroup>
+                                    <SelectLabel>Transport Modes</SelectLabel>
+                                    {['Driving', 'Walking', 'Transit', 'Bicycling'].map((mode, i) => (
+                                        <SelectItem key={i} value={mode.toUpperCase()}>{mode}</SelectItem>
                                     ))}
                                 </SelectGroup>
                             </SelectContent>
                         </Select>
+                    </>
+                }
 
+                {hospital &&
+                    <>
+                        <Separator className="mt-4 mb-4" />
+
+                        {props.editor ?
+                            <>
+                                <Label>Graph</Label>
+                                <Select onValueChange={handleGraphChange}>
+                                    <SelectTrigger className="w-full mt-1 mb-4">
+                                        <SelectValue placeholder="Choose a graph..." />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectGroup key="0">
+                                            <SelectLabel>Graphs</SelectLabel>
+                                            {allGraphs.map(graph => (
+                                                <SelectItem key={graph.graphId} value={graph.name}>
+                                                    {graph.name}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectGroup>
+                                    </SelectContent>
+                                </Select>
+                            </> : <>
+                                <Label>Department</Label>
+                                <Select onValueChange={handleDepartmentChange}>
+                                    <SelectTrigger className="w-full mt-1 mb-4">
+                                        <SelectValue placeholder="Choose a department..." />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectGroup key="0">
+                                            <SelectLabel>Departments</SelectLabel>
+                                            {hospital.Departments.map((d: Department) => (
+                                                <SelectItem key={d.departmentId + 1} value={d.name}>
+                                                    {d.name}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectGroup>
+                                    </SelectContent>
+                                </Select>
+                            </>
+                        }
                         <Button onClick={() => setZoomFlag(!zoomFlag)} className="mb-4">
                             Zoom
                         </Button>
                     </>
-                )}
+                }
+                <Separator className="mt-4 mb-4" />
+                {/*TODO: make a legend*/}
+                {!props.editor &&
+                    <>
+                        <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
+                            <h2 className="text-xl font-semibold mb-3 text-gray-700 flex items-center">
+                                Legend
+                            </h2>
+                            <ul className="space-y-2">
+                                <li className="flex items-center text-lg">
+                                    <FontAwesomeIcon icon={faCar} className="text-blue-500 w-4 h-4 mr-3" />
+                                    To Hospital
+                                </li>
+                                <li className="flex items-center text-lg">
+                                    <FontAwesomeIcon icon={faWalking} className="text-red-600 w-4 h-4 mr-3" />
+                                    Within Hospital
+                                </li>
+                            </ul>
+                        </div>
+                    </>
+                }
 
                 {/* Show Department Info if selected */}
                 {/*{selectedDepartment && (*/}
@@ -217,12 +282,14 @@ export default function Directions() {
                 {/*)}*/}
             </div>
 
-            <div className="flex-2">
+            <div className="flex-3">
                 <GGMap
+                    editor={props.editor}
                     autoCompleteRef={autocompleteRef}
                     hospital={hospital}
                     department={department}
                     graph={graph}
+                    mode={mode}
                     zoomFlag={zoomFlag}
                 />
             </div>

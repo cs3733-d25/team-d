@@ -7,10 +7,12 @@ const API_KEY: string = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
 
 export interface GoogleMapProps {
+    editor: boolean
     autoCompleteRef: RefObject<HTMLInputElement | null>;
     hospital: Hospital | undefined;
     department: Department | undefined;
     graph: Graph | undefined;
+    mode: string | undefined;
     zoomFlag: boolean;
 }
 
@@ -41,7 +43,7 @@ const GGMap = (props: GoogleMapProps) => {
 
         // Attach initMap to window for Google callback
         window.initMap = () => {
-            if (!mapRef.current || !props.autoCompleteRef.current || !window.google) return;
+            if (!mapRef.current || !window.google) return;
 
             setMap(new GoogleMap(mapRef.current, props));
 
@@ -58,16 +60,15 @@ const GGMap = (props: GoogleMapProps) => {
         console.log('UseEffect');
         if (!map) return;
         map.update(props);
-    }, [props.hospital, props.department, props.graph, props.zoomFlag]);
+    }, [props.hospital, props.department, props.graph, props.mode, props.zoomFlag]);
 
     return (
-        <div>
-            <div
-                id="ggl-map"
-                ref={mapRef}
-                style={{ width: '65vw', height: '100vh' }}
-            ></div>
-        </div>
+        <div
+            id="ggl-map"
+            ref={mapRef}
+            // style={{ width: '65vw', height: '100vh' }}
+            className="flex-1 h-screen overflow-y-hidden"
+        ></div>
     );
 };
 

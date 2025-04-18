@@ -1,10 +1,15 @@
 import { CardTitle } from '@/components/ui/card.tsx';
 import { Label } from '@/components/ui/label.tsx';
-interface SanitationRequest {
-    roomNum: string;
-    type: string;
-    status: string;
+import { ScrollArea } from '@/components/ui/scrollarea.tsx';
+
+type equipmentRequestForm = {
+    medicalDevice: string;
+    signature: string;
+    quantity: number;
     comments: string;
+    roomNum: string;
+    startDateTime: string;
+    endDateTime: string;
     requestStatus: string;
     priority: string;
     employeeRequestedById: number;
@@ -12,9 +17,10 @@ interface SanitationRequest {
     employeeName: string;
 }
 
-const ReturnSanitationRequest = (props: SanitationRequest) => {
+const ReturnEquipmentRequest = (props: equipmentRequestForm) => {
     return (
-        <div className="grid  h-full items-center">
+        <ScrollArea>
+        <div className="grid  h-100 items-center">
             <div className="">
                 <div className="place-content-center">
                     <CardTitle className="text-3xl">Request Summary</CardTitle>
@@ -22,7 +28,7 @@ const ReturnSanitationRequest = (props: SanitationRequest) => {
 
                 <div>
                     <div className="my-5">
-                        <Label htmlFor="employeeRequestedById">Employee ID</Label>
+                        <Label htmlFor="employeeId">Requested By</Label>
                         <p>{props.employeeRequestedById}</p>
                     </div>
 
@@ -42,13 +48,28 @@ const ReturnSanitationRequest = (props: SanitationRequest) => {
                     </div>
 
                     <div className="my-5">
-                        <Label htmlFor="type">Sanitation Type</Label>
-                        <p>{props.type}</p>
+                        <Label htmlFor="medicalDevice">Medical Device</Label>
+                        <p>{props.medicalDevice}</p>
                     </div>
 
                     <div className="my-5">
-                        <Label htmlFor="status">Room status</Label>
-                        <p>{props.status}</p>
+                        <Label htmlFor="quantity">Quantity</Label>
+                        <p>{props.quantity}</p>
+                    </div>
+
+                    <div className="my-5">
+                        <Label htmlFor="startDateTime">Start Date and Time</Label>
+                        <p>{props.startDateTime}</p>
+                    </div>
+
+                    <div className="my-5">
+                        <Label htmlFor="endDateTime">End Date and Time</Label>
+                        <p>{props.endDateTime}</p>
+                    </div>
+
+                    <div className="my-5">
+                        <Label htmlFor="signature">Signature</Label>
+                        <p>{props.signature}</p>
                     </div>
 
                     <div className="my-5">
@@ -68,7 +89,8 @@ const ReturnSanitationRequest = (props: SanitationRequest) => {
                 </div>
             </div>
         </div>
+        </ScrollArea>
     );
 };
 
-export default ReturnSanitationRequest;
+export default ReturnEquipmentRequest;

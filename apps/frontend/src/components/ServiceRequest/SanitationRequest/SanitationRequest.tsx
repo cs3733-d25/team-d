@@ -6,7 +6,8 @@ import { Input } from "@/components/ui/input.tsx";
 import { Label } from "@/components/ui/label.tsx";
 import { API_ROUTES } from "common/src/constants.ts";
 
-import ReturnSanitationRequest from "@/components/ReturnSanitationRequest.tsx";
+import ReturnSanitationRequest from "@/components/ServiceRequest/SanitationRequest/ReturnSanitationRequest.tsx";
+import SubmissionReqPopup from "@/components/SubmissionReqPopup.tsx";
 
 type SanitationRequestForm = {
     roomNum: string;
@@ -37,31 +38,34 @@ export default function SanitationRequest() {
 
     const onSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        // console.log(form);
         setSubmitted(false);
 
         axios
             .post(API_ROUTES.SERVICEREQS + "/sanitation", form)
             .then(() => {
-                alert("Sanitation request submitted!");
                 setSubmitted(true);
             })
             .catch((err) => {
                 console.error("Error submitting sanitation request:", err);
             });
     };
-
     return (
         <>
             {!submitted ?
-                <ScrollArea className="max-h-[100vh] overflow-y-auto pr-4">
-                <div className="grid place-items-center h-full items-center">
-                    <h2 className="text-4xl font-bold pb-3">Request Sanitation</h2>
+                <ScrollArea className="max-h-[95vh] overflow-y-auto pr-4 w-full max-w-screen-lg mx-auto bg-zinc-200">
+                <div className="grid items-start px-4 h-full w-full max-w-screen-md mx-auto">
+                    <div className="bg-blue-200 bg-opacity-60 rounded-3xl px-6 py-4 max-w-5xl w-full mx-auto">
+                        <h2 className="text-4xl font-bold text-left">Request Sanitation</h2>
+                    </div>
+                    <h6 className="pb-3 font-light">Stuvat Dash & Brandon Small</h6>
                     <form onSubmit={onSubmit} className="flex flex-col">
 
                         <div>
                             <Label className="pt-4 pb-2" htmlFor="employeeId">Employee ID</Label>
                             <Input
                                 required
+                                className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                 type="number"
                                 id="employeeId"
                                 onChange={(e) =>
@@ -79,7 +83,8 @@ export default function SanitationRequest() {
                                 required
                                 type="text"
                                 id="employeeName"
-                                className='border border-gray-300 rounded-md p-2'
+                                // className='border border-gray-300 rounded-md p-2'
+                                className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                 onChange={(e) =>
                                     setForm({
                                         ...form,
@@ -94,7 +99,8 @@ export default function SanitationRequest() {
                             <select
                                 required
                                 id="department"
-                                className='border border-gray-300 rounded-md p-2'
+                                // className='border border-gray-300 rounded-md p-2'
+                                className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                 onChange={(e) =>
                                     setForm({
                                         ...form,
@@ -124,22 +130,25 @@ export default function SanitationRequest() {
                                 <option value="20">Rehabilitation Services</option>
                             </select>
                         </div>
-
+                        <div>
                         <Label className="pt-4 pb-2" htmlFor="roomNum">Room Number</Label>
                         <Input
                             required
                             type="text"
+                            className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                             id="roomNum"
                             onChange={(e) =>
                                 setForm({ ...form, roomNum: e.target.value })
                             }
                         />
-
+                        </div>
+                        <div>
                         <Label className="pt-4 pb-2" htmlFor="type">Sanitation Type</Label>
                         <select
                             required
                             id="type"
-                            className="border border-gray-300 rounded-md p-2"
+                            // className="border border-gray-300 rounded-md p-2"
+                            className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                             onChange={(e) =>
                                 setForm({ ...form, type: e.target.value })
                             }
@@ -151,12 +160,15 @@ export default function SanitationRequest() {
                             <option value="WASTE_REMOVAL">Waste Removal</option>
                             <option value="PEST_CONTROL">Pest Control</option>
                         </select>
+                        </div>
 
+                        <div>
                         <Label className="pt-4 pb-2" htmlFor="status">Room Status</Label>
                         <select
                             required
                             id="status"
-                            className="border border-gray-300 rounded-md p-2"
+                            // className="border border-gray-300 rounded-md p-2"
+                            className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                             onChange={(e) =>
                                 setForm({ ...form, status: e.target.value })
                             }
@@ -165,13 +177,15 @@ export default function SanitationRequest() {
                             <option value="VACANT">Vacant</option>
                             <option value="IN_USE">In Use</option>
                         </select>
+                        </div>
 
                         <div>
                             <Label className="pt-4 pb-2" htmlFor="priority">Priority</Label>
                             <select
                                 required
                                 id="priority"
-                                className='border border-gray-300 rounded-md p-2'
+                                // className='border border-gray-300 rounded-md p-2'
+                                className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                 onChange={(e) =>
                                     setForm({
                                         ...form,
@@ -191,7 +205,8 @@ export default function SanitationRequest() {
                             <select
                                 required
                                 id="requestStatus"
-                                className='border border-gray-300 rounded-md p-2'
+                                // className='border border-gray-300 rounded-md p-2'
+                                className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                 onChange={(e) =>
                                     setForm({
                                         ...form,
@@ -199,42 +214,38 @@ export default function SanitationRequest() {
                                     })
                                 }>
                                 <option value="">-- Select Status --</option>
-                                <option value="Incomplete">Incomplete</option>
-                                <option value="Pending">Pending</option>
-                                <option value="Complete">Complete</option>
                                 <option value="Unassigned">Unassigned</option>
+                                <option value="Assigned">Assigned</option>
+                                <option value="Working">Working</option>
+                                <option value="Done">Done</option>
                             </select>
                         </div>
 
+                        <div>
                         <Label className="pt-4 pb-2" htmlFor="comments">
                             Comments
                         </Label>
                         <textarea
                             id="comments"
-                            className="border border-gray-300 rounded-md p-2 w-60"
+                            // className="border border-gray-300 rounded-md p-2 w-90"
+                            className = "w-80 h-8 rounded-md border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                             onChange={(e) =>
                                 setForm({ ...form, comments: e.target.value })
                             }
                         />
+                        </div>
 
-                        <Button type="submit" className="mt-6">
+
+                        <Button type="submit" className="mt-6 w-full rounded-2xl border">
                             Submit
                         </Button>
                     </form>
                 </div>
                 </ScrollArea>
                 :
-                <ReturnSanitationRequest
-                    roomNum={form.roomNum}
-                    type={form.type}
-                    status={form.status}
-                    comments={form.comments}
-                    requestStatus={form.requestStatus}
-                    priority={form.priority}
-                    employeeRequestedById={form.employeeRequestedById}
-                    departmentUnderId={form.departmentUnderId}
-                    employeeName={form.employeeName}
-                />
+                <SubmissionReqPopup>
+                    <ReturnSanitationRequest {...form} />
+                </SubmissionReqPopup>
             }
         </>
     );

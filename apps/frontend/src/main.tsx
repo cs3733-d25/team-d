@@ -11,7 +11,8 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         domain="dev-b5d68fi8od5s513y.us.auth0.com"
         clientId="jepCXrJUcBq34pKdSGGzd2sidUxVpnsL"
         authorizationParams={{
-            redirect_uri: 'http://localhost:3000/directory'
+            redirect_uri: window.location.origin + '/directory'
+            // redirect_uri: 'http://localhost:3000/directory'
         }}
     >
         <App />

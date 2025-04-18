@@ -1,17 +1,18 @@
 import React from 'react';
 import { Outlet, Link } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     NavigationMenu,
     NavigationMenuItem,
     NavigationMenuLink,
     NavigationMenuList,
 } from "@/components/ui/navigation-menu"
-import hospitalLogo from "@/public/hospital2.png";
-import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
+
 import Banner from "@/components/Banner";
 import Auth0LogoutButton from "@/components/Auth0LogoutButton.tsx";
+import AccessDropMenu from "@/components/Accessibility.tsx";
+
+
 
 export default function Navbar() {
     const { isAuthenticated, isLoading } = useAuth0();
@@ -26,15 +27,24 @@ export default function Navbar() {
                 <div className={"ml-auto"}>
                     <NavigationMenu className={'ml-auto p-4'}>
                         <NavigationMenuList className={'flex flex-row space-x-5'}>
+
+
+                            <NavigationMenuItem>
+                                <NavigationMenuLink className="text-base hover:bg-blue-950 py-1">
+                                    <b><AccessDropMenu /></b>
+                                </NavigationMenuLink>
+                            </NavigationMenuItem>
+
+
                             <NavigationMenuItem>
                                 <NavigationMenuLink className={'text-base hover:bg-[rgba(0,31,63,0.8)] hover:text-white'}>
-                                    <Link to={`/directory`}><b>Directions</b></Link>
+                                    <Link to={`/directory`}>Directions</Link>
                                 </NavigationMenuLink>
                             </NavigationMenuItem>
 
                             <NavigationMenuItem>
                                 <NavigationMenuLink className={'text-base hover:bg-[rgba(0,31,63,0.8)] hover:text-white'}>
-                                    <Link to={`/servicerequesthub`}><b>Request Service</b></Link>
+                                    <Link to={`/servicerequesthub`}>Request Service</Link>
                                 </NavigationMenuLink>
                             </NavigationMenuItem>
 
@@ -42,13 +52,19 @@ export default function Navbar() {
                                 <>
                                     <NavigationMenuItem>
                                         <NavigationMenuLink className={'text-base hover:bg-[rgba(0,31,63,0.8)] hover:text-white'}>
-                                            <Link to={`/all-service-requests`}><b>All Requests</b></Link>
+                                            <Link to={`/all-service-requests`}>All Requests</Link>
                                         </NavigationMenuLink>
                                     </NavigationMenuItem>
 
                                     <NavigationMenuItem>
                                         <NavigationMenuLink className={'text-base hover:bg-[rgba(0,31,63,0.8)] hover:text-white'}>
-                                            <Link to={`/admin-database`}><b>Directory Management</b></Link>
+                                            <Link to={`/admin-database`}>Directory Management</Link>
+                                        </NavigationMenuLink>
+                                    </NavigationMenuItem>
+
+                                    <NavigationMenuItem>
+                                        <NavigationMenuLink className={'text-base hover:bg-[rgba(0,31,63,0.8)] hover:text-white'}>
+                                            <Link to={`/map-editor`}>Map Editor</Link>
                                         </NavigationMenuLink>
                                     </NavigationMenuItem>
 

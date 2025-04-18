@@ -5,8 +5,10 @@ import {Label} from "@/components/ui/label.tsx";
 import {useState} from "react";
 import {API_ROUTES} from "common/src/constants.ts";
 import axios from "axios";
-import ReturnTranslatorRequest from "@/components/ReturnTranslatorRequest.tsx";
+import ReturnTranslatorRequest from "@/components/ServiceRequest/TranslatorRequest/ReturnTranslatorRequest.tsx";
 import {ScrollArea} from "@/components/ui/scrollarea.tsx";
+import SubmissionReqPopup from "@/components/SubmissionReqPopup.tsx";
+import ReturnSanitationRequest from "@/components/ServiceRequest/SanitationRequest/ReturnSanitationRequest.tsx";
 
 type translatorRequestForm = {
     languageFrom: string;
@@ -39,23 +41,31 @@ export default function TranslatorServiceRequest() {
     });
 
     const [submitted, setSubmitted] = useState(false);
+    const [showPopup, setShowPopup] = useState(false);
 
     const onSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         // console.log(form);
         setSubmitted(false);
-        axios.post(API_ROUTES.SERVICEREQS+'/translator', form).then(() => {
-            alert("Service request submitted!");
-            setSubmitted(true);
-        });
-    }
 
+        axios
+            .post(API_ROUTES.SERVICEREQS + "/translator", form)
+            .then(() => {
+                setSubmitted(true);
+                setShowPopup(true);
+            })
+            .catch((err) => {
+                console.error("Error submitting translator request:", err);
+            });
+    };
     return (
         <>
             {!submitted ?
-                <ScrollArea className="max-h-[100vh] overflow-y-auto pr-4">
+                <ScrollArea className="max-h-[95vh] overflow-y-auto pr-4 w-full max-w-screen-lg mx-auto bg-zinc-200">
                 <div className="flex flex-col gap-4">
-                    <h2 className="text-4xl fontbold pb-3" >Request a Translator</h2>
+                    <div className="bg-blue-200 bg-opacity-60 rounded-3xl px-6 py-4 max-w-5xl w-full mx-auto">
+                        <h2 className="text-4xl font-bold text-left">Request a Translator</h2>
+                    </div>
                         <form onSubmit={onSubmit}>
                             <div>
                                 <Label className="pt-4 pb-2" htmlFor="employeeId">Employee ID</Label>
@@ -63,7 +73,7 @@ export default function TranslatorServiceRequest() {
                                     required
                                     type="number"
                                     id="employeeId"
-                                    className='border border-gray-300 rounded-md p-2'
+                                    className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                     onChange={(e) =>
                                         setForm({
                                             ...form,
@@ -79,7 +89,7 @@ export default function TranslatorServiceRequest() {
                                     required
                                     type="text"
                                     id="employeeName"
-                                    className='border border-gray-300 rounded-md p-2'
+                                    className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                     onChange={(e) =>
                                         setForm({
                                             ...form,
@@ -94,7 +104,7 @@ export default function TranslatorServiceRequest() {
                                 <select
                                     required
                                     id="department"
-                                    className='border border-gray-300 rounded-md p-2'
+                                    className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                     onChange={(e) =>
                                         setForm({
                                             ...form,
@@ -131,7 +141,7 @@ export default function TranslatorServiceRequest() {
                                     required
                                     type="text"
                                     id="roomNumber"
-                                    className='border border-gray-300 rounded-md p-2'
+                                    className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                     onChange={(e) =>
                                         setForm({
                                             ...form,
@@ -147,7 +157,7 @@ export default function TranslatorServiceRequest() {
                                     required
                                     type="text"
                                     id="languageFrom"
-                                    className='border border-gray-300 rounded-md p-2'
+                                    className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                     onChange={(e) =>
                                         setForm({
                                             ...form,
@@ -163,7 +173,7 @@ export default function TranslatorServiceRequest() {
                                     required
                                     type="text"
                                     id="languageTo"
-                                    className='border border-gray-300 rounded-md p-2'
+                                    className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                     onChange={(e) =>
                                         setForm({
                                             ...form,
@@ -179,7 +189,7 @@ export default function TranslatorServiceRequest() {
                                     required
                                     type="datetime-local"
                                     id="startDateTime"
-                                    className='border border-gray-300 rounded-md p-2'
+                                    className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                     onChange={(e) =>
                                         setForm({
                                             ...form,
@@ -195,7 +205,7 @@ export default function TranslatorServiceRequest() {
                                     required
                                     type="datetime-local"
                                     id="languageFrom"
-                                    className='border border-gray-300 rounded-md p-2'
+                                    className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                     onChange={(e) =>
                                         setForm({
                                             ...form,
@@ -210,7 +220,7 @@ export default function TranslatorServiceRequest() {
                                 <select
                                     required
                                     id="priority"
-                                    className='border border-gray-300 rounded-md p-2'
+                                    className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                     onChange={(e) =>
                                         setForm({
                                             ...form,
@@ -229,7 +239,7 @@ export default function TranslatorServiceRequest() {
                                 <select
                                     required
                                     id="requestStatus"
-                                    className='border border-gray-300 rounded-md p-2'
+                                    className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                     onChange={(e) =>
                                         setForm({
                                             ...form,
@@ -237,43 +247,35 @@ export default function TranslatorServiceRequest() {
                                         })
                                     }>
                                     <option value="">-- Select Status --</option>
-                                    <option value="Incomplete">Incomplete</option>
-                                    <option value="Pending">Pending</option>
-                                    <option value="Complete">Complete</option>
                                     <option value="Unassigned">Unassigned</option>
+                                    <option value="Assigned">Assigned</option>
+                                    <option value="Working">Working</option>
+                                    <option value="Done">Done</option>
                                 </select>
                             </div>
 
                             <Label className="pt-4 pb-2" htmlFor="comments">Comments</Label>
                             <textarea
                                 id="comments"
-                                className="border border-gray-300 rounded-md p-2 w-60"
+                                className = "w-80 h-8 rounded-md border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                 onChange={(e) =>
                                     setForm({ ...form, comments: e.target.value })
                                 }
                             />
 
                             <div className="flex flex-row justify-center items-center">
-                                <Button type="submit" className="mt-5">Submit</Button>
+                                <Button type="submit" className="mt-6 w-full">
+                                    Submit
+                                </Button>
                             </div>
                         </form>
                 </div>
                 </ScrollArea>
 
             :
-                <ReturnTranslatorRequest
-                    employeeRequestedById={form.employeeRequestedById}
-                    departmentUnderId={form.departmentUnderId}
-                    languageFrom={form.languageFrom}
-                    languageTo={form.languageTo}
-                    roomNum={form.roomNum}
-                    startDateTime={form.startDateTime}
-                    endDateTime={form.endDateTime}
-                    priority={form.priority}
-                    comments={form.comments}
-                    requestStatus={form.requestStatus}
-                    employeeName={form.employeeName}
-                />
+                <SubmissionReqPopup>
+                    <ReturnTranslatorRequest {...form} />
+                </SubmissionReqPopup>
             }
         </>
     );

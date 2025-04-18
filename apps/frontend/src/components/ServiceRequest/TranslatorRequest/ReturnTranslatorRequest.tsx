@@ -1,4 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card.tsx';
+import { ScrollArea} from "@/components/ui/scrollarea.tsx";
 import { Label } from '@/components/ui/label.tsx';
 
 type translatorRequestForm = {
@@ -17,7 +18,8 @@ type translatorRequestForm = {
 
 const ReturnTranslatorRequest = (props: translatorRequestForm) => {
     return (
-        <div className="grid  h-full items-center">
+        <ScrollArea>
+        <div className="grid  h-100 items-center">
             <div className="">
                 <div className="place-content-center">
                     <CardTitle className="text-3xl">Request Summary</CardTitle>
@@ -81,6 +83,7 @@ const ReturnTranslatorRequest = (props: translatorRequestForm) => {
                 </div>
             </div>
         </div>
+        </ScrollArea>
     );
 };
 

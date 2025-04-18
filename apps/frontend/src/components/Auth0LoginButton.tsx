@@ -7,7 +7,7 @@ const LoginButton = () => {
     return (
         <div className="">
             <button onClick={() => loginWithRedirect()}
-                    className="text-2xl pd-10 border-4 border-white rounded-full text-center bg-black/30 hover:bg-black/60 text-white
+                    className="text-2xl border-4 w-80 border-white rounded-full text-center bg-black/30 hover:bg-black/60 text-white
                     animate-in fade-in zoom-in duration-500 p-4 font-nunito hover:scale-110 cursor-pointer"
             >
                 LOGIN

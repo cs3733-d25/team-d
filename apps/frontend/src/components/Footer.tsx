@@ -1,7 +1,5 @@
 import React from 'react';
-import { Outlet, Link } from "react-router-dom";
-import Banner from "@/components/Banner";
-import hospitalLogo from "@/public/hospital2.png";
+
 
 // Use for comments
 {/**/}
@@ -21,7 +19,7 @@ export default function Footer() {
                             />
                         </a>
                         <p className="mt-6">
-                            FOOTER
+                            CS 3733 - Team D
                         </p>
                     </div>
                     {/*Company*/}
@@ -43,7 +41,7 @@ export default function Footer() {
                                     href="#"
                                     className=" hover:text-gray-400 transition-all duration-500 ease-in-out"
                                 >
-                                    Serivces </a
+                                    Services </a
                                 >
                             </li>
                             <li>
@@ -97,7 +95,9 @@ export default function Footer() {
                         <p className="mt-6">Sign up and receive the latest news from our site via email</p>
                         <form action="">
                             <div className="my-3">
-                                <label htmlFor="email-input">Enter your email <span className="text-red-600"></span></label>
+                                <label htmlFor="email-input"
+                                >Enter your email <span className="text-red-600">*</span>
+                                </label>
                                 <input
                                     type="email"
                                     id="email-input"
@@ -105,11 +105,26 @@ export default function Footer() {
                                     placeholder="name@example.com"
                                 />
                             </div>
-                        </form>
-                    </div>
+                            <input
+                                type="submit"
+                                className="py-2 px-5 tracking-wide border duration-500 text-base text-center
+                                bg-gray-300 hover:bg- border-gray-300 text-black rounded-md w-full"
+                            />
+                    </form>
+                </div>
+            </div>
+        </div>
+            <div className="border-t border-slate-700">
+                <div className="md:text-left text-center container mx-auto py-7 px-6">
+                    <p className="mb-0">
+                        &copy;
+                        2025
+                        Brigham and Women's Hospital
+                    </p>
                 </div>
             </div>
         </footer>
-        </>
-    );
+</>
+)
+    ;
 }
