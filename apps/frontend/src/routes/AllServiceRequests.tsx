@@ -82,6 +82,11 @@ export type ServiceRequest = {
     // employeeName: string; // For later use
 }
 
+export const exactFilter: FilterFn<any> = (row, columnId, filterValue) => {
+    const cellValue = row.getValue(columnId);
+    return filterValue === "" || cellValue === filterValue;
+}
+
 export const columns: ColumnDef<ServiceRequest>[] = [
     {
         accessorKey: "requestId",
@@ -95,7 +100,10 @@ export const columns: ColumnDef<ServiceRequest>[] = [
                     <ArrowUpDown />
                 </Button>
             )
-        }
+        },
+        meta: {
+            filterVariant: undefined,
+        },
     },
     {
         accessorKey: "employeeRequestedById",
@@ -109,7 +117,10 @@ export const columns: ColumnDef<ServiceRequest>[] = [
                     <ArrowUpDown />
                 </Button>
             )
-        }
+        },
+        meta: {
+            filterVariant: undefined,
+        },
     },
     {
         accessorKey: "assignedEmployeeId",
@@ -123,7 +134,10 @@ export const columns: ColumnDef<ServiceRequest>[] = [
                     <ArrowUpDown />
                 </Button>
             )
-        }
+        },
+        meta: {
+            filterVariant: undefined,
+        },
     },
     {
         accessorKey: "departmentUnderId",
@@ -137,7 +151,10 @@ export const columns: ColumnDef<ServiceRequest>[] = [
                     <ArrowUpDown />
                 </Button>
             )
-        }
+        },
+        meta: {
+            filterVariant: undefined,
+        },
     },
     {
         accessorKey: "roomNum",
@@ -145,7 +162,10 @@ export const columns: ColumnDef<ServiceRequest>[] = [
             return (
                 <Button variant="ghost">Room Number</Button>
             )
-        }
+        },
+        meta: {
+            filterVariant: undefined,
+        },
     },
     {
         accessorKey: "comments",
@@ -153,7 +173,10 @@ export const columns: ColumnDef<ServiceRequest>[] = [
             return (
                 <Button variant="ghost">Comments</Button>
             )
-        }
+        },
+        meta: {
+            filterVariant: undefined,
+        },
     },
     {
         accessorKey: "priority",
@@ -161,6 +184,7 @@ export const columns: ColumnDef<ServiceRequest>[] = [
         meta: {
             filterVariant: 'select',
         },
+        filterFn: exactFilter,
     },
         // <DropdownMenu>
         //     <DropdownMenuTrigger asChild>
@@ -190,17 +214,11 @@ export const columns: ColumnDef<ServiceRequest>[] = [
         // </DropdownMenu>
     {
         accessorKey: "requestStatus",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Status
-                    <ArrowUpDown />
-                </Button>
-            )
-        }
+        header: 'Status',
+        meta: {
+            filterVariant: 'select',
+        },
+        filterFn: exactFilter,
     },
     {
         accessorKey: "createdAt",
@@ -214,7 +232,10 @@ export const columns: ColumnDef<ServiceRequest>[] = [
                     <ArrowUpDown />
                 </Button>
             )
-        }
+        },
+        meta: {
+            filterVariant: undefined,
+        },
     },
     {
         accessorKey: "updatedAt",
@@ -228,7 +249,10 @@ export const columns: ColumnDef<ServiceRequest>[] = [
                     <ArrowUpDown />
                 </Button>
             )
-        }
+        },
+        meta: {
+            filterVariant: undefined,
+        },
     },
 ]
 
@@ -262,33 +286,50 @@ export default function ShowAllRequests() {
         }
     };
 
-    useEffect(() => {
-        fetchData();
-    }, []);
-
     const [sorting, setSorting] = React.useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
         []
     )
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    const [pagination, setPagination] = React.useState({
+        pageIndex: 0,
+        pageSize: 10,
+    })
     const table = useReactTable({
         data,
         columns,
         onSortingChange: setSorting,
         onColumnFiltersChange: setColumnFilters,
         getCoreRowModel: getCoreRowModel(),
+        manualPagination: true,
         getPaginationRowModel: getPaginationRowModel(),
         getSortedRowModel: getSortedRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
         state: {
             sorting,
             columnFilters,
-        }
+            pagination,
+        },
+        initialState: {
+            pagination: {
+                pageIndex: pagination.pageIndex,
+                pageSize: data.length,
+            },
+        },
+        onPaginationChange: setPagination,
     })
 
     return (
-        <div className="p-10">
+        <div className="min-h-screen w-full p-10 bg-white">
+            <div className="flex items-center gap-4 mb-6">
+                <h2 className="text-2xl font-bold">Service Request Database</h2>
+            </div>
             <div className="rounded-md border">
-                <Table>
+                <Table className="table-auto w-full">
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
@@ -321,8 +362,8 @@ export default function ShowAllRequests() {
                                                             header.getContext()
                                                         )}
                                                         {{
-                                                            asc: ' 🔼',
-                                                            desc: ' 🔽',
+                                                            //asc: ' ↑',
+                                                            //desc: ' ↓',
                                                         }[header.column.getIsSorted() as string] ?? null}
                                                     </div>
                                                     {header.column.getCanFilter() ? (
@@ -339,7 +380,35 @@ export default function ShowAllRequests() {
                         ))}
                     </TableHeader>
 
-
+                    <TableBody>
+                        {table.getRowModel().rows?.length ? (
+                            table.getRowModel().rows.map((row) => (
+                                <TableRow
+                                    className="even:bg-gray-50 hover:bg-blue-100"
+                                    key={row.id}
+                                    data-state={row.getIsSelected() && "selected"}
+                                >
+                                    {row.getVisibleCells().map((cell) => (
+                                        <TableCell key={cell.id} className="text-center py-2 border-b">
+                                            {flexRender(
+                                                cell.column.columnDef.cell,
+                                                cell.getContext()
+                                            )}
+                                        </TableCell>
+                                    ))}
+                                </TableRow>
+                            ))
+                        ) : (
+                            <TableRow>
+                                <TableCell
+                                    colSpan={columns.length}
+                                    className="h-23 text-center"
+                                >
+                                    No Results.
+                                </TableCell>
+                            </TableRow>
+                        )}
+                    </TableBody>
                 </Table>
             </div>
         </div>
@@ -530,55 +599,35 @@ function Filter({ column }: { column: Column<any, unknown> }) {
     const columnFilterValue = column.getFilterValue()
     const { filterVariant } = column.columnDef.meta ?? {}
 
-    return filterVariant === "select" ? (
-        <select
-            onChange={e => column.setFilterValue(e.target.value)}
-            value={columnFilterValue?.toString()}
-        >
-            {}
-            <option value="">All</option>
-            <option value="Low">Low</option>
-            <option value="Medium">Medium</option>
-            <option value="High">High</option>
-            <option value="Emergency">Emergency</option>
-        </select>
-    ) : (
-        <DebouncedInput
-            className="w-36 border shadow rounded"
-            onChange={value => column.setFilterValue(value)}
-            placeholder={`Search...`}
-            type="text"
-            value={(columnFilterValue ?? '') as string}
-        />
-    )
+    if(filterVariant === "select" && column.id === "priority") {
+        return (
+            <select
+                onChange={e => column.setFilterValue(e.target.value)}
+                value={columnFilterValue?.toString()}
+            >
+                {}
+                <option value="">All</option>
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+                <option value="Emergency">Emergency</option>
+            </select>
+        );
+    } else if (filterVariant === "select" && column.id === "requestStatus") {
+        return (
+            <select
+                onChange={e => column.setFilterValue(e.target.value)}
+                value={columnFilterValue?.toString()}
+            >
+                {}
+                <option value="">All</option>
+                <option value="Unassigned">Unassigned</option>
+                <option value="Assigned">Assigned</option>
+                <option value="Working">Working</option>
+                <option value="Done">Done</option>
+            </select>
+        )
+    }
+
+    return null;
 }
-
-function DebouncedInput({
-                            value: initialValue,
-                            onChange,
-                            debounce = 500,
-                            ...props
-                        }: {
-    value: string | number
-    onChange: (value: string | number) => void
-    debounce?: number
-} & Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'>) {
-    const [value, setValue] = React.useState(initialValue)
-
-    React.useEffect(() => {
-        setValue(initialValue)
-    }, [initialValue])
-
-    React.useEffect(() => {
-        const timeout = setTimeout(() => {
-            onChange(value)
-        }, debounce)
-
-        return () => clearTimeout(timeout)
-    }, [value])
-
-    return (
-        <input {...props} value={value} onChange={e => setValue(e.target.value)} />
-    )
-}
-
