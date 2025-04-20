@@ -11,7 +11,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import ServiceRequestbutton from "@/components/ServiceRequestbutton.tsx";
 
 // Use for comments
-{/**/}
+{/*lol*/}
 
 
 export default function Home() {
