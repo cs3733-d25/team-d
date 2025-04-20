@@ -15,12 +15,14 @@ import Auth0Profile from "@/components/Auth0Profile.tsx";
 
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import SanitationRequest from "@/components/ServiceRequest/SanitationRequest/SanitationRequest.tsx";
+import NewDirections from "@/routes/NewDirections.tsx";
 
 function App() {
     return (
         <div className="h-screen bg-accent flex flex-col parent">
             <BrowserRouter>
                 <Routes>
+                    <Route path="/gmap" element={<NewDirections />} />
                     <Route path="/" element={<Navbar />}>
                         <Route index element={<Home />} />
                         <Route path="directory" element={<Directions editor={false} />} />
