@@ -7,10 +7,11 @@ import MapButton from "@/components/MapButton.tsx";
 import DirectoryButton from "@/components/DirectoryButton.tsx";
 import Footer from "@/components/Footer.tsx";
 import { useAuth0 } from "@auth0/auth0-react";
+import {useNavigate} from "react-router-dom";
 
-// Use for comments
-{/**/}
 
+// Placeholder for animated icons
+const AnimatedIcon = () => <div className="w-8 h-8 bg-blue-500 rounded-full animate-bounce"></div>;
 
 export default function Home() {
     const { user, isAuthenticated } = useAuth0();
@@ -19,40 +20,63 @@ export default function Home() {
         <div className="grid grid-rows-[auto_1fr_auto] w-full min-h-screen overflow-hidden">
 
             {/* Hero Section */}
-            <div className="relative grid grid-rows-[auto_auto_auto] gap-3 w-full h-screen items-center justify-center">
+            <div className="relative grid w-full h-screen items-center justify-center">
 
-                {/* Background Animation Layer */}
-                <div className="absolute inset-0 -z-10 flex items-center justify-center">
-                    <AnimatedGraphic />
+                {/* Background Layer */}
+                <div className="absolute inset-0 bg-[url(../public/Hospital.jpg)] bg-cover bg-center bg-no-repeat">
+                    <div className="absolute inset-0 bg-yellow-600/10 mix-blend-multiply pointer-events-none"></div>
+                    <div className="absolute inset-0 bg-zinc-900/50 pointer-events-none"></div>
                 </div>
 
-                {/* Background Image - Full Coverage */}
-                <div className="absolute inset-0 bg-[url(../public/Hospital.jpg)] bg-cover bg-center bg-no-repeat"></div>
+                {/* Content Layer */}
+                <div className="relative z-10 flex flex-col items-center gap-6 text-center">
 
-                {/* Background Overlays for Styling */}
-                <div className="absolute inset-0 bg-yellow-600/10 mix-blend-multiply pointer-events-none"></div>
-                <div className="absolute inset-0 bg-zinc-900/50 pointer-events-none"></div>
+                    {/* Hero Text */}
+                    <div className="w-full pb-4">
+                        <HeroTextBox />
+                    </div>
 
-                {/* Hero Text - Ensuring Visibility */}
-                <div className="relative z-10 text-white text-center">
-                    <HeroTextBox />
-                </div>
+                    {/* Buttons Section */}
+                    <div className="grid flex justify-center grid-cols-3 gap-70 mt-4 w-full max-w-lg">
+                        <div className=" w-[250px] h-[250px] bg-[#F1F1F1] border-white">
+                            <div className="flex-grow flex items-center justify-center w-full">
+                                <AnimatedMap />
+                            </div>
+                            {!isAuthenticated && (
+                                <div>
+                                    <Auth0LoginButton />
+                                </div>)}
+                        </div>
 
-                {/* Animated Map Below Hero */}
-                <div className="relative z-10 place-self-center">
-                    <AnimatedMap />
-                </div>
 
-                {/* Buttons Section */}
-                <div className="relative z-10 grid grid-cols-3 gap-6 justify-center mt-6">
-                    {!isAuthenticated && <Auth0LoginButton />}
-                    <MapButton />
-                    <DirectoryButton />
+                        {/* Map Section - Purple Box */}
+                        <div className=" w-[250px] h-[250px] bg-[#F1F1F1] border-white">
+                            {/* Animated Map */}
+                            <div className="flex-grow flex items-center justify-center w-full">
+                                <AnimatedMap />
+                            </div>
+
+                            <MapButton />
+                        </div>
+
+
+
+
+                        {/* Directory Button */}
+                        <div className=" w-[250px] h-[250px] bg-[#F1F1F1] border-white">
+                            {/* Animated Map */}
+                            <div className="flex-grow flex items-center justify-center w-full">
+                                <AnimatedMap />
+                            </div>
+
+                            <DirectoryButton />
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            {/* Footer Section - Separate Row */}
-            <div className="w-full bg-white py-12">
+            {/* Footer */}
+            <div className="w-full">
                 <Footer />
             </div>
         </div>
