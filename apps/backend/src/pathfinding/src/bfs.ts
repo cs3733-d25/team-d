@@ -1,19 +1,15 @@
-import { Coordinates } from 'common/src/constants.ts';
+import { Coordinates, NodePathResponse, NodePathResponseType } from 'common/src/constants.ts';
 import { readFileSync } from 'fs';
 import { PrismaClient } from 'database';
 import { euclideanDistance } from './distance.ts';
 
 class GraphNode {
     private readonly neighbors: GraphNode[];
-    readonly id: number;
-    readonly tags: string;
-    readonly coords: Coordinates;
+    readonly data: NodePathResponse;
 
-    constructor(id: number, tags: string, coords: Coordinates) {
+    constructor(data: NodePathResponse) {
         this.neighbors = [];
-        this.id = id;
-        this.tags = tags;
-        this.coords = coords;
+        this.data = data;
         // this.makeNode().then();
     }
     // //creates a Node data entry in the Node database
@@ -47,20 +43,20 @@ class GraphNode {
 
 class Graph {
     private readonly nodesMap: Map<number, GraphNode>;
-    private readonly nodesList: GraphNode[];
+    // private readonly nodesList: GraphNode[];
 
     constructor() {
         this.nodesMap = new Map();
-        this.nodesList = [];
+        // this.nodesList = [];
     }
 
-    addNode(id: number, tags: string, coords: Coordinates): void {
-        if (!this.nodesMap.has(id)) {
-            const newNode = new GraphNode(id, tags, coords);
-            this.nodesMap.set(id, newNode);
-            this.nodesList.push(newNode);
+    addNode(data: NodePathResponse): void {
+        if (!this.nodesMap.has(data.nodeId)) {
+            const newNode = new GraphNode(data);
+            this.nodesMap.set(data.nodeId, newNode);
+            // this.nodesList.push(newNode);
         } else {
-            throw new Error(`Node ${id} already exists`);
+            throw new Error(`Node ${data.nodeId} already exists`);
         }
     }
 
@@ -69,12 +65,7 @@ class Graph {
         const node2 = this.nodesMap.get(id2);
         if (!node1 || !node2) {
             throw new Error(`Node ${id2} or Node ${id2} does not exist`);
-        } else if (
-            node1
-                .getNeighbors()
-                .map((node) => node.id)
-                .indexOf(id2) === -1
-        ) {
+        } else {
             node1.addNeighbor(node2);
             node2.addNeighbor(node1);
         }
@@ -148,107 +139,108 @@ class Graph {
     // });
     // }
 
-    pathFind(departmentCoords: Coordinates): Coordinates[][] {
-        const checkpointCanidates: GraphNode[] = this.nodesList.filter((node) => {
-            return node.tags.indexOf('[Checkpoint') >= 0;
-        });
+    // pathFind(departmentCoords: Coordinates): Coordinates[][] {
+    //     const checkpointCanidates: GraphNode[] = this.nodesList.filter((node) => {
+    //         return node.tags.indexOf('[Checkpoint') >= 0;
+    //     });
+    //
+    //     if (checkpointCanidates.length === 0) return [[]];
+    //
+    //     // console.log(checkpointCanidates);
+    //
+    //     // TODO: select the node with the shortest distance to departmentCoords instead of just the first one
+    //     const checkpointNode = checkpointCanidates.reduce((closest, node) => {
+    //         if (
+    //             euclideanDistance(node.coords, departmentCoords) <
+    //             euclideanDistance(closest.coords, departmentCoords)
+    //         ) {
+    //             return node;
+    //         } else {
+    //             return closest;
+    //         }
+    //     });
+    //
+    //     const doorCanidates: GraphNode[] = this.nodesList.filter((node) => {
+    //         return node.tags.indexOf('[Door') >= 0;
+    //     });
+    //
+    //     if (doorCanidates.length === 0) return [[]];
+    //
+    //     // console.log(doorCanidates);
+    //
+    //     // TODO: select the node with the shortest distance to departmentCoords instead of just the first one
+    //     const doorNode = doorCanidates.reduce((closest, node) => {
+    //         if (
+    //             euclideanDistance(node.coords, departmentCoords) <
+    //             euclideanDistance(closest.coords, departmentCoords)
+    //         ) {
+    //             return node;
+    //         } else {
+    //             return closest;
+    //         }
+    //     });
+    //
+    //     const entranceNode = this.nodesList.find((node) => {
+    //         return (
+    //             node.tags.indexOf('[Entrance' + doorNode.tags.charAt(doorNode.tags.length - 2)) >= 0
+    //         );
+    //     });
+    //
+    //     if (!entranceNode) return [[]];
+    //
+    //     // console.log(entranceNode);
+    //
+    //     const parkingCanidates: GraphNode[] = this.nodesList.filter((node) => {
+    //         return node.tags.indexOf('[Parking') >= 0;
+    //     });
+    //
+    //     if (parkingCanidates.length === 0) return [[]];
+    //
+    //     const parkingNode = parkingCanidates[0];
+    //
+    //     // console.log(parkingNode);
+    //
+    //     return [this.bfs(doorNode, checkpointNode), this.bfs(parkingNode, entranceNode)];
+    //
+    //     // const entranceCanidates: GraphNode[] = this.nodesList.filter((node) => {
+    //     //     return node.tags.indexOf('[Entrance') >= 0;
+    //     // });
+    //     // console.log(entranceCanidates.length);
+    //     //
+    //     // const parkingCanidates: GraphNode[] = this.nodesList.filter((node) => {
+    //     //     return node.tags.indexOf('[Parking') >= 0;
+    //     //     // return node.tags === 'Entrance point';
+    //     // });
+    //     // console.log(parkingCanidates.length);
+    //     //
+    //     //
+    //
+    //     // return [this.bfs(parkingCanidates[0], entranceCanidates[0])];
+    // }
 
-        if (checkpointCanidates.length === 0) return [[]];
+    bfs(startNodeType: NodePathResponseType, endNodeId: number): NodePathResponse[] {
+        const endNode = this.nodesMap.get(endNodeId);
+        if (!endNode) {
+            throw new Error(`Node ${endNodeId} not found`);
+        }
 
-        // console.log(checkpointCanidates);
-
-        // TODO: select the node with the shortest distance to departmentCoords instead of just the first one
-        const checkpointNode = checkpointCanidates.reduce((closest, node) => {
-            if (
-                euclideanDistance(node.coords, departmentCoords) <
-                euclideanDistance(closest.coords, departmentCoords)
-            ) {
-                return node;
-            } else {
-                return closest;
-            }
-        });
-
-        const doorCanidates: GraphNode[] = this.nodesList.filter((node) => {
-            return node.tags.indexOf('[Door') >= 0;
-        });
-
-        if (doorCanidates.length === 0) return [[]];
-
-        // console.log(doorCanidates);
-
-        // TODO: select the node with the shortest distance to departmentCoords instead of just the first one
-        const doorNode = doorCanidates.reduce((closest, node) => {
-            if (
-                euclideanDistance(node.coords, departmentCoords) <
-                euclideanDistance(closest.coords, departmentCoords)
-            ) {
-                return node;
-            } else {
-                return closest;
-            }
-        });
-
-        const entranceNode = this.nodesList.find((node) => {
-            return (
-                node.tags.indexOf('[Entrance' + doorNode.tags.charAt(doorNode.tags.length - 2)) >= 0
-            );
-        });
-
-        if (!entranceNode) return [[]];
-
-        // console.log(entranceNode);
-
-        const parkingCanidates: GraphNode[] = this.nodesList.filter((node) => {
-            return node.tags.indexOf('[Parking') >= 0;
-        });
-
-        if (parkingCanidates.length === 0) return [[]];
-
-        const parkingNode = parkingCanidates[0];
-
-        // console.log(parkingNode);
-
-        return [this.bfs(doorNode, checkpointNode), this.bfs(parkingNode, entranceNode)];
-
-        // const entranceCanidates: GraphNode[] = this.nodesList.filter((node) => {
-        //     return node.tags.indexOf('[Entrance') >= 0;
-        // });
-        // console.log(entranceCanidates.length);
-        //
-        // const parkingCanidates: GraphNode[] = this.nodesList.filter((node) => {
-        //     return node.tags.indexOf('[Parking') >= 0;
-        //     // return node.tags === 'Entrance point';
-        // });
-        // console.log(parkingCanidates.length);
-        //
-        //
-
-        // return [this.bfs(parkingCanidates[0], entranceCanidates[0])];
-    }
-
-    bfs(start: GraphNode, end: GraphNode): Coordinates[] {
         const visited = new Set<number>();
-        const queue: { node: GraphNode; path: Coordinates[] }[] = [
-            { node: start, path: [start.coords] },
+        const queue: { node: GraphNode; path: GraphNode[] }[] = [
+            { node: endNode, path: [endNode] },
         ];
 
         while (queue.length > 0) {
             const { node, path } = queue.shift()!;
-            if (node.id === end.id) {
-                return path;
+            if (node.data.type === startNodeType) {
+                return path.map((node) => node.data).reverse();
             }
-            visited.add(node.id);
+            visited.add(node.data.nodeId);
             for (const neighbor of node.getNeighbors()) {
-                if (!visited.has(neighbor.id)) {
-                    queue.push({ node: neighbor, path: [...path, neighbor.coords] });
+                if (!visited.has(neighbor.data.nodeId)) {
+                    queue.push({ node: neighbor, path: [...path, neighbor] });
                 }
             }
         }
-        return [];
-    }
-
-    search(startNodeId: number, endNodeId: number): number[] {
         return [];
     }
 

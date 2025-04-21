@@ -4,13 +4,14 @@ const router: Router = express.Router();
 import { Graph } from 'backend/src/pathfinding/src/bfs.ts';
 import PrismaClient from '../bin/prisma-client';
 
-import {euclideanDistance} from "../pathfinding/src/distance.ts";
+import { euclideanDistance } from '../pathfinding/src/distance.ts';
 import {
-    FloorPathResponse, HospitalOptions,
+    FloorPathResponse,
+    HospitalOptions,
     NodePathResponse,
     PathfindingOptions,
-    PathfindingResponse
-} from "common/src/constants.ts";
+    PathfindingResponse,
+} from 'common/src/constants.ts';
 
 router.get('/options', async (req: Request, res: Response) => {
     const hospitals = await PrismaClient.hospital.findMany({
@@ -36,10 +37,10 @@ router.get('/options', async (req: Request, res: Response) => {
             hospitalId: hospital.hospitalId,
             name: hospital.name,
             departments: [],
-        })
+        });
         hospital.Buildings.forEach((building) => {
-            building.FloorGraphs.forEach(floorGraph => {
-                floorGraph.Departments.forEach(department => {
+            building.FloorGraphs.forEach((floorGraph) => {
+                floorGraph.Departments.forEach((department) => {
                     response.hospitals[i].departments.push({
                         departmentId: department.departmentId,
                         name: department.name,
@@ -53,11 +54,10 @@ router.get('/options', async (req: Request, res: Response) => {
         });
     });
 
-    res.json(hospitals);
+    res.json(response);
 });
 
-router.get('/pathfind/:did', async (req: Request, res: Response) => {
-
+router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
     // Find the department with the given id
     const department = await PrismaClient.department.findUnique({
         where: {
@@ -68,29 +68,29 @@ router.get('/pathfind/:did', async (req: Request, res: Response) => {
     // If it doesn't exist return 404
     // (most likely a bad request)
     if (!department) {
-        res.status(404).send({message: 'Department not found'});
+        res.status(404).send({ message: 'Department not found' });
         return;
     }
 
     // Find the floor graph of that department
     const topFloorGraph = await PrismaClient.floorGraph.findUnique({
         where: {
-            graphId: department.departmentId,
+            graphId: department.floorGraphId,
         },
         include: {
             Graph: {
                 include: {
                     Nodes: true,
                     Edges: true,
-                }
-            }
+                },
+            },
         },
     });
 
     // If it doesn't exist return 500
     // (most likely a bad database)
     if (!topFloorGraph || !topFloorGraph.Graph) {
-        res.status(500).send({message: 'Top Floor Graph does not exist'});
+        res.status(500).send({ message: 'Top Floor Graph does not exist' });
         return;
     }
 
@@ -104,7 +104,7 @@ router.get('/pathfind/:did', async (req: Request, res: Response) => {
     // If it doesn't exist return 500
     // (most likely a bad database)
     if (!building) {
-        res.status(500).send({message: 'Building does not exist'});
+        res.status(500).send({ message: 'Building does not exist' });
         return;
     }
 
@@ -118,7 +118,7 @@ router.get('/pathfind/:did', async (req: Request, res: Response) => {
     // If it doesn't exist return 500
     // (most likely a bad database)
     if (!hospital) {
-        res.status(500).send({message: 'Hospital does not exist'});
+        res.status(500).send({ message: 'Hospital does not exist' });
         return;
     }
 
@@ -140,36 +140,52 @@ router.get('/pathfind/:did', async (req: Request, res: Response) => {
     // If it doesn't exist return 500
     // (most likely a bad database)
     if (!parkingLotGraph || !parkingLotGraph.Graph) {
-        res.status(500).send({message: 'ParkingLot does not exist'});
+        res.status(500).send({ message: 'ParkingLot does not exist' });
         return;
     }
 
     // Load nodes and edges from the
     // top floor into a Graph object
     const topFloorGraphObj = new Graph();
-    topFloorGraph.Graph.Nodes.forEach(node => {
-        topFloorGraphObj.addNode(node.nodeId, node.name, {lat: node.lat, lng: node.lng});
+    topFloorGraph.Graph.Nodes.forEach((node) => {
+        topFloorGraphObj.addNode(node as NodePathResponse);
     });
-    topFloorGraph.Graph.Edges.forEach(edge => {
+    topFloorGraph.Graph.Edges.forEach((edge) => {
         topFloorGraphObj.addEdge(edge.startNodeId, edge.endNodeId);
     });
 
     // Load nodes and edges from the
     // top floor into a Graph object
     const parkingLotGraphObj = new Graph();
-    parkingLotGraph.Graph.Nodes.forEach(node => {
-        parkingLotGraphObj.addNode(node.nodeId, node.name, {lat: node.lat, lng: node.lng});
+    parkingLotGraph.Graph.Nodes.forEach((node) => {
+        parkingLotGraphObj.addNode(node as NodePathResponse);
     });
-    parkingLotGraph.Graph.Edges.forEach(edge => {
+    parkingLotGraph.Graph.Edges.forEach((edge) => {
         parkingLotGraphObj.addEdge(edge.startNodeId, edge.endNodeId);
     });
 
+    console.log(topFloorGraph);
+    console.log(topFloorGraph.Graph);
+    console.log(topFloorGraph.Graph.Nodes);
+
     // Find the node ID of the closest check-in node on that floor
-    const checkInCandidates = topFloorGraph.Graph.Nodes.filter(node => node.type === 'CHECKIN');
+    const checkInCandidates = topFloorGraph.Graph.Nodes.filter((node) => node.type === 'CHECKIN');
+
+    if (checkInCandidates.length === 0) {
+        res.status(500).send({ message: 'No checkin candidates found' });
+        return;
+    }
+
     const checkInNodeId = checkInCandidates.reduce((closest, node) => {
         if (
-            euclideanDistance({lat: node.lat, lng: node.lng}, {lat: department.lat, lng: department.lng}) <
-            euclideanDistance({lat: closest.lat, lng: closest.lng}, {lat: department.lat, lng: department.lng})
+            euclideanDistance(
+                { lat: node.lat, lng: node.lng },
+                { lat: department.lat, lng: department.lng }
+            ) <
+            euclideanDistance(
+                { lat: closest.lat, lng: closest.lng },
+                { lat: department.lat, lng: department.lng }
+            )
         ) {
             return node;
         } else {
@@ -183,12 +199,11 @@ router.get('/pathfind/:did', async (req: Request, res: Response) => {
             path: [],
         },
         floorPaths: [],
-    }
+    };
 
     let insideDoorNode;
 
     if (topFloorGraph.floorNum !== 1) {
-
         // Return the bottom floor of that building
         const bottomFloorGraph = await PrismaClient.floorGraph.findFirst({
             where: {
@@ -208,24 +223,24 @@ router.get('/pathfind/:did', async (req: Request, res: Response) => {
         // If it doesn't exist return 500
         // (most likely a bad database)
         if (!bottomFloorGraph) {
-            res.status(500).send({message: 'Bottom Floor Graph does not exist'});
+            res.status(500).send({ message: 'Bottom Floor Graph does not exist' });
             return;
         }
 
         // Load nodes and edges from the
         // bottom floor into a Graph object
         const bottomFloorGraphObj = new Graph();
-        bottomFloorGraph.Graph.Nodes.forEach(node => {
-            bottomFloorGraphObj.addNode(node.nodeId, node.name, {lat: node.lat, lng: node.lng});
+        bottomFloorGraph.Graph.Nodes.forEach((node) => {
+            bottomFloorGraphObj.addNode(node as NodePathResponse);
         });
-        bottomFloorGraph.Graph.Edges.forEach(edge => {
+        bottomFloorGraph.Graph.Edges.forEach((edge) => {
             bottomFloorGraphObj.addEdge(edge.startNodeId, edge.endNodeId);
         });
 
         // TODO: fill this with the path from the
         // check-in node to the first elevator node it sees
         // instead of an empty array
-        const topFloorPath: NodePathResponse[] = [];
+        const topFloorPath: NodePathResponse[] = topFloorGraphObj.bfs('ELEVATOR', checkInNodeId);
 
         response.floorPaths.push({
             floorNum: topFloorGraph.floorNum,
@@ -241,11 +256,13 @@ router.get('/pathfind/:did', async (req: Request, res: Response) => {
         const topFloorElevatorNodeId = response.floorPaths[-1].path[0].nodeId;
 
         // Get the node with the node ID of the top floor elevator
-        const topFloorElevatorNode = topFloorGraph.Graph.Nodes.find(node => node.nodeId === topFloorElevatorNodeId);
+        const topFloorElevatorNode = topFloorGraph.Graph.Nodes.find(
+            (node) => node.nodeId === topFloorElevatorNodeId
+        );
 
         // This should never run but just in case
         if (!topFloorElevatorNode) {
-            res.status(500).send({message: 'Top floor elevator node does not exist'});
+            res.status(500).send({ message: 'Top floor elevator node does not exist' });
             return;
         }
 
@@ -254,14 +271,21 @@ router.get('/pathfind/:did', async (req: Request, res: Response) => {
 
         // If it doesn't exist return 500
         // (most likely a bad database)
-        if (!bottomFloorElevatorNodeId || bottomFloorGraph.Graph.Nodes.find(node => node.nodeId === bottomFloorElevatorNodeId)) {
-            res.status(500).send({message: 'Bottom Floor Elevator node does not exist'});
+        if (
+            !bottomFloorElevatorNodeId ||
+            bottomFloorGraph.Graph.Nodes.find((node) => node.nodeId === bottomFloorElevatorNodeId)
+        ) {
+            res.status(500).send({ message: 'Bottom Floor Elevator node does not exist' });
+            return;
         }
 
         // TODO: fill this with the path from the
         // elevator node to the first door node it sees
         // instead of an empty array
-        const bottomFloorPath: NodePathResponse[] = [];
+        const bottomFloorPath: NodePathResponse[] = bottomFloorGraphObj.bfs(
+            'DOOR',
+            bottomFloorElevatorNodeId
+        );
 
         response.floorPaths.push({
             floorNum: bottomFloorGraph.floorNum,
@@ -277,10 +301,10 @@ router.get('/pathfind/:did', async (req: Request, res: Response) => {
         const insideDoorNodeId = response.floorPaths[-1].path[0].nodeId;
 
         // Get the node with the node ID of the top floor elevator
-        insideDoorNode = bottomFloorGraph.Graph.Nodes.find(node => node.nodeId === insideDoorNodeId);
-    }
-    else {
-
+        insideDoorNode = bottomFloorGraph.Graph.Nodes.find(
+            (node) => node.nodeId === insideDoorNodeId
+        );
+    } else {
         // TODO: fill this with the path from the
         // check-in node to the first door node it sees
         // instead of an empty array
@@ -300,12 +324,12 @@ router.get('/pathfind/:did', async (req: Request, res: Response) => {
         const insideDoorNodeId = response.floorPaths[-1].path[0].nodeId;
 
         // Get the node with the node ID of the inside door
-        insideDoorNode = topFloorGraph.Graph.Nodes.find(node => node.nodeId === insideDoorNodeId);
+        insideDoorNode = topFloorGraph.Graph.Nodes.find((node) => node.nodeId === insideDoorNodeId);
     }
 
     // This should never run but just in case
     if (!insideDoorNode) {
-        res.status(500).send({message: 'Top floor elevator node does not exist'});
+        res.status(500).send({ message: 'Top floor elevator node does not exist' });
         return;
     }
 
@@ -314,21 +338,22 @@ router.get('/pathfind/:did', async (req: Request, res: Response) => {
 
     // If it doesn't exist return 500
     // (most likely a bad database)
-    if (!outsideDoorNodeId || parkingLotGraph.Graph.Nodes.find(node => node.nodeId === outsideDoorNodeId)) {
-        res.status(500).send({message: 'Outside door node does not exist'});
+    if (
+        !outsideDoorNodeId ||
+        parkingLotGraph.Graph.Nodes.find((node) => node.nodeId === outsideDoorNodeId)
+    ) {
+        res.status(500).send({ message: 'Outside door node does not exist' });
+        return;
     }
 
     // TODO: fill this with the path from the
     // door node to the first parking node it sees
     // instead of an empty array
-    response.parkingLotPath.path = [];
+    response.parkingLotPath.path = parkingLotGraphObj.bfs('PARKING', outsideDoorNodeId);
 
     res.json(response);
 });
 
-
-router.get('/edit/:gid', async (req: Request, res: Response) => {
-
-});
+router.get('/edit/:gid', async (req: Request, res: Response) => {});
 
 export default router;
