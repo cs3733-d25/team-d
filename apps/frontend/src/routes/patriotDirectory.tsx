@@ -9,37 +9,41 @@ const directoryData = [
     {
         service: "Day Surgery Center",
         specialties:
-            "Electromyograph(EMG), Nutrion, Pain Medicine, Physiatry, Pulmonary Function Testing, Blood Draw/Phlebotomy, Community Room, Primary",
+            "Electromyograph (EMG), Nutrition, Pain Medicine, Physiatry, Pulmonary Function Testing, Blood Draw/Phlebotomy, Community Room, Primary",
         floorSuite: "20 & 22 Patriot Place, 4th floor",
         phone: "",
     },
     {
         service: "Surgical Specialities",
-        specialties: "Audiology, ENT, GEnereal and Gastrointestinal Surgery, Plastic Surgery, Thoracic Surgery, Vascular Surgery, Weight Management and Wellness",
+        specialties:
+            "Audiology, ENT, General and Gastrointestinal Surgery, Plastic Surgery, Thoracic Surgery, Vascular Surgery, Weight Management and Wellness",
         floorSuite: "20 Patriot Place, 3rd floor",
         phone: "",
     },
     {
         service: "Sports Medicine Center",
-        specialties: "X-Ray Suite",
+        specialties: "X‑Ray Suite",
         floorSuite: "20 Patriot Place, 3rd floor",
         phone: "",
     },
     {
-        service: "Multi Specialty Clinic",
-        specialties: "Allergy, Cardiac Arrhythmia, Dermatology, Endocrinology, Gastroenterology, Kidney (Renal) Medicine, Neurology, Neurosurgery, Ophthalmology, Optometry, Pulmonology, Rheumatology, Women's Health, Patient Financial Seervices",
+        service: "Multi‑Specialty Clinic",
+        specialties:
+            "Allergy, Cardiac Arrhythmia, Dermatology, Endocrinology, Gastroenterology, Kidney (Renal) Medicine, Neurology, Neurosurgery, Ophthalmology, Optometry, Pulmonology, Rheumatology, Women's Health, Patient Financial Services",
         floorSuite: "22 Patriot Place, 3rd floor",
         phone: "",
     },
     {
         service: "Orthopaedics",
-        specialties: "Hand and Upper Extremity, Arthroplasty, Pediatric Trauma, Physiatry, Podiatry",
+        specialties:
+            "Hand and Upper Extremity, Arthroplasty, Pediatric Trauma, Physiatry, Podiatry",
         floorSuite: "20 Patriot Place, 2nd floor",
         phone: "",
     },
     {
         service: "Rehabilitation Services",
-        specialties: "Cardiac Rehab, Occupational Therapy (Hand and Upper Extremity), Physical Therapy, Speech - Language, Clinical Lab, Surgi-Care",
+        specialties:
+            "Cardiac Rehab, Occupational Therapy (Hand and Upper Extremity), Physical Therapy, Speech‑Language, Clinical Lab, Surgi‑Care",
         floorSuite: "20 Patriot Place, 2nd floor",
         phone: "",
     },
@@ -50,7 +54,6 @@ const directoryData = [
         floorSuite: "20 Patriot Place, 1st floor",
         phone: "",
     },
-
 ];
 
 /* Fuse.js fuzzy search instance */
@@ -166,4 +169,3 @@ const PatriotPlaceDirectory: React.FC = () => {
 };
 
 export default PatriotPlaceDirectory;
-
