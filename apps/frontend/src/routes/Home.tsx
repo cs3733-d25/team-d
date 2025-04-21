@@ -1,6 +1,7 @@
 import React from 'react';
-import AnimatedGraphic from "@/components/ui/animatedGraphic.tsx";
+import AnimatedLogin from "@/components/ui/animatedLogin.tsx";
 import AnimatedMap from "@/components/ui/animatedMap.tsx";
+import AnimatedService from "@/components/ui/animatedService.tsx";
 import HeroTextBox from "@/components/HeroPage.tsx";
 import Auth0LoginButton from "@/components/Auth0LoginButton.tsx";
 import MapButton from "@/components/MapButton.tsx";
@@ -32,16 +33,16 @@ export default function Home() {
                 <div className="relative z-10 flex flex-col items-center gap-6 text-center">
 
                     {/* Hero Text */}
-                    <div className="w-full pb-4">
+                    <div className="w-full pt-20">
                         <HeroTextBox />
                     </div>
 
                     {/* Buttons Section */}
-                    <div className="flex justify-center items-center w-full min-h-screen">
+                    <div className="flex justify-left items-center w-full min-h-screen ">
                     <div className="grid flex justify-center grid-cols-3 m-20 gap-70 mt-4 w-full max-w-lg">
                         <div className=" w-[250px] h-[250px] bg-[#F1F1F1] border-white">
                             <div className="flex-grow flex items-center justify-center w-full">
-                                <AnimatedMap />
+                                <AnimatedLogin />
                             </div>
                             {!isAuthenticated && (
                                 <div>
@@ -68,7 +69,7 @@ export default function Home() {
                         <div className=" w-[250px] h-[250px] bg-[#F1F1F1] border-white">
                             {/* Animated Map */}
                             <div className="flex-grow flex items-center justify-center w-full">
-                                <AnimatedMap />
+                                <AnimatedService />
                             </div>
 
                             <DirectoryButton />
