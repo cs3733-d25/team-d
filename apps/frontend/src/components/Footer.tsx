@@ -6,7 +6,7 @@ import React from 'react';
 export default function Footer() {
     return (
         <>
-        <footer className="bg-gray-900 text-gray-200">
+        <footer className="bg-blue-900 text-gray-200">
             <div className="container mx-auto py-5">
                 <div className="flex flex-row justify-evenly">
                     {/*Company*/}
@@ -81,10 +81,10 @@ export default function Footer() {
                         </h5>
                         <ul className="list-none py-1 space-y-1">
                             <li>
-                                General Information: <span className="text-blue-300">617-732-5500</span>
+                                General Information: 617-732-5500
                             </li>
                             <li>
-                                New Patients: <span className="text-blue-300">800-294-9999</span>
+                                New Patients: 800-294-9999
                             </li>
                         </ul>
                 </div>
