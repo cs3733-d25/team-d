@@ -14,7 +14,7 @@ import Directions from "@/routes/Directions.tsx";
 import Auth0Profile from "@/components/Auth0Profile.tsx";
 
 import { ProtectedRoute } from "./components/ProtectedRoute";
-import SanitationRequest from "@/components/ServiceRequest/SanitationRequest/SanitationRequest.tsx";
+import SanitationServiceRequest from "@/components/ServiceRequest/SanitationRequest/SanitationServiceRequest.tsx";
 
 function App() {
     return (

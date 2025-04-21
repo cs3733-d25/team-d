@@ -46,10 +46,10 @@ model ServiceRequest {
 
   // assigned relationship to Employee:
   assignedEmployeeId    Int?
-  assignedEmployee      Employee?  @relation(name: "assignedTo", fields: [assignedEmployeeId], references: [employeeId])
+  assignedEmployee      Employee?   @relation(name: "assignedTo", fields: [assignedEmployeeId], references: [employeeId])
   // the employee who made the request
   employeeRequestedById Int
-  employeeRequestedBy   Employee   @relation(name: "requestedBy", fields: [employeeRequestedById], references: [employeeId])
+  employeeRequestedBy   Employee    @relation(name: "requestedBy", fields: [employeeRequestedById], references: [employeeId])
   // which department it's made under
   departmentUnderId     Int?
   departmentUnder       Department? @relation(fields: [departmentUnderId], references: [departmentId], onDelete: SetNull)
@@ -77,15 +77,15 @@ model EquipmentRequest {
   startDateTime    DateTime
   endDateTime      DateTime
   medicalDevice    String
-  signature        String //picture of signature
+  signature        String // picture of signature
   quantity         Int
   // link to service request
   serviceRequestId Int            @unique
   serviceRequest   ServiceRequest @relation(fields: [serviceRequestId], references: [requestId])
 }
 
-// --- The SanitationRequest model ---
-model SanitationRequest {
+// --- The SanitationServiceRequest model ---
+model SanitationServiceRequest {
   type   SanitationType
   status RoomStatus
 
