@@ -629,9 +629,9 @@ function Filter({ column }: { column: Column<any, unknown> }) {
         if(column.id === "priority") {
             return (
                 <DropdownMenu>
-                    <DropdownMenuTrigger className="bg-gray-50 hover:bg-gray-100 inline">
+                    <DropdownMenuTrigger className="bg-blue-900 hover:bg-blue-950 inline rounded">
                         <Button
-                            variant="ghost" className="ml-auto"
+                            variant="ghost" className="ml-auto bg-blue-900 hover:bg-blue-950"
                         >
                             Priority
                             <Funnel/>
@@ -653,9 +653,9 @@ function Filter({ column }: { column: Column<any, unknown> }) {
         if(column.id === "requestStatus") {
             return (
                 <DropdownMenu>
-                    <DropdownMenuTrigger className="bg-gray-50 hover:bg-gray-100 inline">
+                    <DropdownMenuTrigger className="bg-blue-900 hover:bg-blue-950 inline rounded">
                         <Button
-                            variant="ghost" className="ml-auto"
+                            variant="ghost" className="ml-auto bg-blue-900 hover:bg-blue-950"
                         >
                             Status
                             <Funnel/>
