@@ -12,8 +12,7 @@ import ServiceRequestHub from "@/routes/ServiceRequestHub.tsx";
 import AllServiceRequests from "@/routes/AllServiceRequests.tsx";
 import Directions from "@/routes/Directions.tsx";
 import Auth0Profile from "@/components/Auth0Profile.tsx";
-import ChestnutHillDirectory from "@/routes/chestnuthillDirectory";
-import PatriotPlaceDirectory from "@/routes/patriotDirectory.tsx";
+import HospitalDirectory from "@/routes/hospitalDirectory.tsx";
 
 
 import { ProtectedRoute } from "./components/ProtectedRoute";
@@ -28,8 +27,7 @@ function App() {
                         <Route index element={<Home />} />
                         <Route path="directory" element={<Directions editor={false} />} />
                         <Route path="servicerequesthub" element={<ServiceRequestHub />} />
-                        <Route path="chestnut-directory" element={<ChestnutHillDirectory />} />
-                        <Route path="patriot-directory" element={<PatriotPlaceDirectory />} />
+                        <Route path="hospital-directory" element={<HospitalDirectory />} />
 
 
                         {/* Protected routes wrapped in ProtectedRoute */}

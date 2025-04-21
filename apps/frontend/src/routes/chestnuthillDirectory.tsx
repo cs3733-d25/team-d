@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useEffect } from "react";
-import Fuse from "fuse.js";
+import Fuse from "fuse.js"; //yarn add fuse.js
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 

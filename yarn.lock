@@ -7977,6 +7977,7 @@ __metadata:
     dotenv-cli: "npm:^7.4.4"
     eslint: "npm:^9.23.0"
     eslint-config-custom: "workspace:*"
+    fuse.js: "npm:^7.1.0"
     husky: "npm:^9.1.7"
     postcss: "npm:^8.5.3"
     prettier: "npm:^3.5.3"

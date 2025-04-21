@@ -79,6 +79,7 @@ const RAW_RUNTIME_STATE =
           ["dotenv-cli", "npm:7.4.4"],\
           ["eslint", "virtual:19a1bbfd66c0a8b6e4e9b4eb3053d58c46601ff49b62144208f9d27690e7d3dafa1ec4b1cf3db192de427911ae217357531df59f991426daf174c7b5b2cfb34e#npm:9.23.0"],\
           ["eslint-config-custom", "workspace:configs/eslint-config-custom"],\
+          ["fuse.js", "npm:7.1.0"],\
           ["husky", "npm:9.1.7"],\
           ["postcss", "npm:8.5.3"],\
           ["prettier", "npm:3.5.3"],\
@@ -10298,6 +10299,7 @@ const RAW_RUNTIME_STATE =
           ["dotenv-cli", "npm:7.4.4"],\
           ["eslint", "virtual:19a1bbfd66c0a8b6e4e9b4eb3053d58c46601ff49b62144208f9d27690e7d3dafa1ec4b1cf3db192de427911ae217357531df59f991426daf174c7b5b2cfb34e#npm:9.23.0"],\
           ["eslint-config-custom", "workspace:configs/eslint-config-custom"],\
+          ["fuse.js", "npm:7.1.0"],\
           ["husky", "npm:9.1.7"],\
           ["postcss", "npm:8.5.3"],\
           ["prettier", "npm:3.5.3"],\
