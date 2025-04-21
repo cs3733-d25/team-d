@@ -37,7 +37,8 @@ export default function Home() {
                     </div>
 
                     {/* Buttons Section */}
-                    <div className="grid flex justify-center grid-cols-3 gap-70 mt-4 w-full max-w-lg">
+                    <div className="flex justify-center items-center w-full min-h-screen">
+                    <div className="grid flex justify-center grid-cols-3 m-20 gap-70 mt-4 w-full max-w-lg">
                         <div className=" w-[250px] h-[250px] bg-[#F1F1F1] border-white">
                             <div className="flex-grow flex items-center justify-center w-full">
                                 <AnimatedMap />
@@ -63,6 +64,7 @@ export default function Home() {
 
 
                         {/* Directory Button */}
+
                         <div className=" w-[250px] h-[250px] bg-[#F1F1F1] border-white">
                             {/* Animated Map */}
                             <div className="flex-grow flex items-center justify-center w-full">
@@ -73,6 +75,7 @@ export default function Home() {
                         </div>
                     </div>
                 </div>
+            </div>
             </div>
 
             {/* Footer */}
