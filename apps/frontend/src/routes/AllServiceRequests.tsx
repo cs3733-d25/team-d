@@ -16,7 +16,7 @@ import {
     FilterFn,
     Row, Column, RowData,
 } from "@tanstack/react-table"
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react"
+import { ArrowUpDown, ArrowUp, ArrowDown, ChevronDown, Funnel } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -34,7 +34,6 @@ import { Input } from "@/components/ui/input"
 const priorityList = ["Low", "Medium", "High", "Emergency"];
 
 declare module '@tanstack/react-table' {
-    //allows us to define custom properties for our columns
     interface ColumnMeta<TData extends RowData, TValue> {
         filterVariant?: 'none' | 'select'
         filterOptions?: string[];
@@ -94,6 +93,18 @@ export const exactFilter: FilterFn<any> = (row, columnId, filterValue) => {
 }
 
 export const columns: ColumnDef<ServiceRequest>[] = [
+    {
+        accessorKey: "requestType",
+        header: ({ column }) => {
+        },
+        meta: {
+            filterVariant: 'select',
+            filterOptions: ["Translator", "Sanitation", "Equipment", "Security"],
+        },
+        filterFn: (row, columnId, filterValue: string[]) => {
+            return filterValue.includes(row.getValue(columnId))
+        },
+    },
     {
         accessorKey: "requestId",
         header: ({ column }) => {
@@ -186,7 +197,8 @@ export const columns: ColumnDef<ServiceRequest>[] = [
     },
     {
         accessorKey: "priority",
-        header: 'Priority',
+        header: ({ column }) => {
+        },
         meta: {
             filterVariant: 'select',
             filterOptions: ["Low", "Medium", "High", "Emergency"],
@@ -197,11 +209,15 @@ export const columns: ColumnDef<ServiceRequest>[] = [
     },
     {
         accessorKey: "requestStatus",
-        header: 'Status',
+        header: ({ column }) => {
+        },
         meta: {
             filterVariant: 'select',
+            filterOptions: ["Unassigned", "Assigned", "Working", "Done"],
         },
-        filterFn: exactFilter,
+        filterFn: (row, columnId, filterValue: string[]) => {
+            return filterValue.includes(row.getValue(columnId))
+        },
     },
     {
         accessorKey: "createdAt",
@@ -313,7 +329,7 @@ export default function ShowAllRequests() {
             </div>
             <div className="rounded-md border">
                 <Table className="table-auto w-full">
-                    <TableHeader>
+                    <TableHeader className="bg-blue-900">
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
                                 {headerGroup.headers.map((header) => {
@@ -332,21 +348,14 @@ export default function ShowAllRequests() {
                                         <th key={header.id} colSpan={header.colSpan}>
                                             {header.isPlaceholder ? null : (
                                                 <>
-                                                    <div
-                                                        {...{
-                                                            className: header.column.getCanSort()
-                                                                ? 'cursor-pointer select-none'
-                                                                : '',
-                                                            onClick: header.column.getToggleSortingHandler(),
-                                                        }}
-                                                    >
+                                                    <div>
                                                         {flexRender(
                                                             header.column.columnDef.header,
                                                             header.getContext()
                                                         )}
                                                         {{
-                                                            //asc: ' ↑',
-                                                            //desc: ' ↓',
+                                                            // asc: <ArrowUp />,
+                                                            // desc: <ArrowDown />
                                                         }[header.column.getIsSorted() as string] ?? null}
                                                     </div>
                                                     {header.column.getCanFilter() ? (
@@ -593,21 +602,78 @@ function Filter({ column }: { column: Column<any, unknown> }) {
 
             column.setFilterValue(newValue.length ? newValue : undefined);
         }
-
-        return (
-            <div className="flex flex-col gap-1 max-h-48 overflow-auto border p-2 rounded">
-                {options.map((value) => (
-                    <label key={value} className="inline-flex items-center space-x-2">
-                        <input
-                            type="checkbox"
-                            checked={columnFilterValue.includes(value)}
-                            onChange={() => toggleOption(value)}
-                        />
-                        <span>{value}</span>
-                    </label>
-                ))}
-            </div>
-        );
+        if(column.id === "requestType") {
+            return (
+                <DropdownMenu>
+                    <DropdownMenuTrigger className="bg-blue-900 hover:bg-blue-950 inline rounded">
+                        <Button
+                            variant="ghost" className="ml-auto bg-blue-900 hover:bg-blue-950"
+                        >
+                            Service Type
+                            <Funnel/>
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                        {options.map((value) => (
+                            <DropdownMenuCheckboxItem
+                                key={value} className="items-center space-x-2"
+                                checked={columnFilterValue.includes(value)}
+                                onCheckedChange={() => toggleOption(value)}>
+                                {value}
+                            </DropdownMenuCheckboxItem>
+                        ))}
+                    </DropdownMenuContent>
+                </DropdownMenu>
+            );
+        }
+        if(column.id === "priority") {
+            return (
+                <DropdownMenu>
+                    <DropdownMenuTrigger className="bg-gray-50 hover:bg-gray-100 inline">
+                        <Button
+                            variant="ghost" className="ml-auto"
+                        >
+                            Priority
+                            <Funnel/>
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                        {options.map((value) => (
+                            <DropdownMenuCheckboxItem
+                                key={value} className="items-center space-x-2"
+                                checked={columnFilterValue.includes(value)}
+                                onCheckedChange={() => toggleOption(value)}>
+                                {value}
+                            </DropdownMenuCheckboxItem>
+                        ))}
+                    </DropdownMenuContent>
+                </DropdownMenu>
+            );
+        }
+        if(column.id === "requestStatus") {
+            return (
+                <DropdownMenu>
+                    <DropdownMenuTrigger className="bg-gray-50 hover:bg-gray-100 inline">
+                        <Button
+                            variant="ghost" className="ml-auto"
+                        >
+                            Status
+                            <Funnel/>
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                        {options.map((value) => (
+                            <DropdownMenuCheckboxItem
+                                key={value} className="items-center space-x-2"
+                                checked={columnFilterValue.includes(value)}
+                                onCheckedChange={() => toggleOption(value)}>
+                                {value}
+                            </DropdownMenuCheckboxItem>
+                        ))}
+                    </DropdownMenuContent>
+                </DropdownMenu>
+            );
+        }
     }
 
     // return (
