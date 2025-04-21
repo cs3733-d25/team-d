@@ -25,12 +25,12 @@ const ServiceRequestHub = () => {
     return (
         <div className={'bg-gradient-to-b from-[#012D5A] via-[#ADDDE5] to-[#012D5A]'}>
             <div className="relative flex justify-center">
-                <div className="relative z-10 flex items-center justify-center mt-12 bg-gray-300/60 h-20 w-110 rounded-full text-5xl font-bold font-nunito">
+                <div className="relative z-10 flex items-center justify-center mt-12 bg-gray-300/60 h-20 w-110 text-5xl font-bold font-nunito">
                     Service Requests
                 </div>
             </div>
             <div className="relative flex items-center justify-center h-screen w-screen overflow-hidden">
-                <div className="flex flex-row items-center justify-evenly w-300 h-100 rounded-md">
+                <div className="flex flex-row items-center justify-evenly w-300 h-100 rounded-md gap-4">
                     <ServiceRequestCard
                         title="Translator Request"
                         description="Request assistance with translation services."

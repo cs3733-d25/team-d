@@ -11,23 +11,20 @@ type ServiceRequestCardProps = {
 const ServiceRequestCard: React.FC<ServiceRequestCardProps> = ({ title, description, image, popupComponent }) => {
     return (
         <Dialog>
-            {/* Make the entire card clickable */}
             <DialogTrigger asChild>
-                <div className="flex flex-col items-center justify-between w-[300px] h-[400px] bg-white shadow-lg rounded-xl p-6 cursor-pointer hover:shadow-2xl">
-                    {/* Image */}
-                    <div className="w-full h-[150px]">
-                        <img
-                            src={image}
-                            alt={title}
-                            className="w-full h-full object-cover rounded-t-md"
-                        />
+                <div className="relative w-[300px] h-[400px] rounded-lg shadow-lg cursor-pointer hover:shadow-2xl">
+                    {/* Full Image */}
+                    <img
+                        src={image}
+                        alt={title}
+                        className="absolute inset-0 w-full h-full object-contain"
+                    />
+
+                    {/* Overlay Text Box */}
+                    <div className="absolute bottom-[50px] left-1/2 transform -translate-x-1/2 w-[250px] bg-white bg-opacity-90 p-4">
+                        <h2 className="text-xl font-bold text-center font-nunito">{title}</h2>
+                        <p className="text-sm text-center text-gray-600">{description}</p>
                     </div>
-
-                    {/* Title */}
-                    <h2 className="text-xl font-bold text-center font-nunito mt-4">{title}</h2>
-
-                    {/* Description */}
-                    <p className="text-sm text-gray-600 text-center mt-2">{description}</p>
                 </div>
             </DialogTrigger>
 
