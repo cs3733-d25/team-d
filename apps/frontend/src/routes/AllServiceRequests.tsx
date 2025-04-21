@@ -3,6 +3,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from ".
 import axios from "axios";
 import {
     ColumnDef,
+    createColumnHelper,
     ColumnFiltersState,
     SortingState,
     VisibilityState,
@@ -35,7 +36,8 @@ const priorityList = ["Low", "Medium", "High", "Emergency"];
 declare module '@tanstack/react-table' {
     //allows us to define custom properties for our columns
     interface ColumnMeta<TData extends RowData, TValue> {
-        filterVariant?: 'text' | 'range' | 'select'
+        filterVariant?: 'none' | 'select'
+        filterOptions?: string[];
     }
 }
 
@@ -84,7 +86,11 @@ export type ServiceRequest = {
 
 export const exactFilter: FilterFn<any> = (row, columnId, filterValue) => {
     const cellValue = row.getValue(columnId);
-    return filterValue === "" || cellValue === filterValue;
+    if(!Array.isArray(filterValue)) {
+        return true;
+    } else {
+        return filterValue.length === 0 || filterValue.includes(cellValue);
+    }
 }
 
 export const columns: ColumnDef<ServiceRequest>[] = [
@@ -102,7 +108,7 @@ export const columns: ColumnDef<ServiceRequest>[] = [
             )
         },
         meta: {
-            filterVariant: undefined,
+            filterVariant: 'none',
         },
     },
     {
@@ -119,7 +125,7 @@ export const columns: ColumnDef<ServiceRequest>[] = [
             )
         },
         meta: {
-            filterVariant: undefined,
+            filterVariant: 'none',
         },
     },
     {
@@ -136,7 +142,7 @@ export const columns: ColumnDef<ServiceRequest>[] = [
             )
         },
         meta: {
-            filterVariant: undefined,
+            filterVariant: 'none',
         },
     },
     {
@@ -153,7 +159,7 @@ export const columns: ColumnDef<ServiceRequest>[] = [
             )
         },
         meta: {
-            filterVariant: undefined,
+            filterVariant: 'none',
         },
     },
     {
@@ -164,7 +170,7 @@ export const columns: ColumnDef<ServiceRequest>[] = [
             )
         },
         meta: {
-            filterVariant: undefined,
+            filterVariant: 'none',
         },
     },
     {
@@ -175,7 +181,7 @@ export const columns: ColumnDef<ServiceRequest>[] = [
             )
         },
         meta: {
-            filterVariant: undefined,
+            filterVariant: 'none',
         },
     },
     {
@@ -183,35 +189,12 @@ export const columns: ColumnDef<ServiceRequest>[] = [
         header: 'Priority',
         meta: {
             filterVariant: 'select',
+            filterOptions: ["Low", "Medium", "High", "Emergency"],
         },
-        filterFn: exactFilter,
+        filterFn: (row, columnId, filterValue: string[]) => {
+            return filterValue.includes(row.getValue(columnId))
+        },
     },
-        // <DropdownMenu>
-        //     <DropdownMenuTrigger asChild>
-        //         <Button variant="ghost" className="ml-auto">
-        //             Priority <ChevronDown />
-        //         </Button>
-        //     </DropdownMenuTrigger>
-        //     <DropdownMenuContent align="end">
-        //         {table
-        //             .getAllColumns()
-        //             .filter((column) => column.getCanHide())
-        //             .map((column) => {
-        //                 return (
-        //                     <DropdownMenuCheckboxItem
-        //                         key={column.id}
-        //                         className="capitalize"
-        //                         checked={column.getIsVisible()}
-        //                         onCheckedChange={(value) =>
-        //                             column.toggleVisibility(!!value)
-        //                         }
-        //                     >
-        //                         {column.id}
-        //                     </DropdownMenuCheckboxItem>
-        //                 )
-        //             })}
-        //     </DropdownMenuContent>
-        // </DropdownMenu>
     {
         accessorKey: "requestStatus",
         header: 'Status',
@@ -234,7 +217,7 @@ export const columns: ColumnDef<ServiceRequest>[] = [
             )
         },
         meta: {
-            filterVariant: undefined,
+            filterVariant: 'none',
         },
     },
     {
@@ -251,7 +234,7 @@ export const columns: ColumnDef<ServiceRequest>[] = [
             )
         },
         meta: {
-            filterVariant: undefined,
+            filterVariant: 'none',
         },
     },
 ]
@@ -596,38 +579,85 @@ export default function ShowAllRequests() {
 }
 
 function Filter({ column }: { column: Column<any, unknown> }) {
-    const columnFilterValue = column.getFilterValue()
-    const { filterVariant } = column.columnDef.meta ?? {}
+    const columnFilterValue = column.getFilterValue() as string[] ?? [];
+    const meta = column.columnDef.meta;
 
-    if(filterVariant === "select" && column.id === "priority") {
+    if (meta?.filterVariant === 'select') {
+        const options: string[] = meta.filterOptions ??
+            Array.from(column.getFacetedUniqueValues().keys()) as string[];
+
+        const toggleOption = (option: string) => {
+            const newValue = columnFilterValue.includes(option)
+                ? columnFilterValue.filter((val) => val !== option)
+                : [...columnFilterValue, option];
+
+            column.setFilterValue(newValue.length ? newValue : undefined);
+        }
+
         return (
-            <select
-                onChange={e => column.setFilterValue(e.target.value)}
-                value={columnFilterValue?.toString()}
-            >
-                {}
-                <option value="">All</option>
-                <option value="Low">Low</option>
-                <option value="Medium">Medium</option>
-                <option value="High">High</option>
-                <option value="Emergency">Emergency</option>
-            </select>
+            <div className="flex flex-col gap-1 max-h-48 overflow-auto border p-2 rounded">
+                {options.map((value) => (
+                    <label key={value} className="inline-flex items-center space-x-2">
+                        <input
+                            type="checkbox"
+                            checked={columnFilterValue.includes(value)}
+                            onChange={() => toggleOption(value)}
+                        />
+                        <span>{value}</span>
+                    </label>
+                ))}
+            </div>
         );
-    } else if (filterVariant === "select" && column.id === "requestStatus") {
-        return (
-            <select
-                onChange={e => column.setFilterValue(e.target.value)}
-                value={columnFilterValue?.toString()}
-            >
-                {}
-                <option value="">All</option>
-                <option value="Unassigned">Unassigned</option>
-                <option value="Assigned">Assigned</option>
-                <option value="Working">Working</option>
-                <option value="Done">Done</option>
-            </select>
-        )
     }
 
-    return null;
+    // return (
+    //     <div className="flex flex-col gap-1">
+    //         {values.map((value: string) => (
+    //             <label key={value} className="flex items-center gap-2">
+    //                 <input
+    //                     type="checkbox"
+    //                     checked={columnFilterValue.includes(value)}
+    //                     onChange={(e) => {
+    //                         const newFilter = e.target.checked
+    //                             ? [...columnFilterValue, value]
+    //                             : columnFilterValue.filter((v) => v !== value);
+    //                         column.setFilterValue(newFilter);
+    //                     }}
+    //                 />
+    //                 {value}
+    //             </label>
+    //         ))}
+    //     </div>
+    // );
+    // if(filterVariant === "select" && column.id === "priority") {
+    //     return (
+    //         <select
+    //             onChange={e => column.setFilterValue(e.target.value)}
+    //             value={columnFilterValue?.toString()}
+    //         >
+    //             {}
+    //             <option value="">All</option>
+    //             <option value="Low">Low</option>
+    //             <option value="Medium">Medium</option>
+    //             <option value="High">High</option>
+    //             <option value="Emergency">Emergency</option>
+    //         </select>
+    //     );
+    // } else if (filterVariant === "select" && column.id === "requestStatus") {
+    //     return (
+    //         <select
+    //             onChange={e => column.setFilterValue(e.target.value)}
+    //             value={columnFilterValue?.toString()}
+    //         >
+    //             {}
+    //             <option value="">All</option>
+    //             <option value="Unassigned">Unassigned</option>
+    //             <option value="Assigned">Assigned</option>
+    //             <option value="Working">Working</option>
+    //             <option value="Done">Done</option>
+    //         </select>
+    //     )
+    // }
+    //
+    // return null;
 }
