@@ -88,6 +88,22 @@ export const exactFilter: FilterFn<any> = (row, columnId, filterValue) => {
     }
 }
 
+export const getRequestType = (request: ServiceRequest): string => {
+    if (request.translatorRequest) {
+        return "Translator";
+    }
+    if (request.equipmentRequest) {
+        return "Equipment";
+    }
+    if (request.securityRequest) {
+        return "Security";
+    }
+    if (request.sanitationRequest) {
+        return "Sanitation";
+    }
+    return "Unknown"; // Fallback in case nothing matches
+};
+
 export const columns: ColumnDef<ServiceRequest>[] = [
     {
         accessorKey: "requestType",
@@ -98,7 +114,11 @@ export const columns: ColumnDef<ServiceRequest>[] = [
             filterOptions: ["Translator", "Sanitation", "Equipment", "Security"],
         },
         filterFn: (row, columnId, filterValue: string[]) => {
-            return filterValue.includes(row.getValue(columnId))
+            return filterValue.includes(getRequestType(row.original as ServiceRequest))
+        },
+        cell: ({ row }) => {
+            const request = row.original as ServiceRequest;
+            return getRequestType(request);
         },
     },
     {
@@ -323,9 +343,9 @@ export default function ShowAllRequests() {
             <div className="flex items-center gap-4 mb-6">
                 <h2 className="text-2xl font-bold">Service Request Database</h2>
             </div>
-            <div className="border">
-                <Table className="table-auto w-full">
-                    <TableHeader className="bg-blue-900">
+            <div className="border rounded-md">
+                <Table className="table-auto w-full rounded-md">
+                    <TableHeader className="bg-blue-900 rounded-md">
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
                                 {headerGroup.headers.map((header) => {
