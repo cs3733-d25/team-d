@@ -35,6 +35,7 @@
         "common": "*",
         "dotenv": "*",
         "dotenv-cli": "*",
+        "fuse.js": "^7.1.0",
         "google-maps": "^4.3.3",
         "leaflet": "^1.9.4",
         "localforage": "^1.10.0",
