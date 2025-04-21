@@ -248,6 +248,10 @@ class Graph {
         return [];
     }
 
+    search(startNodeId: number, endNodeId: number): number[] {
+        return [];
+    }
+
     // bfs(start: string, goal: string): Coordinates[] | null {
     //     const startNode = this.nodes.get(start);
     //     const goalNode = this.nodes.get(goal);

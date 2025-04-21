@@ -138,19 +138,8 @@ export class PathfindingMap extends GoogleMap {
             }
         });
 
-        // this.placeService = new google.maps.places.PlacesService(this.map);
-        // this.geocoder = new google.maps.Geocoder();
-
         this.startPlaceId = null;
         this.endLocation = null;
-
-
-        // this.map.addListener('click', (e: google.maps.MapMouseEvent) => {
-        //     if (!e.latLng) return;
-        //     this.setCoords(e.latLng.toJSON().lat, e.latLng.toJSON().lng);
-        // });
-
-        // new google.maps.Point(42.325956546246374, -71.14971804046458);
 
         this.map.addListener('click', (e: google.maps.MapMouseEvent) => {
             const ll = e.latLng;
