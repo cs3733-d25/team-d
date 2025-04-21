@@ -57,11 +57,18 @@ export default function NewDirections() {
 
     const handleDepartmentChange = (value: string) => {
         if (!hospital) return;
-        setDepartment(hospital.departments.find(d => d.name === value) || null);
 
-        axios.get(API_ROUTES.PATHFIND + '/path-to-dept/' + value).then(response => {
+        const newDepartment = hospital.departments.find(d => d.name === value);
+
+        if (!newDepartment) return;
+
+        setDepartment(newDepartment);
+
+        axios.get(API_ROUTES.PATHFIND + '/path-to-dept/' + newDepartment.departmentId).then(response => {
+            if (!map) return;
+
             const data = response.data as PathfindingResponse;
-
+            map.update(data)
         });
     }
 

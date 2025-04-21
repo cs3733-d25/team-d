@@ -1,5 +1,5 @@
 import axios from "axios";
-import {API_ROUTES} from "common/src/constants.ts";
+import {API_ROUTES, PathfindingResponse} from "common/src/constants.ts";
 
 const API_KEY: string = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 const SCRIPT_URL: string = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&libraries=places&callback=initMap`
@@ -60,41 +60,41 @@ abstract class GoogleMap {
 
 
 
+class PathfindingGraph {
+    private readonly path: google.maps.Polyline;
+    private readonly nodes: google.maps.Marker[];
 
+    constructor(map: google.maps.Map, path: google.maps.LatLngLiteral[], color: string) {
+
+        this.path = new google.maps.Polyline({
+            map: map,
+            path: path,
+            strokeColor: color,
+        });
+        // this.path.binder =
+        this.nodes = path.map((position, i) =>
+            new google.maps.Marker({
+                map: map,
+                position: position,
+                icon: {
+                    url: 'https://maps.gstatic.com/intl/en_us/mapfiles/markers2/measle.png',
+                    size: new google.maps.Size(7, 7),
+                    anchor: new google.maps.Point(3.5, 3.5)
+                },
+                draggable: true,
+            })
+        );
+    }
+
+    remove() {
+        this.path.setMap(null);
+        this.nodes.forEach(node => node.setMap(null));
+    }
+}
 
 export class PathfindingMap extends GoogleMap {
 
-    private static PathfindingGraph = class {
-        private readonly path: google.maps.Polyline;
-        private readonly nodes: google.maps.Marker[];
 
-        constructor(map: google.maps.Map, path: google.maps.LatLngLiteral[], color: string) {
-
-            this.path = new google.maps.Polyline({
-                map: map,
-                path: path,
-                strokeColor: color,
-            });
-            // this.path.binder =
-            this.nodes = path.map((position, i) =>
-                new google.maps.Marker({
-                    map: map,
-                    position: position,
-                    icon: {
-                        url: 'https://maps.gstatic.com/intl/en_us/mapfiles/markers2/measle.png',
-                        size: new google.maps.Size(7, 7),
-                        anchor: new google.maps.Point(3.5, 3.5)
-                    },
-                    draggable: true,
-                })
-            );
-        }
-
-        remove() {
-            this.path.setMap(null);
-            this.nodes.forEach(node => node.setMap(null));
-        }
-    }
 
     public static async makeMap(mapDivElement: HTMLDivElement, autocompleteInput: HTMLInputElement) {
         await GoogleMap.loadScript();
@@ -107,6 +107,10 @@ export class PathfindingMap extends GoogleMap {
 
     private startPlaceId: string | null;
     private endLocation: google.maps.LatLngLiteral | null;
+
+    private currentParkingPath: PathfindingGraph | null;
+    private currentFloorPath: PathfindingGraph | null;
+    private currentFloorMap: google.maps.GroundOverlay | null;
 
     private constructor(mapDivElement: HTMLDivElement, autocompleteInput: HTMLInputElement) {
 
@@ -148,30 +152,54 @@ export class PathfindingMap extends GoogleMap {
             }
         });
 
-        new PathfindingMap.PathfindingGraph(this.map, [
-            {
-                lat: 42.0922269319225,
-                lng: -71.26654953228861,
-            },
-            {
-                lat: 42.09244786352106,
-                lng: -71.26636445986658,
-            },
-            {
-                lat: 42.092509565001215,
-                lng: -71.26653343903452,
-            },
-        ], '#CC3300')
+        this.currentParkingPath = null;
+        this.currentFloorPath = null;
+        this.currentFloorMap = null;
+
+        // new PathfindingMap.PathfindingGraph(this.map, [
+        //     {
+        //         lat: 42.0922269319225,
+        //         lng: -71.26654953228861,
+        //     },
+        //     {
+        //         lat: 42.09244786352106,
+        //         lng: -71.26636445986658,
+        //     },
+        //     {
+        //         lat: 42.092509565001215,
+        //         lng: -71.26653343903452,
+        //     },
+        // ], '#CC3300')
 
     }
 
-    pathfindToDepartment(departmentId: number) {
-        axios.get(API_ROUTES.PATHFINDING + '/pathfind/' + departmentId)
-    }
+    update(pathfindingResponse: PathfindingResponse) {
+        if (this.currentParkingPath) {
+            this.currentParkingPath.remove();
+            this.currentFloorPath = null;
+        }
 
-    private setCoords(lat: number, lng: number) {
-        this.endLocation = {lat: lat, lng: lng};
+        if (this.currentFloorPath) {
+            this.currentFloorPath.remove();
+            this.currentFloorPath = null;
+        }
+
+        if (this.currentFloorMap) {
+            this.currentFloorMap.setMap(null);
+            this.currentFloorMap = null;
+        }
+
+
+        this.endLocation = pathfindingResponse.parkingLotPath.path[0];
         this.route();
+        this.currentParkingPath = new PathfindingGraph(this.map, pathfindingResponse.parkingLotPath.path, '#CC3300');
+        this.currentFloorPath = new PathfindingGraph(this.map, pathfindingResponse.floorPaths[0].path, '#00AACC');
+        this.currentFloorMap = new google.maps.GroundOverlay(pathfindingResponse.floorPaths[0].image, {
+            north: pathfindingResponse.floorPaths[0].imageBoundsNorth,
+            south: pathfindingResponse.floorPaths[0].imageBoundsSouth,
+            east: pathfindingResponse.floorPaths[0].imageBoundsEast,
+            west: pathfindingResponse.floorPaths[0].imageBoundsWest,
+        });
     }
 
     private route() {
