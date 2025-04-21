@@ -17,9 +17,7 @@ import {
     Row, Column, RowData,
 } from "@tanstack/react-table"
 import { ArrowUpDown, ArrowUp, ArrowDown, ChevronDown, Funnel } from "lucide-react"
-
 import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
 import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
@@ -30,8 +28,6 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
-
-const priorityList = ["Low", "Medium", "High", "Emergency"];
 
 declare module '@tanstack/react-table' {
     interface ColumnMeta<TData extends RowData, TValue> {
@@ -327,7 +323,7 @@ export default function ShowAllRequests() {
             <div className="flex items-center gap-4 mb-6">
                 <h2 className="text-2xl font-bold">Service Request Database</h2>
             </div>
-            <div className="rounded-md border">
+            <div className="border">
                 <Table className="table-auto w-full">
                     <TableHeader className="bg-blue-900">
                         {table.getHeaderGroups().map((headerGroup) => (
@@ -414,7 +410,7 @@ function Filter({ column }: { column: Column<any, unknown> }) {
         if(column.id === "requestType") {
             return (
                 <DropdownMenu>
-                    <DropdownMenuTrigger className="bg-blue-900 hover:bg-blue-950 inline rounded">
+                    <DropdownMenuTrigger className="bg-blue-900 hover:bg-blue-950 inline">
                         <Button
                             variant="ghost" className="ml-auto bg-blue-900 hover:bg-blue-950"
                         >
@@ -438,7 +434,7 @@ function Filter({ column }: { column: Column<any, unknown> }) {
         if(column.id === "priority") {
             return (
                 <DropdownMenu>
-                    <DropdownMenuTrigger className="bg-blue-900 hover:bg-blue-950 inline rounded">
+                    <DropdownMenuTrigger className="bg-blue-900 hover:bg-blue-950 inline">
                         <Button
                             variant="ghost" className="ml-auto bg-blue-900 hover:bg-blue-950"
                         >
@@ -462,7 +458,7 @@ function Filter({ column }: { column: Column<any, unknown> }) {
         if(column.id === "requestStatus") {
             return (
                 <DropdownMenu>
-                    <DropdownMenuTrigger className="bg-blue-900 hover:bg-blue-950 inline rounded">
+                    <DropdownMenuTrigger className="bg-blue-900 hover:bg-blue-950 inline">
                         <Button
                             variant="ghost" className="ml-auto bg-blue-900 hover:bg-blue-950"
                         >
