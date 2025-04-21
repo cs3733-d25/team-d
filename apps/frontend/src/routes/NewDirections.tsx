@@ -1,6 +1,12 @@
 import {useEffect, useRef, useState} from "react";
 import {PathfindingMap} from "@/GMap/GoogleMap.ts";
-import {API_ROUTES, DepartmentOptions, HospitalOptions, PathfindingOptions} from "common/src/constants.ts";
+import {
+    API_ROUTES,
+    DepartmentOptions,
+    HospitalOptions,
+    PathfindingOptions,
+    PathfindingResponse
+} from "common/src/constants.ts";
 import axios from "axios";
 import {Separator} from "@/components/ui/separator.tsx";
 import {Label} from "@/components/ui/label.tsx";
@@ -52,6 +58,11 @@ export default function NewDirections() {
     const handleDepartmentChange = (value: string) => {
         if (!hospital) return;
         setDepartment(hospital.departments.find(d => d.name === value) || null);
+
+        axios.get(API_ROUTES.PATHFIND + '/path-to-dept/' + value).then(response => {
+            const data = response.data as PathfindingResponse;
+
+        });
     }
 
     const handleModeChange = (value: string) => {

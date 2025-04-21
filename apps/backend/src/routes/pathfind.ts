@@ -164,9 +164,9 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
         parkingLotGraphObj.addEdge(edge.startNodeId, edge.endNodeId);
     });
 
-    console.log(topFloorGraph);
-    console.log(topFloorGraph.Graph);
-    console.log(topFloorGraph.Graph.Nodes);
+    // console.log(topFloorGraph);
+    // console.log(topFloorGraph.Graph);
+    // console.log(topFloorGraph.Graph.Nodes);
 
     // Find the node ID of the closest check-in node on that floor
     const checkInCandidates = topFloorGraph.Graph.Nodes.filter((node) => node.type === 'CHECKIN');
@@ -279,7 +279,7 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
         // (most likely a bad database)
         if (
             !bottomFloorElevatorNodeId ||
-            bottomFloorGraph.Graph.Nodes.find((node) => node.nodeId === bottomFloorElevatorNodeId)
+            !bottomFloorGraph.Graph.Nodes.find((node) => node.nodeId === bottomFloorElevatorNodeId)
         ) {
             res.status(500).send({ message: 'Bottom Floor Elevator node does not exist' });
             return;
@@ -322,7 +322,7 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
         const topFloorPath: NodePathResponse[] = topFloorGraphObj.bfs('DOOR', checkInNodeId);
 
         if (topFloorPath.length === 0) {
-            console.log(topFloorGraph.Graph.Nodes);
+            // console.log(topFloorGraph.Graph.Nodes);
             res.status(500).send({ message: 'No valid path from door to checkin' });
             return;
         }
@@ -357,7 +357,7 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
     // (most likely a bad database)
     if (
         !outsideDoorNodeId ||
-        parkingLotGraph.Graph.Nodes.find((node) => node.nodeId === outsideDoorNodeId)
+        !parkingLotGraph.Graph.Nodes.find((node) => node.nodeId === outsideDoorNodeId)
     ) {
         res.status(500).send({ message: 'Outside door node does not exist' });
         return;
@@ -366,8 +366,6 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
     // TODO: fill this with the path from the
     // door node to the first parking node it sees
     // instead of an empty array
-
-    console.log('Parking Lot: \n' + parkingLotGraph.Graph.Nodes);
 
     const parkingLotPath: NodePathResponse[] = parkingLotGraphObj.bfs('PARKING', outsideDoorNodeId);
 
