@@ -242,6 +242,11 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
         // instead of an empty array
         const topFloorPath: NodePathResponse[] = topFloorGraphObj.bfs('ELEVATOR', checkInNodeId);
 
+        if (topFloorPath.length === 0) {
+            res.status(500).send({ message: 'No valid path from elevator to checkin' });
+            return;
+        }
+
         response.floorPaths.push({
             floorNum: topFloorGraph.floorNum,
             image: topFloorGraph.image,
@@ -253,7 +258,8 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
         } as FloorPathResponse);
 
         // The node ID of the elevator node is the last node in the array
-        const topFloorElevatorNodeId = response.floorPaths[-1].path[0].nodeId;
+        const topFloorElevatorNodeId =
+            response.floorPaths[response.floorPaths.length - 1].path[0].nodeId;
 
         // Get the node with the node ID of the top floor elevator
         const topFloorElevatorNode = topFloorGraph.Graph.Nodes.find(
@@ -287,6 +293,11 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
             bottomFloorElevatorNodeId
         );
 
+        if (bottomFloorPath.length === 0) {
+            res.status(500).send({ message: 'No valid path from door to elevator' });
+            return;
+        }
+
         response.floorPaths.push({
             floorNum: bottomFloorGraph.floorNum,
             image: bottomFloorGraph.image,
@@ -298,7 +309,7 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
         });
 
         // The node ID of the elevator node is the last node in the array
-        const insideDoorNodeId = response.floorPaths[-1].path[0].nodeId;
+        const insideDoorNodeId = response.floorPaths[response.floorPaths.length - 1].path[0].nodeId;
 
         // Get the node with the node ID of the top floor elevator
         insideDoorNode = bottomFloorGraph.Graph.Nodes.find(
@@ -308,7 +319,13 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
         // TODO: fill this with the path from the
         // check-in node to the first door node it sees
         // instead of an empty array
-        const topFloorPath: NodePathResponse[] = [];
+        const topFloorPath: NodePathResponse[] = topFloorGraphObj.bfs('DOOR', checkInNodeId);
+
+        if (topFloorPath.length === 0) {
+            console.log(topFloorGraph.Graph.Nodes);
+            res.status(500).send({ message: 'No valid path from door to checkin' });
+            return;
+        }
 
         response.floorPaths.push({
             floorNum: topFloorGraph.floorNum,
@@ -321,7 +338,7 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
         });
 
         // The node ID of the door node is the first node in the last floorpath
-        const insideDoorNodeId = response.floorPaths[-1].path[0].nodeId;
+        const insideDoorNodeId = response.floorPaths[response.floorPaths.length - 1].path[0].nodeId;
 
         // Get the node with the node ID of the inside door
         insideDoorNode = topFloorGraph.Graph.Nodes.find((node) => node.nodeId === insideDoorNodeId);
@@ -349,6 +366,16 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
     // TODO: fill this with the path from the
     // door node to the first parking node it sees
     // instead of an empty array
+
+    console.log('Parking Lot: \n' + parkingLotGraph.Graph.Nodes);
+
+    const parkingLotPath: NodePathResponse[] = parkingLotGraphObj.bfs('PARKING', outsideDoorNodeId);
+
+    if (parkingLotPath.length === 0) {
+        res.status(500).send({ message: 'No valid path from parking lot to door' });
+        return;
+    }
+
     response.parkingLotPath.path = parkingLotGraphObj.bfs('PARKING', outsideDoorNodeId);
 
     res.json(response);

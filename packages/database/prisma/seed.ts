@@ -292,12 +292,17 @@ async function main() {
     // console.log(translatorRequests);
 
 
-
+    await prisma.edge.deleteMany({});
+    await prisma.node.deleteMany({});
+    await prisma.department.deleteMany({});
+    await prisma.floorGraph.deleteMany({});
+    await prisma.parkingGraph.deleteMany({});
+    await prisma.graph.deleteMany({});
+    await prisma.building.deleteMany({});
+    await prisma.hospital.deleteMany({});
 
 
     console.log('Seeding hospitals...');
-
-    prisma.hospital.deleteMany();
 
     const hospitals = await prisma.hospital.createMany({
         data: [
@@ -318,8 +323,6 @@ async function main() {
 
 
     console.log('Seeding buildings...');
-
-    prisma.building.deleteMany();
 
     const buildings = await prisma.building.createMany({
         data: [
@@ -351,8 +354,6 @@ async function main() {
 
 
     console.log('Seeding graphs...');
-
-    prisma.graph.deleteMany();
 
     const graphs = await prisma.graph.createMany({
         data: [
@@ -394,8 +395,6 @@ async function main() {
 
 
     console.log('Seeding floor graphs...');
-
-    prisma.floorGraph.deleteMany();
 
     const floorGraphs = await prisma.floorGraph.createMany({
         data: [
@@ -460,8 +459,6 @@ async function main() {
 
     console.log('Seeding parking graphs...');
 
-    prisma.parkingGraph.deleteMany();
-
     const parkingGraphs = await prisma.parkingGraph.createMany({
         data: [
             {
@@ -469,7 +466,7 @@ async function main() {
                 hospitalId: 0,
             },
             {
-                graphId: 1,
+                graphId: 100,
                 hospitalId: 1,
             },
         ],
@@ -482,8 +479,6 @@ async function main() {
 
 
     console.log('Seeding departments...');
-
-    prisma.department.deleteMany();
 
     const departments = await prisma.department.createMany({
         data: [
@@ -883,6 +878,257 @@ async function main() {
 
 
 
+    console.log('Seeding nodes...');
+
+    const nodes = await prisma.node.createMany({
+        data: [
+            {
+                nodeId: 100,
+                name: '[Parking1]',
+                lat: 42.091061004913655,
+                lng: -71.26682002463103,
+                type: 'PARKING',
+                graphId: 100,
+            },
+            {
+                nodeId: 101,
+                name: 'turn on p lot',
+                lat: 42.0915152410756,
+                lng: -71.26701719023977,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 102,
+                name: 'about to cross',
+                lat: 42.09193261714922,
+                lng: -71.26677678348538,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 103,
+                name: 'sidewalk 1',
+                lat: 42.09200217019917,
+                lng: -71.2669417764616,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 104,
+                name: 'sidewalk 2',
+                lat: 42.092461934557555,
+                lng: -71.26656230400417,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 105,
+                name: 'before entrance',
+                lat: 42.09253518313532,
+                lng: -71.26648666971582,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 106,
+                name: 'front of entrance',
+                lat: 42.092479272750566,
+                lng: -71.2663831928498,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 107,
+                name: '[Entrance1]',
+                lat: 42.092512979448315,
+                lng: -71.26632207406375,
+                type: 'DOOR',
+                graphId: 100,
+            },
+            //////
+            {
+                nodeId: 108,
+                name: '[Door1]',
+                lat: 42.092512979448315,
+                lng: -71.26632207406375,
+                type: 'DOOR',
+                connectedNodeId: 107,
+                graphId: 101,
+            },
+            {
+                nodeId: 109,
+                name: 'Hallway to checkpoint 1',
+                lat: 42.0925935893518,
+                lng: -71.2662577010474,
+                type: 'NORMAL',
+                graphId: 101,
+            },
+            {
+                nodeId: 110,
+                name: 'Beside checkpoint 1',
+                lat: 42.09265927141964,
+                lng: -71.26628854645107,
+                type: 'NORMAL',
+                graphId: 101,
+            },
+            {
+                nodeId: 111,
+                name: '[Checkpoint1]',
+                lat: 42.092677251176724,
+                lng: -71.26635266724202,
+                type: 'CHECKIN',
+                graphId: 101,
+            },
+            {
+                nodeId: 112,
+                name: 'Hallway beside checkpoint 2',
+                lat: 42.09258498572383,
+                lng: -71.26600036962368,
+                type: 'NORMAL',
+                graphId: 101,
+            },
+            {
+                nodeId: 113,
+                name: '[Checkpoint2]',
+                lat: 42.09265066780056,
+                lng: -71.26600171072819,
+                type: 'CHECKIN',
+                graphId: 101,
+            },
+            {
+                nodeId: 114,
+                name: 'Hallway besides checkpoint 3',
+                lat: 42.09262877378253,
+                lng: -71.26583675487377,
+                type: 'NORMAL',
+                graphId: 101,
+            },
+            {
+                nodeId: 115,
+                name: '[Checkpoint3]',
+                lat: 42.09266659448601,
+                lng: -71.26586226214057,
+                type: 'CHECKIN',
+                graphId:101
+            },
+        ],
+    });
+
+    console.log('Nodes seeded!');
+    console.log(nodes);
+
+
+
+
+    console.log('Seeding edges:');
+
+    const edges = await prisma.edge.createMany({
+        data: [
+            {
+                edgeId: 100,
+                name: '',
+                startNodeId: 100,
+                endNodeId: 101,
+                graphId: 100,
+            },
+            {
+                edgeId: 101,
+                name: '',
+                startNodeId: 101,
+                endNodeId: 102,
+                graphId: 100,
+            },
+            {
+                edgeId: 102,
+                name: '',
+                startNodeId: 102,
+                endNodeId: 103,
+                graphId: 100,
+            },
+            {
+                edgeId: 103,
+                name: '',
+                startNodeId: 103,
+                endNodeId: 104,
+                graphId: 100,
+            },
+            {
+                edgeId: 104,
+                name: '',
+                startNodeId: 104,
+                endNodeId: 105,
+                graphId: 100,
+            },
+            {
+                edgeId: 105,
+                name: '',
+                startNodeId: 105,
+                endNodeId: 106,
+                graphId: 100,
+            },
+            {
+                edgeId: 106,
+                name: '',
+                startNodeId: 106,
+                endNodeId: 107,
+                graphId: 100,
+            },
+
+            {
+                edgeId: 107,
+                name: '',
+                startNodeId: 108,
+                endNodeId: 109,
+                graphId: 101,
+            },
+            {
+                edgeId: 108,
+                name: '',
+                startNodeId: 109,
+                endNodeId: 110,
+                graphId: 101,
+            },
+            {
+                edgeId: 109,
+                name: '',
+                startNodeId: 110,
+                endNodeId: 111,
+                graphId: 101,
+            },
+            {
+                edgeId: 110,
+                name: '',
+                startNodeId: 108, // door node
+                endNodeId: 112,
+                graphId: 101,
+            },
+            {
+                edgeId: 111,
+                name: '',
+                startNodeId: 112,
+                endNodeId: 113,
+                graphId: 101,
+            },
+            {
+                edgeId: 112,
+                name: '',
+                startNodeId: 112,
+                endNodeId: 114,
+                graphId: 101,
+            },
+            {
+                edgeId: 113,
+                name: '',
+                startNodeId: 114,
+                endNodeId: 115,
+                graphId: 101,
+            },
+        ],
+    });
+
+    console.log('Edges seeded!');
+    console.log(edges);
 
 
     // // const hospitals = [
