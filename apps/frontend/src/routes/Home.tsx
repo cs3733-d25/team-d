@@ -20,7 +20,9 @@ export default function Home() {
 
     return (
         <div>
-            <DisclaimerBar />
+            <div className="sticky top-0 z-30">
+                <DisclaimerBar />
+            </div>
             <div className="object-left bg-[url(../public/Hospital.jpg)] bg-no-repeat bg-cover h-screen filter saturate-200 flex flex-col items-center justify-center overflow-hidden">
                 <div className="absolute inset-0 bg-yellow-600/10 mix-blend-multiply pointer-events-none"></div>
                 <div className="absolute inset-0 bg-zinc-900/50 pointer-events-none"></div>
