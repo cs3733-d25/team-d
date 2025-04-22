@@ -20,6 +20,10 @@ const Profile = () => {
         navigate("/admin-database");
     };
 
+    const redirectToSettings = () => {
+        navigate("/admin-settings");
+    }
+
     if (isLoading) {
         return (
             <div className="flex justify-center items-center h-screen">
@@ -72,7 +76,7 @@ const Profile = () => {
                     </div>
 
                     <div className="col-start-1 bg-gray-50 p-10">
-                        <button onClick={() => redirectToMyRequest()}
+                        <button onClick={() => redirectToSettings()}
                                 className="col-start-2 text-3xl w-100 h-100 border-4 border-black rounded text-center bg-blue-900 hover:bg-blue-900 text-white
                                         animate-in fade-in zoom-in duration-500 p-4 font-nunito hover:scale-110 cursor-pointer flex flex-col items-center justify-center space-y-2">
 

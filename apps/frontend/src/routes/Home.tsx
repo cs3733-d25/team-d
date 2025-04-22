@@ -11,6 +11,9 @@ import { useAuth0 } from "@auth0/auth0-react";
 import DisclaimerBar from "@/components/DisclaimerBar.tsx";
 import ServiceRequestbutton from "@/components/ServiceRequestbutton.tsx";
 
+
+
+
 // Use for comments
 {/**/}
 
@@ -18,8 +21,11 @@ import ServiceRequestbutton from "@/components/ServiceRequestbutton.tsx";
 export default function Home() {
     const { user, isAuthenticated, isLoading } = useAuth0();
 
+
+
     return (
         <div>
+
             <div className="sticky top-0 z-30">
                 <DisclaimerBar />
             </div>
