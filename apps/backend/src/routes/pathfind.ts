@@ -11,7 +11,6 @@ import {
     NodePathResponse,
     PathfindingOptions,
     PathfindingResponse,
-    FloorPathDirection,
 } from 'common/src/constants.ts';
 
 router.get('/options', async (req: Request, res: Response) => {
@@ -198,12 +197,9 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
     const response: PathfindingResponse = {
         parkingLotPath: {
             path: [],
+            direction: [],
         },
         floorPaths: [],
-
-        //
-        parkingLotDirections: [],
-        floorPathDirections: [],
     };
 
     let insideDoorNode;
@@ -246,6 +242,7 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
         // check-in node to the first elevator node it sees
         // instead of an empty array
         const topFloorPath: NodePathResponse[] = topFloorGraphObj.search('ELEVATOR', checkInNodeId);
+        const topFloorDirection: string[] = topFloorGraphObj.generateDirectionStepsFromNodes(topFloorPath);
 
         if (topFloorPath.length === 0) {
             res.status(500).send({ message: 'No valid path from elevator to checkin' });
@@ -260,6 +257,7 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
             imageBoundsEast: topFloorGraph.imageBoundsEast,
             imageBoundsWest: topFloorGraph.imageBoundsWest,
             path: topFloorPath,
+            direction: topFloorDirection,
         } as FloorPathResponse);
 
         // The node ID of the elevator node is the last node in the array
@@ -297,6 +295,8 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
             'DOOR',
             bottomFloorElevatorNodeId
         );
+        const bottomFloorDirection: string[] = topFloorGraphObj.generateDirectionStepsFromNodes(bottomFloorPath);
+
 
         if (bottomFloorPath.length === 0) {
             res.status(500).send({ message: 'No valid path from door to elevator' });
@@ -311,6 +311,7 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
             imageBoundsEast: bottomFloorGraph.imageBoundsEast,
             imageBoundsWest: bottomFloorGraph.imageBoundsWest,
             path: bottomFloorPath,
+            direction: bottomFloorDirection,
         });
 
         // The node ID of the elevator node is the last node in the array
@@ -325,6 +326,9 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
         // check-in node to the first door node it sees
         // instead of an empty array
         const topFloorPath: NodePathResponse[] = topFloorGraphObj.search('DOOR', checkInNodeId);
+        const topFloorDiretion: string[] = topFloorGraphObj.generateDirectionStepsFromNodes(topFloorPath);
+
+
 
         if (topFloorPath.length === 0) {
             // console.log(topFloorGraph.Graph.Nodes);
@@ -340,6 +344,7 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
             imageBoundsEast: topFloorGraph.imageBoundsEast,
             imageBoundsWest: topFloorGraph.imageBoundsWest,
             path: topFloorPath,
+            direction: topFloorDiretion
         });
 
         // The node ID of the door node is the first node in the last floorpath
@@ -379,7 +384,7 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
 
     const parkingLotDirections: string[] =
         parkingLotGraphObj.generateDirectionStepsFromNodes(parkingLotPath);
-    response.parkingLotDirections = parkingLotDirections;
+    response.parkingLotPath.direction = parkingLotDirections;
 
     if (parkingLotPath.length === 0) {
         res.status(500).send({ message: 'No valid path from parking lot to door' });

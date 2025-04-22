@@ -175,15 +175,7 @@ export default function NewDirections() {
                         {pathfindingResponse &&
                             <div>
 
-                                <div className="mb-5">
-                                    <div id="inner-step-instruction">Loading directions...</div>
-                                    <button
-                                        id="inner-next-step-btn"
-                                        className="mt-2 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
-                                    >
-                                        Next Step
-                                    </button>
-                                </div>
+
 
                                 <Button onClick={handleZoom} className="mb-4">
                                     Zoom
@@ -196,6 +188,16 @@ export default function NewDirections() {
 
 
                         }
+
+                        <div className="mb-5">
+                            <div id="inner-step-instruction">Loading directions...</div>
+                            <button
+                                id="inner-next-step-btn"
+                                className="mt-2 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+                            >
+                                Next Step
+                            </button>
+                        </div>
                     </>
                 }
                 {/*<Separator className="mt-4 mb-4" />*/}

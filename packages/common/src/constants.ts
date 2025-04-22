@@ -49,6 +49,7 @@ export type NodePathResponse = {
 
 export type ParkingPathResponse = {
     path: NodePathResponse[];
+    direction: string[];
 }
 
 export type FloorPathResponse = {
@@ -59,18 +60,14 @@ export type FloorPathResponse = {
     imageBoundsEast: number;
     imageBoundsWest: number;
     path: NodePathResponse[];
+    direction: string[];
+
 }
 
-export type FloorPathDirection = {
-    floorNum: number;
-    direction: string[];
-}
 
 export type PathfindingResponse = {
     parkingLotPath: ParkingPathResponse;
     floorPaths: FloorPathResponse[];
-    parkingLotDirections: string[];
-    floorPathDirections: FloorPathDirection[];
 }
 
 ///////////// FOR EDITING
