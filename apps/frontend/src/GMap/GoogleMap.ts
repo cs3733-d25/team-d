@@ -95,20 +95,14 @@ class PathfindingGraph {
     // Text to directions functions for inside of hospital
 
     private highlightStep(index: number): void {
-        // Reset previous circle
-        if (this.highlightedCircle) {
-            this.highlightedCircle.setOptions({
-                fillColor: '#00FF88',
-                strokeColor: '#00FF88',
-            });
-        }
 
-        // Reset previous line
-        if (this.highlightedLine) {
-            this.highlightedLine.setOptions({
-                strokeColor: '#CC3300',
-            });
-        }
+
+        // // Reset previous line
+        // if (this.highlightedLine) {
+        //     this.highlightedLine.setOptions({
+        //         strokeColor: '#CC3300',
+        //     });
+        // }
 
         if (this.highlightedCircle) {
             this.highlightedCircle.setIcon({
