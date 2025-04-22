@@ -65,12 +65,30 @@ class PathfindingGraph {
     private readonly nodes: google.maps.Marker[];
 
     // For inner map directions
+    private map: google.maps.Map;
+    private pathForDisplay: google.maps.LatLngLiteral[];
     public innerSteps: string[] = [];
+    private pathPolylines: google.maps.Polyline[] = [];
     public innerStepIndex: number = 0;
     private highlightedCircle: google.maps.Circle | null = null;
     private highlightedLine: google.maps.Polyline | null = null;
 
     constructor(map: google.maps.Map, path: google.maps.LatLngLiteral[], color: string) {
+        this.pathForDisplay = path;
+        this.map = map;
+        this.pathPolylines = [];
+
+        for (let i = 0; i < this.pathForDisplay.length - 1; i++) {
+            const line = new google.maps.Polyline({
+                path: [this.pathForDisplay[i], this.pathForDisplay[i + 1]],
+                geodesic: true,
+                strokeColor: '#CC3300',
+                strokeOpacity: 1.0,
+                strokeWeight: 4,
+                map: map,
+            });
+            this.pathPolylines.push(line);
+        }
 
         this.path = new google.maps.Polyline({
             map: map,
@@ -91,11 +109,11 @@ class PathfindingGraph {
         );
     }
 
-    // TODO: INNER HOSPITAL
     // Text to directions functions for inside of hospital
 
     private highlightStep(index: number): void {
 
+        // TODO: DECIDE IF U WANNA KEEP THE LINE THAT HAVE WALKED OR NOT, ASK EMMA!!
 
         // // Reset previous line
         // if (this.highlightedLine) {
@@ -122,16 +140,18 @@ class PathfindingGraph {
 
 
         // Highlight path segment leading to this node, if it exists
-        const newLine = index > 0 ? this.path[index - 1] : undefined;
+        const newLine = index > 0 ? this.pathPolylines[index - 1] : undefined;
         if (newLine) {
             newLine.setOptions({
-                strokeColor: '#FFD700',
+                strokeColor: '#00AACC',
+                zIndex: 9999, // bring to front
             });
             this.highlightedLine = newLine;
         } else {
             if (index > 0) console.warn(`highlightStep: No path at index ${index - 1}`);
             this.highlightedLine = undefined;
         }
+
     }
 
     public showInnerStep(): void {
@@ -155,11 +175,11 @@ class PathfindingGraph {
             // Highlight the corresponding step on map
             this.highlightStep(this.innerStepIndex);
 
-            // // Optional: pan the map to the current step’s marker/center
-            // const currentNode = this.nodes[this.innerStepIndex];
-            // if (currentNode) {
-            //     this.map.panTo(currentNode.getCenter());
-            // }
+            // Optional: pan the map to the current step’s marker/center
+            const currentNode = this.nodes[this.innerStepIndex];
+            if (currentNode) {
+                this.map.panTo(currentNode.getPosition()!);
+            }
         } else {
             console.log("No inner steps found or stepDisplay element is missing.");
         }

@@ -242,7 +242,8 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
         // check-in node to the first elevator node it sees
         // instead of an empty array
         const topFloorPath: NodePathResponse[] = topFloorGraphObj.search('ELEVATOR', checkInNodeId);
-        const topFloorDirection: string[] = topFloorGraphObj.generateDirectionStepsFromNodes(topFloorPath);
+        const topFloorDirection: string[] =
+            topFloorGraphObj.generateDirectionStepsFromNodes(topFloorPath);
 
         if (topFloorPath.length === 0) {
             res.status(500).send({ message: 'No valid path from elevator to checkin' });
@@ -295,8 +296,8 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
             'DOOR',
             bottomFloorElevatorNodeId
         );
-        const bottomFloorDirection: string[] = topFloorGraphObj.generateDirectionStepsFromNodes(bottomFloorPath);
-
+        const bottomFloorDirection: string[] =
+            topFloorGraphObj.generateDirectionStepsFromNodes(bottomFloorPath);
 
         if (bottomFloorPath.length === 0) {
             res.status(500).send({ message: 'No valid path from door to elevator' });
@@ -326,9 +327,8 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
         // check-in node to the first door node it sees
         // instead of an empty array
         const topFloorPath: NodePathResponse[] = topFloorGraphObj.search('DOOR', checkInNodeId);
-        const topFloorDiretion: string[] = topFloorGraphObj.generateDirectionStepsFromNodes(topFloorPath);
-
-
+        const topFloorDiretion: string[] =
+            topFloorGraphObj.generateDirectionStepsFromNodes(topFloorPath);
 
         if (topFloorPath.length === 0) {
             // console.log(topFloorGraph.Graph.Nodes);
@@ -344,7 +344,7 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
             imageBoundsEast: topFloorGraph.imageBoundsEast,
             imageBoundsWest: topFloorGraph.imageBoundsWest,
             path: topFloorPath,
-            direction: topFloorDiretion
+            direction: topFloorDiretion,
         });
 
         // The node ID of the door node is the first node in the last floorpath
