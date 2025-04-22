@@ -11,6 +11,7 @@ import {
     NodePathResponse,
     PathfindingOptions,
     PathfindingResponse,
+    FloorPathDirection,
 } from 'common/src/constants.ts';
 
 router.get('/options', async (req: Request, res: Response) => {
@@ -375,6 +376,10 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
         'PARKING',
         outsideDoorNodeId
     );
+
+    const parkingLotDirections: string[] =
+        parkingLotGraphObj.generateDirectionStepsFromNodes(parkingLotPath);
+    response.parkingLotDirections = parkingLotDirections;
 
     if (parkingLotPath.length === 0) {
         res.status(500).send({ message: 'No valid path from parking lot to door' });
