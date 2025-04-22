@@ -2,7 +2,7 @@ import express, { Router, Request, Response } from 'express';
 const router: Router = express.Router();
 
 import PrismaClient from '../bin/prisma-client';
-import {EditorFloorGraph, EditorParkingGraph, EditorGraph} from 'common/src/constants.ts';
+import { EditorFloorGraph, EditorParkingGraph, EditorGraph } from 'common/src/constants.ts';
 
 // GET request for all graphs
 router.get('/editor/graphs', async (req: Request, res: Response) => {
@@ -75,16 +75,8 @@ router.put('/editor/graphs/:id', async function (req: Request, res: Response) {
     // success: update specified graph
     else {
         try {
-            const {
-                graphType,
-                FloorGraph,
-                ParkingGraph,
-                Nodes,
-                Edges,
-            } = req.body;
-            const [
-                updateGraph,
-            ] = await PrismaClient.$transaction([
+            const { graphType, FloorGraph, ParkingGraph, Nodes, Edges } = req.body;
+            const [updateGraph] = await PrismaClient.$transaction([
                 PrismaClient.graph.update({
                     where: { graphId: graphId },
                     data: {
@@ -138,9 +130,7 @@ router.put('/editor/floor/:id', async function (req: Request, res: Response) {
                 Building,
                 Departments,
             } = req.body;
-            const [
-                updateGraph,
-            ] = await PrismaClient.$transaction([
+            const [updateGraph] = await PrismaClient.$transaction([
                 PrismaClient.floorGraph.update({
                     where: { graphId: graphId },
                     data: {
@@ -187,14 +177,8 @@ router.put('/editor/parking/:id', async function (req: Request, res: Response) {
     // success: update specified parking graph
     else {
         try {
-            const {
-                Graph,
-                Hospital,
-                hospitalId,
-            } = req.body;
-            const [
-                updateGraph,
-            ] = await PrismaClient.$transaction([
+            const { Graph, Hospital, hospitalId } = req.body;
+            const [updateGraph] = await PrismaClient.$transaction([
                 PrismaClient.parkingGraph.update({
                     where: { graphId: graphId },
                     data: {
