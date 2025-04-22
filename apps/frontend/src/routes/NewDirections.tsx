@@ -25,6 +25,9 @@ import {Button} from "@/components/ui/button.tsx";
 
 export default function NewDirections() {
 
+    // References for the div that holds
+    // the gmap and the autocomplete input,
+    // needed for compatibility w/ gmap api
     const mapRef = useRef<HTMLDivElement>(null);
     const autocompleteRef = useRef<HTMLInputElement>(null);
 
@@ -36,6 +39,8 @@ export default function NewDirections() {
 
     const [hospital, setHospital] = useState<HospitalOptions | null>(null);
     const [department, setDepartment] = useState<DepartmentOptions | null>(null);
+
+    const [pathfindingResponse, setPathfindingResponse] = useState<PathfindingResponse>();
 
     useEffect(() => {
         const fetchMap = async () => {
@@ -59,21 +64,27 @@ export default function NewDirections() {
         if (!hospital) return;
 
         const newDepartment = hospital.departments.find(d => d.name === value);
-
         if (!newDepartment) return;
-
         setDepartment(newDepartment);
 
+        if (!map) return;
         axios.get(API_ROUTES.PATHFIND + '/path-to-dept/' + newDepartment.departmentId).then(response => {
-            if (!map) return;
-
-            const data = response.data as PathfindingResponse;
-            map.update(data)
+            setPathfindingResponse(response.data as PathfindingResponse);
+            map.updateDepartmentPathfinding(response.data as PathfindingResponse);
         });
     }
 
     const handleModeChange = (value: string) => {
+        if (!map) return;
+        map.updateTravelMode(value);
+    }
 
+    const handleZoom = () => {
+        if (!pathfindingResponse || !map) return;
+        map.recenter(
+            pathfindingResponse.parkingLotPath.path[0].lat,
+            pathfindingResponse.parkingLotPath.path[0].lng, 17
+        );
     }
 
     return (
@@ -152,9 +163,11 @@ export default function NewDirections() {
                                 </SelectGroup>
                             </SelectContent>
                         </Select>
-                        {/*<Button onClick={() => setZoomFlag(!zoomFlag)} className="mb-4">*/}
-                        {/*    Zoom*/}
-                        {/*</Button>*/}
+                        {pathfindingResponse &&
+                            <Button onClick={handleZoom} className="mb-4">
+                                Zoom
+                            </Button>
+                        }
                     </>
                 }
                 {/*<Separator className="mt-4 mb-4" />*/}

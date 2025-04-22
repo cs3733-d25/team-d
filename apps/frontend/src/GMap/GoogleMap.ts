@@ -107,7 +107,9 @@ export class PathfindingMap extends GoogleMap {
 
     private startPlaceId: string | null;
     private endLocation: google.maps.LatLngLiteral | null;
+    private travelMode: google.maps.TravelMode;
 
+    private currentPathfindingResponse: PathfindingResponse | null;
     private currentParkingPath: PathfindingGraph | null;
     private currentFloorPath: PathfindingGraph | null;
     private currentFloorMap: google.maps.GroundOverlay | null;
@@ -144,6 +146,7 @@ export class PathfindingMap extends GoogleMap {
 
         this.startPlaceId = null;
         this.endLocation = null;
+        this.travelMode = google.maps.TravelMode.DRIVING;
 
         this.map.addListener('click', (e: google.maps.MapMouseEvent) => {
             const ll = e.latLng;
@@ -152,56 +155,73 @@ export class PathfindingMap extends GoogleMap {
             }
         });
 
+        this.currentPathfindingResponse = null;
         this.currentParkingPath = null;
         this.currentFloorPath = null;
         this.currentFloorMap = null;
-
-        // new PathfindingMap.PathfindingGraph(this.map, [
-        //     {
-        //         lat: 42.0922269319225,
-        //         lng: -71.26654953228861,
-        //     },
-        //     {
-        //         lat: 42.09244786352106,
-        //         lng: -71.26636445986658,
-        //     },
-        //     {
-        //         lat: 42.092509565001215,
-        //         lng: -71.26653343903452,
-        //     },
-        // ], '#CC3300')
-
     }
 
-    update(pathfindingResponse: PathfindingResponse) {
+    updateDepartmentPathfinding(pathfindingResponse: PathfindingResponse) {
+        this.currentPathfindingResponse = pathfindingResponse;
+
+        this.updateCurrentFloor(1);
+
+        this.endLocation = pathfindingResponse.parkingLotPath.path[0];
+        this.route();
+
         if (this.currentParkingPath) {
             this.currentParkingPath.remove();
             this.currentFloorPath = null;
         }
-
-        if (this.currentFloorPath) {
-            this.currentFloorPath.remove();
-            this.currentFloorPath = null;
-        }
-
-        if (this.currentFloorMap) {
-            this.currentFloorMap.setMap(null);
-            this.currentFloorMap = null;
-        }
-
-
-        this.endLocation = pathfindingResponse.parkingLotPath.path[0];
-        this.route();
         this.currentParkingPath = new PathfindingGraph(this.map, pathfindingResponse.parkingLotPath.path, '#CC3300');
-        this.currentFloorPath = new PathfindingGraph(this.map, pathfindingResponse.floorPaths[0].path, '#00AACC');
-        this.currentFloorMap = new google.maps.GroundOverlay(pathfindingResponse.floorPaths[0].image, {
-            north: pathfindingResponse.floorPaths[0].imageBoundsNorth,
-            south: pathfindingResponse.floorPaths[0].imageBoundsSouth,
-            east: pathfindingResponse.floorPaths[0].imageBoundsEast,
-            west: pathfindingResponse.floorPaths[0].imageBoundsWest,
-        });
+    }
 
-        this.currentFloorMap.setMap(this.map);
+    updateTravelMode(travelMode: string) {
+        switch (travelMode) {
+            case 'DRIVING':
+                this.travelMode = google.maps.TravelMode.DRIVING;
+                break;
+            case 'WALKING':
+                this.travelMode = google.maps.TravelMode.WALKING;
+                break;
+            case 'TRANSIT':
+                this.travelMode = google.maps.TravelMode.TRANSIT;
+                break;
+            case 'BICYCLING':
+                this.travelMode = google.maps.TravelMode.BICYCLING;
+                break;
+        }
+        this.route();
+    }
+
+    updateCurrentFloor(floorNum: number) {
+        if (!this.currentPathfindingResponse) return;
+        const floorPath = this.currentPathfindingResponse.floorPaths.find(fp => fp.floorNum === floorNum);
+
+        if (floorPath) {
+            if (this.currentFloorPath) {
+                this.currentFloorPath.remove();
+                this.currentFloorPath = null;
+            }
+            if (this.currentFloorMap) {
+                this.currentFloorMap.setMap(null);
+                this.currentFloorMap = null;
+            }
+            this.currentFloorPath = new PathfindingGraph(this.map, this.currentPathfindingResponse.floorPaths[0].path, '#00AACC');
+            this.currentFloorMap = new google.maps.GroundOverlay(this.currentPathfindingResponse.floorPaths[0].image, {
+                north: this.currentPathfindingResponse.floorPaths[0].imageBoundsNorth,
+                south: this.currentPathfindingResponse.floorPaths[0].imageBoundsSouth,
+                east: this.currentPathfindingResponse.floorPaths[0].imageBoundsEast,
+                west: this.currentPathfindingResponse.floorPaths[0].imageBoundsWest,
+            });
+
+            this.currentFloorMap.setMap(this.map);
+        }
+    }
+
+    recenter(lat: number, lng: number, zoom: number) {
+        this.map.setCenter({lat, lng});
+        this.map.setZoom(zoom);
     }
 
     private route() {
@@ -211,7 +231,7 @@ export class PathfindingMap extends GoogleMap {
             {
                 origin: {placeId: this.startPlaceId},
                 destination: this.endLocation,
-                travelMode: google.maps.TravelMode.DRIVING,
+                travelMode: this.travelMode,
             },
             (response, status) => {
                 if (status === 'OK') {
