@@ -73,7 +73,6 @@ class DFSStrategy implements PathFindingStrategy {
     }
 }
 
-export { DFSStrategy };
 
 
 class GraphNode {
@@ -140,3 +139,4 @@ class Graph {
 export { Graph };
 export type { PathFindingStrategy };
 export { BFSStrategy };
+export { DFSStrategy };
