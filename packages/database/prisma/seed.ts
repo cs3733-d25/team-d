@@ -401,21 +401,21 @@ async function main() {
             {
                 graphId: 1,
                 floorNum: 1,
-                image: '',
-                imageBoundsNorth: 0,
-                imageBoundsSouth: 0,
-                imageBoundsEast: 0,
-                imageBoundsWest: 0,
+                image: '/src/public/floormaps/chf1.png',
+                imageBoundsNorth: 42.32629,
+                imageBoundsSouth: 42.32569,
+                imageBoundsEast: -71.14921,
+                imageBoundsWest: -71.15013,
                 buildingId: 0,
             },
             {
                 graphId: 101,
                 floorNum: 1,
-                image: '',
-                imageBoundsNorth: 0,
-                imageBoundsSouth: 0,
-                imageBoundsEast: 0,
-                imageBoundsWest: 0,
+                image: '/src/public/floormaps/pp20f1.png',
+                imageBoundsNorth: 42.09310,
+                imageBoundsSouth: 42.09246,
+                imageBoundsEast: -71.26553,
+                imageBoundsWest: -71.26657,
                 buildingId: 1,
             },
             {
@@ -431,21 +431,21 @@ async function main() {
             {
                 graphId: 203,
                 floorNum: 3,
-                image: '',
-                imageBoundsNorth: 0,
-                imageBoundsSouth: 0,
-                imageBoundsEast: 0,
-                imageBoundsWest: 0,
+                image: '/src/public/floormaps/pp22f3.png',
+                imageBoundsNorth: 42.09308,
+                imageBoundsSouth: 42.09223,
+                imageBoundsEast: -71.26654,
+                imageBoundsWest: -71.26744,
                 buildingId: 2,
             },
             {
                 graphId: 204,
                 floorNum: 4,
-                image: '',
-                imageBoundsNorth: 0,
-                imageBoundsSouth: 0,
-                imageBoundsEast: 0,
-                imageBoundsWest: 0,
+                image: '/src/public/floormaps/pp22f4.png',
+                imageBoundsNorth: 42.09308,
+                imageBoundsSouth: 42.09223,
+                imageBoundsEast: -71.26654,
+                imageBoundsWest: -71.26744,
                 buildingId: 2,
             },
         ],
@@ -882,6 +882,76 @@ async function main() {
 
     const nodes = await prisma.node.createMany({
         data: [
+            // CH Parking
+            {
+                nodeId: 0,
+                name: '[Parking1]',
+                lat: 42.32628985950129,
+                lng: -71.1494973814374,
+                type: 'PARKING',
+                graphId: 0,
+            },
+            {
+                nodeId: 1,
+                name: '[Entrance1]',
+                lat: 42.32626804631388,
+                lng: -71.14951213358698,
+                type: 'DOOR',
+                graphId: 0,
+            },
+            // CH FL1
+            {
+                nodeId: 2,
+                name: '[Door1]',
+                lat: 42.32626804631388,
+                lng: -71.14951213358698,
+                type: 'DOOR',
+                connectedNodeId: 1,
+                graphId: 1,
+            },
+            {
+                nodeId: 3,
+                name: 'Hallway',
+                lat: 42.32620458972566,
+                lng: -71.14950945137797,
+                type: 'NORMAL',
+                graphId: 1,
+            },
+            {
+                nodeId: 4,
+                name: 'Hallway 2',
+                lat: 42.32619566613782,
+                lng: -71.14958187102137,
+                type: 'NORMAL',
+                graphId: 1,
+            },
+            {
+                nodeId: 5,
+                name: 'Enter room 1',
+                lat: 42.32616889536665,
+                lng: -71.14958321212588,
+                type: 'NORMAL',
+                graphId: 1,
+            },
+            {
+                nodeId: 6,
+                name: 'Enter room 2',
+                lat: 42.32616269842727,
+                lng: -71.14965529649315,
+                type: 'NORMAL',
+                graphId: 1,
+            },
+            {
+                nodeId: 7,
+                name: '[Checkpoint1]',
+                lat: 42.326107173823104,
+                lng: -71.14964456765709,
+                type: 'CHECKIN',
+                graphId: 1,
+            },
+
+
+            // PP20 Parking
             {
                 nodeId: 100,
                 name: '[Parking1]',
@@ -946,7 +1016,7 @@ async function main() {
                 type: 'DOOR',
                 graphId: 100,
             },
-            //////
+            // PP20 FL1
             {
                 nodeId: 108,
                 name: '[Door1]',
@@ -1025,6 +1095,53 @@ async function main() {
 
     const edges = await prisma.edge.createMany({
         data: [
+            // CH Parking
+            {
+                edgeId: 0,
+                name: '',
+                startNodeId: 0,
+                endNodeId: 1,
+                graphId: 0,
+            },
+            // CH FL1
+            {
+                edgeId: 1,
+                name: '',
+                startNodeId: 2,
+                endNodeId: 3,
+                graphId: 1,
+            },
+            {
+                edgeId: 2,
+                name: '',
+                startNodeId: 3,
+                endNodeId: 4,
+                graphId: 1,
+            },
+            {
+                edgeId: 3,
+                name: '',
+                startNodeId: 4,
+                endNodeId: 5,
+                graphId: 1,
+            },
+            {
+                edgeId: 4,
+                name: '',
+                startNodeId: 5,
+                endNodeId: 6,
+                graphId: 1,
+            },
+            {
+                edgeId: 5,
+                name: '',
+                startNodeId: 6,
+                endNodeId: 7,
+                graphId: 1,
+            },
+
+
+            // PP20 Parking
             {
                 edgeId: 100,
                 name: '',
@@ -1074,7 +1191,7 @@ async function main() {
                 endNodeId: 107,
                 graphId: 100,
             },
-
+            // PP20 FL1
             {
                 edgeId: 107,
                 name: '',
@@ -1099,7 +1216,7 @@ async function main() {
             {
                 edgeId: 110,
                 name: '',
-                startNodeId: 108, // door node
+                startNodeId: 108,
                 endNodeId: 112,
                 graphId: 101,
             },

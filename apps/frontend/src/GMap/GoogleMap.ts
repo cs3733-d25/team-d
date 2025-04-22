@@ -200,6 +200,8 @@ export class PathfindingMap extends GoogleMap {
             east: pathfindingResponse.floorPaths[0].imageBoundsEast,
             west: pathfindingResponse.floorPaths[0].imageBoundsWest,
         });
+
+        this.currentFloorMap.setMap(this.map);
     }
 
     private route() {

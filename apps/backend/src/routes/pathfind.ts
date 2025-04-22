@@ -240,7 +240,7 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
         // TODO: fill this with the path from the
         // check-in node to the first elevator node it sees
         // instead of an empty array
-        const topFloorPath: NodePathResponse[] = topFloorGraphObj.bfs('ELEVATOR', checkInNodeId);
+        const topFloorPath: NodePathResponse[] = topFloorGraphObj.search('ELEVATOR', checkInNodeId);
 
         if (topFloorPath.length === 0) {
             res.status(500).send({ message: 'No valid path from elevator to checkin' });
@@ -288,7 +288,7 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
         // TODO: fill this with the path from the
         // elevator node to the first door node it sees
         // instead of an empty array
-        const bottomFloorPath: NodePathResponse[] = bottomFloorGraphObj.bfs(
+        const bottomFloorPath: NodePathResponse[] = bottomFloorGraphObj.search(
             'DOOR',
             bottomFloorElevatorNodeId
         );
@@ -319,7 +319,7 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
         // TODO: fill this with the path from the
         // check-in node to the first door node it sees
         // instead of an empty array
-        const topFloorPath: NodePathResponse[] = topFloorGraphObj.bfs('DOOR', checkInNodeId);
+        const topFloorPath: NodePathResponse[] = topFloorGraphObj.search('DOOR', checkInNodeId);
 
         if (topFloorPath.length === 0) {
             // console.log(topFloorGraph.Graph.Nodes);
@@ -367,14 +367,14 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
     // door node to the first parking node it sees
     // instead of an empty array
 
-    const parkingLotPath: NodePathResponse[] = parkingLotGraphObj.bfs('PARKING', outsideDoorNodeId);
+    const parkingLotPath: NodePathResponse[] = parkingLotGraphObj.search('PARKING', outsideDoorNodeId);
 
     if (parkingLotPath.length === 0) {
         res.status(500).send({ message: 'No valid path from parking lot to door' });
         return;
     }
 
-    response.parkingLotPath.path = parkingLotGraphObj.bfs('PARKING', outsideDoorNodeId);
+    response.parkingLotPath.path = parkingLotPath;
 
     res.json(response);
 });

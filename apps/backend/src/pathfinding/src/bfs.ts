@@ -10,7 +10,11 @@ interface PathFindingStrategy {
 
 // BFS Implementation
 class BFSStrategy implements PathFindingStrategy {
-    search(startNodeType: NodePathResponseType, endNodeId: number, graph: Graph): NodePathResponse[] {
+    search(
+        startNodeType: NodePathResponseType,
+        endNodeId: number,
+        graph: Graph
+    ): NodePathResponse[] {
         const endNode = graph.getNode(endNodeId);
         if (!endNode) {
             throw new Error(`Node ${endNodeId} not found`);
