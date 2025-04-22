@@ -127,6 +127,8 @@ model Hospital {
 
   Buildings    Building[]
   ParkingGraph ParkingGraph?
+
+  Department Department[]
 }
 
 model Building {
@@ -149,6 +151,9 @@ model Department {
   room     String
   lat      Float
   lng      Float
+
+  hospitalId Int
+  Hospital   Hospital @relation(fields: [hospitalId], references: [hospitalId])
 
   floorGraphId Int
   FloorGraph   FloorGraph @relation(fields: [floorGraphId], references: [graphId])
