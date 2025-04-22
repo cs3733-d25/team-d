@@ -401,7 +401,10 @@ export default function ShowAllRequests() {
                                     </TableRow>
                                     </CollapsibleTrigger>
                                     <CollapsibleContent asChild>
-                                        <RequestCollapsible ID = {row.original.requestId} />
+                                        <RequestCollapsible
+                                            ID = {row.original.requestId}
+                                            requestType={getRequestType(row.original)}
+                                        />
                                     </CollapsibleContent>
                                     </>
                                 </Collapsible>
