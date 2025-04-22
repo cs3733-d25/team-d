@@ -1,21 +1,44 @@
-import { TableCell, TableRow } from "@/components/ui/table";
+import {
+    Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
+} from "@/components/ui/table";
 
-export default function LinksVisitors({linkId}: {linkId: string) {
-    const visitors = [...] // these are the visitor objects based on the linkId
+import {Collapsible, CollapsibleContent, CollapsibleTrigger} from "@radix-ui/react-collapsible";
+
+import RequestsInfo from "@/components/RequestCollapsible.tsx"
+import {ServiceRequest} from "@/routes/AllServiceRequests.tsx";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+
+export default function RequestsInfoTable() {
+    const requests = [...]
 
     return (
-        <>
-            {visitors ? (
-                visitors.map((visitor) => (
-                    <TableRow key={visitor.id}>
-                        <TableCell>{visitor.name}</TableCell>
-                        <TableCell>{visitor.totalDuration}</TableCell>
-                        <TableCell>
-                            //
-                        </TableCell>
-                    </TableRow>
-                ))
-            ) : null}
-        </>
+        <div className="w-full sm:p-4">
+            <h2 className="p-4">All links</h2>
+            <div className="rounded-md sm:border">
+                <Table>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead className="font-medium">Language To</TableHead>
+                            <TableHead className="font-medium">Language From</TableHead>
+                            <TableHead className="font-medium">Start</TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        {requests ? (
+                            requests.map((link) => (
+                                        <TableRow>
+                                            <TableCell>{link.translatorRequest.languageTo}</TableCell>
+                                            <TableCell>{link.translatorRequest.languageFrom}</TableCell>
+                                            <TableCell>{link.translatorRequest.startDateTime}
+                                                <div>Hello</div>
+                                            </TableCell>
+                                        </TableRow>
+                            ))
+                        ) : null}
+                    </TableBody>
+                </Table>
+            </div>
+        </div>
     );
 }

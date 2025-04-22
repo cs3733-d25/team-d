@@ -29,6 +29,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import {Collapsible, CollapsibleContent, CollapsibleTrigger} from "@radix-ui/react-collapsible";
+import RequestCollapsible from "@/components/RequestCollapsible.tsx"
 
 declare module '@tanstack/react-table' {
     interface ColumnMeta<TData extends RowData, TValue> {
@@ -400,7 +401,7 @@ export default function ShowAllRequests() {
                                     </TableRow>
                                     </CollapsibleTrigger>
                                     <CollapsibleContent asChild>
-                                        <div>HIIIIIi</div>
+                                        <RequestCollapsible />
                                     </CollapsibleContent>
                                     </>
                                 </Collapsible>
