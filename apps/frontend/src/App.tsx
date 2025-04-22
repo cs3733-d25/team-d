@@ -15,6 +15,8 @@ import Auth0Profile from "@/components/Auth0Profile.tsx";
 import HospitalDirectory from "@/routes/hospitalDirectory.tsx";
 
 
+import AdminSettings from "@/routes/admingSettings.tsx";
+
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import SanitationServiceRequest from "@/components/ServiceRequest/SanitationRequest/SanitationServiceRequest.tsx";
 
@@ -28,6 +30,8 @@ function App() {
                         <Route path="directory" element={<Directions editor={false} />} />
                         <Route path="servicerequesthub" element={<ServiceRequestHub />} />
                         <Route path="hospital-directory" element={<HospitalDirectory />} />
+                        <Route path="admin-settings" element={<AdminSettings />} />
+
 
 
                         {/* Protected routes wrapped in ProtectedRoute */}
