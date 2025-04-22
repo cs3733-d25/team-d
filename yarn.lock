@@ -1699,6 +1699,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@radix-ui/react-presence@npm:1.1.4":
+  version: 1.1.4
+  resolution: "@radix-ui/react-presence@npm:1.1.4"
+  dependencies:
+    "@radix-ui/react-compose-refs": "npm:1.1.2"
+    "@radix-ui/react-use-layout-effect": "npm:1.1.1"
+  peerDependencies:
+    "@types/react": "*"
+    "@types/react-dom": "*"
+    react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    react-dom: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+    "@types/react-dom":
+      optional: true
+  checksum: 10c0/8202647139d6f5097b0abcc43dfba471c00b69da95ca336afe3ea23a165e05ca21992f40fc801760fe442f3e064e54e2f2cbcb9ad758c4b07ef6c69a5b6777bd
+  languageName: node
+  linkType: hard
+
 "@radix-ui/react-primitive@npm:2.0.2":
   version: 2.0.2
   resolution: "@radix-ui/react-primitive@npm:2.0.2"
@@ -1734,6 +1754,25 @@ __metadata:
     "@types/react-dom":
       optional: true
   checksum: 10c0/064c849dcf23a7dcb12f1983fcd89cd64cbe5eb1bafed4136ead0b5faa91a1b3da85972f74cba070d97a8845f172055e9e75782811c8693ed594e31fd732f4e7
+  languageName: node
+  linkType: hard
+
+"@radix-ui/react-primitive@npm:2.1.0":
+  version: 2.1.0
+  resolution: "@radix-ui/react-primitive@npm:2.1.0"
+  dependencies:
+    "@radix-ui/react-slot": "npm:1.2.0"
+  peerDependencies:
+    "@types/react": "*"
+    "@types/react-dom": "*"
+    react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    react-dom: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+    "@types/react-dom":
+      optional: true
+  checksum: 10c0/b436280dbd705b8b32f66b2a36a6432d90db579191fd283697d5d6a4b661ac4ee86b0f6a05e223806ce0802b2652dd8d95c6f7e0ce3c0a5567b2b1e2c3a3fcfe
   languageName: node
   linkType: hard
 
@@ -1788,6 +1827,33 @@ __metadata:
     "@types/react-dom":
       optional: true
   checksum: 10c0/1ba8e15f60d9ef1bd977c28d26fef47a090362bf4d1e11c7d4287a8058b0c8dd75abda7f3c3149fd3e9787e1d1fa3d4573a60641fc64d5e65a63d1db664d8f1f
+  languageName: node
+  linkType: hard
+
+"@radix-ui/react-scroll-area@npm:^1.2.6":
+  version: 1.2.6
+  resolution: "@radix-ui/react-scroll-area@npm:1.2.6"
+  dependencies:
+    "@radix-ui/number": "npm:1.1.1"
+    "@radix-ui/primitive": "npm:1.1.2"
+    "@radix-ui/react-compose-refs": "npm:1.1.2"
+    "@radix-ui/react-context": "npm:1.1.2"
+    "@radix-ui/react-direction": "npm:1.1.1"
+    "@radix-ui/react-presence": "npm:1.1.4"
+    "@radix-ui/react-primitive": "npm:2.1.0"
+    "@radix-ui/react-use-callback-ref": "npm:1.1.1"
+    "@radix-ui/react-use-layout-effect": "npm:1.1.1"
+  peerDependencies:
+    "@types/react": "*"
+    "@types/react-dom": "*"
+    react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    react-dom: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+    "@types/react-dom":
+      optional: true
+  checksum: 10c0/a568d4bf605cdb044d8b940b3ba2a31532b5ce412abde4fdc1fbca30a9f0f553699352c99383359154d1913ac7d736f58d965672dd8d4871fd19ed14d99d9fa7
   languageName: node
   linkType: hard
 
@@ -7954,6 +8020,7 @@ __metadata:
   dependencies:
     "@fortawesome/fontawesome-free": "npm:^6.7.2"
     "@prisma/client": "npm:^6.5.0"
+    "@radix-ui/react-scroll-area": "npm:^1.2.6"
     "@radix-ui/react-select": "npm:^2.1.7"
     "@types/cors": "npm:^2"
     "@types/google.maps": "npm:^3.58.1"
