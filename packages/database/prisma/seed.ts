@@ -1328,67 +1328,13 @@ async function main() {
                 graphId: 100,
             },
             {
-                nodeId: 402,
-                name: 'GIL2',
-                lat: 42.09482711397373,
-                lng: -71.26647515270896,
+                nodeId: 303,
+                name: 'ADA3',
+                lat: 42.093747216357364,
+                lng: -71.26432061017472,
                 type: 'NORMAL',
                 graphId: 100,
             },
-            {
-                nodeId: 403,
-                name: 'GIL3',
-                lat: 42.093897638635724,
-                lng: -71.26728786204048,
-                type: 'NORMAL',
-                graphId: 100,
-            },
-            {
-                nodeId: 404,
-                name: 'GIL4',
-                lat: 42.09381197627542,
-                lng: -71.26709257164222,
-                type: 'NORMAL',
-                graphId: 100,
-            },
-            {
-                nodeId: 405,
-                name: 'GIL5',
-                lat: 42.093664691796256,
-                lng: -71.2669450501464,
-                type: 'NORMAL',
-                graphId: 100,
-            },
-            {
-                nodeId: 406,
-                name: 'GIL6',
-                lat: 42.092698377709986,
-                lng: -71.26645286479217,
-                type: 'NORMAL',
-                graphId: 100,
-            },
-            {
-                nodeId: 407,
-                name: 'GIL7',
-                lat: 42.092579453383316,
-                lng: -71.26648203381521,
-                type: 'NORMAL',
-                graphId: 100,
-            },
-            {
-                nodeId: 408,
-                name: 'GIL→ENT',
-                lat: 42.09252, // aligned with node 109
-                lng: -71.26631,
-                type: 'NORMAL',
-                graphId: 100,
-            },
-
-
-
-
-
-
 
         ],
     });
@@ -1747,55 +1693,12 @@ async function main() {
                 graphId: 100,
             },
             {
-                edgeId: 402,
-                name: '',
-                startNodeId: 402,
-                endNodeId: 403,
-                graphId: 100,
-            },
-            {
                 edgeId: 403,
                 name: '',
-                startNodeId: 403,
-                endNodeId: 404,
+                startNodeId: 401,
+                endNodeId: 303,
                 graphId: 100,
             },
-            {
-                edgeId: 404,
-                name: '',
-                startNodeId: 404,
-                endNodeId: 405,
-                graphId: 100,
-            },
-            {
-                edgeId: 405,
-                name: '',
-                startNodeId: 405,
-                endNodeId: 406,
-                graphId: 100,
-            },
-            {
-                edgeId: 406,
-                name: '',
-                startNodeId: 406,
-                endNodeId: 407,
-                graphId: 100,
-            },
-            {
-                edgeId: 407,
-                name: '',
-                startNodeId: 407,
-                endNodeId: 408,
-                graphId: 100,
-            },
-            {
-                edgeId: 408,
-                name: '',
-                startNodeId: 408,
-                endNodeId: 109, // [Entrance1]
-                graphId: 100,
-            },
-
 
         ],
     });
