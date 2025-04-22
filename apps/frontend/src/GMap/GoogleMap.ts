@@ -65,6 +65,7 @@ class PathfindingGraph {
     private readonly nodes: google.maps.Marker[];
 
     // For inner map directions
+    private numberOfFloor: number;
     private map: google.maps.Map;
     private pathForDisplay: google.maps.LatLngLiteral[];
     public innerSteps: string[] = [];
@@ -199,6 +200,9 @@ class PathfindingGraph {
                     this.showInnerStep();
                 } else {
                     alert("You’ve reached the destination!");
+                    for(i = 0; i < this.innerSteps.length - 1; i++) {}
+                    // this.innerSteps =
+                    // this.innerSteps = pathfindingResponse.parkingLotPath.direction;
                 }
             });
         }
@@ -323,25 +327,27 @@ export class PathfindingMap extends GoogleMap {
         if (!this.currentPathfindingResponse) return;
         const floorPath = this.currentPathfindingResponse.floorPaths.find(fp => fp.floorNum === floorNum);
 
-        if (floorPath) {
-            if (this.currentFloorPath) {
-                this.currentFloorPath.remove();
-                this.currentFloorPath = null;
-            }
-            if (this.currentFloorMap) {
-                this.currentFloorMap.setMap(null);
-                this.currentFloorMap = null;
-            }
-            this.currentFloorPath = new PathfindingGraph(this.map, this.currentPathfindingResponse.floorPaths[0].path, '#00AACC');
-            this.currentFloorMap = new google.maps.GroundOverlay(this.currentPathfindingResponse.floorPaths[0].image, {
-                north: this.currentPathfindingResponse.floorPaths[0].imageBoundsNorth,
-                south: this.currentPathfindingResponse.floorPaths[0].imageBoundsSouth,
-                east: this.currentPathfindingResponse.floorPaths[0].imageBoundsEast,
-                west: this.currentPathfindingResponse.floorPaths[0].imageBoundsWest,
-            });
-
-            this.currentFloorMap.setMap(this.map);
+    }
+    if (floorPath) {
+        if (this.currentFloorPath) {
+            this.currentFloorPath.remove();
+            this.currentFloorPath = null;
         }
+        if (this.currentFloorMap) {
+            this.currentFloorMap.setMap(null);
+            this.currentFloorMap = null;
+        }
+        this.currentFloorPath = new PathfindingGraph(this.map, this.currentPathfindingResponse.floorPaths[0].path, '#00AACC');console.log('steps');
+
+        this.currentParkingPath.showInnerStep();
+        this.currentParkingPath.setupInnerNextButton();
+        this.currentFloorMap = new google.maps.GroundOverlay(this.currentPathfindingResponse.floorPaths[0].image, {
+            north: this.currentPathfindingResponse.floorPaths[0].imageBoundsNorth,
+            south: this.currentPathfindingResponse.floorPaths[0].imageBoundsSouth,
+            east: this.currentPathfindingResponse.floorPaths[0].imageBoundsEast,
+            west: this.currentPathfindingResponse.floorPaths[0].imageBoundsWest,
+        });
+           this.currentFloorMap.setMap(this.map);
     }
 
     recenter(lat: number, lng: number, zoom: number) {
