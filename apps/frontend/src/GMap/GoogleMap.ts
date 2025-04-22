@@ -65,7 +65,6 @@ class PathfindingGraph {
     private readonly nodes: google.maps.Marker[];
 
     // For inner map directions
-    private numberOfFloor: number;
     private map: google.maps.Map;
     private pathForDisplay: google.maps.LatLngLiteral[];
     public innerSteps: string[] = [];
@@ -73,12 +72,20 @@ class PathfindingGraph {
     public innerStepIndex: number = 0;
     private highlightedCircle: google.maps.Circle | null = null;
     private highlightedLine: google.maps.Polyline | null = null;
+    private loadThisAfter: PathfindingGraph | null = null;
 
-    constructor(map: google.maps.Map, path: google.maps.LatLngLiteral[], color: string) {
+    constructor(map: google.maps.Map, path: google.maps.LatLngLiteral[], color: string, after: PathfindingGraph | null) {
         this.pathForDisplay = path;
         this.map = map;
         this.pathPolylines = [];
+        if (!after) {
+            this.loadThisAfter = after;
 
+        }
+        else {
+            this.loadThisAfter = null;
+
+        }
         for (let i = 0; i < this.pathForDisplay.length - 1; i++) {
             const line = new google.maps.Polyline({
                 path: [this.pathForDisplay[i], this.pathForDisplay[i + 1]],
@@ -199,10 +206,8 @@ class PathfindingGraph {
                     this.innerStepIndex++;
                     this.showInnerStep();
                 } else {
-                    alert("You’ve reached the destination!");
-                    for(i = 0; i < this.innerSteps.length - 1; i++) {}
-                    // this.innerSteps =
-                    // this.innerSteps = pathfindingResponse.parkingLotPath.direction;
+                    alert("You’ve reached the destination for inner map!");
+                    this.loadThisAfter?.showInnerStep();
                 }
             });
         }
@@ -286,6 +291,7 @@ export class PathfindingMap extends GoogleMap {
 
     updateDepartmentPathfinding(pathfindingResponse: PathfindingResponse) {
         this.currentPathfindingResponse = pathfindingResponse;
+        console.log(this.currentPathfindingResponse);
 
         this.updateCurrentFloor(1);
 
@@ -296,7 +302,7 @@ export class PathfindingMap extends GoogleMap {
             this.currentParkingPath.remove();
             this.currentFloorPath = null;
         }
-        this.currentParkingPath = new PathfindingGraph(this.map, pathfindingResponse.parkingLotPath.path, '#CC3300');
+        this.currentParkingPath = new PathfindingGraph(this.map, pathfindingResponse.parkingLotPath.path, '#CC3300', this.currentFloorPath);
         this.currentParkingPath.innerSteps = pathfindingResponse.parkingLotPath.direction;
 
         console.log('steps');
@@ -327,27 +333,30 @@ export class PathfindingMap extends GoogleMap {
         if (!this.currentPathfindingResponse) return;
         const floorPath = this.currentPathfindingResponse.floorPaths.find(fp => fp.floorNum === floorNum);
 
-    }
-    if (floorPath) {
-        if (this.currentFloorPath) {
-            this.currentFloorPath.remove();
-            this.currentFloorPath = null;
-        }
-        if (this.currentFloorMap) {
-            this.currentFloorMap.setMap(null);
-            this.currentFloorMap = null;
-        }
-        this.currentFloorPath = new PathfindingGraph(this.map, this.currentPathfindingResponse.floorPaths[0].path, '#00AACC');console.log('steps');
+        if (floorPath) {
+            if (this.currentFloorPath) {
+                this.currentFloorPath.remove();
+                this.currentFloorPath = null;
+            }
+            if (this.currentFloorMap) {
+                this.currentFloorMap.setMap(null);
+                this.currentFloorMap = null;
+            }
+            this.currentFloorPath = new PathfindingGraph(this.map, this.currentPathfindingResponse.floorPaths[0].path, '#00AACC', null);console.log('steps');
+            this.currentFloorPath.innerSteps = this.currentPathfindingResponse.floorPaths[0].direction;
 
-        this.currentParkingPath.showInnerStep();
-        this.currentParkingPath.setupInnerNextButton();
-        this.currentFloorMap = new google.maps.GroundOverlay(this.currentPathfindingResponse.floorPaths[0].image, {
-            north: this.currentPathfindingResponse.floorPaths[0].imageBoundsNorth,
-            south: this.currentPathfindingResponse.floorPaths[0].imageBoundsSouth,
-            east: this.currentPathfindingResponse.floorPaths[0].imageBoundsEast,
-            west: this.currentPathfindingResponse.floorPaths[0].imageBoundsWest,
-        });
-           this.currentFloorMap.setMap(this.map);
+            this.currentFloorPath.showInnerStep();
+            this.currentFloorPath.setupInnerNextButton();
+
+            this.currentFloorMap = new google.maps.GroundOverlay(this.currentPathfindingResponse.floorPaths[0].image, {
+                north: this.currentPathfindingResponse.floorPaths[0].imageBoundsNorth,
+                south: this.currentPathfindingResponse.floorPaths[0].imageBoundsSouth,
+                east: this.currentPathfindingResponse.floorPaths[0].imageBoundsEast,
+                west: this.currentPathfindingResponse.floorPaths[0].imageBoundsWest,
+            });
+
+            this.currentFloorMap.setMap(this.map);
+        }
     }
 
     recenter(lat: number, lng: number, zoom: number) {
@@ -422,7 +431,7 @@ export class PathfindingMap extends GoogleMap {
                     this.stepIndex++;
                     this.showCurrentStep();
                 } else {
-                    alert("You’ve reached the destination!");
+                    alert("You’ve reached the destination for outside map!");
                 }
             });
         }
