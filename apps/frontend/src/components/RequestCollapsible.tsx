@@ -39,39 +39,37 @@ const RequestCollapsible: React.FC<RequestCollapsibleProps> = ({ID,requestType})
         fetchData();
     }, []);
     return (
-        <div className="w-full sm:p-4">
-            <div className="rounded-md sm:border">
-                <Table>
-                    <TableHeader>
-                        <TableRow>
+                <Table className="border rounded-full">
+                    <TableHeader className="bg-gray-50">
+                        <TableRow className={"border"}>
                             {requestType === "Translator" ? (
                                 <>
-                                    <TableHead className="font-medium">Language To</TableHead>
-                                    <TableHead className="font-medium">Language From</TableHead>
-                                    <TableHead className="font-medium">Start Date</TableHead>
+                                    <TableHead className="text-black">Language To</TableHead>
+                                    <TableHead className="text-black">Language From</TableHead>
+                                    <TableHead className="text-black">Start Date</TableHead>
                                 </>
                             ) : requestType === "Equipment" ? (
                                 <>
-                                    <TableHead className="font-medium">End Date</TableHead>
-                                    <TableHead className="font-medium">Start Time</TableHead>
-                                    <TableHead className="font-medium">Quantity</TableHead>
-                                    <TableHead className="font-medium">Medical Device</TableHead>
-                                    <TableHead className="font-medium">Signature</TableHead>
+                                    <TableHead className="text-black">End Date</TableHead>
+                                    <TableHead className="text-black">Start Time</TableHead>
+                                    <TableHead className="text-black">Quantity</TableHead>
+                                    <TableHead className="text-black">Medical Device</TableHead>
+                                    <TableHead className="text-black">Signature</TableHead>
                                 </>
                             ) : requestType === "Security" ? (
                                 <>
-                                    <TableHead className="font-medium">Type of Security</TableHead>
-                                    <TableHead className="font-medium">Number of Guards</TableHead>
+                                    <TableHead className="text-black">Security Needed For</TableHead>
+                                    <TableHead className="text-black">Number of Guards</TableHead>
                                 </>
                             ) : requestType === "Sanitation" ? (
                                 <>
-                                    <TableHead className="font-medium">Type</TableHead>
-                                    <TableHead className="font-medium">Status</TableHead>
+                                    <TableHead className="text-black">Type</TableHead>
+                                    <TableHead className="text-black">Status</TableHead>
                                 </>
                             ) : null}
                         </TableRow>
                     </TableHeader>
-                    <TableBody>
+                    <TableBody className="bg-white">
                         {requests ? (
                             requests.filter((link) => link.requestId === ID) // Filter for the specific request
                                 .map((link) => (
@@ -106,8 +104,6 @@ const RequestCollapsible: React.FC<RequestCollapsibleProps> = ({ID,requestType})
                         ) : null}
                     </TableBody>
                 </Table>
-            </div>
-        </div>
     );
 }
 
