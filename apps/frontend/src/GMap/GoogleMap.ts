@@ -114,9 +114,9 @@ class PathfindingGraph {
 
         const newMarker = this.nodes[index];
         newMarker.setIcon({
-            url: 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png', // or your own highlight icon
-            size: new google.maps.Size(20, 20),
-            anchor: new google.maps.Point(3.5, 3.5),
+            url: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
+            size: new google.maps.Size(30, 30),
+            // anchor: new google.maps.Point(3., 10)
         });
         this.highlightedCircle = newMarker;
 
