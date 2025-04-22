@@ -1328,8 +1328,8 @@ async function main() {
                 graphId: 100,
             },
             {
-                nodeId: 303,
-                name: 'ADA3',
+                nodeId: 402,
+                name: 'GTL2',
                 lat: 42.093747216357364,
                 lng: -71.26432061017472,
                 type: 'NORMAL',
