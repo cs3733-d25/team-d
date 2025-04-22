@@ -119,6 +119,12 @@ export class PathfindingMap extends GoogleMap {
     private currentStepPolyline: google.maps.Polyline | null = null;
     private currentStepMarker: google.maps.Marker | null = null;
 
+    // For inner map directions
+    private innerSteps: string[] = [];
+    private innerStepIndex: number = 0;
+    private highlightedCircle: google.maps.Circle | null = null;
+    private highlightedLine: google.maps.Polyline | null = null;
+
     private constructor(mapDivElement: HTMLDivElement, autocompleteInput: HTMLInputElement) {
 
         super(mapDivElement, {
@@ -172,6 +178,7 @@ export class PathfindingMap extends GoogleMap {
             this.currentFloorPath = null;
         }
         this.currentParkingPath = new PathfindingGraph(this.map, pathfindingResponse.parkingLotPath.path, '#CC3300');
+
     }
 
     updateTravelMode(travelMode: string) {
@@ -222,6 +229,8 @@ export class PathfindingMap extends GoogleMap {
         this.map.setZoom(zoom);
     }
 
+
+    // Text to directions functions for outside of hospital
     private showCurrentStep(): void {
         const stepDisplay = document.getElementById("step-instruction");
         if (stepDisplay && this.steps.length > 0) {
@@ -293,7 +302,103 @@ export class PathfindingMap extends GoogleMap {
         }
     }
 
+    // Text to directions functions for inside of hospital
 
+    private highlightStep(index: number): void {
+        // Reset previous circle
+        if (this.highlightedCircle) {
+            this.highlightedCircle.setOptions({
+                fillColor: '#00FF88',
+                strokeColor: '#00FF88',
+            });
+        }
+
+        // Reset previous line
+        if (this.highlightedLine) {
+            this.highlightedLine.setOptions({
+                strokeColor: '#CC3300',
+            });
+        }
+
+        // Highlight new circle if it exists
+        const newCircle = this.nodes[index];
+        if (newCircle) {
+            newCircle.setOptions({
+                fillColor: '#FFD700',
+                strokeColor: '#FFD700',
+            });
+            this.highlightedCircle = newCircle;
+        } else {
+            console.warn(`highlightStep: No node at index ${index}`);
+            this.highlightedCircle = undefined;
+        }
+
+        // Highlight path segment leading to this node, if it exists
+        const newLine = index > 0 ? this.paths[index - 1] : undefined;
+        if (newLine) {
+            newLine.setOptions({
+                strokeColor: '#FFD700',
+            });
+            this.highlightedLine = newLine;
+        } else {
+            if (index > 0) console.warn(`highlightStep: No path at index ${index - 1}`);
+            this.highlightedLine = undefined;
+        }
+    }
+
+
+    private showInnerStep(): void {
+
+        const stepDisplay = document.getElementById("inner-step-instruction");
+        if (stepDisplay && this.innerSteps.length > 0) {
+            console.log(this.innerStepIndex);
+            const stepText = this.innerSteps[this.innerStepIndex];
+
+            // Update instruction UI
+            stepDisplay.innerHTML = `
+            <strong>Step ${this.innerStepIndex + 1}/${this.innerSteps.length}</strong><br>
+            ${stepText}
+        `;
+
+            // Text-to-speech
+            const utter = new SpeechSynthesisUtterance(stepText);
+            utter.lang = 'en-US';
+            speechSynthesis.cancel();
+            speechSynthesis.speak(utter);
+
+            // Optional: You could pan the map or add custom highlight for each step's node here
+            // (Only if you have step-location mapping logic)
+
+            this.highlightStep(this.innerStepIndex);
+            // this.map.panTo(this.nodes[this.innerStepIndex].getCenter());
+
+        } else {
+            console.log("No inner steps found or stepDisplay element is missing.");
+        }
+    }
+
+
+    private innerNextButtonSetup = false;
+
+    private setupInnerNextButton(): void {
+        if (this.innerNextButtonSetup) return; // prevent adding listener multiple times
+        this.innerNextButtonSetup = true;
+
+        const nextButton = document.getElementById("inner-next-step-btn");
+        if (nextButton) {
+            nextButton.addEventListener("click", () => {
+                if (this.innerStepIndex < this.innerSteps.length - 1) {
+                    this.innerStepIndex++;
+                    this.showInnerStep();
+                } else {
+                    alert("You’ve reached the destination!");
+                }
+            });
+        }
+    }
+
+
+    // To route from home to the wanted hospital
     private route() {
         if (!this.startPlaceId || !this.endLocation) return;
 
@@ -308,9 +413,9 @@ export class PathfindingMap extends GoogleMap {
                     console.log('Routed!');
                     this.directionsRenderer.setDirections(response);
 
-                    const route = response.routes[0];
-                    const leg = route.legs[0];
-                    this.steps = leg.steps;
+                    const route = response?.routes[0];
+                    const leg = route?.legs[0];
+                    this.steps = leg?.steps;
                     this.stepIndex = 0;
 
                     console.log(response);
