@@ -48,10 +48,10 @@ export default function NewDirections() {
                 setMap(await PathfindingMap.makeMap(mapRef.current, autocompleteRef.current));
             }
         }
-        fetchMap();
-
-        axios.get(API_ROUTES.PATHFIND + '/options/').then(response => {
-            setData(response.data as PathfindingOptions);
+        fetchMap().then(() => {
+            axios.get(API_ROUTES.PATHFIND + '/options/').then(response => {
+                setData(response.data as PathfindingOptions);
+            });
         });
 
     }, []);

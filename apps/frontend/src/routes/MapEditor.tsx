@@ -40,12 +40,14 @@ export default function MapEditor() {
                 setMap(await EditorMap.makeMap(mapRef.current));
             }
         }
-        fetchMap();
-
-        axios.get(API_ROUTES.EDITOR).then(response => {
-            setData(response.data);
+        fetchMap().then(() => {
+            axios.get(API_ROUTES.EDITOR).then(response => {
+                setData(response.data as EditorGraph[]);
+                if (map) {
+                    map.initialize(response.data as EditorGraph[]);
+                }
+            });
         });
-
     }, []);
 
     const handleGraphChange = (value: string) => {

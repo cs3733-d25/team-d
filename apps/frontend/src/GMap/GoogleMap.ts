@@ -147,13 +147,6 @@ export class PathfindingMap extends GoogleMap {
         this.endLocation = null;
         this.travelMode = google.maps.TravelMode.DRIVING;
 
-        this.map.addListener('click', (e: google.maps.MapMouseEvent) => {
-            const ll = e.latLng;
-            if (ll) {
-                console.log('Point:\nlat: ' + ll.toJSON().lat + ',\nlng: ' + ll.toJSON().lng + ',');
-            }
-        });
-
         this.currentPathfindingResponse = null;
         this.currentParkingPath = null;
         this.currentFloorPath = null;
@@ -245,17 +238,14 @@ export class PathfindingMap extends GoogleMap {
 }
 
 class EditorMapGraph {
-    private nodes: Map<number, google.maps.Marker>;
-    private edges: Map<number, google.maps.Polyline>;
+    private nodes: {id: number, marker: google.maps.Marker}[];
+    private edges: {id: number, line: google.maps.Polyline}[];
     
-    constructor(map: google.maps.Map, graph: EditorGraph) {
-        this.nodes = new Map();
-        this.edges = new Map();
-        
-        graph.Nodes.forEach(node => {
-            this.nodes.set(
-                node.nodeId,
-                new google.maps.Marker({
+    constructor(map: google.maps.Map, graph: EditorGraph, color: string) {
+        this.nodes = graph.Nodes.map(node => {
+            return {
+                id: node.nodeId,
+                marker: new google.maps.Marker({
                     map: map,
                     position: {
                         lat: node.lat,
@@ -267,9 +257,95 @@ class EditorMapGraph {
                         anchor: new google.maps.Point(3.5, 3.5),
                     },
                     draggable: true,
-                })
-            );
-        })
+                }),
+            }
+        });
+
+        this.edges = graph.Edges.map(edge => {
+            const startNode = this.nodes.find(node => node.id === edge.startNodeId);
+            const endNode = this.nodes.find(node => node.id === edge.endNodeId);
+            if (!startNode || !endNode) {
+                return {
+                    id: -1,
+                    line: new google.maps.Polyline()
+                }
+            }
+
+            const line = new google.maps.Polyline({
+                map: map,
+                path: [
+                    startNode.marker.getPosition() || {lat: 0, lng: 0},
+                    endNode.marker.getPosition() || {lat: 0, lng: 0},
+                ],
+                strokeColor: color,
+            });
+            line.setMap(map);
+
+            startNode.marker.addListener('drag', (e: google.maps.MapMouseEvent) => {
+                const rawPosition = e.latLng;
+                if (!rawPosition) return;
+
+                line.setPath([
+                    {
+                        lat: rawPosition.toJSON().lat,
+                        lng: rawPosition.toJSON().lng,
+                    },
+                    line.getPath().getAt(1),
+                ]);
+
+
+            });
+
+            endNode.marker.addListener('drag', (e: google.maps.MapMouseEvent) => {
+                const rawPosition = e.latLng;
+                if (!rawPosition) return;
+
+                line.setPath([
+                    line.getPath().getAt(0),
+                    {
+                        lat: rawPosition.toJSON().lat,
+                        lng: rawPosition.toJSON().lng,
+                    },
+                ]);
+            });
+
+            return {
+                id: edge.edgeId,
+                line: line,
+            }
+        });
+        // this.nodes = new Map();
+        // this.edges = new Map();
+        //
+        // graph.Nodes.forEach(node => {
+        //     this.nodes.set(
+        //         node.nodeId,
+        //         new google.maps.Marker({
+        //             map: map,
+        //             position: {
+        //                 lat: node.lat,
+        //                 lng: node.lng,
+        //             },
+        //             icon: {
+        //                 url: 'https://maps.gstatic.com/intl/en_us/mapfiles/markers2/measle.png',
+        //                 size: new google.maps.Size(7, 7),
+        //                 anchor: new google.maps.Point(3.5, 3.5),
+        //             },
+        //             draggable: true,
+        //         })
+        //     );
+        // })
+    }
+
+    remove() {
+        this.edges.forEach(edge => {
+            edge.line.setMap(null);
+        });
+        this.edges = [];
+        this.nodes.forEach(node => {
+            node.marker.setMap(null);
+        });
+        this.nodes = [];
     }
 }
 
@@ -283,6 +359,8 @@ export class EditorMap extends GoogleMap {
     private currentGraph: EditorMapGraph | null;
     private currentFloorMap: google.maps.GroundOverlay | null;
 
+    private editorGraphs: EditorGraph[];
+
     constructor(mapDivElement: HTMLDivElement) {
         super(mapDivElement, {
             center: {
@@ -294,11 +372,31 @@ export class EditorMap extends GoogleMap {
         
         this.currentGraph = null;
         this.currentFloorMap = null;
+        this.editorGraphs = [];
     }
 
     changeGraph(graph: EditorGraph) {
-        this.currentGraph = new EditorMapGraph(this.map, graph);
+        if (this.currentGraph) {
+            this.currentGraph.remove();
+        }
+        if (this.currentFloorMap) {
+            this.currentFloorMap.setMap(null);
+            this.currentFloorMap = null;
+        }
+
+        this.currentGraph = new EditorMapGraph(this.map, graph, '#00AACC');
+        if (graph.graphType === 'FLOORGRAPH' && graph.FloorGraph) {
+            this.currentFloorMap = new google.maps.GroundOverlay(graph.FloorGraph.image, {
+                north: graph.FloorGraph.imageBoundsNorth,
+                south: graph.FloorGraph.imageBoundsSouth,
+                east: graph.FloorGraph.imageBoundsEast,
+                west: graph.FloorGraph.imageBoundsWest,
+            });
+            this.currentFloorMap.setMap(this.map);
+        }
     }
 
-    initialize()
+    initialize(editorGraphs: EditorGraph[]) {
+        this.editorGraphs = editorGraphs;
+    }
 }
