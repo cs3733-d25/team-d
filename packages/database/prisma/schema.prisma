@@ -85,7 +85,7 @@ model EquipmentRequest {
 }
 
 // --- The SanitationServiceRequest model ---
-model SanitationServiceRequest {
+model SanitationRequest {
   type   SanitationType
   status RoomStatus
 

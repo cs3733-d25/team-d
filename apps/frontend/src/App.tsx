@@ -15,12 +15,9 @@ import Auth0Profile from "@/components/Auth0Profile.tsx";
 import ChestnutHillDirectory from "@/routes/chestnuthillDirectory";
 import PatriotPlaceDirectory from "@/routes/patriotDirectory.tsx";
 
-
 import { ProtectedRoute } from "./components/ProtectedRoute";
-import SanitationRequest from "@/components/ServiceRequest/SanitationRequest/SanitationRequest.tsx";
 import NewDirections from "@/routes/NewDirections.tsx";
 import MapEditor from "@/routes/MapEditor.tsx";
-import SanitationServiceRequest from "@/components/ServiceRequest/SanitationRequest/SanitationServiceRequest.tsx";
 
 function App() {
     return (
