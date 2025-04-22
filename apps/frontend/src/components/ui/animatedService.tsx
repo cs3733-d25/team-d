@@ -1,5 +1,5 @@
 import Lottie from "lottie-react";
-import serviceAnimation from "@/public/serviceAnimation.json";
+import serviceAnimation from "@/public/serviceAni.json";
 
 export default function AnimatedService() {
     return (

@@ -30,17 +30,18 @@ export default function Home() {
                 </div>
 
                 {/* Content Layer */}
-                <div className="relative z-10 flex flex-col items-center gap-6 text-center">
+                <div className="relative z-10 flex flex-col items-center gap-4 text-center">
 
                     {/* Hero Text */}
-                    <div className="w-full pt-20">
+                    <div className="absolute top-[-35vh] left-1/2 transform -translate-x-1/2">
                         <HeroTextBox />
                     </div>
 
                     {/* Buttons Section */}
-                    <div className="flex justify-left items-center w-full min-h-screen ">
-                    <div className="grid flex justify-center grid-cols-3 m-20 gap-70 mt-4 w-full max-w-lg">
-                        <div className=" w-[250px] h-[250px] bg-[#F1F1F1] border-white">
+
+                    <div className="relative z-10 flex justify-center items-center h-full w-full px-12">
+                        <div className="grid grid-cols-3 gap-16 max-w-4xl mx-auto">
+                        <div className=" w-[250px] h-[250px] bg-[#F1F1F1] rounded-t-lg border-white">
                             <div className="flex-grow flex items-center justify-center w-full">
                                 <AnimatedLogin />
                             </div>
@@ -52,7 +53,7 @@ export default function Home() {
 
 
                         {/* Map Section - Purple Box */}
-                        <div className=" w-[250px] h-[250px] bg-[#F1F1F1] border-white">
+                        <div className=" w-[250px] h-[250px] bg-[#F1F1F1] rounded-t-lg border-white">
                             {/* Animated Map */}
                             <div className="flex-grow flex items-center justify-center w-full">
                                 <AnimatedMap />
@@ -66,7 +67,7 @@ export default function Home() {
 
                         {/* Directory Button */}
 
-                        <div className=" w-[250px] h-[250px] bg-[#F1F1F1] border-white">
+                        <div className=" w-[250px] h-[250px] bg-[#F1F1F1] rounded-t-lg border-white">
                             {/* Animated Map */}
                             <div className="flex-grow flex items-center justify-center w-full">
                                 <AnimatedService />
@@ -74,7 +75,8 @@ export default function Home() {
 
                             <DirectoryButton />
                         </div>
-                    </div>
+                            </div>
+
                 </div>
             </div>
             </div>
