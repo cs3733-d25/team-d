@@ -141,6 +141,8 @@ model Building {
   Hospital   Hospital @relation(fields: [hospitalId], references: [hospitalId])
 
   FloorGraphs FloorGraph[]
+
+  Department Department[]
 }
 
 model Department {
@@ -154,6 +156,9 @@ model Department {
 
   hospitalId Int
   Hospital   Hospital @relation(fields: [hospitalId], references: [hospitalId])
+
+  buildingId Int
+  Building   Building @relation(fields: [buildingId], references: [buildingId])
 
   floorGraphId Int
   FloorGraph   FloorGraph @relation(fields: [floorGraphId], references: [graphId])

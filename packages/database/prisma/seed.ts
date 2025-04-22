@@ -490,6 +490,7 @@ async function main() {
                 lat: 0,
                 lng: 0,
                 hospitalId: 0,
+                buildingId: 0,
                 floorGraphId: 1,
             },
             {
@@ -500,6 +501,7 @@ async function main() {
                 lat: 0,
                 lng: 0,
                 hospitalId: 0,
+                buildingId: 0,
                 floorGraphId: 1,
             },
             {
@@ -510,6 +512,7 @@ async function main() {
                 lat: 0,
                 lng: 0,
                 hospitalId: 0,
+                buildingId: 0,
                 floorGraphId: 1,
             },
             {
@@ -520,6 +523,7 @@ async function main() {
                 lat: 0,
                 lng: 0,
                 hospitalId: 0,
+                buildingId: 0,
                 floorGraphId: 1,
             },
             {
@@ -530,6 +534,7 @@ async function main() {
                 lat: 0,
                 lng: 0,
                 hospitalId: 0,
+                buildingId: 0,
                 floorGraphId: 1,
             },
             {
@@ -540,6 +545,7 @@ async function main() {
                 lat: 0,
                 lng: 0,
                 hospitalId: 0,
+                buildingId: 0,
                 floorGraphId: 1,
             },
             {
@@ -550,6 +556,7 @@ async function main() {
                 lat: 0,
                 lng: 0,
                 hospitalId: 0,
+                buildingId: 0,
                 floorGraphId: 1,
             },
             {
@@ -560,6 +567,7 @@ async function main() {
                 lat: 0,
                 lng: 0,
                 hospitalId: 0,
+                buildingId: 0,
                 floorGraphId: 1,
             },
             {
@@ -570,6 +578,7 @@ async function main() {
                 lat: 0,
                 lng: 0,
                 hospitalId: 0,
+                buildingId: 0,
                 floorGraphId: 1,
             },
             {
@@ -580,6 +589,7 @@ async function main() {
                 lat: 0,
                 lng: 0,
                 hospitalId: 0,
+                buildingId: 0,
                 floorGraphId: 1,
             },
             {
@@ -590,6 +600,7 @@ async function main() {
                 lat: 0,
                 lng: 0,
                 hospitalId: 0,
+                buildingId: 0,
                 floorGraphId: 1,
             },
             {
@@ -600,6 +611,7 @@ async function main() {
                 lat: 0,
                 lng: 0,
                 hospitalId: 0,
+                buildingId: 0,
                 floorGraphId: 1,
             },
             {
@@ -610,6 +622,7 @@ async function main() {
                 lat: 0,
                 lng: 0,
                 hospitalId: 0,
+                buildingId: 0,
                 floorGraphId: 1,
             },
             {
@@ -620,6 +633,7 @@ async function main() {
                 lat: 0,
                 lng: 0,
                 hospitalId: 0,
+                buildingId: 0,
                 floorGraphId: 1,
             },
             {
@@ -630,6 +644,7 @@ async function main() {
                 lat: 0,
                 lng: 0,
                 hospitalId: 0,
+                buildingId: 0,
                 floorGraphId: 1,
             },
             {
@@ -640,6 +655,7 @@ async function main() {
                 lat: 0,
                 lng: 0,
                 hospitalId: 0,
+                buildingId: 0,
                 floorGraphId: 1,
             },
             {
@@ -650,6 +666,7 @@ async function main() {
                 lat: 0,
                 lng: 0,
                 hospitalId: 0,
+                buildingId: 0,
                 floorGraphId: 1,
             },
             {
@@ -660,6 +677,7 @@ async function main() {
                 lat: 0,
                 lng: 0,
                 hospitalId: 0,
+                buildingId: 0,
                 floorGraphId: 1,
             },
             {
@@ -670,6 +688,7 @@ async function main() {
                 lat: 0,
                 lng: 0,
                 hospitalId: 0,
+                buildingId: 0,
                 floorGraphId: 1,
             },
             {
@@ -680,6 +699,7 @@ async function main() {
                 lat: 0,
                 lng: 0,
                 hospitalId: 0,
+                buildingId: 0,
                 floorGraphId: 1,
             },
             {
@@ -690,6 +710,7 @@ async function main() {
                 lat: 42.09272057737288,
                 lng: -71.26621774825084,
                 hospitalId: 1,
+                buildingId: 1,
                 floorGraphId: 101,
             },
             {
@@ -700,6 +721,7 @@ async function main() {
                 lat: 42.092718587010125,
                 lng: -71.26626736911761,
                 hospitalId: 1,
+                buildingId: 1,
                 floorGraphId: 101,
             },
             {
@@ -710,6 +732,7 @@ async function main() {
                 lat: 42.092715719114786,
                 lng: -71.26639820607882,
                 hospitalId: 1,
+                buildingId: 1,
                 floorGraphId: 101,
             },
             {
@@ -720,6 +743,7 @@ async function main() {
                 lat: 42.09287165385485,
                 lng: -71.26587926060235,
                 hospitalId: 1,
+                buildingId: 1,
                 floorGraphId: 101,
             },
             {
@@ -730,6 +754,7 @@ async function main() {
                 lat: 42.092765025772316,
                 lng: -71.26578373407568,
                 hospitalId: 1,
+                buildingId: 1,
                 floorGraphId: 101,
             },
             {
@@ -740,6 +765,7 @@ async function main() {
                 lat: 42.09272770648615,
                 lng: -71.26606469546999,
                 hospitalId: 1,
+                buildingId: 1,
                 floorGraphId: 101,
             },
             {
@@ -750,6 +776,7 @@ async function main() {
                 lat: 42.09272156229708,
                 lng: -71.2656441585419,
                 hospitalId: 1,
+                buildingId: 1,
                 floorGraphId: 101,
             },
             {
@@ -760,6 +787,7 @@ async function main() {
                 lat: 42.09272156229708,
                 lng: -71.2656441585419,
                 hospitalId: 1,
+                buildingId: 1,
                 floorGraphId: 101,
             },
             {
@@ -770,6 +798,7 @@ async function main() {
                 lat: 42.09272156229708,
                 lng: -71.2656441585419,
                 hospitalId: 1,
+                buildingId: 1,
                 floorGraphId: 101,
             },
             {
@@ -780,6 +809,7 @@ async function main() {
                 lat: 42.09272156229708,
                 lng: -71.2656441585419,
                 hospitalId: 1,
+                buildingId: 1,
                 floorGraphId: 101,
             },
             {
@@ -790,6 +820,7 @@ async function main() {
                 lat: 42.09272156229708,
                 lng: -71.2656441585419,
                 hospitalId: 1,
+                buildingId: 1,
                 floorGraphId: 101,
             },
             {
@@ -800,6 +831,7 @@ async function main() {
                 lat: 42.09272156229708,
                 lng: -71.2656441585419,
                 hospitalId: 1,
+                buildingId: 1,
                 floorGraphId: 101,
             },
             {
@@ -810,6 +842,7 @@ async function main() {
                 lat: 42.09272156229708,
                 lng: -71.2656441585419,
                 hospitalId: 1,
+                buildingId: 1,
                 floorGraphId: 101,
             },
             {
@@ -820,6 +853,7 @@ async function main() {
                 lat: 42.09272156229708,
                 lng: -71.2656441585419,
                 hospitalId: 1,
+                buildingId: 1,
                 floorGraphId: 101,
             },
             {
@@ -830,6 +864,7 @@ async function main() {
                 lat: 42.09272156229708,
                 lng: -71.2656441585419,
                 hospitalId: 1,
+                buildingId: 1,
                 floorGraphId: 101,
             },
             {
@@ -840,6 +875,7 @@ async function main() {
                 lat: 42.09272156229708,
                 lng: -71.2656441585419,
                 hospitalId: 1,
+                buildingId: 1,
                 floorGraphId: 101,
             },
             {
@@ -850,6 +886,7 @@ async function main() {
                 lat: 42.09272156229708,
                 lng: -71.2656441585419,
                 hospitalId: 1,
+                buildingId: 1,
                 floorGraphId: 101,
             },
             {
@@ -860,6 +897,7 @@ async function main() {
                 lat: 42.09272156229708,
                 lng: -71.2656441585419,
                 hospitalId: 1,
+                buildingId: 1,
                 floorGraphId: 101,
             },
             {
@@ -870,6 +908,7 @@ async function main() {
                 lat: 42.092544315641184,
                 lng: -71.26702954841635,
                 hospitalId: 1,
+                buildingId: 2,
                 floorGraphId: 203,
             },
             {
@@ -880,6 +919,7 @@ async function main() {
                 lat: 42.0927464654499,
                 lng: -71.26679887844107,
                 hospitalId: 1,
+                buildingId: 2,
                 floorGraphId: 203,
             },
             {
@@ -890,6 +930,7 @@ async function main() {
                 lat: 42.092488965275486,
                 lng: -71.26678771383847,
                 hospitalId: 1,
+                buildingId: 2,
                 floorGraphId: 204,
             },
             {
@@ -900,6 +941,7 @@ async function main() {
                 lat: 42.092474682042536,
                 lng: -71.2669434808703,
                 hospitalId: 1,
+                buildingId: 2,
                 floorGraphId: 204,
             },
             {
@@ -910,6 +952,7 @@ async function main() {
                 lat: 42.092762158045055,
                 lng: -71.26676917701195,
                 hospitalId: 1,
+                buildingId: 2,
                 floorGraphId: 204,
             },
         ],
