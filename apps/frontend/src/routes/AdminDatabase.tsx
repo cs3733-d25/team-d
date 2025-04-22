@@ -15,28 +15,38 @@ import {updateDirectory} from "@/database/csv-import.ts";
 import { useState, useEffect } from 'react';
 import axios from "axios";
 
+type Building = {
+    buildingId: string;
+    name: string;
+}
+
+type FloorGraph = {
+    stuff: string;
+    Building: Building;
+}
+
 type Department = {
     departmentId: number;
     name: string;
     floorNum: number;
     room: string;
-    building: string;
+    FloorGraph: FloorGraph;
 }
 
 const AdminDatabase: React.FC = () => {
     const [departments, currDepartments] = useState<Department[]>([]);
     const [loading, setLoading] = React.useState(false); // true means it needs to reload
-    const [selectedHospital, setSelectedHospital] = useState<0 | 1 | 2>(2);
+    const [selectedBuilding, setSelectedBuilding] = useState<0 | 1 | 2 | 3>(3);
 
 
     //getting department data for display
     const getDepartments = async() => {
         try{
             let data;
-            if(selectedHospital == 2){
-                data = await axios.get('api/department/all');
+            if(selectedBuilding == 3){
+                data = await axios.get('api/department');
             }else {
-                data = await axios.get('api/department/'+selectedHospital+'/all');
+                data = await axios.get('api/department/specbuilding/'+selectedBuilding);
             }
             currDepartments(data.data);
             setLoading(false);
@@ -46,7 +56,7 @@ const AdminDatabase: React.FC = () => {
     }
     useEffect(() => {
         getDepartments().then();
-    }, [loading,selectedHospital]);
+    }, [loading,selectedBuilding]);
     //makes sure that the display updates everytime new data is imported
     const  importOnClick = async () => {
         await updateDirectory();
@@ -58,21 +68,26 @@ const AdminDatabase: React.FC = () => {
 
                 {/* Hospital selection buttons */}
                 <Button
-                    className={selectedHospital === 0 ? "bg-blue-500 text-white" : "bg-gray-200"}
-                    onClick={() => setSelectedHospital(0)}
+                    className={selectedBuilding === 0 ? "bg-blue-500 text-white" : "bg-gray-200"}
+                    onClick={() => setSelectedBuilding(0)}
                 >
                     Chestnut Hill
                 </Button>
                 <Button
-                    className={selectedHospital === 1 ? "bg-blue-500 text-white" : "bg-gray-200"}
-                    onClick={() => setSelectedHospital(1)}
+                    className={selectedBuilding === 1 ? "bg-blue-500 text-white" : "bg-gray-200"}
+                    onClick={() => setSelectedBuilding(1)}
                 >
-                    Patriots Place
+                    20 Patriot Place
                 </Button>
-
                 <Button
-                    className={selectedHospital === 2 ? "bg-blue-500 text-white" : "bg-gray-200"}
-                    onClick={() => setSelectedHospital(2)}
+                    className={selectedBuilding === 2 ? "bg-blue-500 text-white" : "bg-gray-200"}
+                    onClick={() => setSelectedBuilding(2)}
+                >
+                    22 Patriot Place
+                </Button>
+                <Button
+                    className={selectedBuilding === 3 ? "bg-blue-500 text-white" : "bg-gray-200"}
+                    onClick={() => setSelectedBuilding(3)}
                 >
                     All
                 </Button>
@@ -108,7 +123,7 @@ const AdminDatabase: React.FC = () => {
                             <TableCell>{department.name}</TableCell>
                             <TableCell>{department.floorNum}</TableCell>
                             <TableCell>{department.room}</TableCell>
-                            <TableCell>{department.building}</TableCell>
+                            <TableCell>{department.FloorGraph.Building.name}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>

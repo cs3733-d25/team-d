@@ -1,11 +1,13 @@
 import axios from 'axios';
 
-interface Department{
+type Department = {
     departmentId: number;
     name: string;
     floorNum: number;
+    lat: number;
+    lng: number;
     room: string;
-    building: string;
+    floorGraphId: number;
 }
 
 export async function GetDirectory() {
