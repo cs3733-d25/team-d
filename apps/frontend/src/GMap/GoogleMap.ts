@@ -113,6 +113,12 @@ export class PathfindingMap extends GoogleMap {
     private currentFloorPath: PathfindingGraph | null;
     private currentFloorMap: google.maps.GroundOverlay | null;
 
+    // For Google Map directions
+    private stepIndex: number = 0;
+    private steps: google.maps.DirectionsStep[] = [];
+    private currentStepPolyline: google.maps.Polyline | null = null;
+    private currentStepMarker: google.maps.Marker | null = null;
+
     private constructor(mapDivElement: HTMLDivElement, autocompleteInput: HTMLInputElement) {
 
         super(mapDivElement, {
@@ -216,6 +222,78 @@ export class PathfindingMap extends GoogleMap {
         this.map.setZoom(zoom);
     }
 
+    private showCurrentStep(): void {
+        const stepDisplay = document.getElementById("step-instruction");
+        if (stepDisplay && this.steps.length > 0) {
+            const step = this.steps[this.stepIndex];
+
+            // Update instruction UI
+            stepDisplay.innerHTML = `
+            <strong>Step ${this.stepIndex + 1}/${this.steps.length}</strong><br>
+            ${step.instructions}<br>
+            <small>${step.distance?.text}, ${step.duration?.text}</small>
+        `;
+
+            // Text-to-speech
+            const plainText = step.instructions.replace(/<[^>]*>/g, '');
+            const utter = new SpeechSynthesisUtterance(plainText);
+            utter.lang = 'en-US';
+            speechSynthesis.cancel();
+            speechSynthesis.speak(utter);
+
+            // Clear previous step polyline
+            if (this.currentStepPolyline) {
+                this.currentStepPolyline.setMap(null);
+            }
+
+            // Draw current step polyline
+            this.currentStepPolyline = new google.maps.Polyline({
+                path: google.maps.geometry.encoding.decodePath(step.polyline.points),
+                strokeOpacity: 1.0,
+                strokeWeight: 6,
+                map: this.map,
+            });
+
+            // Pan and zoom to current step start location
+            this.map.panTo(step.start_location);
+            this.map.setZoom(17); // or adjust dynamically
+
+            // Optional: Add a marker to indicate position
+            if (this.currentStepMarker) {
+                this.currentStepMarker.setMap(null);
+            }
+
+            this.currentStepMarker = new google.maps.Marker({
+                position: step.start_location,
+                map: this.map,
+                icon: {
+                    path: google.maps.SymbolPath.CIRCLE,
+                    scale: 6,
+                    fillOpacity: 1,
+                    strokeColor: "#fff",
+                    strokeWeight: 2
+                }
+            });
+        } else {
+            console.log("No steps found or stepDisplay element is missing.");
+        }
+    }
+
+    private setupNextButton(): void {
+        const nextButton = document.getElementById("next-step-btn");
+        if (nextButton) {
+            nextButton.addEventListener("click", () => {
+                if (this.stepIndex < this.steps.length - 1) {
+                    this.stepIndex++;
+                    this.showCurrentStep();
+                } else {
+                    alert("You’ve reached the destination!");
+                }
+            });
+        }
+    }
+
+
     private route() {
         if (!this.startPlaceId || !this.endLocation) return;
 
@@ -229,6 +307,15 @@ export class PathfindingMap extends GoogleMap {
                 if (status === 'OK') {
                     console.log('Routed!');
                     this.directionsRenderer.setDirections(response);
+
+                    const route = response.routes[0];
+                    const leg = route.legs[0];
+                    this.steps = leg.steps;
+                    this.stepIndex = 0;
+
+                    console.log(response);
+                    this.showCurrentStep();
+                    this.setupNextButton();
                 } else {
                     window.alert('Directions request failed due to ' + status);
                 }
