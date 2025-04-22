@@ -2,15 +2,28 @@ import {
     Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table";
 
-import {Collapsible, CollapsibleContent, CollapsibleTrigger} from "@radix-ui/react-collapsible";
-
-import RequestsInfo from "@/components/RequestCollapsible.tsx"
 import {ServiceRequest} from "@/routes/AllServiceRequests.tsx";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import {API_ROUTES} from "common/src/constants.ts";
 
-export default function RequestsInfoTable() {
-    const requests = [...]
+type RequestCollapsibleProps = {
+    ID: number;
+};
+
+const RequestCollapsible: React.FC<RequestCollapsibleProps> = ({ID}) => {
+    const [requests, setRequests] = useState<ServiceRequest[] | null>(null);
+
+    useEffect(() => {
+        axios
+            .get(API_ROUTES.SERVICEREQS + "/translator")
+            .then((res) => {
+                setRequests(res.data); // Assuming API returns an array of request objects
+            })
+            .catch((err) => {
+                console.error("Error fetching translator requests:", err);
+            });
+    }, []);
 
     return (
         <div className="w-full sm:p-4">
@@ -26,8 +39,9 @@ export default function RequestsInfoTable() {
                     </TableHeader>
                     <TableBody>
                         {requests ? (
-                            requests.map((link) => (
-                                        <TableRow>
+                            requests.filter((link) => link.requestId === ID) // Filter for the specific request
+                                .map((link) => (
+                                        <TableRow key={link.requestId}>
                                             <TableCell>{link.translatorRequest.languageTo}</TableCell>
                                             <TableCell>{link.translatorRequest.languageFrom}</TableCell>
                                             <TableCell>{link.translatorRequest.startDateTime}
@@ -42,3 +56,5 @@ export default function RequestsInfoTable() {
         </div>
     );
 }
+
+export default RequestCollapsible;
