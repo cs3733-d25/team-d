@@ -29,12 +29,6 @@ export default function Navbar() {
                         <NavigationMenuList className={'flex flex-row space-x-5'}>
 
 
-                            <NavigationMenuItem>
-                                <NavigationMenuLink className="text-base hover:bg-blue-950 py-1">
-                                    <b><AccessDropMenu /></b>
-                                </NavigationMenuLink>
-                            </NavigationMenuItem>
-
 
                             <NavigationMenuItem>
                                 <NavigationMenuLink className={'text-base hover:bg-[rgba(0,31,63,0.8)] hover:text-white'}>
