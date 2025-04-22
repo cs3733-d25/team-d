@@ -43,7 +43,11 @@ class BFSStrategy implements PathFindingStrategy {
 
 // DFS Implementation
 class DFSStrategy implements PathFindingStrategy {
-    search(startNodeType: NodePathResponseType, endNodeId: number, graph: Graph): NodePathResponse[] {
+    search(
+        startNodeType: NodePathResponseType,
+        endNodeId: number,
+        graph: Graph
+    ): NodePathResponse[] {
         const endNode = graph.getNode(endNodeId);
         if (!endNode) throw new Error(`Node ${endNodeId} not found`);
 
@@ -55,7 +59,7 @@ class DFSStrategy implements PathFindingStrategy {
         while (stack.length > 0) {
             const { node, path } = stack.pop()!;
             if (node.data.type === startNodeType) {
-                return path.map(node => node.data).reverse();
+                return path.map((node) => node.data).reverse();
             }
 
             if (!visited.has(node.data.nodeId)) {
@@ -63,7 +67,6 @@ class DFSStrategy implements PathFindingStrategy {
                 for (const neighbor of node.getNeighbors()) {
                     if (!visited.has(neighbor.data.nodeId)) {
                         stack.push({ node: neighbor, path: [...path, neighbor] });
-
                     }
                 }
             }
@@ -72,8 +75,6 @@ class DFSStrategy implements PathFindingStrategy {
         return [];
     }
 }
-
-
 
 class GraphNode {
     private readonly neighbors: GraphNode[];

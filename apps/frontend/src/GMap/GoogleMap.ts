@@ -2,6 +2,8 @@ import axios from "axios";
 import {API_ROUTES, EditorGraph, PathfindingResponse} from "common/src/constants.ts";
 import {EditorEncapsulator} from "@/routes/MapEditor.tsx";
 
+import {Button} from '@/components/ui/button.tsx'
+
 const API_KEY: string = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 const SCRIPT_URL: string = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&libraries=places&callback=initMap`
 
@@ -272,14 +274,9 @@ class EditorMapGraph {
             marker.addListener("click", () => {
                 const infowindow = new google.maps.InfoWindow({
                     content: `
-                            <div>
-                                <b>Node Info</b><br/>
-                                ID: ${node.nodeId} <br/>
-                                Tag: ${node.name} <br/>
-                                Lat: ${node.lat.toFixed(5)}<br/>
-                                Lng: ${node.lng.toFixed(5)}
-                            </div>
-                        `,
+                        <button class="bg-blue-700 text-white">Remove</button>
+                        <button class="bg-blue-700 text-white">Add</button>
+                    `
                 });
                 infowindow.setPosition(marker.getPosition());
                 infowindow.open(map);
@@ -327,7 +324,7 @@ class EditorMapGraph {
             });
 
             startNode.marker.addListener('dragend', () => {
-
+                
             })
 
             endNode.marker.addListener('drag', (e: google.maps.MapMouseEvent) => {
@@ -341,6 +338,10 @@ class EditorMapGraph {
                         lng: rawPosition.toJSON().lng,
                     },
                 ]);
+            });
+
+            this.map.addListener('click', (e: google.maps.MapMouseEvent) => {
+
             });
 
             return {
