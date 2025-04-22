@@ -240,24 +240,47 @@ export class PathfindingMap extends GoogleMap {
 class EditorMapGraph {
     private nodes: {id: number, marker: google.maps.Marker}[];
     private edges: {id: number, line: google.maps.Polyline}[];
+
+    private readonly editorMap: EditorMap;
     
-    constructor(map: google.maps.Map, graph: EditorGraph, color: string) {
+    constructor(map: google.maps.Map, graph: EditorGraph, color: string, editorMap: EditorMap) {
+
+        this.editorMap = editorMap;
+
         this.nodes = graph.Nodes.map(node => {
+            const marker = new google.maps.Marker({
+                map: map,
+                position: {
+                    lat: node.lat,
+                    lng: node.lng,
+                },
+                icon: {
+                    url: 'https://maps.gstatic.com/intl/en_us/mapfiles/markers2/measle.png',
+                    size: new google.maps.Size(10, 10),
+                    anchor: new google.maps.Point(5, 5),
+                },
+                draggable: true,
+            });
+
+            marker.addListener("click", () => {
+                const infowindow = new google.maps.InfoWindow({
+                    content: `
+                            <div>
+                                <b>Node Info</b><br/>
+                                ID: ${node.nodeId} <br/>
+                                Tag: ${node.name} <br/>
+                                Lat: ${node.lat.toFixed(5)}<br/>
+                                Lng: ${node.lng.toFixed(5)}
+                            </div>
+                        `,
+                });
+                infowindow.setPosition(marker.getPosition());
+                infowindow.open(map);
+            });
+
             return {
                 id: node.nodeId,
-                marker: new google.maps.Marker({
-                    map: map,
-                    position: {
-                        lat: node.lat,
-                        lng: node.lng,
-                    },
-                    icon: {
-                        url: 'https://maps.gstatic.com/intl/en_us/mapfiles/markers2/measle.png',
-                        size: new google.maps.Size(7, 7),
-                        anchor: new google.maps.Point(3.5, 3.5),
-                    },
-                    draggable: true,
-                }),
+                marker: marker,
             }
         });
 
@@ -295,6 +318,10 @@ class EditorMapGraph {
 
 
             });
+
+            startNode.marker.addListener('dragend', () => {
+
+            })
 
             endNode.marker.addListener('drag', (e: google.maps.MapMouseEvent) => {
                 const rawPosition = e.latLng;
@@ -373,6 +400,13 @@ export class EditorMap extends GoogleMap {
         this.currentGraph = null;
         this.currentFloorMap = null;
         this.editorGraphs = [];
+
+        this.map.addListener('click', (e: google.maps.MapMouseEvent) => {
+            const rawPosition = e.latLng;
+            if (!rawPosition) return;
+
+            console.log('lat: ' + rawPosition.toJSON().lat + ',\nlng: ' + rawPosition.toJSON().lng + ',');
+        });
     }
 
     changeGraph(graph: EditorGraph) {
@@ -384,7 +418,7 @@ export class EditorMap extends GoogleMap {
             this.currentFloorMap = null;
         }
 
-        this.currentGraph = new EditorMapGraph(this.map, graph, '#00AACC');
+        this.currentGraph = new EditorMapGraph(this.map, graph, '#00AACC', this);
         if (graph.graphType === 'FLOORGRAPH' && graph.FloorGraph) {
             this.currentFloorMap = new google.maps.GroundOverlay(graph.FloorGraph.image, {
                 north: graph.FloorGraph.imageBoundsNorth,
@@ -393,10 +427,21 @@ export class EditorMap extends GoogleMap {
                 west: graph.FloorGraph.imageBoundsWest,
             });
             this.currentFloorMap.setMap(this.map);
+
+            this.currentFloorMap.addListener('click', (e: google.maps.MapMouseEvent) => {
+                const rawPosition = e.latLng;
+                if (!rawPosition) return;
+
+                console.log('lat: ' + rawPosition.toJSON().lat + ',\nlng: ' + rawPosition.toJSON().lng + ',');
+            });
         }
     }
 
     initialize(editorGraphs: EditorGraph[]) {
         this.editorGraphs = editorGraphs;
+    }
+
+    getCurrentGraph() {
+        return this.currentGraph;
     }
 }

@@ -10,7 +10,6 @@ import {
 import axios from "axios";
 import {Separator} from "@/components/ui/separator.tsx";
 import {Label} from "@/components/ui/label.tsx";
-import {cn} from "@/lib/utils.ts";
 import {
     Select,
     SelectContent,
@@ -21,6 +20,14 @@ import {
     SelectValue
 } from "@/components/ui/select.tsx";
 import {Button} from "@/components/ui/button.tsx";
+
+export class EditorGraphEncapsulator {
+    editorGraphs: EditorGraph[];
+
+    constructor(editorGraphs: EditorGraph[]) {
+        this.editorGraphs = editorGraphs;
+    }
+}
 
 
 export default function MapEditor() {
@@ -34,6 +41,8 @@ export default function MapEditor() {
 
     const [data, setData] = useState<EditorGraph[]>([]);
 
+    const [editorGraphs, setEditorGraphs] = useState<EditorGraphEncapsulator>();
+
     useEffect(() => {
         const fetchMap = async () => {
             if (mapRef.current) {
@@ -43,6 +52,8 @@ export default function MapEditor() {
         fetchMap().then(() => {
             axios.get(API_ROUTES.EDITOR).then(response => {
                 setData(response.data as EditorGraph[]);
+                const editorGraphEncapsulator = new EditorGraphEncapsulator(response.data as EditorGraph[]);
+                setEditorGraphs(editorGraphEncapsulator);
                 if (map) {
                     map.initialize(response.data as EditorGraph[]);
                 }
