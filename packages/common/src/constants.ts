@@ -61,9 +61,16 @@ export type FloorPathResponse = {
     path: NodePathResponse[];
 }
 
+export type FloorPathDirection = {
+    floorNum: number;
+    direction: string[];
+}
+
 export type PathfindingResponse = {
     parkingLotPath: ParkingPathResponse;
     floorPaths: FloorPathResponse[];
+    parkingLotDirections: string[];
+    floorPathDirections: FloorPathDirection[];
 }
 
 ///////////// FOR EDITING

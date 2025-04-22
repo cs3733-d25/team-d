@@ -39,6 +39,61 @@ class BFSStrategy implements PathFindingStrategy {
         }
         return [];
     }
+
+    // Generate steps like Google Map API //
+    public generateDirectionStepsFromNodes(path: NodePathResponse[]): string[] {
+        if (path.length < 2) return ['Not enough points for directions'];
+
+        const steps: string[] = [`Start at ${path[0].name ?? formatCoord(path[0])}`];
+
+        for (let i = 1; i < path.length - 1; i++) {
+            const prev = path[i - 1];
+            const curr = path[i];
+            const next = path[i + 1];
+
+            const v1 = {
+                x: curr.lng - prev.lng,
+                y: curr.lat - prev.lat,
+            };
+            const v2 = {
+                x: next.lng - curr.lng,
+                y: next.lat - curr.lat,
+            };
+
+            const angle = this.angleBetweenVectors(v1, v2);
+            let direction: string;
+
+            if (angle < 30) {
+                direction = 'Continue straight';
+            } else if (angle < 135) {
+                const cross = v1.x * v2.y - v1.y * v2.x;
+                direction = cross > 0 ? 'Turn left' : 'Turn right';
+            } else {
+                direction = 'Make a U-turn';
+            }
+
+            const label = curr.name || curr.type || formatCoord(curr);
+            steps.push(`${direction} at ${label}`);
+        }
+
+        steps.push(`Arrive at ${path[path.length - 1].name ?? formatCoord(path[path.length - 1])}`);
+        return steps;
+
+        function formatCoord(node: NodePathResponse): string {
+            return `(${node.lat.toFixed(5)}, ${node.lng.toFixed(5)})`;
+        }
+    }
+
+    public angleBetweenVectors(v1: { x: number; y: number }, v2: { x: number; y: number }): number {
+        const dot = v1.x * v2.x + v1.y * v2.y;
+        const mag1 = Math.sqrt(v1.x * v1.x + v1.y * v1.y);
+        const mag2 = Math.sqrt(v2.x * v2.x + v2.y * v2.y);
+
+        const angleRad = Math.acos(dot / (mag1 * mag2));
+        return angleRad * (180 / Math.PI); // return in degrees
+    }
+
+    ////////////////////////////////////////
 }
 
 class GraphNode {

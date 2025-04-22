@@ -179,6 +179,16 @@ export class PathfindingMap extends GoogleMap {
         }
         this.currentParkingPath = new PathfindingGraph(this.map, pathfindingResponse.parkingLotPath.path, '#CC3300');
 
+        console.log('HI');
+        console.log(pathfindingResponse);
+        console.log('steps');
+        console.log()
+        // console.log(this.currentParkingPath);
+        // this.innerStepIndex = 0;
+
+        // console.log(steps);
+
+        this.showInnerStep();
     }
 
     updateTravelMode(travelMode: string) {
@@ -376,7 +386,6 @@ export class PathfindingMap extends GoogleMap {
             console.log("No inner steps found or stepDisplay element is missing.");
         }
     }
-
 
     private innerNextButtonSetup = false;
 

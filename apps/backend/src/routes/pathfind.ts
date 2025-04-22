@@ -199,6 +199,10 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
             path: [],
         },
         floorPaths: [],
+
+        //
+        parkingLotDirections: [],
+        floorPathDirections: [],
     };
 
     let insideDoorNode;
