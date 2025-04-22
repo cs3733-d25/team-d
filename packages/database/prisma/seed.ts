@@ -1035,6 +1035,8 @@ async function main() {
             },
 
 
+
+
             // PP20 FL1
             {
                 nodeId: 110,
@@ -1226,6 +1228,162 @@ async function main() {
 
 
 
+            //ParkingADA
+            {
+                nodeId: 300,
+                name: '[ParkingADA]',
+                lat: 42.09375626739604,
+                lng: -71.26385271549225,
+                type: 'PARKING',
+                graphId: 100,
+            },
+            {
+                nodeId: 301,
+                name: 'ADA1',
+                lat: 42.0937949842719,
+                lng: -71.26405238927323,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 302,
+                name: 'ADA2',
+                lat: 42.0936715837525,
+                lng: -71.26416504205186,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 303,
+                name: 'ADA3',
+                lat: 42.093747216357364,
+                lng: -71.26432061017472,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 304,
+                name: 'ADA4',
+                lat: 42.093377013800094,
+                lng: -71.26469075501878,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 305,
+                name: 'ADA5',
+                lat: 42.0931381722938,
+                lng: -71.26434743226487,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 306,
+                name: 'ADA6',
+                lat: 42.09275602401299,
+                lng: -71.26483022988755,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 307,
+                name: 'ADA7',
+                lat: 42.09240173865421,
+                lng: -71.26628398717362,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 308,
+                name: 'ADA8',
+                lat: 42.092433584610106,
+                lng: -71.26636445344407,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 309,
+                name: 'ADA9',
+                lat: 42.09252000000000, // close to entrance node 109
+                lng: -71.26631000000000,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+
+            //ParkingGillette
+            {
+                nodeId: 400,
+                name: '[ParkingGillette]',
+                lat: 42.095887875258136,
+                lng: -71.26492828130722,
+                type: 'PARKING',
+                graphId: 100,
+            },
+            {
+                nodeId: 401,
+                name: 'GIL1',
+                lat: 42.094659928836286,
+                lng: -71.26609964344688,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 402,
+                name: 'GIL2',
+                lat: 42.09482711397373,
+                lng: -71.26647515270896,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 403,
+                name: 'GIL3',
+                lat: 42.093897638635724,
+                lng: -71.26728786204048,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 404,
+                name: 'GIL4',
+                lat: 42.09381197627542,
+                lng: -71.26709257164222,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 405,
+                name: 'GIL5',
+                lat: 42.093664691796256,
+                lng: -71.2669450501464,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 406,
+                name: 'GIL6',
+                lat: 42.092698377709986,
+                lng: -71.26645286479217,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 407,
+                name: 'GIL7',
+                lat: 42.092579453383316,
+                lng: -71.26648203381521,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 408,
+                name: 'GIL→ENT',
+                lat: 42.09252, // aligned with node 109
+                lng: -71.26631,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+
 
 
 
@@ -1355,6 +1513,8 @@ async function main() {
                 endNodeId: 109,
                 graphId: 100,
             },
+
+
 
             // PP20 FL1
             {
@@ -1495,6 +1655,147 @@ async function main() {
                 endNodeId: 211,
                 graphId: 203,
             },
+
+
+
+             // ParkingADA
+            {
+                edgeId: 300,
+                name: '',
+                startNodeId: 300,
+                endNodeId: 301,
+                graphId: 100,
+            },
+            {
+                edgeId: 301,
+                name: '',
+                startNodeId: 301,
+                endNodeId: 302,
+                graphId: 100,
+            },
+            {
+                edgeId: 302,
+                name: '',
+                startNodeId: 302,
+                endNodeId: 303,
+                graphId: 100,
+            },
+            {
+                edgeId: 303,
+                name: '',
+                startNodeId: 303,
+                endNodeId: 304,
+                graphId: 100,
+            },
+            {
+                edgeId: 304,
+                name: '',
+                startNodeId: 304,
+                endNodeId: 305,
+                graphId: 100,
+            },
+            {
+                edgeId: 305,
+                name: '',
+                startNodeId: 305,
+                endNodeId: 306,
+                graphId: 100,
+            },
+            {
+                edgeId: 306,
+                name: '',
+                startNodeId: 306,
+                endNodeId: 307,
+                graphId: 100,
+            },
+            {
+                edgeId: 307,
+                name: '',
+                startNodeId: 307,
+                endNodeId: 308,
+                graphId: 100,
+            },
+            {
+                edgeId: 308,
+                name: '',
+                startNodeId: 308,
+                endNodeId: 309,
+                graphId: 100,
+            },
+            {
+                edgeId: 309,
+                name: '',
+                startNodeId: 309,
+                endNodeId: 109, // connect to [Entrance1]
+                graphId: 100,
+            },
+
+
+            //ParkingGillette
+            {
+                edgeId: 400,
+                name: '',
+                startNodeId: 400,
+                endNodeId: 401,
+                graphId: 100,
+            },
+            {
+                edgeId: 401,
+                name: '',
+                startNodeId: 401,
+                endNodeId: 402,
+                graphId: 100,
+            },
+            {
+                edgeId: 402,
+                name: '',
+                startNodeId: 402,
+                endNodeId: 403,
+                graphId: 100,
+            },
+            {
+                edgeId: 403,
+                name: '',
+                startNodeId: 403,
+                endNodeId: 404,
+                graphId: 100,
+            },
+            {
+                edgeId: 404,
+                name: '',
+                startNodeId: 404,
+                endNodeId: 405,
+                graphId: 100,
+            },
+            {
+                edgeId: 405,
+                name: '',
+                startNodeId: 405,
+                endNodeId: 406,
+                graphId: 100,
+            },
+            {
+                edgeId: 406,
+                name: '',
+                startNodeId: 406,
+                endNodeId: 407,
+                graphId: 100,
+            },
+            {
+                edgeId: 407,
+                name: '',
+                startNodeId: 407,
+                endNodeId: 408,
+                graphId: 100,
+            },
+            {
+                edgeId: 408,
+                name: '',
+                startNodeId: 408,
+                endNodeId: 109, // [Entrance1]
+                graphId: 100,
+            },
+
 
         ],
     });
