@@ -421,11 +421,11 @@ async function main() {
             {
                 graphId: 201,
                 floorNum: 1,
-                image: '',
-                imageBoundsNorth: 0,
-                imageBoundsSouth: 0,
-                imageBoundsEast: 0,
-                imageBoundsWest: 0,
+                image: '/src/public/floormaps/pp22f3.png',
+                imageBoundsNorth: 42.09308,
+                imageBoundsSouth: 42.09223,
+                imageBoundsEast: -71.26654,
+                imageBoundsWest: -71.26744,
                 buildingId: 2,
             },
             {
@@ -952,79 +952,98 @@ async function main() {
 
 
             // PP20 Parking
+            // {
+            //     nodeId: 100,
+            //     name: '[Parking1]',
+            //     lat: 42.091061004913655,
+            //     lng: -71.26682002463103,
+            //     type: 'PARKING',
+            //     graphId:100
+            // },
+            // {
+            //     nodeId: 101,
+            //     name: 'turn on p lot',
+            //     lat: 42.0915152410756,
+            //     lng: -71.26701719023977,
+            //     type: 'NORMAL',
+            //     graphId:100
+            // },
+            // {
+            //     nodeId: 102,
+            //     name: 'about to cross (curve)',
+            //     lat: 42.09189470537623,
+            //     lng: -71.26680925726185,
+            //     type: 'NORMAL',
+            //     graphId: 100,
+            // },
+            //
+            // {
+            //     nodeId: 103,
+            //     name: '(curve)',
+            //     lat: 42.09194818721159,
+            //     lng: -71.26686021923314,
+            //     type: 'NORMAL',
+            //     graphId: 100,
+            // },
+            // {
+            //     nodeId: 104,
+            //     name: 'crossed',
+            //     lat: 42.092056558160856,
+            //     lng: -71.26707613705884,
+            //     type: 'NORMAL',
+            //     graphId: 100,
+            // },
+            // {
+            //     nodeId: 105,
+            //     name: 'passed sidewalk',
+            //     lat: 42.09218604009119,
+            //     lng: -71.26695141433964,
+            //     type: 'NORMAL',
+            //     graphId: 100,
+            // },
+            // {
+            //     nodeId: 106,
+            //     name: 'combo parking 2',
+            //     lat: 42.092198706787585,
+            //     lng: -71.26685485481511,
+            //     type: 'NORMAL',
+            //     graphId: 100,
+            // },
+            // {
+            //     nodeId: 107,
+            //     name: 'in front of door',
+            //     lat: 42.092595635665134,
+            //     lng: -71.26652762531529,
+            //     type: 'NORMAL',
+            //     graphId: 100,
+            // },
+            // {
+            //     nodeId: 108,
+            //     name: 'cross street',
+            //     lat: 42.092547267477045,
+            //     lng: -71.26642082207172,
+            //     type: 'NORMAL',
+            //     graphId: 100,
+            // },
+
             {
                 nodeId: 100,
-                name: '[Parking1]',
-                lat: 42.091061004913655,
-                lng: -71.26682002463103,
-                type: 'PARKING',
-                graphId:100
+                name: 'Alternate way',
+                lat: 42.09184405404626,
+                lng: -71.26662485501322,
+                type: 'NORMAL',
+                graphId: 100,
             },
             {
                 nodeId: 101,
-                name: 'turn on p lot',
-                lat: 42.0915152410756,
-                lng: -71.26701719023977,
-                type: 'NORMAL',
-                graphId:100
-            },
-            {
-                nodeId: 102,
-                name: 'about to cross (curve)',
-                lat: 42.09189470537623,
-                lng: -71.26680925726185,
+                name: 'Alternate way2',
+                lat: 42.091939758427834,
+                lng: -71.26648940345797,
                 type: 'NORMAL',
                 graphId: 100,
             },
 
-            {
-                nodeId: 103,
-                name: '(curve)',
-                lat: 42.09194818721159,
-                lng: -71.26686021923314,
-                type: 'NORMAL',
-                graphId: 100,
-            },
-            {
-                nodeId: 104,
-                name: 'crossed',
-                lat: 42.092056558160856,
-                lng: -71.26707613705884,
-                type: 'NORMAL',
-                graphId: 100,
-            },
-            {
-                nodeId: 105,
-                name: 'passed sidewalk',
-                lat: 42.09218604009119,
-                lng: -71.26695141433964,
-                type: 'NORMAL',
-                graphId: 100,
-            },
-            {
-                nodeId: 106,
-                name: 'combo parking 2',
-                lat: 42.092198706787585,
-                lng: -71.26685485481511,
-                type: 'NORMAL',
-                graphId: 100,
-            },
-            {
-                nodeId: 107,
-                name: 'in front of door',
-                lat: 42.092595635665134,
-                lng: -71.26652762531529,
-                type: 'NORMAL',
-                graphId: 100,
-            },
-            {
-                nodeId: 108,
-                name: 'cross street',
-                lat: 42.092547267477045,
-                lng: -71.26642082207172,
-                type: 'NORMAL',
-                graphId: 100,
-            },
+
             {
                 nodeId: 109,
                 name: '[Entrance1]',
@@ -1044,7 +1063,7 @@ async function main() {
                 lat: 42.092512979448315,
                 lng: -71.26632207406375,
                 type: 'DOOR',
-                connectedNodeId: 107,
+                connectedNodeId: 109,
                 graphId: 101,
             },
             {
@@ -1121,6 +1140,8 @@ async function main() {
                 type: 'NORMAL',
                 graphId:100
             },
+
+
             {
                 nodeId: 202,
                 name: 'about to cross (curve)',
@@ -1186,14 +1207,7 @@ async function main() {
                 type: 'PARKING',
                 graphId: 100,
             },
-            {
-                nodeId: 210,
-                name: 'parking sidewalk',
-                lat: 42.09214915506596,
-                lng: -71.2667567873944,
-                type: 'PARKING',
-                graphId: 100,
-            },
+
 
 
 
@@ -1288,27 +1302,30 @@ async function main() {
             {
                 nodeId: 307,
                 name: 'ADA7',
-                lat: 42.09240173865421,
-                lng: -71.26628398717362,
+                lat: 42.09239834955323,
+                lng: -71.26621899560585,
                 type: 'NORMAL',
                 graphId: 100,
             },
             {
                 nodeId: 308,
                 name: 'ADA8',
-                lat: 42.092433584610106,
-                lng: -71.26636445344407,
+                lat: 42.092505522691326,
+                lng: -71.26636418280707,
                 type: 'NORMAL',
                 graphId: 100,
             },
+
             {
                 nodeId: 309,
                 name: 'ADA9',
-                lat: 42.09252000000000, // close to entrance node 109
-                lng: -71.26631000000000,
+                lat: 42.09254774479008,
+                lng: -71.26642587361441,
                 type: 'NORMAL',
                 graphId: 100,
             },
+
+
 
             //ParkingGillette
             {
@@ -1328,7 +1345,7 @@ async function main() {
                 graphId: 100,
             },
             {
-                nodeId: 303,
+                nodeId: 402,
                 name: 'ADA3',
                 lat: 42.093747216357364,
                 lng: -71.26432061017472,
@@ -1394,124 +1411,170 @@ async function main() {
                 graphId: 1,
             },
 
-
-            // PP20 Parking
             {
                 edgeId: 100,
+                name: '',
+                startNodeId: 202,
+                endNodeId: 100,
+                graphId: 100,
+            },
+            {
+                edgeId: 101,
                 name: '',
                 startNodeId: 100,
                 endNodeId: 101,
                 graphId: 100,
             },
             {
-                edgeId: 101,
-                name: '',
-                startNodeId: 101,
-                endNodeId: 102,
-                graphId: 100,
-            },
-            {
                 edgeId: 102,
                 name: '',
-                startNodeId: 102,
-                endNodeId: 103,
+                startNodeId: 101,
+                endNodeId: 307,
                 graphId: 100,
             },
-            {
-                edgeId: 103,
-                name: '',
-                startNodeId: 103,
-                endNodeId: 104,
-                graphId: 100,
-            },
-            {
-                edgeId: 104,
-                name: '',
-                startNodeId: 104,
-                endNodeId: 105,
-                graphId: 100,
-            },
-            {
-                edgeId: 105,
-                name: '',
-                startNodeId: 105,
-                endNodeId: 106,
-                graphId: 100,
-            },
-            {
-                edgeId: 106,
-                name: '',
-                startNodeId: 106,
-                endNodeId: 107,
-                graphId: 100,
-            },
-            {
-                edgeId: 107,
-                name: '',
-                startNodeId: 207,
-                endNodeId: 108,
-                graphId: 100,
-            },
-            {
-                edgeId: 108,
-                name: '',
-                startNodeId: 108,
-                endNodeId: 109,
-                graphId: 100,
-            },
+
+
+            //PP20 Parking
+            // {
+            //     edgeId: 100,
+            //     name: '',
+            //     startNodeId: 100,
+            //     endNodeId: 101,
+            //     graphId: 100,
+            // },
+            // {
+            //     edgeId: 101,
+            //     name: '',
+            //     startNodeId: 101,
+            //     endNodeId: 102,
+            //     graphId: 100,
+            // },
+            // {
+            //     edgeId: 102,
+            //     name: '',
+            //     startNodeId: 102,
+            //     endNodeId: 103,
+            //     graphId: 100,
+            // },
+            // {
+            //     edgeId: 103,
+            //     name: '',
+            //     startNodeId: 103,
+            //     endNodeId: 104,
+            //     graphId: 100,
+            // },
+            // {
+            //     edgeId: 104,
+            //     name: '',
+            //     startNodeId: 104,
+            //     endNodeId: 105,
+            //     graphId: 100,
+            // },
+            // {
+            //     edgeId: 105,
+            //     name: '',
+            //     startNodeId: 105,
+            //     endNodeId: 106,
+            //     graphId: 100,
+            // },
+            // {
+            //     edgeId: 106,
+            //     name: '',
+            //     startNodeId: 106,
+            //     endNodeId: 107,
+            //     graphId: 100,
+            // },
+            // {
+            //     edgeId: 107,
+            //     name: '',
+            //     startNodeId: 207,
+            //     endNodeId: 108,
+            //     graphId: 100,
+            // },
+            // {
+            //     edgeId: 108,
+            //     name: '',
+            //     startNodeId: 108,
+            //     endNodeId: 109,
+            //     graphId: 100,
+            // },
 
 
 
             // PP20 FL1
+            // {
+            //     edgeId: 109,
+            //     name: '',
+            //     startNodeId: 101,
+            //     endNodeId: 109,
+            //     graphId: 101,
+            // },
+            // {
+            //     edgeId: 110,
+            //     name: '',
+            //     startNodeId: 109,
+            //     endNodeId: 110,
+            //     graphId: 101,
+            // },
+            // {
+            //     edgeId: 111,
+            //     name: '',
+            //     startNodeId: 110,
+            //     endNodeId: 111,
+            //     graphId: 101,
+            // },
+            // {
+            //     edgeId: 112,
+            //     name: '',
+            //     startNodeId: 108,
+            //     endNodeId: 112,
+            //     graphId: 101,
+            // },
+            // {
+            //     edgeId: 113,
+            //     name: '',
+            //     startNodeId: 112,
+            //     endNodeId: 113,
+            //     graphId: 101,
+            // },
+            // {
+            //     edgeId: 114,
+            //     name: '',
+            //     startNodeId: 112,
+            //     endNodeId: 114,
+            //     graphId: 101,
+            // },
+            // {
+            //     edgeId: 115,
+            //     name: '',
+            //     startNodeId: 114,
+            //     endNodeId: 115,
+            //     graphId: 101,
+            // },
+            // {
+            //     edgeId: 116,
+            //     name: '',
+            //     startNodeId: 207,
+            //     endNodeId: 108,
+            //     graphId: 101,
+            // },
+            // {
+            //     edgeId: 117,
+            //     name: '',
+            //     startNodeId: 108,
+            //     endNodeId: 109,
+            //     graphId: 101,
+            // },
+
+            //PP20 parking 2
             {
-                edgeId: 109,
+                edgeId: 118,
                 name: '',
-                startNodeId: 108,
-                endNodeId: 109,
-                graphId: 101,
+                startNodeId: 209,
+                endNodeId: 308,
+                graphId: 100,
             },
-            {
-                edgeId: 110,
-                name: '',
-                startNodeId: 109,
-                endNodeId: 110,
-                graphId: 101,
-            },
-            {
-                edgeId: 111,
-                name: '',
-                startNodeId: 110,
-                endNodeId: 111,
-                graphId: 101,
-            },
-            {
-                edgeId: 112,
-                name: '',
-                startNodeId: 108,
-                endNodeId: 112,
-                graphId: 101,
-            },
-            {
-                edgeId: 113,
-                name: '',
-                startNodeId: 112,
-                endNodeId: 113,
-                graphId: 101,
-            },
-            {
-                edgeId: 114,
-                name: '',
-                startNodeId: 112,
-                endNodeId: 114,
-                graphId: 101,
-            },
-            {
-                edgeId: 115,
-                name: '',
-                startNodeId: 114,
-                endNodeId: 115,
-                graphId: 101,
-            },
+
 
             //PP22 parking
             {
@@ -1570,37 +1633,13 @@ async function main() {
                 endNodeId: 208,
                 graphId: 100,
             },
-            {
-                edgeId: 208,
-                name: '',
-                startNodeId: 209,
-                endNodeId: 210,
-                graphId: 100,
-            },
-            {
-                edgeId: 209,
-                name: '',
-                startNodeId: 210,
-                endNodeId: 206,
-                graphId: 100,
-            },
 
 
-            //PP22 floor 3
-            {
-                edgeId: 210,
-                name: '',
-                startNodeId: 209,
-                endNodeId: 210,
-                graphId: 203,
-            },
-            {
-                edgeId: 211,
-                name: '',
-                startNodeId: 210,
-                endNodeId: 211,
-                graphId: 203,
-            },
+
+
+
+
+
 
 
 
@@ -1647,34 +1686,24 @@ async function main() {
                 endNodeId: 306,
                 graphId: 100,
             },
+
+
+
             {
-                edgeId: 306,
-                name: '',
-                startNodeId: 306,
-                endNodeId: 307,
-                graphId: 100,
-            },
-            {
-                edgeId: 307,
-                name: '',
-                startNodeId: 307,
-                endNodeId: 308,
-                graphId: 100,
-            },
-            {
-                edgeId: 308,
+                edgeId: 309,
                 name: '',
                 startNodeId: 308,
                 endNodeId: 309,
                 graphId: 100,
             },
             {
-                edgeId: 309,
+                edgeId: 310,
                 name: '',
                 startNodeId: 309,
-                endNodeId: 109, // connect to [Entrance1]
+                endNodeId: 207,
                 graphId: 100,
             },
+
 
 
             //ParkingGillette
