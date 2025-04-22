@@ -367,7 +367,10 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
     // door node to the first parking node it sees
     // instead of an empty array
 
-    const parkingLotPath: NodePathResponse[] = parkingLotGraphObj.search('PARKING', outsideDoorNodeId);
+    const parkingLotPath: NodePathResponse[] = parkingLotGraphObj.search(
+        'PARKING',
+        outsideDoorNodeId
+    );
 
     if (parkingLotPath.length === 0) {
         res.status(500).send({ message: 'No valid path from parking lot to door' });
@@ -378,7 +381,5 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
 
     res.json(response);
 });
-
-router.get('/edit/:gid', async (req: Request, res: Response) => {});
 
 export default router;

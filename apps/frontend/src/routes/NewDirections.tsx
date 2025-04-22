@@ -52,7 +52,7 @@ export default function NewDirections() {
 
         axios.get(API_ROUTES.PATHFIND + '/options/').then(response => {
             setData(response.data as PathfindingOptions);
-        })
+        });
 
     }, []);
 

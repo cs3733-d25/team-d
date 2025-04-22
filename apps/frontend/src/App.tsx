@@ -16,6 +16,7 @@ import Auth0Profile from "@/components/Auth0Profile.tsx";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import SanitationRequest from "@/components/ServiceRequest/SanitationRequest/SanitationRequest.tsx";
 import NewDirections from "@/routes/NewDirections.tsx";
+import MapEditor from "@/routes/MapEditor.tsx";
 
 function App() {
     return (
@@ -23,6 +24,7 @@ function App() {
             <BrowserRouter>
                 <Routes>
                     <Route path="/gmap" element={<NewDirections />} />
+                    <Route path="/emap" element={<MapEditor />} />
                     <Route path="/" element={<Navbar />}>
                         <Route index element={<Home />} />
                         <Route path="directory" element={<Directions editor={false} />} />

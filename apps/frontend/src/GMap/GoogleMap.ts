@@ -1,5 +1,5 @@
 import axios from "axios";
-import {API_ROUTES, PathfindingResponse} from "common/src/constants.ts";
+import {API_ROUTES, EditorGraph, PathfindingResponse} from "common/src/constants.ts";
 
 const API_KEY: string = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 const SCRIPT_URL: string = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&libraries=places&callback=initMap`
@@ -81,7 +81,6 @@ class PathfindingGraph {
                     size: new google.maps.Size(7, 7),
                     anchor: new google.maps.Point(3.5, 3.5)
                 },
-                draggable: true,
             })
         );
     }
@@ -245,16 +244,44 @@ export class PathfindingMap extends GoogleMap {
     }
 }
 
-export class EditorMap extends GoogleMap {
-
-    private static EditingGraph = class {
-
+class EditorMapGraph {
+    private nodes: Map<number, google.maps.Marker>;
+    private edges: Map<number, google.maps.Polyline>;
+    
+    constructor(map: google.maps.Map, graph: EditorGraph) {
+        this.nodes = new Map();
+        this.edges = new Map();
+        
+        graph.Nodes.forEach(node => {
+            this.nodes.set(
+                node.nodeId,
+                new google.maps.Marker({
+                    map: map,
+                    position: {
+                        lat: node.lat,
+                        lng: node.lng,
+                    },
+                    icon: {
+                        url: 'https://maps.gstatic.com/intl/en_us/mapfiles/markers2/measle.png',
+                        size: new google.maps.Size(7, 7),
+                        anchor: new google.maps.Point(3.5, 3.5),
+                    },
+                    draggable: true,
+                })
+            );
+        })
     }
+}
+
+export class EditorMap extends GoogleMap {
 
     public static async makeMap(mapDivElement: HTMLDivElement) {
         await GoogleMap.loadScript();
         return new EditorMap(mapDivElement);
     }
+    
+    private currentGraph: EditorMapGraph | null;
+    private currentFloorMap: google.maps.GroundOverlay | null;
 
     constructor(mapDivElement: HTMLDivElement) {
         super(mapDivElement, {
@@ -264,7 +291,14 @@ export class EditorMap extends GoogleMap {
             },
             zoom: 10,
         });
-
-
+        
+        this.currentGraph = null;
+        this.currentFloorMap = null;
     }
+
+    changeGraph(graph: EditorGraph) {
+        this.currentGraph = new EditorMapGraph(this.map, graph);
+    }
+
+    initialize()
 }

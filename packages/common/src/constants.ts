@@ -6,6 +6,7 @@ export const API_ROUTES = {
     DEPARTMENT: '/api/department',
     PATHFIND: '/api/pathfind',
     PATHFINDING: '/api/pathfinding',
+    EDITOR: '/api/editor',
 };
 
 export type Coordinates = {
@@ -67,5 +68,48 @@ export type PathfindingResponse = {
 
 ///////////// FOR EDITING
 
-// export type
+export type EditorGraphType = 'FLOORGRAPH' | 'PARKINGGRAPH';
 
+export type EditorGraph = {
+    graphId: number;
+    graphType: EditorGraphType;
+    Nodes: EditorNode[];
+    Edges: EditorEdges[];
+    FloorGraph: EditorFloorGraph | null;
+    ParkingGraph: EditorParkingGraph | null;
+}
+
+export type EditorFloorGraph = {
+    graphId: number;
+    floorNum: number;
+    image: string;
+    imageBoundsNorth: number;
+    imageBoundsSouth: number;
+    imageBoundsEast: number;
+    imageBoundsWest: number;
+    buildingId: number;
+}
+
+export type EditorParkingGraph = {
+    graphId: number;
+    hospitalId: number;
+}
+
+export type EditorNodeType = 'NORMAL' | 'PARKING' | 'DOOR' | 'ELEVATOR' | 'CHECKIN';
+
+export type EditorNode = {
+    nodeId: number;
+    name: string;
+    lat: number;
+    lng: number;
+    type: EditorNodeType;
+    connectedNodeId: number | null;
+}
+
+export type EditorEdges = {
+    edgeId: number;
+    name: string;
+    startNodeId: number;
+    endNodeId: number;
+    graphId: number;
+}
