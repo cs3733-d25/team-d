@@ -1,5 +1,6 @@
 import axios from "axios";
 import {API_ROUTES, EditorGraph, PathfindingResponse} from "common/src/constants.ts";
+import {EditorEncapsulator} from "@/routes/MapEditor.tsx";
 
 const API_KEY: string = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 const SCRIPT_URL: string = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&libraries=places&callback=initMap`
@@ -238,18 +239,24 @@ export class PathfindingMap extends GoogleMap {
 }
 
 class EditorMapGraph {
+
+    private readonly map: google.maps.Map;
+    private readonly editorEncapsulator: EditorEncapsulator;
+    private readonly graphId: number
     private nodes: {id: number, marker: google.maps.Marker}[];
     private edges: {id: number, line: google.maps.Polyline}[];
-
-    private readonly editorMap: EditorMap;
     
-    constructor(map: google.maps.Map, graph: EditorGraph, color: string, editorMap: EditorMap) {
+    constructor(map: google.maps.Map, editorEncapsulator: EditorEncapsulator, graphId: number) {
 
-        this.editorMap = editorMap;
+        this.map = map;
+        this.editorEncapsulator = editorEncapsulator;
+        this.graphId = graphId;
+
+        const graph = this.editorEncapsulator.getGraphById(this.graphId);
 
         this.nodes = graph.Nodes.map(node => {
             const marker = new google.maps.Marker({
-                map: map,
+                map: this.map,
                 position: {
                     lat: node.lat,
                     lng: node.lng,
@@ -295,12 +302,12 @@ class EditorMapGraph {
             }
 
             const line = new google.maps.Polyline({
-                map: map,
+                map: this.map,
                 path: [
                     startNode.marker.getPosition() || {lat: 0, lng: 0},
                     endNode.marker.getPosition() || {lat: 0, lng: 0},
                 ],
-                strokeColor: color,
+                strokeColor: '#00AACC',
             });
             line.setMap(map);
 
@@ -362,17 +369,26 @@ class EditorMapGraph {
         //         })
         //     );
         // })
+
+        this.hide();
     }
 
-    remove() {
+    show() {
+        this.nodes.forEach(node => {
+            node.marker.setMap(this.map);
+        });
+        this.edges.forEach(edge => {
+            edge.line.setMap(this.map);
+        });
+    }
+
+    hide() {
         this.edges.forEach(edge => {
             edge.line.setMap(null);
         });
-        this.edges = [];
         this.nodes.forEach(node => {
             node.marker.setMap(null);
         });
-        this.nodes = [];
     }
 }
 
@@ -386,9 +402,12 @@ export class EditorMap extends GoogleMap {
     private currentGraph: EditorMapGraph | null;
     private currentFloorMap: google.maps.GroundOverlay | null;
 
-    private editorGraphs: EditorGraph[];
+    private editorEncapsulator: EditorEncapsulator | null;
+    private readonly graphs: Map<number, EditorMapGraph>;
 
     constructor(mapDivElement: HTMLDivElement) {
+        console.log('editor map constructor');
+
         super(mapDivElement, {
             center: {
                 lat: 42.31934987791928,
@@ -399,7 +418,9 @@ export class EditorMap extends GoogleMap {
         
         this.currentGraph = null;
         this.currentFloorMap = null;
-        this.editorGraphs = [];
+        this.editorEncapsulator = null;
+        console.log('editor map constructosdfsdfsdr');
+        this.graphs = new Map();
 
         this.map.addListener('click', (e: google.maps.MapMouseEvent) => {
             const rawPosition = e.latLng;
@@ -407,38 +428,47 @@ export class EditorMap extends GoogleMap {
 
             console.log('lat: ' + rawPosition.toJSON().lat + ',\nlng: ' + rawPosition.toJSON().lng + ',');
         });
+        console.log('yah');
     }
 
-    changeGraph(graph: EditorGraph) {
-        if (this.currentGraph) {
-            this.currentGraph.remove();
-        }
-        if (this.currentFloorMap) {
-            this.currentFloorMap.setMap(null);
-            this.currentFloorMap = null;
-        }
+    changeGraph(graphId: number) {
+        this.currentGraph?.hide();
+        const newGraph = this.graphs.get(graphId);
+        if (!newGraph) return;
 
-        this.currentGraph = new EditorMapGraph(this.map, graph, '#00AACC', this);
-        if (graph.graphType === 'FLOORGRAPH' && graph.FloorGraph) {
-            this.currentFloorMap = new google.maps.GroundOverlay(graph.FloorGraph.image, {
-                north: graph.FloorGraph.imageBoundsNorth,
-                south: graph.FloorGraph.imageBoundsSouth,
-                east: graph.FloorGraph.imageBoundsEast,
-                west: graph.FloorGraph.imageBoundsWest,
-            });
-            this.currentFloorMap.setMap(this.map);
+        newGraph.show();
+        this.currentGraph = newGraph;
+        // if (this.currentFloorMap) {
+        //     this.currentFloorMap.setMap(null);
+        //     this.currentFloorMap = null;
+        // }
 
-            this.currentFloorMap.addListener('click', (e: google.maps.MapMouseEvent) => {
-                const rawPosition = e.latLng;
-                if (!rawPosition) return;
-
-                console.log('lat: ' + rawPosition.toJSON().lat + ',\nlng: ' + rawPosition.toJSON().lng + ',');
-            });
-        }
+        // this.currentGraph = new EditorMapGraph(this.map, graph, '#00AACC', this);
+        // if (graph.graphType === 'FLOORGRAPH' && graph.FloorGraph) {
+        //     this.currentFloorMap = new google.maps.GroundOverlay(graph.FloorGraph.image, {
+        //         north: graph.FloorGraph.imageBoundsNorth,
+        //         south: graph.FloorGraph.imageBoundsSouth,
+        //         east: graph.FloorGraph.imageBoundsEast,
+        //         west: graph.FloorGraph.imageBoundsWest,
+        //     });
+        //     this.currentFloorMap.setMap(this.map);
+        //
+        //     this.currentFloorMap.addListener('click', (e: google.maps.MapMouseEvent) => {
+        //         const rawPosition = e.latLng;
+        //         if (!rawPosition) return;
+        //
+        //         console.log('lat: ' + rawPosition.toJSON().lat + ',\nlng: ' + rawPosition.toJSON().lng + ',');
+        //     });
+        // }
     }
 
-    initialize(editorGraphs: EditorGraph[]) {
-        this.editorGraphs = editorGraphs;
+    initialize(editorEncapsulator: EditorEncapsulator) {
+        this.editorEncapsulator = editorEncapsulator;
+
+        this.editorEncapsulator.editorGraphs.forEach(graph => {
+            console.log('Making graph ' + graph.graphId);
+            this.graphs.set(graph.graphId, new EditorMapGraph(this.map, editorEncapsulator, graph.graphId));
+        })
     }
 
     getCurrentGraph() {
