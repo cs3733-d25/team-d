@@ -360,7 +360,7 @@ export default function ShowAllRequests() {
                 <h2 className="text-2xl font-bold">Service Request Database</h2>
             </div>
             <div className="border rounded-md">
-                <Table className="table-auto w-full rounded-md">
+                <Table className="rounded-md table-fixed">
                     <TableHeader className="bg-blue-900 rounded-md">
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
@@ -398,26 +398,26 @@ export default function ShowAllRequests() {
                             table.getRowModel().rows.map((row) => (
                                 <Collapsible asChild>
                                     <>
-                                    <CollapsibleTrigger asChild>
-                                    <TableRow
-                                        className="even:bg-gray-50 hover:bg-blue-100"
-                                        key={row.id}
-                                        data-state={row.getIsSelected() && "selected"}
-                                    >
-                                        {row.getVisibleCells().map((cell) => (
-                                            <TableCell key={cell.id} className="text-center py-2 border-b">
-                                                {flexRender(
-                                                    cell.column.columnDef.cell,
-                                                    cell.getContext()
-                                                )}
-                                            </TableCell>
-                                        ))}
-                                    </TableRow>
-                                    </CollapsibleTrigger>
+                                        <CollapsibleTrigger asChild>
+                                            <TableRow
+                                                className="even:bg-gray-50 hover:bg-blue-100"
+                                                key={row.id}
+                                                data-state={row.getIsSelected() && "selected"}
+                                            >
+                                                {row.getVisibleCells().map((cell) => (
+                                                    <TableCell key={cell.id} className="text-center border-b">
+                                                        {flexRender(
+                                                            cell.column.columnDef.cell,
+                                                            cell.getContext()
+                                                        )}
+                                                    </TableCell>
+                                                ))}
+                                            </TableRow>
+                                        </CollapsibleTrigger>
                                         <CollapsibleContent asChild>
                                             <TableRow>
-                                                <TableCell colSpan={columns.length} className="p-0 bg-gray-100">
-                                                    <div className="p-4">
+                                                <TableCell colSpan={columns.length} className="bg-gray-100">
+                                                    <div className="transition-all duration-500 ease-in-out overflow-hidden">
                                                         <RequestCollapsible
                                                             ID={row.original.requestId}
                                                             requestType={getRequestType(row.original)}
