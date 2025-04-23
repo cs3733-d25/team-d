@@ -86,6 +86,10 @@ export default function MapEditor() {
         if (!editingData) return;
         axios.put(API_ROUTES.EDITOR, editingData.editorGraphs).then(response => {
             console.log(response);
+        }).then((res) => {
+            alert('Successfully imported nodes');
+        }).catch((err) => {
+            alert('Error importing nodes');
         });
     }
 
