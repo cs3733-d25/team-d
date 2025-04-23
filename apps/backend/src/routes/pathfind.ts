@@ -157,6 +157,7 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
     // Load nodes and edges from the
     // top floor into a Graph object
     const parkingLotGraphObj = new Graph();
+    console.log('adding parking' + parkingLotGraph.graphId);
     parkingLotGraph.Graph.Nodes.forEach((node) => {
         parkingLotGraphObj.addNode(node as NodePathResponse);
     });

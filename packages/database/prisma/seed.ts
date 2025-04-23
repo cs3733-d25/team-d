@@ -2131,6 +2131,7 @@ async function main() {
                 lng: -71.26662781033974,
                 type: 'DOOR',
                 graphId: 201,
+                connectedNodeId: 208,
             },
             {
                 nodeId: 215,
@@ -2253,14 +2254,6 @@ async function main() {
                 type: 'NORMAL',
                 graphId:101
             },
-            {
-                nodeId: 122,
-                name: 'hallway 4',
-                lat: 42.09280476624093,
-                lng: -71.26562592284523,
-                type: 'DOOR',
-                graphId:101
-            },
 
 
 
@@ -2348,6 +2341,17 @@ async function main() {
                 lng: -71.26653684625518,
                 type: 'PARKING',
                 graphId: 100,
+            },
+
+
+            {
+                nodeId: 122,
+                name: 'hallway 4',
+                lat: 42.09280476624093,
+                lng: -71.26562592284523,
+                type: 'DOOR',
+                graphId: 101,
+                connectedNodeId: 310,
             },
 
 
@@ -3246,13 +3250,13 @@ async function main() {
                 endNodeId: 402,
                 graphId: 100,
             },
-            {
-                edgeId: 403,
-                name: '',
-                startNodeId: 401,
-                endNodeId: 303,
-                graphId: 204,
-            },
+            // {
+            //     edgeId: 403,
+            //     name: '',
+            //     startNodeId: 401,
+            //     endNodeId: 303,
+            //     graphId: 204,
+            // },
 
             //PP floor 4
             {
