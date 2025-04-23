@@ -22,6 +22,8 @@ import SanitationRequest from "@/components/ServiceRequest/SanitationRequest/San
 import NewDirections from "@/routes/NewDirections.tsx";
 import MapEditor from "@/routes/MapEditor.tsx";
 import SanitationServiceRequest from "@/components/ServiceRequest/SanitationRequest/SanitationServiceRequest.tsx";
+import NewDirections from "@/routes/NewDirections.tsx";
+import MapEditor from "@/routes/MapEditor.tsx";
 
 function App() {
     return (

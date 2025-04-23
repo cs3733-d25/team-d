@@ -85,7 +85,7 @@ model EquipmentRequest {
 }
 
 // --- The SanitationServiceRequest model ---
-model SanitationServiceRequest {
+model SanitationRequest {
   type   SanitationType
   status RoomStatus
 
@@ -127,6 +127,8 @@ model Hospital {
 
   Buildings    Building[]
   ParkingGraph ParkingGraph?
+
+  Department Department[]
 }
 
 model Building {
@@ -139,6 +141,8 @@ model Building {
   Hospital   Hospital @relation(fields: [hospitalId], references: [hospitalId])
 
   FloorGraphs FloorGraph[]
+
+  Department Department[]
 }
 
 model Department {
@@ -149,6 +153,12 @@ model Department {
   room     String
   lat      Float
   lng      Float
+
+  hospitalId Int
+  Hospital   Hospital @relation(fields: [hospitalId], references: [hospitalId])
+
+  buildingId Int
+  Building   Building @relation(fields: [buildingId], references: [buildingId])
 
   floorGraphId Int
   FloorGraph   FloorGraph @relation(fields: [floorGraphId], references: [graphId])
