@@ -4,7 +4,18 @@ const router: Router = express.Router();
 import PrismaClient from '../bin/prisma-client';
 import { EditorFloorGraph, EditorParkingGraph, EditorGraph } from 'common/src/constants.ts';
 
-// GET request for all graphs
+router.get('/', async (req: Request, res: Response) => {
+    const data = await PrismaClient.graph.findMany({
+        include: {
+            Nodes: {},
+            Edges: {},
+            FloorGraph: {},
+            ParkingGraph: {},
+        },
+    });
+
+    res.json(data as EditorGraph[]);
+}); // GET request for all graphs
 router.get('/editor/graphs', async (req: Request, res: Response) => {
     const data = await PrismaClient.graph.findMany({
         include: {
