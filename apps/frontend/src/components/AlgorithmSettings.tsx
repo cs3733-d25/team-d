@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 
 type Algo = {
     algorithmId: number;
@@ -51,6 +52,17 @@ const AlgorithmSettings = () => {
     return (
         <div>
             <h1 className="text-2xl font-bold mb-6">Select Pathfinding Algorithm</h1>
+
+            {/* Real-time info box */}
+            <div className="mb-4">
+                <Textarea
+                    readOnly
+                    className="bg-blue-50 text-blue-900 border-blue-200 resize-none"
+                    value={`You are currently using: ${selectedName}\n Saved algorithm: ${activeName}`}
+                />
+            </div>
+
+            {/* Algorithm buttons */}
             <div className="flex gap-4 mb-6">
                 {algorithms.map((algo) => (
                     <Button
@@ -67,6 +79,8 @@ const AlgorithmSettings = () => {
                     </Button>
                 ))}
             </div>
+
+            {/* Save button */}
             <Button
                 className="bg-blue-900 text-white hover:bg-blue-800"
                 onClick={saveAlgorithm}
