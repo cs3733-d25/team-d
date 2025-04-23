@@ -78,14 +78,7 @@ class PathfindingGraph {
         this.pathForDisplay = path;
         this.map = map;
         this.pathPolylines = [];
-        if (!after) {
-            this.loadThisAfter = after;
-
-        }
-        else {
-            this.loadThisAfter = null;
-
-        }
+        this.loadThisAfter = after;
         for (let i = 0; i < this.pathForDisplay.length - 1; i++) {
             const line = new google.maps.Polyline({
                 path: [this.pathForDisplay[i], this.pathForDisplay[i + 1]],
@@ -206,7 +199,14 @@ class PathfindingGraph {
                     this.innerStepIndex++;
                     this.showInnerStep();
                 } else {
-                    alert("You’ve reached the destination for inner map!");
+                    if (this.highlightedCircle) {
+                        this.highlightedCircle.setIcon({
+                            url: 'https://maps.gstatic.com/intl/en_us/mapfiles/markers2/measle.png',
+                            size: new google.maps.Size(7, 7),
+                            anchor: new google.maps.Point(3.5, 3.5)
+                        });
+                    }
+                    this.loadThisAfter?.setupInnerNextButton();
                     this.loadThisAfter?.showInnerStep();
                 }
             });
@@ -289,27 +289,63 @@ export class PathfindingMap extends GoogleMap {
         this.currentFloorMap = null;
     }
 
+    // updateDepartmentPathfinding(pathfindingResponse: PathfindingResponse) {
+    //     this.currentPathfindingResponse = pathfindingResponse;
+    //     console.log(this.currentPathfindingResponse);
+    //
+    //     this.updateCurrentFloor(1);
+    //
+    //     this.endLocation = pathfindingResponse.parkingLotPath.path[0];
+    //     this.route();
+    //
+    //     if (this.currentParkingPath) {
+    //         this.currentParkingPath.remove();
+    //         this.currentFloorPath = null;
+    //     }
+    //     this.currentParkingPath = new PathfindingGraph(this.map, pathfindingResponse.parkingLotPath.path, '#CC3300', this.currentFloorPath);
+    //     this.currentParkingPath.innerSteps = pathfindingResponse.parkingLotPath.direction;
+    //
+    //     console.log('steps');
+    //
+    //     this.currentParkingPath.showInnerStep();
+    //     this.currentParkingPath.setupInnerNextButton();
+    // }
+
     updateDepartmentPathfinding(pathfindingResponse: PathfindingResponse) {
         this.currentPathfindingResponse = pathfindingResponse;
-        console.log(this.currentPathfindingResponse);
-
-        this.updateCurrentFloor(1);
-
         this.endLocation = pathfindingResponse.parkingLotPath.path[0];
         this.route();
 
-        if (this.currentParkingPath) {
-            this.currentParkingPath.remove();
-            this.currentFloorPath = null;
+        // Clean up previous paths and map
+        if (this.currentParkingPath) this.currentParkingPath.remove();
+        if (this.currentFloorPath) this.currentFloorPath.remove();
+        if (this.currentFloorMap) {
+            this.currentFloorMap.setMap(null);
+            this.currentFloorMap = null;
         }
+
+        // Load new floor overlay
+        const floor = pathfindingResponse.floorPaths[0];
+        this.currentFloorMap = new google.maps.GroundOverlay(floor.image, {
+            north: floor.imageBoundsNorth,
+            south: floor.imageBoundsSouth,
+            east: floor.imageBoundsEast,
+            west: floor.imageBoundsWest,
+        });
+        this.currentFloorMap.setMap(this.map);
+
+        // Create floor path first
+        this.currentFloorPath = new PathfindingGraph(this.map, floor.path, '#00AACC', null);
+        this.currentFloorPath.innerSteps = floor.direction;
+
+        // Now create the parking path and pass in the floor path to trigger after
         this.currentParkingPath = new PathfindingGraph(this.map, pathfindingResponse.parkingLotPath.path, '#CC3300', this.currentFloorPath);
         this.currentParkingPath.innerSteps = pathfindingResponse.parkingLotPath.direction;
 
-        console.log('steps');
-
-        this.currentParkingPath.showInnerStep();
+        this.currentParkingPath.showInnerStep(); // start here
         this.currentParkingPath.setupInnerNextButton();
     }
+
 
     updateTravelMode(travelMode: string) {
         switch (travelMode) {
