@@ -539,6 +539,8 @@ class EditorMapGraph {
     private readonly editorEncapsulator: EditorEncapsulator;
     private readonly editorGraph: EditorGraph;
 
+    private floorMap: google.maps.GroundOverlay | null;
+
     private nodes: {data: EditorNode, marker: google.maps.Marker}[];
     private edges: {data: EditorEdges, line: google.maps.Polyline}[];
 
@@ -570,6 +572,21 @@ class EditorMapGraph {
         this.setVisibility(false);
 
         this.newEdge = null;
+
+        this.floorMap = null;
+
+        if (this.editorGraph.FloorGraph) {
+            this.floorMap = new google.maps.GroundOverlay(this.editorGraph.FloorGraph.image, {
+                north: this.editorGraph.FloorGraph.imageBoundsNorth,
+                south: this.editorGraph.FloorGraph.imageBoundsSouth,
+                east: this.editorGraph.FloorGraph.imageBoundsEast,
+                west: this.editorGraph.FloorGraph.imageBoundsWest,
+            }, {
+                clickable: false,
+            });
+
+
+        }
 
         // If in default state,
         // add a node at this position
@@ -946,6 +963,9 @@ class EditorMapGraph {
             this.edges.forEach(edge => {
                 edge.line.setMap(this.map);
             });
+            if (this.floorMap) {
+                this.floorMap.setMap(this.map);
+            }
         }
         else {
             this.edges.forEach(edge => {
@@ -954,6 +974,9 @@ class EditorMapGraph {
             this.nodes.forEach(node => {
                 node.marker.setMap(null);
             });
+            if (this.floorMap) {
+                this.floorMap.setMap(null);
+            }
         }
         this.visible = visibility;
     }
@@ -990,6 +1013,12 @@ export class EditorMap extends GoogleMap {
 
         console.log('editor map constructosdfsdfsdr');
         this.graphs = new Map();
+
+        this.map.addListener('click', (e: google.maps.MapMouseEvent) => {
+            const rawPosition = e.latLng;
+            if (!rawPosition) return;
+            console.log('lat: ' + rawPosition.toJSON().lat + ',\nlng: ' + rawPosition.toJSON().lng + ',');
+        })
     }
 
     changeGraph(graphId: number) {
