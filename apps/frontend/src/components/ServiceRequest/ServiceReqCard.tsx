@@ -31,7 +31,7 @@ const ServiceRequestCard: React.FC<ServiceRequestCardProps> = ({ title, image, p
             </div>
 
             {/* Popup Content */}
-            <DialogContent className="place-content-center animate-in fade-in zoom-in duration-500 border-zinc-200 bg-zinc-200 h-auto">
+            <DialogContent className="place-content-center animate-in fade-in zoom-in duration-500 h-auto bg-white">
                 {popupComponent}
             </DialogContent>
         </Dialog>

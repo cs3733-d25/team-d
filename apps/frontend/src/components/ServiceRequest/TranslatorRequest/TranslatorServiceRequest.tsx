@@ -70,10 +70,10 @@ export default function TranslatorServiceRequest() {
         <>
             {!submitted ?
                 <ScrollArea className="max-h-[95vh] w-115 overflow-y-auto">
-                <div className="flex flex-col items-center gap-4 bg-white">
-                    <div className="bg-blue-900 rounded-md px-6 py-4 max-w-5xl w-full mx-auto">
-                        <h2 className="text-4xl font-bold text-white text-center">Request a Translator</h2>
-                    </div>
+                    <div className="flex flex-col items-center gap-4 bg-white">
+                        <div className="bg-blue-900 rounded-md px-6 py-4 max-w-5xl w-full mx-auto">
+                            <h2 className="text-4xl font-bold text-white text-center">Request a Translator</h2>
+                        </div>
                         <form onSubmit={onSubmit}>
                             <div>
                                 <Label className="pt-4 pb-2" htmlFor="employeeId">Employee ID</Label>

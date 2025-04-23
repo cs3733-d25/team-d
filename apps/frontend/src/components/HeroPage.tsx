@@ -7,7 +7,7 @@ export default function HeroTextBox(){
     return(
         <>
             <div className="text-8xl animate-in fade-in zoom-in duration-800 text-white ">
-                <b className="font-thin text-4xl">Navigating to Your Appointment Just Got Easier.</b>
+                <b className="font-thin text-5xl">Navigating to Your Appointment Just Got Easier.</b>
             </div>
         </>
         )

@@ -360,7 +360,7 @@ export default function ShowAllRequests() {
                 <h2 className="text-2xl font-bold">Service Request Database</h2>
             </div>
             <div className="border rounded-md">
-                <Table className="rounded-md table-fixed">
+                <Table className="rounded-md">
                     <TableHeader className="bg-blue-900 rounded-md">
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
@@ -405,7 +405,7 @@ export default function ShowAllRequests() {
                                                 data-state={row.getIsSelected() && "selected"}
                                             >
                                                 {row.getVisibleCells().map((cell) => (
-                                                    <TableCell key={cell.id} className="text-center border-b">
+                                                    <TableCell key={cell.id} className="text-wrap text-center border-b table-cell">
                                                         {flexRender(
                                                             cell.column.columnDef.cell,
                                                             cell.getContext()
