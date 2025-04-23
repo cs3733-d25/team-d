@@ -193,10 +193,20 @@ class PathfindingGraph {
             })
         );
 
+        const lineSymbol = {
+            path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+        };
+
         this.path = new google.maps.Polyline({
             map: this.map,
             path: this.pathForDisplay,
             strokeColor: this.color,
+            icons: [
+                {
+                    icon: lineSymbol,
+                    offset: '100%',
+                },
+            ],
         });
 
         for (let i = 0; i < this.pathForDisplay.length - 1; i++) {
