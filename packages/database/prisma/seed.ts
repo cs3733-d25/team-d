@@ -421,11 +421,11 @@ async function main() {
             {
                 graphId: 201,
                 floorNum: 1,
-                image: '/src/public/floormaps/pp22f3.png',
-                imageBoundsNorth: 42.09308,
-                imageBoundsSouth: 42.09223,
-                imageBoundsEast: -71.26654,
-                imageBoundsWest: -71.26744,
+                image: '',
+                imageBoundsNorth: 0,
+                imageBoundsSouth: 0,
+                imageBoundsEast: 0,
+                imageBoundsWest: 0,
                 buildingId: 2,
             },
             {
@@ -883,7 +883,14 @@ async function main() {
     const nodes = await prisma.node.createMany({
         data: [
             // CH Parking
-
+            {
+                nodeId: 0,
+                name: '[Parking1]',
+                lat: 42.32628985950129,
+                lng: -71.1494973814374,
+                type: 'PARKING',
+                graphId: 0,
+            },
             {
                 nodeId: 1,
                 name: '[Entrance1]',
@@ -942,350 +949,85 @@ async function main() {
                 type: 'CHECKIN',
                 graphId: 1,
             },
-            //  To [Entrance2] from node 3
-            {
-                nodeId: 8,
-                name: 'to ENT2 - 1',
-                lat: 42.326175614030284,
-                lng: -71.14949461511249,
-                type: 'NORMAL',
-                graphId: 1,
-            },
-            {
-                nodeId: 9,
-                name: 'to ENT2 - 2',
-                lat: 42.326126038503375,
-                lng: -71.14948656848544,
-                type: 'NORMAL',
-                graphId: 1,
-            },
-            {
-                nodeId: 10,
-                name: 'to ENT2 - 3',
-                lat: 42.32609331863421,
-                lng: -71.14948925069446,
-                type: 'NORMAL',
-                graphId: 1,
-            },
-            {
-                nodeId: 11,
-                name: 'to ENT2 - 4',
-                lat: 42.32602986186977,
-                lng: -71.1494885801422,
-                type: 'NORMAL',
-                graphId: 1,
-            },
-            {
-                nodeId: 12,
-                name: 'to ENT2 - 5',
-                lat: 42.3259783032015,
-                lng: -71.14948656848544,
-                type: 'NORMAL',
-                graphId: 1,
-            },
-            {
-                nodeId: 13,
-                name: 'to ENT2 - 6',
-                lat: 42.32598524379393,
-                lng: -71.14936721018428,
-                type: 'NORMAL',
-                graphId: 1,
-            },
-            {
-                nodeId: 14,
-                name: 'to ENT2 - 7',
-                lat: 42.325992184385576,
-                lng: -71.14927534452552,
-                type: 'NORMAL',
-                graphId: 1,
-            },
-            {
-                nodeId: 15,
-                name: '[Entrance2]',
-                lat: 42.32599565468113,
-                lng: -71.14921700647945,
-                connectedNodeId: 29,
-                type: 'DOOR',
-                graphId: 1,
-            },
-
-            //  CH Parking Lot 1 → Entrance 1
-            {
-                nodeId: 16,
-                name: '[CH Parking Lot 1]',
-                lat: 42.32643565992152,
-                lng: -71.14985730692341,
-                type: 'PARKING',
-                graphId: 0,
-            },
-            {
-                nodeId: 17,
-                name: 'CHP1→ENT1-1',
-                lat: 42.32643565992152,
-                lng: -71.14959713264896,
-                type: 'NORMAL',
-                graphId: 0,
-            },
-            {
-                nodeId: 18,
-                name: 'CHP1→ENT1-2',
-                lat: 42.32629288288845,
-                lng: -71.14958103939487,
-                type: 'NORMAL',
-                graphId: 0,
-            },
-            {
-                nodeId: 19,
-                name: 'CHP1→ENT1-3',
-                lat: 42.32629883193797,
-                lng: -71.1495139841695,
-                type: 'NORMAL',
-                graphId: 0,
-            },
-
-            //  CH Parking Lot 2 → Entrance 2
-            {
-                nodeId: 20,
-                name: '[CH Parking Lot 2]',
-                lat: 42.3260013787731,
-                lng: -71.14906873747303,
-                type: 'PARKING',
-                graphId: 0,
-            },
-            {
-                nodeId: 21,
-                name: 'CHP2→ENT2',
-                lat: 42.3259993957473,
-                lng: -71.14915859147503,
-                type: 'NORMAL',
-                graphId: 0,
-            },
-
-            //  CH Parking Lot 3 → Entrance 2
-            {
-                nodeId: 22,
-                name: '[CH Parking Lot 3]',
-                lat: 42.32559684021184,
-                lng: -71.14976342960789,
-                type: 'PARKING',
-                graphId: 0,
-            },
-            {
-                nodeId: 23,
-                name: 'CHP3→ENT2-1',
-                lat: 42.32563055185798,
-                lng: -71.14882063313915,
-                type: 'NORMAL',
-                graphId: 0,
-            },
-            {
-                nodeId: 24,
-                name: 'CHP3→ENT2-2',
-                lat: 42.32592701526215,
-                lng: -71.14882935031845,
-                type: 'NORMAL',
-                graphId: 0,
-            },
-            {
-                nodeId: 25,
-                name: 'CHP3→ENT2-3',
-                lat: 42.32593296434625,
-                lng: -71.14890378161861,
-                type: 'NORMAL',
-                graphId: 0,
-            },
-            {
-                nodeId: 26,
-                name: 'CHP3→ENT2-4',
-                lat: 42.32595725643385,
-                lng: -71.14889975830509,
-                type: 'NORMAL',
-                graphId: 0,
-            },
-            {
-                nodeId: 27,
-                name: 'CHP3→ENT2-5',
-                lat: 42.325941392214446,
-                lng: -71.14912640496685,
-                type: 'NORMAL',
-                graphId: 0,
-            },
-            {
-                nodeId: 28,
-                name: 'CHP3→ENT2-6',
-                lat: 42.32599295091294,
-                lng: -71.14913713380291,
-                type: 'NORMAL',
-                graphId: 0,
-            },
-            {
-                nodeId: 29,
-                name: '[Door2]',
-                lat: 42.32599565468113,
-                lng: -71.14921700647945,
-                type: 'DOOR',
-                graphId: 0,
-            },
-
-            // connections
-            {
-                nodeId: 30,
-                name: 'PL2 path extension',
-                lat: 42.32631519182124,
-                lng: -71.14905373756312,
-                type: 'NORMAL',
-                graphId: 0,
-            },
-
-
 
 
             // PP20 Parking
-            // {
-            //     nodeId: 100,
-            //     name: '[Parking1]',
-            //     lat: 42.091061004913655,
-            //     lng: -71.26682002463103,
-            //     type: 'PARKING',
-            //     graphId:100
-            // },
-            // {
-            //     nodeId: 101,
-            //     name: 'turn on p lot',
-            //     lat: 42.0915152410756,
-            //     lng: -71.26701719023977,
-            //     type: 'NORMAL',
-            //     graphId:100
-            // },
-            // {
-            //     nodeId: 102,
-            //     name: 'about to cross (curve)',
-            //     lat: 42.09189470537623,
-            //     lng: -71.26680925726185,
-            //     type: 'NORMAL',
-            //     graphId: 100,
-            // },
-            //
-            // {
-            //     nodeId: 103,
-            //     name: '(curve)',
-            //     lat: 42.09194818721159,
-            //     lng: -71.26686021923314,
-            //     type: 'NORMAL',
-            //     graphId: 100,
-            // },
-            // {
-            //     nodeId: 104,
-            //     name: 'crossed',
-            //     lat: 42.092056558160856,
-            //     lng: -71.26707613705884,
-            //     type: 'NORMAL',
-            //     graphId: 100,
-            // },
-            // {
-            //     nodeId: 105,
-            //     name: 'passed sidewalk',
-            //     lat: 42.09218604009119,
-            //     lng: -71.26695141433964,
-            //     type: 'NORMAL',
-            //     graphId: 100,
-            // },
-            // {
-            //     nodeId: 106,
-            //     name: 'combo parking 2',
-            //     lat: 42.092198706787585,
-            //     lng: -71.26685485481511,
-            //     type: 'NORMAL',
-            //     graphId: 100,
-            // },
-            // {
-            //     nodeId: 107,
-            //     name: 'in front of door',
-            //     lat: 42.092595635665134,
-            //     lng: -71.26652762531529,
-            //     type: 'NORMAL',
-            //     graphId: 100,
-            // },
-            // {
-            //     nodeId: 108,
-            //     name: 'cross street',
-            //     lat: 42.092547267477045,
-            //     lng: -71.26642082207172,
-            //     type: 'NORMAL',
-            //     graphId: 100,
-            // },
-
             {
                 nodeId: 100,
-                name: 'Alternate way',
-                lat: 42.09184405404626,
-                lng: -71.26662485501322,
-                type: 'NORMAL',
+                name: '[Parking1]',
+                lat: 42.091061004913655,
+                lng: -71.26682002463103,
+                type: 'PARKING',
                 graphId: 100,
             },
             {
                 nodeId: 101,
-                name: 'Alternate way2',
-                lat: 42.091939758427834,
-                lng: -71.26648940345797,
+                name: 'turn on p lot',
+                lat: 42.0915152410756,
+                lng: -71.26701719023977,
                 type: 'NORMAL',
                 graphId: 100,
             },
-
-
             {
-                nodeId: 109,
+                nodeId: 102,
+                name: 'about to cross',
+                lat: 42.09193261714922,
+                lng: -71.26677678348538,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 103,
+                name: 'sidewalk 1',
+                lat: 42.09200217019917,
+                lng: -71.2669417764616,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 104,
+                name: 'sidewalk 2',
+                lat: 42.092461934557555,
+                lng: -71.26656230400417,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 105,
+                name: 'before entrance',
+                lat: 42.09253518313532,
+                lng: -71.26648666971582,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 106,
+                name: 'front of entrance',
+                lat: 42.092479272750566,
+                lng: -71.2663831928498,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 107,
                 name: '[Entrance1]',
-                lat: 42.09252193422096,
-                lng: -71.26631353371113,
+                lat: 42.092512979448315,
+                lng: -71.26632207406375,
                 type: 'DOOR',
                 graphId: 100,
             },
-
-            //PP22 FL1
-            {
-                nodeId: 214,
-                name: 'floor 1 entrance',
-                lat: 42.092636724479945,
-                lng: -71.26662781033974,
-                type: 'DOOR',
-                graphId: 201,
-            },
-            {
-                nodeId: 215,
-                name: 'beside elevator',
-                lat: 42.09264120280188,
-                lng: -71.26670425329667,
-                type: 'NORMAL',
-                graphId: 201,
-            },
-            {
-                nodeId: 216,
-                name: 'floor 1 elevator',
-                lat: 42.09261532804863,
-                lng: -71.26674180422287,
-                type: 'ELEVATOR',
-                graphId: 201,
-            },
-
-
-
-
-
-
-
             // PP20 FL1
             {
-                nodeId: 110,
+                nodeId: 108,
                 name: '[Door1]',
                 lat: 42.092512979448315,
                 lng: -71.26632207406375,
                 type: 'DOOR',
-                connectedNodeId: 109,
+                connectedNodeId: 107,
                 graphId: 101,
             },
             {
-                nodeId: 111,
+                nodeId: 109,
                 name: 'Hallway to checkpoint 1',
                 lat: 42.0925935893518,
                 lng: -71.2662577010474,
@@ -1293,7 +1035,7 @@ async function main() {
                 graphId: 101,
             },
             {
-                nodeId: 112,
+                nodeId: 110,
                 name: 'Beside checkpoint 1',
                 lat: 42.09265927141964,
                 lng: -71.26628854645107,
@@ -1301,7 +1043,7 @@ async function main() {
                 graphId: 101,
             },
             {
-                nodeId: 113,
+                nodeId: 111,
                 name: '[Checkpoint1]',
                 lat: 42.092677251176724,
                 lng: -71.26635266724202,
@@ -1309,7 +1051,7 @@ async function main() {
                 graphId: 101,
             },
             {
-                nodeId: 114,
+                nodeId: 112,
                 name: 'Hallway beside checkpoint 2',
                 lat: 42.09258498572383,
                 lng: -71.26600036962368,
@@ -1317,7 +1059,7 @@ async function main() {
                 graphId: 101,
             },
             {
-                nodeId: 115,
+                nodeId: 113,
                 name: '[Checkpoint2]',
                 lat: 42.09265066780056,
                 lng: -71.26600171072819,
@@ -1325,7 +1067,7 @@ async function main() {
                 graphId: 101,
             },
             {
-                nodeId: 116,
+                nodeId: 114,
                 name: 'Hallway besides checkpoint 3',
                 lat: 42.09262877378253,
                 lng: -71.26583675487377,
@@ -1333,284 +1075,13 @@ async function main() {
                 graphId: 101,
             },
             {
-                nodeId: 117,
+                nodeId: 115,
                 name: '[Checkpoint3]',
                 lat: 42.09266659448601,
                 lng: -71.26586226214057,
                 type: 'CHECKIN',
                 graphId:101
             },
-
-            //PP22 parking
-            {
-                nodeId: 200,
-                name: '[Parking1]',
-                lat: 42.091061004913655,
-                lng: -71.26682002463103,
-                type: 'PARKING',
-                graphId:100
-            },
-            {
-                nodeId: 201,
-                name: 'turn on p lot',
-                lat: 42.0915152410756,
-                lng: -71.26701719023977,
-                type: 'NORMAL',
-                graphId:100
-            },
-
-
-            {
-                nodeId: 202,
-                name: 'about to cross (curve)',
-                lat: 42.09189470537623,
-                lng: -71.26680925726185,
-                type: 'NORMAL',
-                graphId: 100,
-            },
-
-            {
-                nodeId: 203,
-                name: '(curve)',
-                lat: 42.09194818721159,
-                lng: -71.26686021923314,
-                type: 'NORMAL',
-                graphId: 100,
-            },
-            {
-                nodeId: 204,
-                name: 'crossed',
-                lat: 42.092056558160856,
-                lng: -71.26707613705884,
-                type: 'NORMAL',
-                graphId: 100,
-            },
-            {
-                nodeId: 205,
-                name: 'passed sidewalk',
-                lat: 42.09218604009119,
-                lng: -71.26695141433964,
-                type: 'NORMAL',
-                graphId: 100,
-            },
-            {
-                nodeId: 206,
-                name: 'combo parking 2',
-                lat: 42.092198706787585,
-                lng: -71.26685485481511,
-                type: 'NORMAL',
-                graphId: 100,
-            },
-            {
-                nodeId: 207,
-                name: 'in front of door',
-                lat: 42.092595635665134,
-                lng: -71.26652762531529,
-                type: 'NORMAL',
-                graphId: 100,
-            },
-            {
-                nodeId: 208,
-                name: '[Entrance1]',
-                lat: 42.09262979854519,
-                lng: -71.26656872220266,
-                type: 'DOOR',
-                graphId: 100,
-            },
-            {
-                nodeId: 209,
-                name: '[Parking2]',
-                lat: 42.09222374784051,
-                lng: -71.26653684625518,
-                type: 'PARKING',
-                graphId: 100,
-            },
-
-
-
-
-
-            //PP22 FL3
-            {
-                nodeId: 211,
-                name: 'floor 3 elevators',
-                lat: 42.09260446532201,
-                lng: -71.26674977131117,
-                connectedNodeId: 216,
-                type: 'NORMAL',
-                graphId: 203,
-            },
-
-            {
-                nodeId: 212,
-                name: 'before checkpoint',
-                lat: 42.09253972481701,
-                lng: -71.26680341549147,
-                type: 'NORMAL',
-                graphId: 203,
-            },
-            {
-                nodeId: 213,
-                name: '[Checkpoint]',
-                lat: 42.0925087619434,
-                lng: -71.26680207438696,
-                type: 'CHECKIN',
-                graphId: 203,
-            },
-
-
-
-
-            //ParkingADA
-            {
-                nodeId: 300,
-                name: '[ParkingADA]',
-                lat: 42.09375626739604,
-                lng: -71.26385271549225,
-                type: 'PARKING',
-                graphId: 100,
-            },
-            {
-                nodeId: 301,
-                name: 'ADA1',
-                lat: 42.0937949842719,
-                lng: -71.26405238927323,
-                type: 'NORMAL',
-                graphId: 100,
-            },
-            {
-                nodeId: 302,
-                name: 'ADA2',
-                lat: 42.0936715837525,
-                lng: -71.26416504205186,
-                type: 'NORMAL',
-                graphId: 100,
-            },
-            {
-                nodeId: 303,
-                name: 'ADA3',
-                lat: 42.093747216357364,
-                lng: -71.26432061017472,
-                type: 'NORMAL',
-                graphId: 100,
-            },
-            {
-                nodeId: 304,
-                name: 'ADA4',
-                lat: 42.093377013800094,
-                lng: -71.26469075501878,
-                type: 'NORMAL',
-                graphId: 100,
-            },
-            {
-                nodeId: 305,
-                name: 'ADA5',
-                lat: 42.0931381722938,
-                lng: -71.26434743226487,
-                type: 'NORMAL',
-                graphId: 100,
-            },
-            {
-                nodeId: 306,
-                name: 'ADA6',
-                lat: 42.09275602401299,
-                lng: -71.26483022988755,
-                type: 'NORMAL',
-                graphId: 100,
-            },
-            {
-                nodeId: 307,
-                name: 'ADA7',
-                lat: 42.09239834955323,
-                lng: -71.26621899560585,
-                type: 'NORMAL',
-                graphId: 100,
-            },
-            {
-                nodeId: 308,
-                name: 'ADA8',
-                lat: 42.092505522691326,
-                lng: -71.26636418280707,
-                type: 'NORMAL',
-                graphId: 100,
-            },
-
-            {
-                nodeId: 309,
-                name: 'ADA9',
-                lat: 42.09254774479008,
-                lng: -71.26642587361441,
-                type: 'NORMAL',
-                graphId: 100,
-            },
-
-
-
-            //ParkingGillette
-            {
-                nodeId: 400,
-                name: '[ParkingGillette]',
-                lat: 42.095887875258136,
-                lng: -71.26492828130722,
-                type: 'PARKING',
-                graphId: 100,
-            },
-            {
-                nodeId: 401,
-                name: 'GIL1',
-                lat: 42.094659928836286,
-                lng: -71.26609964344688,
-                type: 'NORMAL',
-                graphId: 100,
-            },
-            {
-                nodeId: 402,
-                name: 'ADA3',
-                lat: 42.093747216357364,
-                lng: -71.26432061017472,
-                type: 'NORMAL',
-                graphId: 100,
-            },
-
-            {
-                nodeId: 600,
-                name: '',
-                lat: 42.09262154614298,
-                lng: -71.26673112332217,
-                connectedNodeId: 216,
-                type: 'ELEVATOR',
-                graphId: 204,
-            },
-            {
-                nodeId: 601,
-                name: '',
-                lat: 42.092684242636125,// CONNECT TO 600
-                lng: -71.26664596318595,
-                type: 'CHECKIN',
-                graphId: 204,
-            },
-            {
-                nodeId: 602,
-                name: '',
-                lat: 42.092571289385475,
-                lng: -71.2667539220988,
-                type: 'NORMAL',
-                graphId: 204,
-            },
-            {
-                nodeId: 603,
-                name: '',
-                lat: 42.09254889774802,
-                lng: -71.26674788712852,
-                type: 'CHECKIN',
-                graphId: 204,
-            },
-
-
-
-
-
-
         ],
     });
 
@@ -1624,7 +1095,14 @@ async function main() {
 
     const edges = await prisma.edge.createMany({
         data: [
-
+            // CH Parking
+            {
+                edgeId: 0,
+                name: '',
+                startNodeId: 0,
+                endNodeId: 1,
+                graphId: 0,
+            },
             // CH FL1
             {
                 edgeId: 1,
@@ -1661,541 +1139,108 @@ async function main() {
                 endNodeId: 7,
                 graphId: 1,
             },
-            // Path to [Entrance2]
-            {
-                edgeId: 6,
-                name: '',
-                startNodeId: 3,
-                endNodeId: 8,
-                graphId: 1,
-            },
-            {
-                edgeId: 7,
-                name: '',
-                startNodeId: 8,
-                endNodeId: 9,
-                graphId: 1,
-            },
-            {
-                edgeId: 8,
-                name: '',
-                startNodeId: 9,
-                endNodeId: 10,
-                graphId: 1,
-            },
-            {
-                edgeId: 9,
-                name: '',
-                startNodeId: 10,
-                endNodeId: 11,
-                graphId: 1,
-            },
-            {
-                edgeId: 10,
-                name: '',
-                startNodeId: 11,
-                endNodeId: 12,
-                graphId: 1,
-            },
-            {
-                edgeId: 11,
-                name: '',
-                startNodeId: 12,
-                endNodeId: 13,
-                graphId: 1,
-            },
-            {
-                edgeId: 12,
-                name: '',
-                startNodeId: 13,
-                endNodeId: 14,
-                graphId: 1,
-            },
-            {
-                edgeId: 13,
-                name: '',
-                startNodeId: 14,
-                endNodeId: 15,
-                graphId: 1,
-            },
-
-            // CH Parking Lot 1 → Entrance 1
-            {
-                edgeId: 14,
-                name: '',
-                startNodeId: 16,
-                endNodeId: 17,
-                graphId: 0,
-            },
-            {
-                edgeId: 15,
-                name: '',
-                startNodeId: 17,
-                endNodeId: 18,
-                graphId: 0,
-            },
-            {
-                edgeId: 16,
-                name: '',
-                startNodeId: 18,
-                endNodeId: 19,
-                graphId: 0,
-            },
-            {
-                edgeId: 17,
-                name: '',
-                startNodeId: 19,
-                endNodeId: 1,
-                graphId: 0,
-            },
-
-            // CH Parking Lot 2 → Entrance 2
-            {
-                edgeId: 18,
-                name: '',
-                startNodeId: 20,
-                endNodeId: 21,
-                graphId: 0,
-            },
-            {
-                edgeId: 19,
-                name: '',
-                startNodeId: 21,
-                endNodeId: 29,
-                graphId: 0,
-            },
-
-            // CH Parking Lot 3 → Entrance 2
-            {
-                edgeId: 20,
-                name: '',
-                startNodeId: 22,
-                endNodeId: 23,
-                graphId: 0,
-            },
-            {
-                edgeId: 21,
-                name: '',
-                startNodeId: 23,
-                endNodeId: 24,
-                graphId: 0,
-            },
-            {
-                edgeId: 22,
-                name: '',
-                startNodeId: 24,
-                endNodeId: 25,
-                graphId: 0,
-            },
-            {
-                edgeId: 23,
-                name: '',
-                startNodeId: 25,
-                endNodeId: 26,
-                graphId: 0,
-            },
-            {
-                edgeId: 24,
-                name: '',
-                startNodeId: 26,
-                endNodeId: 27,
-                graphId: 0,
-            },
-            {
-                edgeId: 25,
-                name: '',
-                startNodeId: 27,
-                endNodeId: 28,
-                graphId: 0,
-            },
-            {
-                edgeId: 26,
-                name: '',
-                startNodeId: 28,
-                endNodeId: 29,
-                graphId: 0,
-            },
-
-            // connections
-            {
-                edgeId: 27,
-                name: '',
-                startNodeId: 19,
-                endNodeId: 30,
-                graphId: 0,
-            },
-            {
-                edgeId: 28,
-                name: '',
-                startNodeId: 30,
-                endNodeId: 20, //CH Lot 2
-                graphId: 0,
-            },
 
 
-
-
-
+            // PP20 Parking
             {
                 edgeId: 100,
-                name: '',
-                startNodeId: 202,
-                endNodeId: 100,
-                graphId: 100,
-            },
-            {
-                edgeId: 101,
                 name: '',
                 startNodeId: 100,
                 endNodeId: 101,
                 graphId: 100,
             },
             {
-                edgeId: 102,
+                edgeId: 101,
                 name: '',
                 startNodeId: 101,
-                endNodeId: 307,
+                endNodeId: 102,
                 graphId: 100,
             },
-
-
-            //PP20 Parking
-            // {
-            //     edgeId: 100,
-            //     name: '',
-            //     startNodeId: 100,
-            //     endNodeId: 101,
-            //     graphId: 100,
-            // },
-            // {
-            //     edgeId: 101,
-            //     name: '',
-            //     startNodeId: 101,
-            //     endNodeId: 102,
-            //     graphId: 100,
-            // },
-            // {
-            //     edgeId: 102,
-            //     name: '',
-            //     startNodeId: 102,
-            //     endNodeId: 103,
-            //     graphId: 100,
-            // },
-            // {
-            //     edgeId: 103,
-            //     name: '',
-            //     startNodeId: 103,
-            //     endNodeId: 104,
-            //     graphId: 100,
-            // },
-            // {
-            //     edgeId: 104,
-            //     name: '',
-            //     startNodeId: 104,
-            //     endNodeId: 105,
-            //     graphId: 100,
-            // },
-            // {
-            //     edgeId: 105,
-            //     name: '',
-            //     startNodeId: 105,
-            //     endNodeId: 106,
-            //     graphId: 100,
-            // },
-            // {
-            //     edgeId: 106,
-            //     name: '',
-            //     startNodeId: 106,
-            //     endNodeId: 107,
-            //     graphId: 100,
-            // },
-            // {
-            //     edgeId: 107,
-            //     name: '',
-            //     startNodeId: 207,
-            //     endNodeId: 108,
-            //     graphId: 100,
-            // },
-            // {
-            //     edgeId: 108,
-            //     name: '',
-            //     startNodeId: 108,
-            //     endNodeId: 109,
-            //     graphId: 100,
-            // },
-
-
-
-            // PP20 FL1
-
             {
-                edgeId: 111,
+                edgeId: 102,
+                name: '',
+                startNodeId: 102,
+                endNodeId: 103,
+                graphId: 100,
+            },
+            {
+                edgeId: 103,
+                name: '',
+                startNodeId: 103,
+                endNodeId: 104,
+                graphId: 100,
+            },
+            {
+                edgeId: 104,
+                name: '',
+                startNodeId: 104,
+                endNodeId: 105,
+                graphId: 100,
+            },
+            {
+                edgeId: 105,
+                name: '',
+                startNodeId: 105,
+                endNodeId: 106,
+                graphId: 100,
+            },
+            {
+                edgeId: 106,
+                name: '',
+                startNodeId: 106,
+                endNodeId: 107,
+                graphId: 100,
+            },
+            // PP20 FL1
+            {
+                edgeId: 107,
+                name: '',
+                startNodeId: 108,
+                endNodeId: 109,
+                graphId: 101,
+            },
+            {
+                edgeId: 108,
+                name: '',
+                startNodeId: 109,
+                endNodeId: 110,
+                graphId: 101,
+            },
+            {
+                edgeId: 109,
                 name: '',
                 startNodeId: 110,
                 endNodeId: 111,
                 graphId: 101,
             },
             {
-                edgeId: 112,
+                edgeId: 110,
                 name: '',
-                startNodeId: 111,
+                startNodeId: 108,
                 endNodeId: 112,
                 graphId: 101,
             },
             {
-                edgeId: 113,
+                edgeId: 111,
                 name: '',
                 startNodeId: 112,
                 endNodeId: 113,
                 graphId: 101,
             },
             {
-                edgeId: 114,
+                edgeId: 112,
                 name: '',
-                startNodeId: 110,
+                startNodeId: 112,
                 endNodeId: 114,
                 graphId: 101,
             },
             {
-                edgeId: 115,
+                edgeId: 113,
                 name: '',
                 startNodeId: 114,
                 endNodeId: 115,
                 graphId: 101,
             },
-            {
-                edgeId: 116,
-                name: '',
-                startNodeId: 114,
-                endNodeId: 116,
-                graphId: 101,
-            },
-            {
-                edgeId: 117,
-                name: '',
-                startNodeId: 116,
-                endNodeId: 117,
-                graphId: 101,
-            },
-            {
-                edgeId: 500,
-                name: '',
-                startNodeId: 214,
-                endNodeId: 215,
-                graphId: 201,
-            },
-            {
-                edgeId: 501,
-                name: '',
-                startNodeId: 215,
-                endNodeId: 216,
-                graphId: 201,
-            },
-
-
-            //PP20 parking 2
-            {
-                edgeId: 118,
-                name: '',
-                startNodeId: 209,
-                endNodeId: 308,
-                graphId: 100,
-            },
-
-
-            //PP22 parking
-            {
-                edgeId: 200,
-                name: '',
-                startNodeId: 200,
-                endNodeId: 201,
-                graphId: 100,
-            },
-            {
-                edgeId: 201,
-                name: '',
-                startNodeId: 201,
-                endNodeId: 202,
-                graphId: 100,
-            },
-            {
-                edgeId: 202,
-                name: '',
-                startNodeId: 202,
-                endNodeId: 203,
-                graphId: 100,
-            },
-            {
-                edgeId: 203,
-                name: '',
-                startNodeId: 203,
-                endNodeId: 204,
-                graphId: 100,
-            },
-            {
-                edgeId: 204,
-                name: '',
-                startNodeId: 204,
-                endNodeId: 205,
-                graphId: 100,
-            },
-            {
-                edgeId: 205,
-                name: '',
-                startNodeId: 205,
-                endNodeId: 206,
-                graphId: 100,
-            },
-            {
-                edgeId: 206,
-                name: '',
-                startNodeId: 206,
-                endNodeId: 207,
-                graphId: 100,
-            },
-            {
-                edgeId: 207,
-                name: '',
-                startNodeId: 207,
-                endNodeId: 208,
-                graphId: 100,
-            },
-
-            // floor 3 22
-            {
-                edgeId: 208,
-                name: '',
-                startNodeId: 211,
-                endNodeId: 212,
-                graphId: 203,
-            },
-            {
-                edgeId: 209,
-                name: '',
-                startNodeId: 212,
-                endNodeId: 213,
-                graphId: 203,
-            },
-
-
-
-
-
-
-
-
-
-
-             // ParkingADA
-            {
-                edgeId: 300,
-                name: '',
-                startNodeId: 300,
-                endNodeId: 301,
-                graphId: 100,
-            },
-            {
-                edgeId: 301,
-                name: '',
-                startNodeId: 301,
-                endNodeId: 302,
-                graphId: 100,
-            },
-            {
-                edgeId: 302,
-                name: '',
-                startNodeId: 302,
-                endNodeId: 303,
-                graphId: 100,
-            },
-            {
-                edgeId: 303,
-                name: '',
-                startNodeId: 303,
-                endNodeId: 304,
-                graphId: 100,
-            },
-            {
-                edgeId: 304,
-                name: '',
-                startNodeId: 304,
-                endNodeId: 305,
-                graphId: 100,
-            },
-            {
-                edgeId: 305,
-                name: '',
-                startNodeId: 305,
-                endNodeId: 306,
-                graphId: 100,
-            },
-
-
-
-            {
-                edgeId: 309,
-                name: '',
-                startNodeId: 308,
-                endNodeId: 309,
-                graphId: 100,
-            },
-            {
-                edgeId: 310,
-                name: '',
-                startNodeId: 309,
-                endNodeId: 207,
-                graphId: 100,
-            },
-
-
-
-            //ParkingGillette
-            {
-                edgeId: 400,
-                name: '',
-                startNodeId: 400,
-                endNodeId: 401,
-                graphId: 100,
-            },
-            {
-                edgeId: 401,
-                name: '',
-                startNodeId: 401,
-                endNodeId: 402,
-                graphId: 100,
-            },
-            {
-                edgeId: 403,
-                name: '',
-                startNodeId: 401,
-                endNodeId: 303,
-                graphId: 204,
-            },
-
-            //PP floor 4
-            {
-                edgeId: 600,
-                name: '',
-                startNodeId: 600,
-                endNodeId: 601,
-                graphId: 204,
-            },
-            {
-                edgeId: 601,
-                name: '',
-                startNodeId: 600,
-                endNodeId: 602,
-                graphId: 204,
-            },
-            {
-                edgeId: 602,
-                name: '',
-                startNodeId: 602,
-                endNodeId: 603,
-                graphId: 204,
-            },
-
-
         ],
     });
 
