@@ -221,10 +221,8 @@ class PathfindingGraph {
                             anchor: new google.maps.Point(3.5, 3.5)
                         });
                     }
-                    if(this.floor){
-                        this.remove();
 
-                    }
+                    this.remove();
                     const theNextFloorMap = new google.maps.GroundOverlay(this.loadThisAfter.floor.image, {
                         north: this.loadThisAfter.floor.imageBoundsNorth,
                         south: this.loadThisAfter.floor.imageBoundsSouth,
@@ -244,6 +242,7 @@ class PathfindingGraph {
     public remove() {
         this.path.setMap(null);
         this.nodes.forEach(node => node.setMap(null));
+        this.pathPolylines.forEach(polyline => polyline.setMap(null));
     }
 }
 
