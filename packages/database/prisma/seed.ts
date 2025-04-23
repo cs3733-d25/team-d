@@ -1242,6 +1242,35 @@ async function main() {
                 graphId: 100,
             },
 
+            //PP22 FL1
+            {
+                nodeId: 214,
+                name: 'floor 1 entrance',
+                lat: 42.092636724479945,
+                lng: -71.26662781033974,
+                type: 'DOOR',
+                graphId: 201,
+            },
+            {
+                nodeId: 215,
+                name: 'beside elevator',
+                lat: 42.09264120280188,
+                lng: -71.26670425329667,
+                type: 'NORMAL',
+                graphId: 201,
+            },
+            {
+                nodeId: 216,
+                name: 'floor 1 elevator',
+                lat: 42.09261532804863,
+                lng: -71.26674180422287,
+                type: 'ELEVATOR',
+                graphId: 201,
+            },
+
+
+
+
 
 
 
@@ -1407,6 +1436,7 @@ async function main() {
                 name: 'floor 3 elevators',
                 lat: 42.09260446532201,
                 lng: -71.26674977131117,
+                connectedNodeId: 216,
                 type: 'NORMAL',
                 graphId: 203,
             },
@@ -1541,6 +1571,45 @@ async function main() {
                 type: 'NORMAL',
                 graphId: 100,
             },
+
+            {
+                nodeId: 600,
+                name: '',
+                lat: 42.09262154614298,
+                lng: -71.26673112332217,
+                connectedNodeId: 216,
+                type: 'ELEVATOR',
+                graphId: 204,
+            },
+            {
+                nodeId: 601,
+                name: '',
+                lat: 42.092684242636125,// CONNECT TO 600
+                lng: -71.26664596318595,
+                type: 'CHECKIN',
+                graphId: 204,
+            },
+            {
+                nodeId: 602,
+                name: '',
+                lat: 42.092571289385475,
+                lng: -71.2667539220988,
+                type: 'NORMAL',
+                graphId: 204,
+            },
+            {
+                nodeId: 603,
+                name: '',
+                lat: 42.09254889774802,
+                lng: -71.26674788712852,
+                type: 'CHECKIN',
+                graphId: 204,
+            },
+
+
+
+
+
 
         ],
     });
@@ -1858,69 +1927,71 @@ async function main() {
 
 
             // PP20 FL1
-            // {
-            //     edgeId: 109,
-            //     name: '',
-            //     startNodeId: 101,
-            //     endNodeId: 109,
-            //     graphId: 101,
-            // },
-            // {
-            //     edgeId: 110,
-            //     name: '',
-            //     startNodeId: 109,
-            //     endNodeId: 110,
-            //     graphId: 101,
-            // },
-            // {
-            //     edgeId: 111,
-            //     name: '',
-            //     startNodeId: 110,
-            //     endNodeId: 111,
-            //     graphId: 101,
-            // },
-            // {
-            //     edgeId: 112,
-            //     name: '',
-            //     startNodeId: 108,
-            //     endNodeId: 112,
-            //     graphId: 101,
-            // },
-            // {
-            //     edgeId: 113,
-            //     name: '',
-            //     startNodeId: 112,
-            //     endNodeId: 113,
-            //     graphId: 101,
-            // },
-            // {
-            //     edgeId: 114,
-            //     name: '',
-            //     startNodeId: 112,
-            //     endNodeId: 114,
-            //     graphId: 101,
-            // },
-            // {
-            //     edgeId: 115,
-            //     name: '',
-            //     startNodeId: 114,
-            //     endNodeId: 115,
-            //     graphId: 101,
-            // },
-            // {
-            //     edgeId: 116,
-            //     name: '',
-            //     startNodeId: 207,
-            //     endNodeId: 108,
-            //     graphId: 101,
-            // },
-            // {
-            //     edgeId: 117,
-            //     name: '',
-            //     startNodeId: 108,
-            //     endNodeId: 109,
-            //     graphId: 101,
-            // },
+
+            {
+                edgeId: 111,
+                name: '',
+                startNodeId: 110,
+                endNodeId: 111,
+                graphId: 101,
+            },
+            {
+                edgeId: 112,
+                name: '',
+                startNodeId: 111,
+                endNodeId: 112,
+                graphId: 101,
+            },
+            {
+                edgeId: 113,
+                name: '',
+                startNodeId: 112,
+                endNodeId: 113,
+                graphId: 101,
+            },
+            {
+                edgeId: 114,
+                name: '',
+                startNodeId: 110,
+                endNodeId: 114,
+                graphId: 101,
+            },
+            {
+                edgeId: 115,
+                name: '',
+                startNodeId: 114,
+                endNodeId: 115,
+                graphId: 101,
+            },
+            {
+                edgeId: 116,
+                name: '',
+                startNodeId: 114,
+                endNodeId: 116,
+                graphId: 101,
+            },
+            {
+                edgeId: 117,
+                name: '',
+                startNodeId: 116,
+                endNodeId: 117,
+                graphId: 101,
+            },
+            {
+                edgeId: 500,
+                name: '',
+                startNodeId: 214,
+                endNodeId: 215,
+                graphId: 201,
+            },
+            {
+                edgeId: 501,
+                name: '',
+                startNodeId: 215,
+                endNodeId: 216,
+                graphId: 201,
+            },
+
 
             //PP20 parking 2
             {
@@ -1988,6 +2059,22 @@ async function main() {
                 startNodeId: 207,
                 endNodeId: 208,
                 graphId: 100,
+            },
+
+            // floor 3 22
+            {
+                edgeId: 208,
+                name: '',
+                startNodeId: 211,
+                endNodeId: 212,
+                graphId: 203,
+            },
+            {
+                edgeId: 209,
+                name: '',
+                startNodeId: 212,
+                endNodeId: 213,
+                graphId: 203,
             },
 
 
@@ -2082,8 +2169,32 @@ async function main() {
                 name: '',
                 startNodeId: 401,
                 endNodeId: 303,
-                graphId: 100,
+                graphId: 204,
             },
+
+            //PP floor 4
+            {
+                edgeId: 600,
+                name: '',
+                startNodeId: 600,
+                endNodeId: 601,
+                graphId: 204,
+            },
+            {
+                edgeId: 601,
+                name: '',
+                startNodeId: 600,
+                endNodeId: 602,
+                graphId: 204,
+            },
+            {
+                edgeId: 602,
+                name: '',
+                startNodeId: 602,
+                endNodeId: 603,
+                graphId: 204,
+            },
+
 
         ],
     });
