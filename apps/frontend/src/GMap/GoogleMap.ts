@@ -80,7 +80,7 @@ class PathfindingGraph {
 
 
     // floor is the map of the map of the graph next to itself
-    private floor: FloorPathResponse | null = null;
+    public floor: FloorPathResponse | null = null;
 
     constructor(map: google.maps.Map, path: google.maps.LatLngLiteral[], color: string, after: PathfindingGraph | null, floor: FloorPathResponse | null) {
         this.pathForDisplay = path;
@@ -172,6 +172,7 @@ class PathfindingGraph {
         if (this.innerNextButtonSetup) return; // prevent adding listener multiple times
         this.innerNextButtonSetup = true;
 
+        this.innerStepIndex =0;
         // this.path.binder =
         this.nodes = this.pathForDisplay.map((position, i) =>
             new google.maps.Marker({
@@ -209,6 +210,9 @@ class PathfindingGraph {
                 if (this.innerStepIndex < this.innerSteps.length - 1) {
                     this.innerStepIndex++;
                     this.showInnerStep();
+                    console.log(this.innerStepIndex);
+                    console.log('This graph');
+                    console.log(this.floor?.image);
                 } else {
                     if (this.highlightedCircle) {
                         this.highlightedCircle.setIcon({
@@ -219,15 +223,17 @@ class PathfindingGraph {
                     }
                     if(this.floor){
                         this.remove();
-                        const hicurrentFloorMap = new google.maps.GroundOverlay(this.floor.image, {
-                            north: this.floor.imageBoundsNorth,
-                            south: this.floor.imageBoundsSouth,
-                            east: this.floor.imageBoundsEast,
-                            west: this.floor.imageBoundsWest,
-                        });
-                        hicurrentFloorMap.setMap(this.map);
 
                     }
+                    const theNextFloorMap = new google.maps.GroundOverlay(this.loadThisAfter.floor.image, {
+                        north: this.loadThisAfter.floor.imageBoundsNorth,
+                        south: this.loadThisAfter.floor.imageBoundsSouth,
+                        east: this.loadThisAfter.floor.imageBoundsEast,
+                        west: this.loadThisAfter.floor.imageBoundsWest,
+                    });
+                    theNextFloorMap.setMap(this.map);
+                    console.log('Next graph');
+                    console.log(this.loadThisAfter.floor.image);
                     this.loadThisAfter?.setupInnerNextButton();
                     this.loadThisAfter?.showInnerStep();
                 }
@@ -329,13 +335,14 @@ export class PathfindingMap extends GoogleMap {
 
         let floor: FloorPathResponse | null;
         floor = null;
-
+        let graph: PathfindingGraph;
         let previousGraph: PathfindingGraph | null = null;
         for (let i = pathfindingResponse.floorPaths.length - 1 ;i >=0; i--) {
             floor = pathfindingResponse.floorPaths[i];
-            let graph: PathfindingGraph;
+
+            // 4th floor
             if (i==pathfindingResponse.floorPaths.length - 1) {
-                graph = new PathfindingGraph(this.map, floor.path, '#CC3300', null, null);
+                graph = new PathfindingGraph(this.map, floor.path, '#CC3300', null, floor);
                 graph.innerSteps = floor.direction;
                 console.log(graph);
 
@@ -351,7 +358,7 @@ export class PathfindingMap extends GoogleMap {
 
 
         // Now create the parking path and pass in the floor path to trigger after
-        this.currentParkingPath = new PathfindingGraph(this.map, pathfindingResponse.parkingLotPath.path, '#CC3300', previousGraph, floor );
+        this.currentParkingPath = new PathfindingGraph(this.map, pathfindingResponse.parkingLotPath.path, '#CC3300', previousGraph, null );
         this.currentParkingPath.innerSteps = pathfindingResponse.parkingLotPath.direction;
         this.currentParkingPath.setupInnerNextButton();
         this.currentParkingPath.showInnerStep(); // start here
