@@ -396,9 +396,14 @@ async function main() {
                 graphType: 'FLOORGRAPH',
             },
             {
+                graphId: 300,
+                graphType: 'PARKINGGRAPH',
+            },
+            {
                 graphId: 301,
                 graphType: 'FLOORGRAPH',
             },
+
         ],
     });
 
@@ -465,11 +470,11 @@ async function main() {
             {
                 graphId: 301,
                 floorNum: 1,
-                image: '',
-                imageBoundsNorth: 0,
-                imageBoundsSouth: 0,
-                imageBoundsEast: 0,
-                imageBoundsWest: 0,
+                image: '/src/public/floormaps/fern1.png',
+                imageBoundsNorth: 42.30290860489564,
+                imageBoundsSouth: 42.300859574636796,
+                imageBoundsEast: -71.12680971364097,
+                imageBoundsWest: -71.12961427703588,
                 buildingId: 3,
             },
         ],
@@ -493,6 +498,10 @@ async function main() {
                 graphId: 100,
                 hospitalId: 1,
             },
+            {
+                graphId: 300,
+                hospitalId: 2,
+            }
         ],
     });
 
@@ -2591,6 +2600,297 @@ async function main() {
                 graphId: 204,
             },
 
+            //Faulkner hospital parking
+
+            {
+                nodeId: 700,
+                name: 'front parking',
+                lat: 42.30094854687938,
+                lng: -71.12772334609345,
+                type: 'PARKING',
+                graphId: 300,
+            },
+            {
+                nodeId: 701,
+                name: '',
+                lat: 42.301115684559434,
+                lng: -71.12757716570214,
+                type: 'NORMAL',
+                graphId: 300,
+            },
+            {
+                nodeId: 702,
+                name: '',
+                lat: 42.30113111497838,
+                lng: -71.12761337552384,
+                type: 'NORMAL',
+                graphId: 300,
+            },
+            {
+                nodeId: 703,
+                name: '',
+                lat: 42.301105865199936,
+                lng: -71.12766970191315,
+                type: 'NORMAL',
+                graphId: 300,
+            },
+            {
+                nodeId: 704,
+                name: '',
+                lat: 42.30115776751131,
+                lng: -71.12778235469177,
+                type: 'NORMAL',
+                graphId: 300,
+            },
+            {
+                nodeId: 705,
+                name: '',
+                lat: 42.3012840643785,
+                lng: -71.12791723846682,
+                type: 'DOOR',
+                graphId: 300,
+            },
+
+
+            {
+                nodeId: 706,
+                name: 'back parking',
+                lat: 42.30187767001502,
+                lng: -71.12950631142222,
+                type: 'PARKING',
+                graphId: 300,
+            },
+            {
+                nodeId: 707,
+                name: '',
+                lat: 42.30185662878316,
+                lng: -71.12942450404726,
+                type: 'NORMAL',
+                graphId: 300,
+            },
+            {
+                nodeId: 708,
+                name: '',
+                lat: 42.30177238098595,
+                lng: -71.12920393623499,
+                type: 'NORMAL',
+                graphId: 300,
+            },
+
+            {
+                nodeId: 709,
+                name: '',
+                lat: 42.30170871647297,
+                lng: -71.12903580063531,
+                type: 'NORMAL',
+                graphId: 300,
+            },
+            {
+                nodeId: 710,
+                name: '',
+                lat: 42.30180025987173,
+                lng: -71.12899586136436,
+                type: 'NORMAL',
+                graphId: 300,
+            },
+            {
+                nodeId: 711,
+                name: '',
+                lat: 42.30177546251098,
+                lng: -71.12895495767688,
+                type: 'DOOR',
+                graphId: 300,
+            },
+
+            //parking 1975
+            {
+                nodeId: 712,
+                name: '',
+                lat: 42.30243941915267,
+                lng: -71.12889458918514,
+                type: 'PARKING',
+                graphId: 300,
+            },
+            {
+                nodeId: 713,
+                name: '',
+                lat: 42.302214772691904,
+                lng: -71.1287330657487,
+                type: 'NORMAL',
+                graphId: 300,
+            },
+            {
+                nodeId: 714,
+                name: '',
+                lat: 42.30215024657079,
+                lng: -71.12876659336139,
+                type: 'NORMAL',
+                graphId: 300,
+            },
+            {
+                nodeId: 715,
+                name: '',
+                lat: 42.30210255330833,
+                lng: -71.12869149150897,
+                type: 'NORMAL',
+                graphId: 300,
+            },
+
+            //parking 2004
+
+            {
+                nodeId: 716,
+                name: '',
+                lat: 42.30189574107675,
+                lng: -71.12738085202069,
+                type: 'PARKING',
+                graphId: 300,
+            },
+            {
+                nodeId: 717,
+                name: '',
+                lat: 42.301755891379486,
+                lng: -71.12744340453766,
+                type: 'NORMAL',
+                graphId: 300,
+            },
+            {
+                nodeId: 718,
+                name: '',
+                lat: 42.301691364788056,
+                lng: -71.12747559104584,
+                type: 'NORMAL',
+                graphId: 300,
+            },
+            {
+                nodeId: 719,
+                name: '',
+                lat: 42.301657698714095,
+                lng: -71.12754264627121,
+                type: 'NORMAL',
+                graphId: 300,
+            },
+            {
+                nodeId: 720,
+                name: '',
+                lat: 42.30156371416243,
+                lng: -71.12762713585518,
+                type: 'NORMAL',
+                graphId: 300,
+            },
+            {
+                nodeId: 721,
+                name: '',
+                lat: 42.301509518258534,
+                lng: -71.12768949721477,
+                type: 'NORMAL',
+                graphId: 300,
+            },
+            {
+                nodeId: 722,
+                name: '',
+                lat: 42.301446411314124,
+                lng: -71.12777249997218,
+                type: 'NORMAL',
+                graphId: 300,
+            },
+            {
+                nodeId: 723,
+                name: '',
+                lat: 42.301321368055056,
+                lng: -71.1278124153614,
+                type: 'NORMAL',
+                graphId: 300,
+            },
+
+
+            //inside faulkner
+            {
+                nodeId: 724,
+                name: '',
+                lat: 42.3012840643785,
+                lng: -71.12791723846682,
+                type: 'DOOR',
+                graphId: 301,
+            },
+
+            {
+                nodeId: 725,
+                name: '',
+                lat: 42.30142269932402,
+                lng: -71.12818485368207,
+                type: 'NORMAL',
+                graphId: 301,
+            },
+            {
+                nodeId: 726,
+                name: '',
+                lat: 42.30152857575582,
+                lng: -71.12808464610131,
+                type: 'NORMAL',
+                graphId: 301,
+            },
+            {
+                nodeId: 727,
+                name: '',
+                lat: 42.30152163246584,
+                lng: -71.12796931111367,
+                type: 'NORMAL',
+                graphId: 301,
+            },
+
+            //backdoor faulkner
+
+            {
+                nodeId: 728,
+                name: '',
+                lat: 42.30177546251098,
+                lng: -71.12895495767688,
+                type: 'NORMAL',
+                graphId: 301,
+            },
+            {
+                nodeId: 729,
+                name: '',
+                lat: 42.30166510439925,
+                lng: -71.12863733328965,
+                type: 'NORMAL',
+                graphId: 301,
+            },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2992,6 +3292,14 @@ async function main() {
                 endNodeId: 122,
                 graphId: 101,
             },
+            {
+                edgeId: 123,
+                name: '',
+                startNodeId: 116,
+                endNodeId: 117,
+                graphId: 101,
+            },
+
 
             {
                 edgeId: 500,
@@ -3280,6 +3588,222 @@ async function main() {
                 endNodeId: 603,
                 graphId: 204,
             },
+
+            {
+                edgeId: 700,
+                name: '',
+                startNodeId: 700,
+                endNodeId: 701,
+                graphId: 300,
+            },
+            {
+                edgeId: 701,
+                name: '',
+                startNodeId: 701,
+                endNodeId: 702,
+                graphId: 300,
+            },
+            {
+                edgeId: 702,
+                name: '',
+                startNodeId: 702,
+                endNodeId: 703,
+                graphId: 300,
+            },
+            {
+                edgeId: 703,
+                name: '',
+                startNodeId: 703,
+                endNodeId: 704,
+                graphId: 300,
+            },
+            {
+                edgeId: 704,
+                name: '',
+                startNodeId: 704,
+                endNodeId: 705,
+                graphId: 300,
+            },
+
+            {
+                edgeId: 705,
+                name: '',
+                startNodeId: 706,
+                endNodeId: 707,
+                graphId: 300,
+            },
+            {
+                edgeId: 706,
+                name: '',
+                startNodeId: 707,
+                endNodeId: 708,
+                graphId: 300,
+            },
+            {
+                edgeId: 707,
+                name: '',
+                startNodeId: 708,
+                endNodeId: 709,
+                graphId: 300,
+            },
+            {
+                edgeId: 708,
+                name: '',
+                startNodeId: 709,
+                endNodeId: 710,
+                graphId: 300,
+            },
+            {
+                edgeId: 709,
+                name: '',
+                startNodeId: 710,
+                endNodeId: 711,
+                graphId: 300,
+            },
+            {
+                edgeId: 710,
+                name: '',
+                startNodeId: 712,
+                endNodeId: 713,
+                graphId: 300,
+            },
+            {
+                edgeId: 711,
+                name: '',
+                startNodeId: 713,
+                endNodeId: 714,
+                graphId: 300,
+            },
+            {
+                edgeId: 712,
+                name: '',
+                startNodeId: 714,
+                endNodeId: 715,
+                graphId: 300,
+            },
+            {
+                edgeId: 713,
+                name: '',
+                startNodeId: 715,
+                endNodeId: 710,
+                graphId: 300,
+            },
+            {
+                edgeId: 714,
+                name: '',
+                startNodeId: 716,
+                endNodeId: 717,
+                graphId: 300,
+            },
+            {
+                edgeId: 715,
+                name: '',
+                startNodeId: 717,
+                endNodeId: 718,
+                graphId: 300,
+            },
+            {
+                edgeId: 716,
+                name: '',
+                startNodeId: 718,
+                endNodeId: 719,
+                graphId: 300,
+            },
+            {
+                edgeId: 717,
+                name: '',
+                startNodeId: 719,
+                endNodeId: 720,
+                graphId: 300,
+            },
+            {
+                edgeId: 718,
+                name: '',
+                startNodeId: 720,
+                endNodeId: 721,
+                graphId: 300,
+            },
+            {
+                edgeId: 719,
+                name: '',
+                startNodeId: 721,
+                endNodeId: 722,
+                graphId: 300,
+            },
+            {
+                edgeId: 720,
+                name: '',
+                startNodeId: 722,
+                endNodeId: 723,
+                graphId: 300,
+            },
+            {
+                edgeId: 721,
+                name: '',
+                startNodeId: 723,
+                endNodeId: 705,
+                graphId: 300,
+            },
+
+            //faulkner inside
+
+            {
+                edgeId: 722,
+                name: '',
+                startNodeId: 724,
+                endNodeId: 725,
+                graphId: 301,
+            },
+            {
+                edgeId: 723,
+                name: '',
+                startNodeId: 725,
+                endNodeId: 726,
+                graphId: 301,
+            },
+            {
+                edgeId: 724,
+                name: '',
+                startNodeId: 726,
+                endNodeId: 727,
+                graphId: 301,
+            },
+            {
+                edgeId: 725,
+                name: '',
+                startNodeId: 728,
+                endNodeId: 729,
+                graphId: 301,
+            },
+            {
+                edgeId: 726,
+                name: '',
+                startNodeId: 729,
+                endNodeId: 725,
+                graphId: 301,
+            },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         ],
