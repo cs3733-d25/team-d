@@ -883,14 +883,7 @@ async function main() {
     const nodes = await prisma.node.createMany({
         data: [
             // CH Parking
-            {
-                nodeId: 0,
-                name: '[Parking1]',
-                lat: 42.32628985950129,
-                lng: -71.1494973814374,
-                type: 'PARKING',
-                graphId: 0,
-            },
+
             {
                 nodeId: 1,
                 name: '[Entrance1]',
@@ -1011,6 +1004,7 @@ async function main() {
                 name: '[Entrance2]',
                 lat: 42.32599565468113,
                 lng: -71.14921700647945,
+                connectedNodeId: 29,
                 type: 'DOOR',
                 graphId: 1,
             },
@@ -1130,9 +1124,19 @@ async function main() {
                 lat: 42.32599565468113,
                 lng: -71.14921700647945,
                 type: 'DOOR',
-                connectedNodeId: 15,
                 graphId: 0,
             },
+
+            // connections
+            {
+                nodeId: 30,
+                name: 'PL2 path extension',
+                lat: 42.32631519182124,
+                lng: -71.14905373756312,
+                type: 'NORMAL',
+                graphId: 0,
+            },
+
 
 
 
@@ -1551,14 +1555,7 @@ async function main() {
 
     const edges = await prisma.edge.createMany({
         data: [
-            // CH Parking
-            {
-                edgeId: 0,
-                name: '',
-                startNodeId: 0,
-                endNodeId: 1,
-                graphId: 0,
-            },
+
             // CH FL1
             {
                 edgeId: 1,
@@ -1749,6 +1746,23 @@ async function main() {
                 endNodeId: 29,
                 graphId: 0,
             },
+
+            // connections
+            {
+                edgeId: 27,
+                name: '',
+                startNodeId: 19,
+                endNodeId: 30,
+                graphId: 0,
+            },
+            {
+                edgeId: 28,
+                name: '',
+                startNodeId: 30,
+                endNodeId: 20, //CH Lot 2
+                graphId: 0,
+            },
+
 
 
 
