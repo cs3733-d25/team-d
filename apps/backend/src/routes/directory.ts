@@ -5,19 +5,10 @@ const router: Router = express.Router();
 
 router.get('/', async (req, res) => {
     const data = await PrismaClient.department.findMany({
-        select: {
-            departmentId: true,
-            name: true,
-            floorNum: true,
-            room: true,
-            FloorGraph: {
+        include: {
+            Building: {
                 select: {
-                    Building: {
-                        select: {
-                            buildingId: true,
-                            name: true,
-                        },
-                    },
+                    name: true,
                 },
             },
         },
@@ -45,29 +36,20 @@ router.get('/all', async function (req: Request, res: Response) {
 });
 
 // Returns all departments in the directory, if any
-router.get('/specbuilding/:id', async function (req: Request, res: Response) {
-    const buildingId: number = Number(req.params.id);
+router.get('/hospital/:id', async function (req: Request, res: Response) {
+    const hospitalId: number = Number(req.params.id);
     const departments = await PrismaClient.department.findMany({
         where: {
-            FloorGraph: {
-                Building: {
-                    buildingId: buildingId,
-                },
-            },
+            hospitalId: hospitalId,
         },
         select: {
             departmentId: true,
             name: true,
             floorNum: true,
             room: true,
-            FloorGraph: {
+            Building: {
                 select: {
-                    Building: {
-                        select: {
-                            buildingId: true,
-                            name: true,
-                        },
-                    },
+                    name: true,
                 },
             },
         },
