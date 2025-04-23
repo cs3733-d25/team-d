@@ -64,9 +64,10 @@ abstract class GoogleMap {
 
 
 class PathfindingGraph {
-    private readonly path: google.maps.Polyline;
-    private readonly nodes: google.maps.Marker[];
+    private path: google.maps.Polyline | null = null;
+    private nodes: google.maps.Marker[] | null = null;
 
+    private color: string;
     // For inner map directions
     private map: google.maps.Map;
     private pathForDisplay: google.maps.LatLngLiteral[];
@@ -78,8 +79,8 @@ class PathfindingGraph {
     private loadThisAfter: PathfindingGraph | null = null;
 
 
-    //
-    private floor: FloorPathResponse | null = null;
+    // floor is the map of the map of the graph next to itself
+    public floor: FloorPathResponse | null = null;
 
     constructor(map: google.maps.Map, path: google.maps.LatLngLiteral[], color: string, after: PathfindingGraph | null, floor: FloorPathResponse | null) {
         this.pathForDisplay = path;
@@ -87,35 +88,12 @@ class PathfindingGraph {
         this.pathPolylines = [];
         this.loadThisAfter = after;
         this.floor = floor;
-        for (let i = 0; i < this.pathForDisplay.length - 1; i++) {
-            const line = new google.maps.Polyline({
-                path: [this.pathForDisplay[i], this.pathForDisplay[i + 1]],
-                geodesic: true,
-                strokeColor: '#CC3300',
-                strokeOpacity: 1.0,
-                strokeWeight: 4,
-                map: map,
-            });
-            this.pathPolylines.push(line);
-        }
+        this.color = color;
 
-        this.path = new google.maps.Polyline({
-            map: map,
-            path: path,
-            strokeColor: color,
-        });
-        // this.path.binder =
-        this.nodes = path.map((position, i) =>
-            new google.maps.Marker({
-                map: map,
-                position: position,
-                icon: {
-                    url: 'https://maps.gstatic.com/intl/en_us/mapfiles/markers2/measle.png',
-                    size: new google.maps.Size(7, 7),
-                    anchor: new google.maps.Point(3.5, 3.5)
-                },
-            })
-        );
+
+
+
+
     }
 
     // Text to directions functions for inside of hospital
@@ -123,13 +101,6 @@ class PathfindingGraph {
     private highlightStep(index: number): void {
 
         // TODO: DECIDE IF U WANNA KEEP THE LINE THAT HAVE WALKED OR NOT, ASK EMMA!!
-
-        // // Reset previous line
-        // if (this.highlightedLine) {
-        //     this.highlightedLine.setOptions({
-        //         strokeColor: '#CC3300',
-        //     });
-        // }
 
         if (this.highlightedCircle) {
             this.highlightedCircle.setIcon({
@@ -166,6 +137,7 @@ class PathfindingGraph {
     public showInnerStep(): void {
         const stepDisplay = document.getElementById("inner-step-instruction");
 
+
         if (stepDisplay && this.innerSteps.length > 0) {
             const stepText = this.innerSteps[this.innerStepIndex];
 
@@ -200,12 +172,47 @@ class PathfindingGraph {
         if (this.innerNextButtonSetup) return; // prevent adding listener multiple times
         this.innerNextButtonSetup = true;
 
+        this.innerStepIndex =0;
+        // this.path.binder =
+        this.nodes = this.pathForDisplay.map((position, i) =>
+            new google.maps.Marker({
+                map: this.map,
+                position: position,
+                icon: {
+                    url: 'https://maps.gstatic.com/intl/en_us/mapfiles/markers2/measle.png',
+                    size: new google.maps.Size(7, 7),
+                    anchor: new google.maps.Point(3.5, 3.5)
+                },
+            })
+        );
+
+        this.path = new google.maps.Polyline({
+            map: this.map,
+            path: this.pathForDisplay,
+            strokeColor: this.color,
+        });
+
+        for (let i = 0; i < this.pathForDisplay.length - 1; i++) {
+            const line = new google.maps.Polyline({
+                path: [this.pathForDisplay[i], this.pathForDisplay[i + 1]],
+                geodesic: true,
+                strokeColor: '#CC3300',
+                strokeOpacity: 1.0,
+                strokeWeight: 4,
+                map: this.map,
+            });
+            this.pathPolylines.push(line);
+        }
+
         const nextButton = document.getElementById("inner-next-step-btn");
         if (nextButton) {
             nextButton.addEventListener("click", () => {
                 if (this.innerStepIndex < this.innerSteps.length - 1) {
                     this.innerStepIndex++;
                     this.showInnerStep();
+                    console.log(this.innerStepIndex);
+                    console.log('This graph');
+                    console.log(this.floor?.image);
                 } else {
                     if (this.highlightedCircle) {
                         this.highlightedCircle.setIcon({
@@ -214,17 +221,17 @@ class PathfindingGraph {
                             anchor: new google.maps.Point(3.5, 3.5)
                         });
                     }
-                    if(this.floor){
-                        this.remove();
-                        const hicurrentFloorMap = new google.maps.GroundOverlay(this.loadThisAfter.floor.image, {
-                            north: this.floor.imageBoundsNorth,
-                            south: this.floor.imageBoundsSouth,
-                            east: this.floor.imageBoundsEast,
-                            west: this.floor.imageBoundsWest,
-                        });
-                        hicurrentFloorMap.setMap(this.map);
 
-                    }
+                    this.remove();
+                    const theNextFloorMap = new google.maps.GroundOverlay(this.loadThisAfter.floor.image, {
+                        north: this.loadThisAfter.floor.imageBoundsNorth,
+                        south: this.loadThisAfter.floor.imageBoundsSouth,
+                        east: this.loadThisAfter.floor.imageBoundsEast,
+                        west: this.loadThisAfter.floor.imageBoundsWest,
+                    });
+                    theNextFloorMap.setMap(this.map);
+                    console.log('Next graph');
+                    console.log(this.loadThisAfter.floor.image);
                     this.loadThisAfter?.setupInnerNextButton();
                     this.loadThisAfter?.showInnerStep();
                 }
@@ -232,9 +239,10 @@ class PathfindingGraph {
         }
     }
 
-    remove() {
+    public remove() {
         this.path.setMap(null);
         this.nodes.forEach(node => node.setMap(null));
+        this.pathPolylines.forEach(polyline => polyline.setMap(null));
     }
 }
 
@@ -308,28 +316,6 @@ export class PathfindingMap extends GoogleMap {
         this.currentFloorMap = null;
     }
 
-    // updateDepartmentPathfinding(pathfindingResponse: PathfindingResponse) {
-    //     this.currentPathfindingResponse = pathfindingResponse;
-    //     console.log(this.currentPathfindingResponse);
-    //
-    //     this.updateCurrentFloor(1);
-    //
-    //     this.endLocation = pathfindingResponse.parkingLotPath.path[0];
-    //     this.route();
-    //
-    //     if (this.currentParkingPath) {
-    //         this.currentParkingPath.remove();
-    //         this.currentFloorPath = null;
-    //     }
-    //     this.currentParkingPath = new PathfindingGraph(this.map, pathfindingResponse.parkingLotPath.path, '#CC3300', this.currentFloorPath);
-    //     this.currentParkingPath.innerSteps = pathfindingResponse.parkingLotPath.direction;
-    //
-    //     console.log('steps');
-    //
-    //     this.currentParkingPath.showInnerStep();
-    //     this.currentParkingPath.setupInnerNextButton();
-    // }
-
     updateDepartmentPathfinding(pathfindingResponse: PathfindingResponse) {
         this.currentPathfindingResponse = pathfindingResponse;
         this.endLocation = pathfindingResponse.parkingLotPath.path[0];
@@ -348,11 +334,12 @@ export class PathfindingMap extends GoogleMap {
 
         let floor: FloorPathResponse | null;
         floor = null;
-
+        let graph: PathfindingGraph;
         let previousGraph: PathfindingGraph | null = null;
         for (let i = pathfindingResponse.floorPaths.length - 1 ;i >=0; i--) {
             floor = pathfindingResponse.floorPaths[i];
-            let graph: PathfindingGraph;
+
+            // 4th floor
             if (i==pathfindingResponse.floorPaths.length - 1) {
                 graph = new PathfindingGraph(this.map, floor.path, '#CC3300', null, floor);
                 graph.innerSteps = floor.direction;
@@ -368,27 +355,12 @@ export class PathfindingMap extends GoogleMap {
             previousGraph = graph;
         }
 
-        // const floor = pathfindingResponse.floorPaths[0];
-        // this.currentFloorMap = new google.maps.GroundOverlay(floor.image, {
-        //     north: floor.imageBoundsNorth,
-        //     south: floor.imageBoundsSouth,
-        //     east: floor.imageBoundsEast,
-        //     west: floor.imageBoundsWest,
-        // });
-        // this.currentFloorMap.setMap(this.map);
-
-
-
-        // Create floor path first
-        // this.currentFloorPath = new PathfindingGraph(this.map, floor.path, '#CC3300', null);
-        // this.currentFloorPath.innerSteps = floor.direction;
 
         // Now create the parking path and pass in the floor path to trigger after
-        this.currentParkingPath = new PathfindingGraph(this.map, pathfindingResponse.parkingLotPath.path, '#CC3300', previousGraph, floor );
+        this.currentParkingPath = new PathfindingGraph(this.map, pathfindingResponse.parkingLotPath.path, '#CC3300', previousGraph, null );
         this.currentParkingPath.innerSteps = pathfindingResponse.parkingLotPath.direction;
-
-        this.currentParkingPath.showInnerStep(); // start here
         this.currentParkingPath.setupInnerNextButton();
+        this.currentParkingPath.showInnerStep(); // start here
     }
 
 
