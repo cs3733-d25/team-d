@@ -9,7 +9,7 @@ import Footer from "@/components/Footer.tsx";
 import { useAuth0 } from "@auth0/auth0-react";
 import DisclaimerBar from "@/components/DisclaimerBar.tsx";
 import ServiceRequestbutton from "@/components/ServiceRequestbutton.tsx";
-import {useNavigate} from "react-router-dom";
+// import {useNavigate} from "react-router-dom";
 
 // Use for comments
 {/**/}
@@ -59,15 +59,15 @@ export default function Home() {
                         <div className=" w-[250px] h-[250px] bg-[#F1F1F1] border-white">
                             {/* Animated Map */}
                             <div className="flex-grow flex items-center justify-center w-full">
-                                <AnimatedService />
+                                <AnimatedService/>
                             </div>
 
-                            <ServiceRequestbutton />
+                            <ServiceRequestbutton/>
                         </div>
                     </div>
                 </div>
                 <div>
-                    <Footer />
+                    <Footer/>
                 </div>
             </div>
         </div>

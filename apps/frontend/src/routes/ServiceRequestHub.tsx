@@ -1,20 +1,20 @@
 import React from 'react';
 import ServiceRequestCard from "@/components/ServiceRequest/ServiceReqCard.tsx";
-import {faLanguage} from "@fortawesome/free-solid-svg-icons";
-import {faHandHoldingDroplet} from "@fortawesome/free-solid-svg-icons";
-import {faScrewdriverWrench} from "@fortawesome/free-solid-svg-icons";
-import {faShield} from "@fortawesome/free-solid-svg-icons";
+// import {faLanguage} from "@fortawesome/free-solid-svg-icons";
+// import {faHandHoldingDroplet} from "@fortawesome/free-solid-svg-icons";
+// import {faScrewdriverWrench} from "@fortawesome/free-solid-svg-icons";
+// import {faShield} from "@fortawesome/free-solid-svg-icons";
 import translatorImage from "../public/translatorReq.jpg"
 import sanitationImage from "../public/translatorReq.jpg"
 import equipmentImage from "../public/translatorReq.jpg"
 import securityImage from "../public/translatorReq.jpg"
-import TranslatorRequestPopup from "@/components/ServiceRequest/TranslatorRequest/TranslatorRequestPopup.tsx";
-import SanitationPopup  from "@/components/ServiceRequest/SanitationRequest/SanitationPopup.tsx";
-import EquipmentRequestPopup from "@/components/ServiceRequest/EquipmentRequest/EquipmentRequestPopup.tsx";
-import SecurityRequestPopup from "@/components/ServiceRequest/SecurityRequest/SecurityRequestPopup.tsx";
+// import TranslatorRequestPopup from "@/components/ServiceRequest/TranslatorRequest/TranslatorRequestPopup.tsx";
+// import SanitationPopup  from "@/components/ServiceRequest/SanitationRequest/SanitationPopup.tsx";
+// import EquipmentRequestPopup from "@/components/ServiceRequest/EquipmentRequest/EquipmentRequestPopup.tsx";
+// import SecurityRequestPopup from "@/components/ServiceRequest/SecurityRequest/SecurityRequestPopup.tsx";
 import TranslatorServiceRequest from "@/components/ServiceRequest/TranslatorRequest/TranslatorServiceRequest.tsx";
 
-import SanitationServiceRequest from "@/components/ServiceRequest/SanitationRequest/SanitationRequest.tsx";
+import SanitationServiceRequest from "@/components/ServiceRequest/SanitationRequest/SanitationServiceRequest.tsx";
 import EquipmentServiceRequest from "@/components/ServiceRequest/EquipmentRequest/EquipmentServiceRequest.tsx";
 import SecurityServiceRequest from "@/components/ServiceRequest/SecurityRequest/SecurityServiceRequest.tsx";
 import ServiceHubBackground from "../public/ServiceHubBackground.png";
