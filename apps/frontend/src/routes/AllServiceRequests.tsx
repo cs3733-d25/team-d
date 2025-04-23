@@ -215,14 +215,28 @@ export const columns: ColumnDef<ServiceRequest>[] = [
     },
     {
         accessorKey: "priority",
-        header: ({ column }) => {
-        },
+        header: ({ column }) => {},
         meta: {
-            filterVariant: 'select',
+            filterVariant: "select",
             filterOptions: ["Low", "Medium", "High", "Emergency"],
         },
-        filterFn: (row, columnId, filterValue: string[]) => {
-            return filterValue.includes(row.getValue(columnId))
+        filterFn: (row, columnId, filterValue: string[]) =>
+            filterValue.includes(row.getValue(columnId)),
+        cell: ({ getValue }) => {
+            const value = getValue<string>();
+            const styles =
+                value === "Low"
+                    ? "bg-yellow-200 text-yellow-800"
+                    : value === "Medium"
+                        ? "bg-orange-300 text-orange-900"
+                        : value === "High"
+                            ? "bg-orange-500 text-white"
+                            : "bg-red-600 text-white";
+            return (
+                <span className={`px-2 py-1 rounded font-semibold ${styles}`}>
+        {value}
+      </span>
+            );
         },
     },
     {
