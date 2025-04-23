@@ -11,6 +11,10 @@ export default function Footer() {
             <footer className="bg-blue-900 text-gray-200">
                 <div className="container mx-auto py-5">
                     <div className="flex flex-row justify-evenly">
+                        <div className="flex flex-col gap-4">
+                            <p className="mb-0">&copy; 2025 Brigham and Women's Hospital</p>
+                            <p>75 Francis Street, Boston MA 02115</p>
+                        </div>
                         {/*Company*/}
                         <div className="lg:col-span-2 md:col-span-4 col-span-12">
                             <h5 className="tracking-wide text-gray-100 font-semibold">Company</h5>
@@ -84,49 +88,46 @@ export default function Footer() {
                             </ul>
 
                             {/*Social Media Links*/}
-                            <a href="https://x.com/BrighamWomens"
-                               target="_blank"
-                               rel="noopener noreferrer"
-                               aria-label="X"
-                            >
-                                <FontAwesomeIcon icon={faSquareXTwitter} />
-                            </a>
+                            <div className="flex flex-row gap-6">
+                                <a href="https://x.com/BrighamWomens"
+                                   target="_blank"
+                                   rel="noopener noreferrer"
+                                   aria-label="X"
+                                >
+                                    <FontAwesomeIcon icon={faSquareXTwitter} />
+                                </a>
 
-                            <a
-                                href="https://www.instagram.com/accounts/login/?next=https%3A%2F%2Fwww.instagram.com%2Fbrighamandwomens%2F%3Fhl%3Den&is_from_rle"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                aria-label="Instagram"
-                            >
-                                &nbsp;&nbsp;<FontAwesomeIcon icon={faInstagram} className=""/>
-                            </a>
+                                <a
+                                    href="https://www.instagram.com/accounts/login/?next=https%3A%2F%2Fwww.instagram.com%2Fbrighamandwomens%2F%3Fhl%3Den&is_from_rle"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    aria-label="Instagram"
+                                >
+                                    &nbsp;&nbsp;<FontAwesomeIcon icon={faInstagram} className="size-5"/>
+                                </a>
 
-                            <a href="https://www.facebook.com/BrighamandWomensHospital/#"
-                               target="_blank"
-                               rel="noopener noreferrer"
-                               aria-label="Facebook">
-                                &nbsp;&nbsp;<FontAwesomeIcon icon={faFacebook} />
-                            </a>
+                                <a href="https://www.facebook.com/BrighamandWomensHospital/#"
+                                   target="_blank"
+                                   rel="noopener noreferrer"
+                                   aria-label="Facebook">
+                                    &nbsp;&nbsp;<FontAwesomeIcon icon={faFacebook} />
+                                </a>
 
-                            <a href="https://www.youtube.com/user/Brighamandwomens"
-                               target="_blank"
-                               rel="noopener noreferrer"
-                               aria-label="Youtube">
-                                &nbsp;&nbsp;<FontAwesomeIcon icon={faYoutube} />
-                            </a>
-                            <a
-                                href="https://www.linkedin.com/company/brigham-and-women%27s-hospital/"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                aria-label="LinkedIn">
-                                &nbsp;&nbsp;<FontAwesomeIcon icon={faLinkedin} />
-                            </a>
+                                <a href="https://www.youtube.com/user/Brighamandwomens"
+                                   target="_blank"
+                                   rel="noopener noreferrer"
+                                   aria-label="Youtube">
+                                    &nbsp;&nbsp;<FontAwesomeIcon icon={faYoutube} />
+                                </a>
+                                <a
+                                    href="https://www.linkedin.com/company/brigham-and-women%27s-hospital/"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    aria-label="LinkedIn">
+                                    &nbsp;&nbsp;<FontAwesomeIcon icon={faLinkedin} />
+                                </a>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div className="border-t border-slate-700">
-                    <div className="md:text-left text-center container mx-auto py-2 px-6">
-                        <p className="mb-0">&copy; 2025 Brigham and Women's Hospital</p>
                     </div>
                 </div>
             </footer>
