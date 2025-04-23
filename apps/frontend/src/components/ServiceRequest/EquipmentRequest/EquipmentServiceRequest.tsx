@@ -61,10 +61,10 @@ export default function EquipmentServiceRequest() {
     return (
         <>
             {!submitted ?
-                <ScrollArea className="max-h-[95vh] overflow-y-auto pr-4 w-full max-w-screen-lg mx-auto bg-zinc-200">
-                <div className="grid place-items-center h-full items-center">
-                    <div className="bg-blue-200 bg-opacity-60 rounded-3xl px-6 py-4 max-w-5xl w-full mx-auto">
-                        <h2 className="text-4xl font-bold text-left">Request a Medical Device</h2>
+                <ScrollArea className="max-h-[95vh] w-115 overflow-y-auto">
+                <div className="flex flex-col items-center gap-4 bg-white">
+                    <div className="bg-blue-900 rounded-md px-6 py-4 max-w-5xl w-full mx-auto">
+                        <h2 className="text-4xl font-bold text-white text-center">Request a Medical Device</h2>
                     </div>
                     <h6 className="pb-3 font-light">Christine Ngo & Keethu Jayamoorthy</h6>
                     <form onSubmit={onSubmit}>
