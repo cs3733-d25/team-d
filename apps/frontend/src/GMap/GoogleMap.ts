@@ -327,6 +327,25 @@ export class PathfindingMap extends GoogleMap {
         // Load new floor overlay
         console.log(pathfindingResponse.floorPaths.length)
 
+        let previousGraph: PathfindingGraph | null = null;
+        for (let i = pathfindingResponse.floorPaths.length - 1 ;i >=0; i--) {
+            const floor = pathfindingResponse.floorPaths[i];
+            let graph: PathfindingGraph;
+            if (i==pathfindingResponse.floorPaths.length - 1) {
+                graph = new PathfindingGraph(this.map, floor.path, '#CC3300', null);
+                graph.innerSteps = floor.direction;
+                console.log(graph);
+
+            }
+            else {
+                graph = new PathfindingGraph(this.map, floor.path, '#CC3300', previousGraph);
+                graph.innerSteps = floor.direction;
+                console.log(graph);
+
+            }
+            previousGraph = graph;
+        }
+
         const floor = pathfindingResponse.floorPaths[0];
         this.currentFloorMap = new google.maps.GroundOverlay(floor.image, {
             north: floor.imageBoundsNorth,
@@ -336,12 +355,14 @@ export class PathfindingMap extends GoogleMap {
         });
         this.currentFloorMap.setMap(this.map);
 
+
+
         // Create floor path first
-        this.currentFloorPath = new PathfindingGraph(this.map, floor.path, '#CC3300', null);
-        this.currentFloorPath.innerSteps = floor.direction;
+        // this.currentFloorPath = new PathfindingGraph(this.map, floor.path, '#CC3300', null);
+        // this.currentFloorPath.innerSteps = floor.direction;
 
         // Now create the parking path and pass in the floor path to trigger after
-        this.currentParkingPath = new PathfindingGraph(this.map, pathfindingResponse.parkingLotPath.path, '#CC3300', this.currentFloorPath);
+        this.currentParkingPath = new PathfindingGraph(this.map, pathfindingResponse.parkingLotPath.path, '#CC3300', previousGraph);
         this.currentParkingPath.innerSteps = pathfindingResponse.parkingLotPath.direction;
 
         this.currentParkingPath.showInnerStep(); // start here
