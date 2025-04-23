@@ -1236,8 +1236,8 @@ async function main() {
             {
                 nodeId: 109,
                 name: '[Entrance1]',
-                lat: 42.09252193422096,
-                lng: -71.26631353371113,
+                lat: 42.092512979448315,
+                lng: -71.26632207406375,
                 type: 'DOOR',
                 graphId: 100,
             },
@@ -1412,8 +1412,8 @@ async function main() {
             {
                 nodeId: 208,
                 name: '[Entrance1]',
-                lat: 42.09262979854519,
-                lng: -71.26656872220266,
+                lat: 42.092636724479945,
+                lng: -71.26662781033974,
                 type: 'DOOR',
                 graphId: 100,
             },
@@ -2129,6 +2129,29 @@ async function main() {
                 endNodeId: 306,
                 graphId: 100,
             },
+            {
+                edgeId: 306,
+                name: '',
+                startNodeId: 306,
+                endNodeId: 307,
+                graphId: 100,
+            },
+
+            {
+                edgeId: 307,
+                name: '',
+                startNodeId: 307,
+                endNodeId: 308,
+                graphId: 100,
+            },
+            {
+                edgeId: 308,
+                name: '',
+                startNodeId: 308,
+                endNodeId: 109,
+                graphId: 100,
+            },
+
 
 
 
