@@ -13,7 +13,7 @@ aws ecr-public get-login-password --region us-east-1 | docker login --username A
 
 # Build the Docker image with production target and environment variables
 echo "Building Docker image..."
-docker build --platform=linux/amd64 --provenance=false --target production \
+docker build --platform=linux/amd64 --provenance=false --no-cache --target production \
   --build-arg NODE_ENV=$NODE_ENV \
   --build-arg FRONTEND_PORT=$FRONTEND_PORT \
   --build-arg BACKEND_PORT=$BACKEND_PORT \
