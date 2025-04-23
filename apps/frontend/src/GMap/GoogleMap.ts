@@ -2,11 +2,17 @@ import axios from "axios";
 import {API_ROUTES, EditorEdges, EditorGraph, FloorPathResponse, EditorNode, PathfindingResponse} from "common/src/constants.ts";
 import {EditorEncapsulator} from "@/routes/MapEditor.tsx";
 
-import fern from '@/public/floormaps/fern1.png';
-import chf1 from '@/public/floormaps/chf1.png';
-import pp20f1 from '@/public/floormaps/pp20f1.png';
-import pp22f3 from '@/public/floormaps/pp22f3.png';
-import pp22f4 from '@/public/floormaps/pp22f4.png';
+// import fern from '@/public/floormaps/fern1.png';
+// import chf1 from '@/public/floormaps/chf1.png';
+// import pp20f1 from '@/public/floormaps/pp20f1.png';
+// import pp22f3 from '@/public/floormaps/pp22f3.png';
+// import pp22f4 from '@/public/floormaps/pp22f4.png';
+import chf1 from '@/public/floormaps/new/chf1.png';
+import ff1 from '@/public/floormaps/new/ff1.png';
+import pp20f1 from '@/public/floormaps/new/pp20f1.png';
+import pp22f1 from '@/public/floormaps/new/pp22f1.png';
+import pp22f3 from '@/public/floormaps/new/pp22f3.png';
+import pp22f4 from '@/public/floormaps/new/pp22f4.png';
 
 import {Button} from '@/components/ui/button.tsx'
 
@@ -55,16 +61,18 @@ abstract class GoogleMap {
 
     static getImgURL(image: string) {
         switch (image) {
-            case '/src/public/floormaps/chf1.png':
+            case 'chf1.png':
                 return chf1;
-            case '/src/public/floormaps/pp20f1.png':
+            case 'ff1.png':
+                return ff1;
+            case 'pp20f1.png':
                 return pp20f1;
-            case '/src/public/floormaps/pp22f3.png':
+            case 'pp22f1.png':
+                return pp22f1;
+            case 'pp22f3.png':
                 return pp22f3;
-            case '/src/public/floormaps/pp22f4.png':
+            case 'pp22f4.png':
                 return pp22f4;
-            case '/src/public/floormaps/fern1.png':
-                return fern;
             default:
                 return '';
         }
@@ -1042,9 +1050,27 @@ export class EditorMap extends GoogleMap {
                 lat: 42.31934987791928,
                 lng: -71.3162829187303,
             },
+            // center: {
+            //     lat: 42.09310,
+            //     lng: -71.26553,
+            // },
             zoom: 10,
             clickableIcons: false,
         });
+
+        // new google.maps.GroundOverlay('/src/public/floormaps/new/pp22f4.png', {
+        //     north: 42.09307,
+        //     south: 42.092215,
+        //     east: -71.26650,
+        //     west: -71.267445,
+        // }).setMap(this.map);
+        //
+        // new google.maps.GroundOverlay('/src/public/floormaps/pp22f4-trans.png', {
+        //     north: 42.09308,
+        //     south: 42.09223,
+        //     east: -71.26654,
+        //     west: -71.26744,
+        // }).setMap(this.map);
         
         this.currentGraph = null;
         this.currentGraphId = null;
