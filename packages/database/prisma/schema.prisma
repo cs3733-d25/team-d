@@ -11,6 +11,12 @@ datasource db {
   url      = env("POSTGRES_URL")
 }
 
+model Algorithm {
+  algorithmId Int     @id @default(autoincrement())
+  name        String  @unique
+  isActive    Boolean @default(false)
+}
+
 model Employee {
   employeeId              Int              @id @default(autoincrement())
   createdAt               DateTime         @default(now())
