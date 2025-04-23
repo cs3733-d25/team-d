@@ -370,38 +370,47 @@ async function main() {
             {
                 graphId: 0,
                 graphType: 'PARKINGGRAPH',
+                graphName: 'Chestnut Hill Parking'
             },
             {
                 graphId: 1,
                 graphType: 'FLOORGRAPH',
+                graphName: 'Chestnut Hill Floor 1'
             },
             {
                 graphId: 100,
                 graphType: 'PARKINGGRAPH',
+                graphName: 'Patriots Place Parking'
             },
             {
                 graphId: 101,
                 graphType: 'FLOORGRAPH',
+                graphName: '20 Patriots Place Floor 1',
             },
             {
                 graphId: 201,
                 graphType: 'FLOORGRAPH',
+                graphName: '22 Patriots Place Floor 1',
             },
             {
                 graphId: 203,
                 graphType: 'FLOORGRAPH',
+                graphName: '22 Patriots Place Floor 3',
             },
             {
                 graphId: 204,
                 graphType: 'FLOORGRAPH',
+                graphName: '22 Patriots Place Floor 4',
             },
             {
                 graphId: 300,
                 graphType: 'PARKINGGRAPH',
+                graphName: 'Faulkner Parking',
             },
             {
                 graphId: 301,
                 graphType: 'FLOORGRAPH',
+                graphName: 'Faulkner Floor 1',
             },
 
         ],
@@ -2844,6 +2853,7 @@ async function main() {
                 name: '',
                 lat: 42.3012840643785,
                 lng: -71.12791723846682,
+                connectedNodeId: 705,
                 type: 'DOOR',
                 graphId: 301,
             },
@@ -2880,6 +2890,7 @@ async function main() {
                 name: '',
                 lat: 42.30177546251098,
                 lng: -71.12895495767688,
+                connectedNodeId: 711,
                 type: 'NORMAL',
                 graphId: 301,
             },

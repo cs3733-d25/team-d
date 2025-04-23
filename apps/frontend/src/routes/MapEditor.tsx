@@ -106,7 +106,7 @@ export default function MapEditor() {
                             <SelectLabel>Graphs</SelectLabel>
                             {displayData.map((g) => (
                                 <SelectItem key={g.graphId + 1} value={g.graphId.toString()}>
-                                    {g.graphId}
+                                    {g.graphName}
                                 </SelectItem>
                             ))}
                         </SelectGroup>

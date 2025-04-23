@@ -81,6 +81,7 @@ export type EditorGraph = {
     Edges: EditorEdges[];
     FloorGraph: EditorFloorGraph | null;
     ParkingGraph: EditorParkingGraph | null;
+    graphName: string;
 }
 
 export type EditorFloorGraph = {
