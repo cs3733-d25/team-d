@@ -216,7 +216,7 @@ class PathfindingGraph {
                     }
                     if(this.floor){
                         this.remove();
-                        const hicurrentFloorMap = new google.maps.GroundOverlay(this.floor.image, {
+                        const hicurrentFloorMap = new google.maps.GroundOverlay(this.loadThisAfter.floor.image, {
                             north: this.floor.imageBoundsNorth,
                             south: this.floor.imageBoundsSouth,
                             east: this.floor.imageBoundsEast,
@@ -354,7 +354,7 @@ export class PathfindingMap extends GoogleMap {
             floor = pathfindingResponse.floorPaths[i];
             let graph: PathfindingGraph;
             if (i==pathfindingResponse.floorPaths.length - 1) {
-                graph = new PathfindingGraph(this.map, floor.path, '#CC3300', null, null);
+                graph = new PathfindingGraph(this.map, floor.path, '#CC3300', null, floor);
                 graph.innerSteps = floor.direction;
                 console.log(graph);
 
@@ -680,7 +680,10 @@ class EditorMapGraph {
                         <p>CID: ${node.connectedNodeId}</p>
                     `
             });
-            infowindow.setPosition(marker.getPosition());
+            infowindow.setPosition({
+                lat: rawPosition.toJSON().lat + 0.00001 * ((this.map.getZoom() || 1) / 7),
+                lng: rawPosition.toJSON().lng,
+            });
             infowindow.open(this.map);
         });
 
@@ -760,7 +763,7 @@ class EditorMapGraph {
         });
 
         marker.addListener('dblclick', (e: google.maps.MapMouseEvent) => {
-            console.log('edge doubleclicked');
+            console.log('delete node');
             if (this.editingState === 'DEFAULT') {
                 this.deleteNode(node.nodeId);
             }
@@ -814,7 +817,7 @@ class EditorMapGraph {
                 const rawPosition = e.latLng;
                 if (!rawPosition) return;
                 startNode.data.lat = rawPosition.toJSON().lat;
-                startNode.data.lat = rawPosition.toJSON().lng;
+                startNode.data.lng = rawPosition.toJSON().lng;
             }
         });
 
@@ -842,7 +845,11 @@ class EditorMapGraph {
                 const rawPosition = e.latLng;
                 if (!rawPosition) return;
                 endNode.data.lat = rawPosition.toJSON().lat;
-                endNode.data.lat = rawPosition.toJSON().lng;
+                endNode.data.lng = rawPosition.toJSON().lng;
+                console.log({
+                    lat: rawPosition.toJSON().lat,
+                    lng: rawPosition.toJSON().lng,
+                })
             }
         });
 
@@ -979,6 +986,7 @@ export class EditorMap extends GoogleMap {
     }
     
     private currentGraph: EditorMapGraph | null;
+    private currentGraphId: number | null;
 
     private editorEncapsulator: EditorEncapsulator | null;
     private readonly graphs: Map<number, EditorMapGraph>;
@@ -996,6 +1004,7 @@ export class EditorMap extends GoogleMap {
         });
         
         this.currentGraph = null;
+        this.currentGraphId = null;
         this.editorEncapsulator = null;
 
         console.log('editor map constructosdfsdfsdr');
@@ -1009,6 +1018,7 @@ export class EditorMap extends GoogleMap {
 
         newGraph.setVisibility(true);
         this.currentGraph = newGraph;
+        this.currentGraphId = graphId;
     }
 
     initialize(editorEncapsulator: EditorEncapsulator) {
@@ -1020,7 +1030,14 @@ export class EditorMap extends GoogleMap {
         })
     }
 
-    getCurrentGraph() {
-        return this.currentGraph;
+    zoom() {
+        if (this.currentGraphId && this.editorEncapsulator) {
+            const node = this.editorEncapsulator.editorGraphs.find(graph => graph.graphId === this.currentGraphId)?.Nodes[0];
+
+            if (node) {
+                this.map.setCenter({lat: node.lat, lng: node.lng});
+                this.map.setZoom(17);
+            }
+        }
     }
 }

@@ -2,7 +2,13 @@ import express, { Router, Request, Response } from 'express';
 const router: Router = express.Router();
 
 import PrismaClient from '../bin/prisma-client';
-import { EditorFloorGraph, EditorParkingGraph, EditorGraph } from 'common/src/constants.ts';
+import {
+    EditorFloorGraph,
+    EditorParkingGraph,
+    EditorGraph,
+    EditorNode,
+    EditorEdges,
+} from 'common/src/constants.ts';
 
 router.get('/', async (req: Request, res: Response) => {
     const data = await PrismaClient.graph.findMany({
@@ -16,6 +22,51 @@ router.get('/', async (req: Request, res: Response) => {
 
     res.json(data as EditorGraph[]);
 });
+
+router.put('/', async (req: Request, res: Response) => {
+    const data = req.body as EditorGraph[];
+    const oldNodes = await PrismaClient.node.findMany({});
+    const oldEdges = await PrismaClient.edge.findMany({});
+
+    await PrismaClient.edge.deleteMany({});
+    await PrismaClient.node.deleteMany({});
+
+    const newNodes: EditorNode[] = [];
+    const newEdges: EditorEdges[] = [];
+
+    data.forEach((graph) => {
+        graph.Nodes.forEach((node) => {
+            newNodes.push(node);
+        });
+        graph.Edges.forEach((edge) => {
+            newEdges.push(edge);
+        });
+    });
+
+    try {
+        await PrismaClient.node.createMany({
+            data: newNodes,
+        });
+        await PrismaClient.edge.createMany({
+            data: newEdges,
+        });
+        res.sendStatus(200);
+    } catch (err) {
+        console.error(err);
+        console.log('Reverting...');
+        await PrismaClient.edge.deleteMany({});
+        await PrismaClient.node.deleteMany({});
+
+        await PrismaClient.node.createMany({
+            data: oldNodes,
+        });
+        await PrismaClient.edge.createMany({
+            data: oldEdges,
+        });
+        res.sendStatus(400);
+    }
+});
+
 // GET request for all graphs
 router.get('/editor/graphs', async (req: Request, res: Response) => {
     const data = await PrismaClient.graph.findMany({

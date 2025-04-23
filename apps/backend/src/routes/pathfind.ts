@@ -394,6 +394,8 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
 
     response.parkingLotPath.path = parkingLotPath;
 
+    response.floorPaths.reverse();
+
     res.json(response);
 });
 

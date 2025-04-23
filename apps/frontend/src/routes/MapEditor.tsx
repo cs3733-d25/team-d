@@ -76,6 +76,18 @@ export default function MapEditor() {
         map.changeGraph(Number(value));
     }
 
+    const handleZoom = () => {
+        if (!map) return;
+        map.zoom();
+    }
+
+    const handleSave = () => {
+        if (!editingData) return;
+        axios.put(API_ROUTES.EDITOR, editingData.editorGraphs).then(response => {
+            console.log(response);
+        });
+    }
+
     return (
         <div className="flex flex-row flex-1">
             <div className="flex-1 p-4">
@@ -99,6 +111,17 @@ export default function MapEditor() {
                         </SelectGroup>
                     </SelectContent>
                 </Select>
+                <Separator className="mt-4 mb-4" />
+                {}
+                <div className="flex flex-row">
+                    <Button className="mb-4" onClick={handleZoom}>
+                        Zoom
+                    </Button>
+                    <Separator className="mr-4 ml-4" orientation="vertical" />
+                    <Button className="mb-4" onClick={handleSave}>
+                        Save
+                    </Button>
+                </div>
             </div>
             <div ref={mapRef} className="flex-3">
                 {/* Google map will go here */}
