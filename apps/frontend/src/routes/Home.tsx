@@ -45,10 +45,9 @@ export default function Home() {
                             <div className="flex-grow flex items-center justify-center w-full">
                                 <AnimatedLogin />
                             </div>
-                            {!isAuthenticated && (
                                 <div>
                                     <Auth0LoginButton />
-                                </div>)}
+                                </div>)
                         </div>
 
 
