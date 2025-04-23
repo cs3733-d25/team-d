@@ -799,6 +799,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@lottiefiles/react-lottie-player@npm:^3.6.0":
+  version: 3.6.0
+  resolution: "@lottiefiles/react-lottie-player@npm:3.6.0"
+  dependencies:
+    lottie-web: "npm:^5.12.2"
+  peerDependencies:
+    react: 16 - 19
+  checksum: 10c0/a27e36b257bd44e208a027b5c91abee8a24682cd3cf168e32ec164006c01021a21df83dfc6e3350263b360d5b71b3e884ff8aca7886c5828bda69910360b85b4
+  languageName: node
+  linkType: hard
+
 "@nodelib/fs.scandir@npm:2.1.5":
   version: 2.1.5
   resolution: "@nodelib/fs.scandir@npm:2.1.5"
@@ -3059,6 +3070,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/react-dom@npm:^19":
+  version: 19.1.2
+  resolution: "@types/react-dom@npm:19.1.2"
+  peerDependencies:
+    "@types/react": ^19.0.0
+  checksum: 10c0/100c341cacba9ec8ae1d47ee051072a3450e9573bf8eeb7262490e341cb246ea0f95a07a1f2077e61cf92648f812a0324c602fcd811bd87b7ce41db2811510cd
+  languageName: node
+  linkType: hard
+
 "@types/react-router-bootstrap@npm:^0.26.0":
   version: 0.26.6
   resolution: "@types/react-router-bootstrap@npm:0.26.6"
@@ -3105,6 +3125,15 @@ __metadata:
     "@types/prop-types": "npm:*"
     csstype: "npm:^3.0.2"
   checksum: 10c0/65fa867c91357e4c4c646945c8b99044360f8973cb7f928ec4de115fe3207827985d45be236e6fd6c092b09f631c2126ce835c137be30718419e143d73300d8f
+  languageName: node
+  linkType: hard
+
+"@types/react@npm:^19":
+  version: 19.1.2
+  resolution: "@types/react@npm:19.1.2"
+  dependencies:
+    csstype: "npm:^3.0.2"
+  checksum: 10c0/76ffe71395c713d4adc3c759465012d3c956db00af35ab7c6d0d91bd07b274b7ce69caa0478c0760311587bd1e38c78ffc9688ebc629f2b266682a19d8750947
   languageName: node
   linkType: hard
 
@@ -5397,6 +5426,7 @@ __metadata:
     google-maps: "npm:^4.3.3"
     leaflet: "npm:^1.9.4"
     localforage: "npm:^1.10.0"
+    lottie-react: "npm:^2.4.1"
     lucide-react: "npm:^0.487.0"
     match-sorter: "npm:^6.3.1"
     prettier: "npm:*"
@@ -6317,6 +6347,25 @@ __metadata:
   bin:
     loose-envify: cli.js
   checksum: 10c0/655d110220983c1a4b9c0c679a2e8016d4b67f6e9c7b5435ff5979ecdb20d0813f4dec0a08674fcbdd4846a3f07edbb50a36811fd37930b94aaa0d9daceb017e
+  languageName: node
+  linkType: hard
+
+"lottie-react@npm:^2.4.1":
+  version: 2.4.1
+  resolution: "lottie-react@npm:2.4.1"
+  dependencies:
+    lottie-web: "npm:^5.10.2"
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+  checksum: 10c0/7f6a0a2cf2af25deabe7b4d4c9917e47d12016673613c59dcdd8ef52e10e914dd0c1f71d4a275d56aaba03fe9d85b333087f7c8d40a8f967ece4a0444c7a3cdf
+  languageName: node
+  linkType: hard
+
+"lottie-web@npm:^5.10.2, lottie-web@npm:^5.12.2":
+  version: 5.12.2
+  resolution: "lottie-web@npm:5.12.2"
+  checksum: 10c0/0aeaf631b10a76afd025df70c2a1486543530708e07a316946c08e55891dac483ffbaf2bf3648ae0b9c54c733118a0a086fd150aa76f7848606214c67ad72c30
   languageName: node
   linkType: hard
 
@@ -7522,6 +7571,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-dom@npm:^19.1.0":
+  version: 19.1.0
+  resolution: "react-dom@npm:19.1.0"
+  dependencies:
+    scheduler: "npm:^0.26.0"
+  peerDependencies:
+    react: ^19.1.0
+  checksum: 10c0/3e26e89bb6c67c9a6aa86cb888c7a7f8258f2e347a6d2a15299c17eb16e04c19194e3452bc3255bd34000a61e45e2cb51e46292392340432f133e5a5d2dfb5fc
+  languageName: node
+  linkType: hard
+
 "react-hook-form@npm:^7.55.0":
   version: 7.55.0
   resolution: "react-hook-form@npm:7.55.0"
@@ -7644,6 +7704,13 @@ __metadata:
   dependencies:
     loose-envify: "npm:^1.1.0"
   checksum: 10c0/283e8c5efcf37802c9d1ce767f302dd569dd97a70d9bb8c7be79a789b9902451e0d16334b05d73299b20f048cbc3c7d288bbbde10b701fa194e2089c237dbea3
+  languageName: node
+  linkType: hard
+
+"react@npm:^19.1.0":
+  version: 19.1.0
+  resolution: "react@npm:19.1.0"
+  checksum: 10c0/530fb9a62237d54137a13d2cfb67a7db6a2156faed43eecc423f4713d9b20c6f2728b026b45e28fcd72e8eadb9e9ed4b089e99f5e295d2f0ad3134251bdd3698
   languageName: node
   linkType: hard
 
@@ -7887,6 +7954,13 @@ __metadata:
   dependencies:
     loose-envify: "npm:^1.1.0"
   checksum: 10c0/26383305e249651d4c58e6705d5f8425f153211aef95f15161c151f7b8de885f24751b377e4a0b3dd42cce09aad3f87a61dab7636859c0d89b7daf1a1e2a5c78
+  languageName: node
+  linkType: hard
+
+"scheduler@npm:^0.26.0":
+  version: 0.26.0
+  resolution: "scheduler@npm:0.26.0"
+  checksum: 10c0/5b8d5bfddaae3513410eda54f2268e98a376a429931921a81b5c3a2873aab7ca4d775a8caac5498f8cbc7d0daeab947cf923dbd8e215d61671f9f4e392d34356
   languageName: node
   linkType: hard
 
@@ -8136,11 +8210,14 @@ __metadata:
   resolution: "softeng-startercode-d25@workspace:."
   dependencies:
     "@fortawesome/fontawesome-free": "npm:^6.7.2"
+    "@lottiefiles/react-lottie-player": "npm:^3.6.0"
     "@prisma/client": "npm:^6.5.0"
     "@radix-ui/react-select": "npm:^2.1.7"
     "@types/cors": "npm:^2"
     "@types/google.maps": "npm:^3.58.1"
     "@types/node": "npm:^22.13.13"
+    "@types/react": "npm:^19"
+    "@types/react-dom": "npm:^19"
     "@vitest/ui": "npm:^3.0.9"
     "@yarnpkg/pnpify": "npm:^4.1.4"
     autoprefixer: "npm:^10.4.21"
@@ -8153,10 +8230,13 @@ __metadata:
     eslint: "npm:^9.23.0"
     eslint-config-custom: "workspace:*"
     husky: "npm:^9.1.7"
+    lottie-react: "npm:^2.4.1"
     postcss: "npm:^8.5.3"
     prettier: "npm:^3.5.3"
     prettier-config-custom: "workspace:*"
     prisma: "npm:^6.5.0"
+    react: "npm:^19.1.0"
+    react-dom: "npm:^19.1.0"
     tailwind-merge: "npm:^3.2.0"
     tailwind-variants: "npm:^1.0.0"
     tailwindcss: "npm:^4.1.3"
