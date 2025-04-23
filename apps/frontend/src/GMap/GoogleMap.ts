@@ -1,5 +1,5 @@
 import axios from "axios";
-import {API_ROUTES, EditorGraph, PathfindingResponse} from "common/src/constants.ts";
+import {API_ROUTES, EditorEdges, EditorGraph, EditorNode, PathfindingResponse} from "common/src/constants.ts";
 import {EditorEncapsulator} from "@/routes/MapEditor.tsx";
 
 import {Button} from '@/components/ui/button.tsx'
@@ -244,74 +244,203 @@ class EditorMapGraph {
 
     private readonly map: google.maps.Map;
     private readonly editorEncapsulator: EditorEncapsulator;
-    private readonly graphId: number
-    private nodes: {id: number, marker: google.maps.Marker}[];
-    private edges: {id: number, line: google.maps.Polyline}[];
-    
-    constructor(map: google.maps.Map, editorEncapsulator: EditorEncapsulator, graphId: number) {
+    private readonly editorGraph: EditorGraph;
+
+    private nodes: {data: EditorNode, marker: google.maps.Marker}[];
+    private edges: {data: EditorEdges, line: google.maps.Polyline}[];
+
+    private newEdge: {startNodeId: number, line: google.maps.Polyline} | null;
+
+    private editingState: 'DEFAULT' | 'ADDEDGE';
+    private visible: boolean;
+
+    constructor(map: google.maps.Map, editorEncapsulator: EditorEncapsulator, editorGraph: EditorGraph) {
 
         this.map = map;
         this.editorEncapsulator = editorEncapsulator;
-        this.graphId = graphId;
+        this.editorGraph = editorGraph;
 
-        const graph = this.editorEncapsulator.getGraphById(this.graphId);
+        this.nodes = [];
+        this.edges = [];
 
-        this.nodes = graph.Nodes.map(node => {
-            const marker = new google.maps.Marker({
-                map: this.map,
-                position: {
-                    lat: node.lat,
-                    lng: node.lng,
-                },
-                icon: {
-                    url: 'https://maps.gstatic.com/intl/en_us/mapfiles/markers2/measle.png',
-                    size: new google.maps.Size(10, 10),
-                    anchor: new google.maps.Point(5, 5),
-                },
-                draggable: true,
-            });
+        this.editorGraph.Nodes.forEach(node => {
+            this.addNodeLocal(node);
+        });
 
-            marker.addListener("click", () => {
-                const infowindow = new google.maps.InfoWindow({
-                    content: `
-                        <button class="bg-blue-700 text-white">Remove</button>
-                        <button class="bg-blue-700 text-white">Add</button>
-                    `
-                });
-                infowindow.setPosition(marker.getPosition());
-                infowindow.open(map);
-            });
+        this.editorGraph.Edges.map(edge => {
+            this.addEdgeLocal(edge);
+        });
 
-            return {
-                id: node.nodeId,
-                marker: marker,
+        this.editingState = 'DEFAULT';
+
+        this.visible = false;
+        this.setVisibility(false);
+
+        this.newEdge = null;
+
+        // If in default state,
+        // add a node at this position
+        this.map.addListener('click', (e: google.maps.MapMouseEvent) => {
+            if (this.visible) {
+                if (this.editingState === 'DEFAULT') {
+                    const rawPosition = e.latLng;
+                    if (!rawPosition) return;
+                    this.addNode({
+                        nodeId: -1,
+                        name: '',
+                        lat: rawPosition.toJSON().lat,
+                        lng: rawPosition.toJSON().lng,
+                        type: 'NORMAL',
+                        connectedNodeId: null,
+                    });
+                }
             }
         });
 
-        this.edges = graph.Edges.map(edge => {
-            const startNode = this.nodes.find(node => node.id === edge.startNodeId);
-            const endNode = this.nodes.find(node => node.id === edge.endNodeId);
-            if (!startNode || !endNode) {
-                return {
-                    id: -1,
-                    line: new google.maps.Polyline()
+        // If adding an edge, set the edge's
+        // location to the mouse pos
+        this.map.addListener('mousemove', (e: google.maps.MapMouseEvent) => {
+            if (this.visible) {
+                if (this.editingState === 'ADDEDGE' && this.newEdge) {
+                    const rawPosition = e.latLng;
+                    if (!rawPosition) return;
+
+                    this.newEdge.line.setPath([
+                        this.newEdge.line.getPath().getAt(0),
+                        {
+                            lat: rawPosition.toJSON().lat,
+                            lng: rawPosition.toJSON().lng,
+                        },
+                    ])
                 }
             }
+        });
+    }
 
-            const line = new google.maps.Polyline({
-                map: this.map,
-                path: [
-                    startNode.marker.getPosition() || {lat: 0, lng: 0},
-                    endNode.marker.getPosition() || {lat: 0, lng: 0},
-                ],
-                strokeColor: '#00AACC',
-            });
-            line.setMap(map);
 
-            startNode.marker.addListener('drag', (e: google.maps.MapMouseEvent) => {
+
+    private addNodeLocal(node: EditorNode) {
+        const marker = new google.maps.Marker({
+            map: this.map,
+            position: {
+                lat: node.lat,
+                lng: node.lng,
+            },
+            icon: {
+                url: 'https://maps.gstatic.com/intl/en_us/mapfiles/markers2/measle.png',
+                size: new google.maps.Size(10, 10),
+                anchor: new google.maps.Point(5, 5),
+            },
+            draggable: true,
+            zIndex: 20,
+        });
+
+        // If clicked in default state,
+        // display info. If clicked in
+        // add edge state, finalize this edge
+        marker.addListener("click", (e: google.maps.MapMouseEvent) => {
+            const rawPosition = e.latLng;
+            if (!rawPosition) return;
+
+            if (this.editingState === 'ADDEDGE' && this.newEdge) {
+                this.newEdge.line.setMap(null);
+                this.addEdge({
+                    edgeId: -1,
+                    name: '',
+                    startNodeId: this.newEdge.startNodeId,
+                    endNodeId: node.nodeId,
+                    graphId: this.editorGraph.graphId,
+                })
+                this.editingState = 'DEFAULT';
+            }
+
+
+            // const infowindow = new google.maps.InfoWindow({
+            //     content: `
+            //             <button class="bg-blue-700 text-white">Remove</button>
+            //             <button class="bg-blue-700 text-white">Add</button>
+            //         `
+            // });
+            // infowindow.setPosition(marker.getPosition());
+            // infowindow.open(this.map);
+        });
+
+        // If right clicked in default mode,
+        // start to add an edge
+        marker.addListener("rightclick", (e: google.maps.MapMouseEvent) => {
+            const rawPosition = e.latLng;
+            if (!rawPosition) return;
+
+            if (this.editingState === 'DEFAULT') {
+                this.editingState = 'ADDEDGE';
+                const line = new google.maps.Polyline({
+                    map: this.map,
+                    path: [
+                        {
+                            lat: rawPosition.toJSON().lat,
+                            lng: rawPosition.toJSON().lng,
+                        },
+                        {
+                            lat: rawPosition.toJSON().lat,
+                            lng: rawPosition.toJSON().lng,
+                        },
+                    ],
+                });
+
+                this.newEdge = {
+                    startNodeId: node.nodeId,
+                    line: line,
+                }
+
+                // // If clicked and in adding an
+                // // edge state,
+                // line.addListener('click', (e: google.maps.MapMouseEvent) => {
+                //     // For creating a new node
+                //     if (this.editingState === 'ADDEDGE') {
+                //         this.editingState = 'DEFAULT';
+                //         console.log(1);
+                //     }
+                // })
+            }
+        });
+
+        marker.addListener('dblclick', (e: google.maps.MapMouseEvent) => {
+            console.log('edge doubleclicked');
+            if (this.editingState === 'DEFAULT') {
+                this.deleteNode(node.nodeId);
+            }
+        });
+
+        this.nodes.push({
+            data: node,
+            marker: marker,
+        });
+    }
+
+    private addEdgeLocal(edge: EditorEdges) {
+        const startNode = this.nodes.find(node => node.data.nodeId === edge.startNodeId);
+        const endNode = this.nodes.find(node => node.data.nodeId === edge.endNodeId);
+
+        if (!startNode || !endNode) {
+            throw new Error('Unable to locate node');
+        }
+
+        const line = new google.maps.Polyline({
+            map: this.map,
+            path: [
+                startNode.marker.getPosition() || {lat: 0, lng: 0},
+                endNode.marker.getPosition() || {lat: 0, lng: 0},
+            ],
+            strokeColor: '#00AACC',
+        });
+        line.setMap(this.map);
+
+        // If start node dragged, update
+        // the edge's positions
+        startNode.marker.addListener('drag', (e: google.maps.MapMouseEvent) => {
+            if (this.editingState === 'DEFAULT') {
                 const rawPosition = e.latLng;
                 if (!rawPosition) return;
-
                 line.setPath([
                     {
                         lat: rawPosition.toJSON().lat,
@@ -319,18 +448,28 @@ class EditorMapGraph {
                     },
                     line.getPath().getAt(1),
                 ]);
+            }
+        });
 
-
-            });
-
-            startNode.marker.addListener('dragend', () => {
-                
-            })
-
-            endNode.marker.addListener('drag', (e: google.maps.MapMouseEvent) => {
+        // Once the drag has ended, update
+        // the node position in the
+        // encapsulator
+        startNode.marker.addListener('dragend', (e: google.maps.MapMouseEvent) => {
+            if (this.editingState === 'DEFAULT') {
                 const rawPosition = e.latLng;
                 if (!rawPosition) return;
+                startNode.data.lat = rawPosition.toJSON().lat;
+                startNode.data.lat = rawPosition.toJSON().lng;
+            }
+        });
 
+
+        // If start node dragged, update
+        // the edge's positions
+        endNode.marker.addListener('drag', (e: google.maps.MapMouseEvent) => {
+            if (this.editingState === 'DEFAULT') {
+                const rawPosition = e.latLng;
+                if (!rawPosition) return;
                 line.setPath([
                     line.getPath().getAt(0),
                     {
@@ -338,58 +477,142 @@ class EditorMapGraph {
                         lng: rawPosition.toJSON().lng,
                     },
                 ]);
-            });
-
-            this.map.addListener('click', (e: google.maps.MapMouseEvent) => {
-
-            });
-
-            return {
-                id: edge.edgeId,
-                line: line,
             }
         });
-        // this.nodes = new Map();
-        // this.edges = new Map();
-        //
-        // graph.Nodes.forEach(node => {
-        //     this.nodes.set(
-        //         node.nodeId,
-        //         new google.maps.Marker({
-        //             map: map,
-        //             position: {
-        //                 lat: node.lat,
-        //                 lng: node.lng,
-        //             },
-        //             icon: {
-        //                 url: 'https://maps.gstatic.com/intl/en_us/mapfiles/markers2/measle.png',
-        //                 size: new google.maps.Size(7, 7),
-        //                 anchor: new google.maps.Point(3.5, 3.5),
-        //             },
-        //             draggable: true,
-        //         })
-        //     );
-        // })
-
-        this.hide();
-    }
-
-    show() {
-        this.nodes.forEach(node => {
-            node.marker.setMap(this.map);
+        // Once the drag has ended, update
+        // the node position in the
+        // encapsulator
+        endNode.marker.addListener('dragend', (e: google.maps.MapMouseEvent) => {
+            if (this.editingState === 'DEFAULT') {
+                const rawPosition = e.latLng;
+                if (!rawPosition) return;
+                endNode.data.lat = rawPosition.toJSON().lat;
+                endNode.data.lat = rawPosition.toJSON().lng;
+            }
         });
-        this.edges.forEach(edge => {
-            edge.line.setMap(this.map);
+
+
+        line.addListener('dblclick', (e: google.maps.MapMouseEvent) => {
+            if (this.editingState === 'DEFAULT') {
+                this.deleteEdge(edge.edgeId);
+            }
+        });
+
+        this.edges.push({
+            data: edge,
+            line: line,
         });
     }
 
-    hide() {
+    addNode(node: EditorNode) {
+
+        // Give the node an ID that doesn't exist yet
+        // Needs improving for efficiency
+        let id = 0;
+        for (; id < 10000; id++) {
+            let idExists = false;
+            this.editorEncapsulator.editorGraphs.forEach(graph => {
+                if (graph.Nodes.find(cnode =>
+                    cnode.nodeId === id
+                )) idExists = true;
+            });
+            if (!idExists) {
+                break;
+            }
+        }
+
+        node.nodeId = id;
+        console.log(id);
+        this.editorGraph.Nodes.push(node);
+        this.addNodeLocal(node);
+
+        return node;
+    }
+
+    addEdge(edge: EditorEdges) {
+
+        // Give the edge an ID that doesn't exist yet
+        // Needs improving for efficiency
+        let id = 0;
+        for (; id < 10000; id++) {
+            let idExists = false;
+            this.editorEncapsulator.editorGraphs.forEach(graph => {
+                if (graph.Edges.find(cedge =>
+                    cedge.edgeId === id
+                )) idExists = true;
+            });
+            if (!idExists) {
+                break;
+            }
+        }
+
+        edge.edgeId = id;
+        console.log(id);
+        this.editorGraph.Edges.push(edge);
+        this.addEdgeLocal(edge);
+
+        return edge;
+    }
+
+    deleteNode(nodeId: number) {
+        const nodeIndexLocal = this.nodes.findIndex(cnode =>
+            cnode.data.nodeId === nodeId
+        );
+
+        this.nodes[nodeIndexLocal].marker.setMap(null);
+        this.nodes.splice(nodeIndexLocal, 1);
+
+        const nodeIndexEncapsulator = this.editorGraph.Nodes.findIndex(cnode =>
+            cnode.nodeId === nodeId
+        );
+
+        this.editorGraph.Nodes.splice(nodeIndexEncapsulator, 1);
+
+        const edgesIdsToDelete: number[] = [];
         this.edges.forEach(edge => {
-            edge.line.setMap(null);
+            if (edge.data.startNodeId === nodeId || edge.data.endNodeId === nodeId) {
+                edgesIdsToDelete.push(edge.data.edgeId);
+            }
         });
-        this.nodes.forEach(node => {
-            node.marker.setMap(null);
-        });
+        edgesIdsToDelete.forEach(edgeId => {
+            this.deleteEdge(edgeId);
+        })
+    }
+
+    deleteEdge(edgeId: number) {
+        const edgeIndexLocal = this.edges.findIndex(cedge =>
+            cedge.data.edgeId === edgeId
+        );
+
+        this.edges[edgeIndexLocal].line.setMap(null);
+
+        this.edges.splice(edgeIndexLocal, 1);
+
+        const edgeIndexEncapsulator = this.editorGraph.Edges.findIndex(edge =>
+            edge.edgeId === edgeId
+        );
+
+        this.editorGraph.Edges.splice(edgeIndexEncapsulator, 1);
+    }
+
+    setVisibility(visibility: boolean) {
+        if (visibility) {
+            this.nodes.forEach(node => {
+                node.marker.setMap(this.map);
+            });
+            this.edges.forEach(edge => {
+                edge.line.setMap(this.map);
+            });
+        }
+        else {
+            this.edges.forEach(edge => {
+                edge.line.setMap(null);
+            });
+            this.nodes.forEach(node => {
+                node.marker.setMap(null);
+            });
+        }
+        this.visible = visibility;
     }
 }
 
@@ -401,7 +624,6 @@ export class EditorMap extends GoogleMap {
     }
     
     private currentGraph: EditorMapGraph | null;
-    private currentFloorMap: google.maps.GroundOverlay | null;
 
     private editorEncapsulator: EditorEncapsulator | null;
     private readonly graphs: Map<number, EditorMapGraph>;
@@ -415,52 +637,42 @@ export class EditorMap extends GoogleMap {
                 lng: -71.3162829187303,
             },
             zoom: 10,
+            clickableIcons: false,
         });
         
         this.currentGraph = null;
-        this.currentFloorMap = null;
         this.editorEncapsulator = null;
+
         console.log('editor map constructosdfsdfsdr');
         this.graphs = new Map();
 
-        this.map.addListener('click', (e: google.maps.MapMouseEvent) => {
-            const rawPosition = e.latLng;
-            if (!rawPosition) return;
-
-            console.log('lat: ' + rawPosition.toJSON().lat + ',\nlng: ' + rawPosition.toJSON().lng + ',');
-        });
+        // this.map.addListener('click', (e: google.maps.MapMouseEvent) => {
+        //     const rawPosition = e.latLng;
+        //     if (!rawPosition) return;
+        //
+        //     if (this.currentGraph) {
+        //         this.currentGraph.addNode({
+        //             nodeId: -1,
+        //             name: '',
+        //             lat: rawPosition.toJSON().lat,
+        //             lng: rawPosition.toJSON().lng,
+        //             type: 'NORMAL',
+        //             connectedNodeId: null,
+        //         });
+        //     }
+        //
+        //     console.log('lat: ' + rawPosition.toJSON().lat + ',\nlng: ' + rawPosition.toJSON().lng + ',');
+        // });
         console.log('yah');
     }
 
     changeGraph(graphId: number) {
-        this.currentGraph?.hide();
+        this.currentGraph?.setVisibility(false);
         const newGraph = this.graphs.get(graphId);
         if (!newGraph) return;
 
-        newGraph.show();
+        newGraph.setVisibility(true);
         this.currentGraph = newGraph;
-        // if (this.currentFloorMap) {
-        //     this.currentFloorMap.setMap(null);
-        //     this.currentFloorMap = null;
-        // }
-
-        // this.currentGraph = new EditorMapGraph(this.map, graph, '#00AACC', this);
-        // if (graph.graphType === 'FLOORGRAPH' && graph.FloorGraph) {
-        //     this.currentFloorMap = new google.maps.GroundOverlay(graph.FloorGraph.image, {
-        //         north: graph.FloorGraph.imageBoundsNorth,
-        //         south: graph.FloorGraph.imageBoundsSouth,
-        //         east: graph.FloorGraph.imageBoundsEast,
-        //         west: graph.FloorGraph.imageBoundsWest,
-        //     });
-        //     this.currentFloorMap.setMap(this.map);
-        //
-        //     this.currentFloorMap.addListener('click', (e: google.maps.MapMouseEvent) => {
-        //         const rawPosition = e.latLng;
-        //         if (!rawPosition) return;
-        //
-        //         console.log('lat: ' + rawPosition.toJSON().lat + ',\nlng: ' + rawPosition.toJSON().lng + ',');
-        //     });
-        // }
     }
 
     initialize(editorEncapsulator: EditorEncapsulator) {
@@ -468,7 +680,7 @@ export class EditorMap extends GoogleMap {
 
         this.editorEncapsulator.editorGraphs.forEach(graph => {
             console.log('Making graph ' + graph.graphId);
-            this.graphs.set(graph.graphId, new EditorMapGraph(this.map, editorEncapsulator, graph.graphId));
+            this.graphs.set(graph.graphId, new EditorMapGraph(this.map, editorEncapsulator, graph));
         })
     }
 
