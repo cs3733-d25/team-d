@@ -7,8 +7,6 @@ async function main() {
     // Seed algorithm mode
     console.log('Seeding algorithm...');
 
-    await prisma.algorithm.deleteMany({});
-
     const algorithm = await prisma.algorithm.createMany({
         data: [
             { algorithmId: 0, name: 'BFS', isActive: true }, // default active
