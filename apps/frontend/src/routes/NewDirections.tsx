@@ -84,7 +84,7 @@ export default function NewDirections() {
         if (!pathfindingResponse || !map) return;
         map.recenter(
             pathfindingResponse.parkingLotPath.path[0].lat,
-            pathfindingResponse.parkingLotPath.path[0].lng, 17
+            pathfindingResponse.parkingLotPath.path[0].lng, 20
         );
     }
 
