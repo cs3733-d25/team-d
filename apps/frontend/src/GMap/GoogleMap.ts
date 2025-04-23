@@ -26,6 +26,7 @@ abstract class GoogleMap {
             const existingScript = document.querySelector(`script[src="${SCRIPT_URL}"]`);
 
             if (!existingScript) {
+                console.log('not yet loaded');
                 const script = document.createElement('script');
                 script.src = SCRIPT_URL;
                 script.async = true;
@@ -33,10 +34,14 @@ abstract class GoogleMap {
                 script.onload = () => window.initMap?.();
                 document.body.appendChild(script);
             } else {
+                console.log('already loaded');
+                console.log(existingScript);
+                // (existingScript as HTMLScriptElement).onload = () => window.initMap?.();
                 // Already loaded
                 window.initMap?.();
             }
             window.initMap = () => {
+                console.log('finished init');
                 resolve(true);
             }
         });
@@ -57,7 +62,9 @@ abstract class GoogleMap {
      * @protected
      */
     protected constructor(mapDivElement: HTMLDivElement, mapOptions: google.maps.MapOptions) {
+        console.log(mapDivElement);
         this.map = new google.maps.Map(mapDivElement, mapOptions);
+        console.log(this.map);
     }
 }
 
@@ -285,6 +292,8 @@ export class PathfindingMap extends GoogleMap {
             },
             zoom: 10,
         });
+
+        console.log('pathfinding constructor');
 
         this.directionsService = new google.maps.DirectionsService();
         this.directionsRenderer = new google.maps.DirectionsRenderer({

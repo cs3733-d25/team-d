@@ -52,6 +52,7 @@ export default function MapEditor() {
     const [editingData, setEditingData] = useState<EditorEncapsulator>();
 
     useEffect(() => {
+        console.log('useEffect MapEditor');
         let tempMap: EditorMap
         const fetchMap = async () => {
             if (mapRef.current) {
@@ -89,7 +90,7 @@ export default function MapEditor() {
     }
 
     return (
-        <div className="flex flex-row flex-1">
+        <div className="flex flex-row flex-1 h-screen overflow-y-hidden">
             <div className="flex-1 p-4">
 
                 <h2 className="text-3xl font-bold">Map Editor</h2>

@@ -43,6 +43,7 @@ export default function NewDirections() {
     const [pathfindingResponse, setPathfindingResponse] = useState<PathfindingResponse>();
 
     useEffect(() => {
+        console.log('useEffect NewDirections');
         const fetchMap = async () => {
             if (mapRef.current && autocompleteRef.current ) {
                 setMap(await PathfindingMap.makeMap(mapRef.current, autocompleteRef.current));
@@ -88,7 +89,7 @@ export default function NewDirections() {
     }
 
     return (
-        <div className="flex flex-row flex-1">
+        <div className="flex flex-row flex-1 h-screen overflow-y-hidden">
             <div className="flex-1 p-4">
                 <h2 className="text-3xl font-bold">Get Directions</h2>
                 <Separator className="mt-4 mb-4" />
