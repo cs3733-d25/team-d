@@ -13,6 +13,7 @@ export POSTGRES_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRE
 echo "POSTGRES_URL: ${POSTGRES_URL}"
 
 # Push schema to DB
+yarn workspace database migrate:reset
 yarn workspace database push
 yarn workspace database seed
 

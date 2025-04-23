@@ -2,6 +2,12 @@ import axios from "axios";
 import {API_ROUTES, EditorEdges, EditorGraph, FloorPathResponse, EditorNode, PathfindingResponse} from "common/src/constants.ts";
 import {EditorEncapsulator} from "@/routes/MapEditor.tsx";
 
+import fern from '@/public/floormaps/fern1.png';
+import chf1 from '@/public/floormaps/chf1.png';
+import pp20f1 from '@/public/floormaps/pp20f1.png';
+import pp22f3 from '@/public/floormaps/pp22f3.png';
+import pp22f4 from '@/public/floormaps/pp22f4.png';
+
 import {Button} from '@/components/ui/button.tsx'
 
 const API_KEY: string = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
@@ -45,6 +51,23 @@ abstract class GoogleMap {
                 resolve(true);
             }
         });
+    }
+
+    static getImgURL(image: string) {
+        switch (image) {
+            case '/src/public/floormaps/chf1.png':
+                return chf1;
+            case '/src/public/floormaps/pp20f1.png':
+                return pp20f1;
+            case '/src/public/floormaps/pp22f3.png':
+                return pp22f3;
+            case '/src/public/floormaps/pp22f4.png':
+                return pp22f4;
+            case '/src/public/floormaps/fern1.png':
+                return fern;
+            default:
+                return '';
+        }
     }
 
 
@@ -246,7 +269,7 @@ class PathfindingGraph {
                         });
                     }
 
-                    const theNextFloorMap = new google.maps.GroundOverlay(this.loadThisAfter.floor.image, {
+                    const theNextFloorMap = new google.maps.GroundOverlay(GoogleMap.getImgURL(this.loadThisAfter.floor.image), {
                         north: this.loadThisAfter.floor.imageBoundsNorth,
                         south: this.loadThisAfter.floor.imageBoundsSouth,
                         east: this.loadThisAfter.floor.imageBoundsEast,
@@ -592,7 +615,7 @@ class EditorMapGraph {
         this.floorMap = null;
 
         if (this.editorGraph.FloorGraph) {
-            this.floorMap = new google.maps.GroundOverlay(this.editorGraph.FloorGraph.image, {
+            this.floorMap = new google.maps.GroundOverlay(GoogleMap.getImgURL(this.editorGraph.FloorGraph.image), {
                 north: this.editorGraph.FloorGraph.imageBoundsNorth,
                 south: this.editorGraph.FloorGraph.imageBoundsSouth,
                 east: this.editorGraph.FloorGraph.imageBoundsEast,
