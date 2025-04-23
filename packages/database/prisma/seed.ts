@@ -1236,8 +1236,8 @@ async function main() {
             {
                 nodeId: 109,
                 name: '[Entrance1]',
-                lat: 42.09252193422096,
-                lng: -71.26631353371113,
+                lat: 42.092512979448315,
+                lng: -71.26632207406375,
                 type: 'DOOR',
                 graphId: 100,
             },
@@ -1412,8 +1412,8 @@ async function main() {
             {
                 nodeId: 208,
                 name: '[Entrance1]',
-                lat: 42.09262979854519,
-                lng: -71.26656872220266,
+                lat: 42.092636724479945,
+                lng: -71.26662781033974,
                 type: 'DOOR',
                 graphId: 100,
             },
@@ -1513,13 +1513,52 @@ async function main() {
             {
                 nodeId: 306,
                 name: 'ADA6',
-                lat: 42.09275602401299,
-                lng: -71.26483022988755,
+                lat: 42.092981062380915,
+                lng: -71.2647124630376,
                 type: 'NORMAL',
                 graphId: 100,
             },
             {
                 nodeId: 307,
+                name: 'ADA7',
+                lat: 42.09316687240134,
+                lng: -71.26531059564792,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 308,
+                name: 'ADA7',
+                lat: 42.09297265241016,
+                lng: -71.26529182018481,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 309,
+                name: 'ADA7',
+                lat: 42.09281220936017,
+                lng: -71.26532668890201,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 310,
+                name: '',
+                lat: 42.09278969100488,
+                lng: -71.26555199445926,
+                type:'DOOR',
+                graphId: 100,
+            },
+
+
+
+
+
+
+
+            {
+                nodeId: 311,
                 name: 'ADA7',
                 lat: 42.09239834955323,
                 lng: -71.26621899560585,
@@ -1527,7 +1566,7 @@ async function main() {
                 graphId: 100,
             },
             {
-                nodeId: 308,
+                nodeId: 312,
                 name: 'ADA8',
                 lat: 42.092505522691326,
                 lng: -71.26636418280707,
@@ -1536,13 +1575,31 @@ async function main() {
             },
 
             {
-                nodeId: 309,
+                nodeId: 313,
                 name: 'ADA9',
                 lat: 42.09254774479008,
                 lng: -71.26642587361441,
                 type: 'NORMAL',
                 graphId: 100,
             },
+            {
+                nodeId: 314,
+                name: 'ADA9',
+                lat: 42.092689030373094,
+                lng: -71.26496580095876,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 315,
+                name: 'ADA9',
+                lat: 42.092524692370354,
+                lng: -71.26599532618323,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+
+
 
 
 
@@ -1854,7 +1911,7 @@ async function main() {
                 edgeId: 102,
                 name: '',
                 startNodeId: 101,
-                endNodeId: 307,
+                endNodeId: 311,
                 graphId: 100,
             },
 
@@ -1998,7 +2055,7 @@ async function main() {
                 edgeId: 118,
                 name: '',
                 startNodeId: 209,
-                endNodeId: 308,
+                endNodeId: 312,
                 graphId: 100,
             },
 
@@ -2122,13 +2179,10 @@ async function main() {
                 endNodeId: 305,
                 graphId: 100,
             },
-            {
-                edgeId: 305,
-                name: '',
-                startNodeId: 305,
-                endNodeId: 306,
-                graphId: 100,
-            },
+
+
+
+
 
 
 
@@ -2142,10 +2196,83 @@ async function main() {
             {
                 edgeId: 310,
                 name: '',
-                startNodeId: 309,
+                startNodeId: 313,
                 endNodeId: 207,
                 graphId: 100,
             },
+            {
+                edgeId: 311,
+                name: '',
+                startNodeId: 311,
+                endNodeId: 312,
+                graphId: 100,
+            },
+            {
+                edgeId: 312,
+                name: '',
+                startNodeId: 312,
+                endNodeId: 109,
+                graphId: 100,
+            },
+            {
+                edgeId: 313,
+                name: '',
+                startNodeId: 312,
+                endNodeId: 313,
+                graphId: 100,
+            },
+            {
+                edgeId: 314,
+                name: '',
+                startNodeId: 309,
+                endNodeId: 310,
+                graphId: 100,
+            },
+
+            {
+                edgeId: 315,
+                name: '',
+                startNodeId: 305,
+                endNodeId: 306,
+                graphId: 100,
+            },
+            {
+                edgeId: 316,
+                name: '',
+                startNodeId: 306,
+                endNodeId: 307,
+                graphId: 100,
+            },
+            {
+                edgeId: 317,
+                name: '',
+                startNodeId: 307,
+                endNodeId: 308,
+                graphId: 100,
+            },
+            {
+                edgeId: 318,
+                name: '',
+                startNodeId: 306,
+                endNodeId: 314,
+                graphId: 100,
+            },
+            {
+                edgeId: 319,
+                name: '',
+                startNodeId: 314,
+                endNodeId: 315,
+                graphId: 100,
+            },
+            {
+                edgeId: 320,
+                name: '',
+                startNodeId: 315,
+                endNodeId: 311,
+                graphId: 100,
+            },
+
+
 
 
 
