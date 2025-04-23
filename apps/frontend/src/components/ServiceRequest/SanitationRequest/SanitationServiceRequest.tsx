@@ -21,7 +21,7 @@ type SanitationRequestForm = {
     employeeName: string;
 };
 
-export default function SanitationRequest() {
+export default function SanitationServiceRequest() {
     const [form, setForm] = useState<SanitationRequestForm>({
         roomNum: '',
         priority: '',

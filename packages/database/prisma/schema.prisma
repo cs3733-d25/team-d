@@ -84,8 +84,8 @@ model EquipmentRequest {
   serviceRequest   ServiceRequest @relation(fields: [serviceRequestId], references: [requestId])
 }
 
-// --- The SanitationRequest model ---
-model SanitationRequest {
+// --- The SanitationServiceRequest model ---
+model SanitationServiceRequest {
   type   SanitationType
   status RoomStatus
 

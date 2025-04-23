@@ -3,12 +3,11 @@ import {faLanguage} from "@fortawesome/free-solid-svg-icons";
 import {faHandHoldingDroplet} from "@fortawesome/free-solid-svg-icons";
 import {faScrewdriverWrench} from "@fortawesome/free-solid-svg-icons";
 import {faShield} from "@fortawesome/free-solid-svg-icons";
-import TranslatorRequestPopup from "@/components/ServiceRequest/TranslatorRequest/TranslatorRequestPopup.tsx";
-import SanitationPopup  from "@/components/ServiceRequest/SanitationRequest/SanitationPopup.tsx";
-import EquipmentRequestPopup from "@/components/ServiceRequest/EquipmentRequest/EquipmentRequestPopup.tsx";
-import SecurityRequestPopup from "@/components/ServiceRequest/SecurityRequest/SecurityRequestPopup.tsx";
-import ServiceHubBackground from "../public/ServiceHubBackground.png";
-
+import RequestPopup from "@/components/RequestPopup.tsx";import ServiceHubBackground from "../public/ServiceHubBackground.png";
+import EquipmentServiceRequest from "@/components/ServiceRequest/EquipmentRequest/EquipmentServiceRequest.tsx";
+import TranslatorServiceRequest from "@/components/ServiceRequest/TranslatorRequest/TranslatorServiceRequest.tsx";
+import SanitationServiceRequest from "@/components/ServiceRequest/SanitationRequest/SanitationServiceRequest.tsx";
+import SecurityServiceRequest from "@/components/ServiceRequest/SecurityRequest/SecurityServiceRequest.tsx";
 
 
 const ServiceRequestHub = () => {
@@ -23,18 +22,26 @@ const ServiceRequestHub = () => {
                 </div>
                 <div className="relative flex items-center justify-center h-screen w-screen overflow-hidden">
                     <div className="flex flex-row items-center justify-evenly bg-blue-900/80 w-300 h-100 rounded-md">
-                        <TranslatorRequestPopup
+                        <RequestPopup
                             title="Translator Request "
-                            iconName={faLanguage} />
-                        <SanitationPopup
+                            iconName={faLanguage}
+                            serviceRequest={<TranslatorServiceRequest />}
+                        />
+                        <RequestPopup
                             title="Sanitation Request"
-                            iconName={faHandHoldingDroplet} />
-                        <EquipmentRequestPopup
+                            iconName={faHandHoldingDroplet}
+                            serviceRequest={<SanitationServiceRequest />}
+                        />
+                        <RequestPopup
                             title="Equipment Request "
-                            iconName={faScrewdriverWrench} />
-                        <SecurityRequestPopup
+                            iconName={faScrewdriverWrench}
+                            serviceRequest={<EquipmentServiceRequest />}
+                        />
+                        <RequestPopup
                             title="Security Request"
-                            iconName={faShield} />
+                            iconName={faShield}
+                            serviceRequest={<SecurityServiceRequest />}
+                        />
                     </div>
                 </div>
             </div>
