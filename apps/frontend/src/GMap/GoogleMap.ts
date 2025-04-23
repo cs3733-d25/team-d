@@ -231,6 +231,13 @@ class PathfindingGraph {
                     console.log('This graph');
                     console.log(this.floor?.image);
                 } else {
+
+                    if(this.isFinal){
+                        alert('You have reached the final destination!');
+                    } else {
+                        this.remove();
+                    }
+
                     if (this.highlightedCircle) {
                         this.highlightedCircle.setIcon({
                             url: 'https://maps.gstatic.com/intl/en_us/mapfiles/markers2/measle.png',
@@ -250,12 +257,6 @@ class PathfindingGraph {
                     console.log(this.loadThisAfter.floor.image);
                     this.loadThisAfter?.setupInnerNextButton();
                     this.loadThisAfter?.showInnerStep();
-
-                    if(this.isFinal){
-                        alert('You have reached the final destination!');
-                    } else {
-                        this.remove();
-                    }
                 }
             });
         }
