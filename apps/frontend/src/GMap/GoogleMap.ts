@@ -325,6 +325,8 @@ export class PathfindingMap extends GoogleMap {
         }
 
         // Load new floor overlay
+        console.log(pathfindingResponse.floorPaths.length)
+
         const floor = pathfindingResponse.floorPaths[0];
         this.currentFloorMap = new google.maps.GroundOverlay(floor.image, {
             north: floor.imageBoundsNorth,
@@ -335,7 +337,7 @@ export class PathfindingMap extends GoogleMap {
         this.currentFloorMap.setMap(this.map);
 
         // Create floor path first
-        this.currentFloorPath = new PathfindingGraph(this.map, floor.path, '#00AACC', null);
+        this.currentFloorPath = new PathfindingGraph(this.map, floor.path, '#CC3300', null);
         this.currentFloorPath.innerSteps = floor.direction;
 
         // Now create the parking path and pass in the floor path to trigger after
