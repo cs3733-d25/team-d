@@ -21,72 +21,72 @@ export default function Home() {
     const { user, isAuthenticated, isLoading } = useAuth0();
 
     return (
-        <div className="grid grid-rows-[auto_1fr_auto] w-full min-h-screen overflow-hidden">
+        <div>
             <div className="sticky top-0 z-30">
-                <DisclaimerBar />
+                <DisclaimerBar/>
             </div>
-            {/* Hero Section */}
-            <div className="relative grid w-full h-screen items-center justify-center">
+            <div className="grid grid-rows-[auto_1fr_auto] w-full min-h-screen overflow-hidden">
 
-                {/* Background Layer */}
-                <div className="absolute inset-0 bg-[url(../public/Hospital.jpg)] bg-cover bg-center bg-no-repeat">
-                    <div className="absolute inset-0 bg-yellow-600/10 mix-blend-multiply pointer-events-none"></div>
-                    <div className="absolute inset-0 bg-zinc-900/50 pointer-events-none"></div>
-                </div>
-
-                {/* Content Layer */}
-                <div className="relative z-10 flex flex-col items-center gap-6 text-center">
-
-                    {/* Hero Text */}
-                    <div className="absolute top-[-35vh] left-1/2 transform -translate-x-1/2">
-                        <HeroTextBox />
-                    </div>
-
-                    {/* Buttons Section */}
-                    <div className="flex justify-left items-center w-full min-h-screen ">
-                    <div className="grid flex justify-center grid-cols-3 m-20 gap-70 mt-4 w-full max-w-lg">
-                        <div className=" w-[250px] h-[250px] bg-[#F1F1F1] border-white">
-                            <div className="flex-grow flex items-center justify-center w-full">
-                                <AnimatedLogin />
-                            </div>
-                            {!isAuthenticated && (
-                                <div>
-                                    <Auth0LoginButton />
-                                </div>)}
-                        </div>
-
-
-                        {/* Map Section - Purple Box */}
-                        <div className=" w-[250px] h-[250px] bg-[#F1F1F1] border-white">
-                            {/* Animated Map */}
-                            <div className="flex-grow flex items-center justify-center w-full">
-                                <AnimatedMap />
-                            </div>
-
-                            <MapButton />
-                        </div>
-
-
-
-
-                        {/* Directory Button */}
-
-                        <div className=" w-[250px] h-[250px] bg-[#F1F1F1] rounded-t-lg border-white">
-                            {/* Animated Map */}
-                            <div className="flex-grow flex items-center justify-center w-full">
-                                <AnimatedService/>
-                            </div>
-
-                            <ServiceRequestbutton/>
+                {/* Hero Section */}
+                <div className="relative grid w-full h-screen items-center justify-center">
+                    {/* Background Layer */}
+                    <div className="absolute inset-0 bg-[url(../public/Hospital.jpg)] bg-cover bg-center bg-no-repeat h-screen filter saturate-200 flex flex-col items-center justify-center overflow-hidden">
+                        <div className="absolute inset-0 bg-yellow-600/10 mix-blend-multiply pointer-events-none"></div>
+                        <div className="absolute inset-0 bg-zinc-900/50 pointer-events-none"></div>
+                        {/* Hero Text */}
+                        <div className="relative z-10 pb-10 items-center gap-6 text-center top-[-35vh]">
+                            <HeroTextBox/>
                         </div>
                     </div>
-                </div>
-            </div>
-            </div>
 
-            {/* Footer */}
-            <div className="w-full">
-                <Footer />
+                    {/* Content Layer */}
+                    <div className="relative z-10 pb-10 items-center gap-6 text-center">
+
+
+                        {/* Buttons Section */}
+
+                        <div className="relative z-10 flex justify-center items-center h-full w-full px-12">
+                            <div className="relative flex flex-row w-full  items-center justify-center p-4 gap-10">
+                                {!isAuthenticated && (
+                                    <div className=" w-[250px] h-[250px] bg-[#F1F1F1] rounded-t-lg border-white">
+                                        <div className="grid-cols-3 gap-16 max-w-4xl mx-auto flex-grow flex items-center justify-center w-full">
+                                            <AnimatedLogin/>
+                                        </div>
+
+                                        <div>
+                                            <Auth0LoginButton/>
+                                        </div>
+                                    </div>
+                                )}
+                                {/* Map Section - Purple Box */}
+                                <div className=" w-[250px] h-[250px] bg-[#F1F1F1] rounded-t-lg border-white">
+                                    {/* Animated Map */}
+                                    <div className="flex-grow flex items-center justify-center w-full">
+                                        <AnimatedMap/>
+                                    </div>
+
+                                    <MapButton/>
+                                </div>
+
+                                {/* Directory Button */}
+
+                                <div className=" w-[250px] h-[250px] bg-[#F1F1F1] rounded-t-lg border-white">
+                                    {/* Animated Map */}
+                                    <div className="flex-grow flex items-center justify-center w-full">
+                                        <AnimatedService/>
+                                    </div>
+
+                                    <ServiceRequestbutton/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Footer */}
+                <div className="w-full">
+                    <Footer/>
+                </div>
             </div>
         </div>
     );
