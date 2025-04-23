@@ -29,7 +29,7 @@ const Profile = () => {
             <div className="flex justify-center items-center h-screen">
                 <div className="text-lg font-semibold">Loading...</div>
             </div>
-        );
+        );//
     }
 
     {/*Only if the user is logged in can they see this profile page with their email and profile pic*/}

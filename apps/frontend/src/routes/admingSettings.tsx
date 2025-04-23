@@ -25,7 +25,7 @@ import {Input} from "@/components/ui/input.tsx";
 //         [field]: value
 //     }));
 // };
-
+//
 
 const AdminSettings: React.FC = () => {
     const [activePanel, setActivePanel] = useState<Panel>("profile");
