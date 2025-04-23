@@ -127,8 +127,7 @@ model Hospital {
 
   Buildings    Building[]
   ParkingGraph ParkingGraph?
-
-  Department Department[]
+  Department   Department[]
 }
 
 model Building {
@@ -141,8 +140,7 @@ model Building {
   Hospital   Hospital @relation(fields: [hospitalId], references: [hospitalId])
 
   FloorGraphs FloorGraph[]
-
-  Department Department[]
+  Department  Department[]
 }
 
 model Department {
@@ -157,11 +155,11 @@ model Department {
   hospitalId Int
   Hospital   Hospital @relation(fields: [hospitalId], references: [hospitalId])
 
-  buildingId Int
-  Building   Building @relation(fields: [buildingId], references: [buildingId])
-
   floorGraphId Int
   FloorGraph   FloorGraph @relation(fields: [floorGraphId], references: [graphId])
+
+  buildingId Int
+  Building   Building @relation(fields: [buildingId], references: [buildingId])
 
   ServiceRequests ServiceRequest[]
 }

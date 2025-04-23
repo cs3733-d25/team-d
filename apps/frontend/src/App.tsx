@@ -18,10 +18,6 @@ import HospitalDirectory from "@/routes/hospitalDirectory.tsx";
 import AdminSettings from "@/routes/admingSettings.tsx";
 
 import { ProtectedRoute } from "./components/ProtectedRoute";
-import SanitationRequest from "@/components/ServiceRequest/SanitationRequest/SanitationRequest.tsx";
-import NewDirections from "@/routes/NewDirections.tsx";
-import MapEditor from "@/routes/MapEditor.tsx";
-import SanitationServiceRequest from "@/components/ServiceRequest/SanitationRequest/SanitationServiceRequest.tsx";
 import NewDirections from "@/routes/NewDirections.tsx";
 import MapEditor from "@/routes/MapEditor.tsx";
 
@@ -34,7 +30,9 @@ function App() {
                     <Route path="/emap" element={<MapEditor />} />
                     <Route path="/" element={<Navbar />}>
                         <Route index element={<Home />} />
-                        <Route path="directory" element={<Directions editor={false} />} />
+                        {/*<Route path="directory" element={<Directions editor={false} />} />*/}
+                        <Route path="directory" element={<NewDirections />} />
+
                         <Route path="servicerequesthub" element={<ServiceRequestHub />} />
                         <Route path="hospital-directory" element={<HospitalDirectory />} />
                         <Route path="admin-settings" element={<AdminSettings />} />
@@ -44,7 +42,8 @@ function App() {
                         {/* Protected routes wrapped in ProtectedRoute */}
                         <Route element={<ProtectedRoute />}>
                             <Route path="admin-database" element={<AdminDatabase />} />
-                            <Route path="map-editor" element={<Directions editor={true} />} />
+                            {/*<Route path="map-editor" element={<Directions editor={true} />} />*/}
+                            <Route path="map-editor" element={<MapEditor />} />
                             <Route path="all-service-requests" element={<AllServiceRequests />} />
                             <Route path="profile" element={<Auth0Profile />} />
                         </Route>
