@@ -39,9 +39,9 @@ const RequestCollapsible: React.FC<RequestCollapsibleProps> = ({ID,requestType})
         fetchData();
     }, []);
     return (
-                <Table className="border rounded-full">
+                <Table className="border rounded-md table-fixed">
                     <TableHeader className="bg-gray-50">
-                        <TableRow className={"border"}>
+                        <TableRow className="border">
                             {requestType === "Translator" ? (
                                 <>
                                     <TableHead className="text-black">Language To</TableHead>
