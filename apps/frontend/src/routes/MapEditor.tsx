@@ -127,6 +127,24 @@ export default function MapEditor() {
                         Save
                     </Button>
                 </div>
+
+                <Separator className="mt-4 mb-4" />
+                <h2 className="text-xl font-bold mb-4">Instructions</h2>
+                <ul className="list-disc ml-4">
+                    <li>Left-click a node to view its information</li>
+                    <li>Click and drag a node to change its location</li>
+                    <li>Right-click the map to add a node at the click location</li>
+                    <li>Right-click a node to start adding an edge
+                        <ul className="list-disc ml-4">
+                            <li>Right-click another node to connect both nodes</li>
+                            <li>Right-click the map to make a new node and connect it to the starting node</li>
+                            <li>Left-click to cancel adding a new edge</li>
+                        </ul>
+                    </li>
+                    <li>Double-click an edge to delete it</li>
+                    <li>Double click a node to delete it and any connecting edges</li>
+                </ul>
+
             </div>
             <div ref={mapRef} className="flex-3">
                 {/* Google map will go here */}
