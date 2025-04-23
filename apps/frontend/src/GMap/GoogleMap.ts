@@ -552,7 +552,7 @@ class EditorMapGraph {
 
         // If in default state,
         // add a node at this position
-        this.map.addListener('click', (e: google.maps.MapMouseEvent) => {
+        this.map.addListener('rightclick', (e: google.maps.MapMouseEvent) => {
             if (this.visible) {
                 if (this.editingState === 'DEFAULT') {
                     const rawPosition = e.latLng;
@@ -614,17 +614,18 @@ class EditorMapGraph {
             const rawPosition = e.latLng;
             if (!rawPosition) return;
 
-            if (this.editingState === 'ADDEDGE' && this.newEdge) {
-                this.newEdge.line.setMap(null);
-                this.addEdge({
-                    edgeId: -1,
-                    name: '',
-                    startNodeId: this.newEdge.startNodeId,
-                    endNodeId: node.nodeId,
-                    graphId: this.editorGraph.graphId,
-                })
-                this.editingState = 'DEFAULT';
-            }
+            // if (this.editingState === 'ADDEDGE' && this.newEdge) {
+            //     this.newEdge.line.setMap(null);
+            //     this.addEdge({
+            //         edgeId: -1,
+            //         name: '',
+            //         startNodeId: this.newEdge.startNodeId,
+            //         endNodeId: node.nodeId,
+            //         graphId: this.editorGraph.graphId,
+            //     });
+            //     this.newEdge = null;
+            //     this.editingState = 'DEFAULT';
+            // }
 
 
             // const infowindow = new google.maps.InfoWindow({
@@ -664,15 +665,50 @@ class EditorMapGraph {
                     line: line,
                 }
 
-                // // If clicked and in adding an
-                // // edge state,
-                // line.addListener('click', (e: google.maps.MapMouseEvent) => {
-                //     // For creating a new node
-                //     if (this.editingState === 'ADDEDGE') {
-                //         this.editingState = 'DEFAULT';
-                //         console.log(1);
-                //     }
-                // })
+                line.addListener("click", (e: google.maps.MapMouseEvent) => {
+                    if (this.editingState === 'ADDEDGE' && this.newEdge) {
+                        this.newEdge.line.setMap(null);
+                        this.newEdge = null;
+                        this.editingState = 'DEFAULT';
+                    }
+                });
+
+                line.addListener("rightclick", (e: google.maps.MapMouseEvent) => {
+                    if (this.editingState === 'ADDEDGE' && this.newEdge) {
+                        const rawPosition = e.latLng;
+                        if (!rawPosition) return;
+                        const newNode = this.addNode({
+                            nodeId: -1,
+                            name: '',
+                            lat: rawPosition.toJSON().lat,
+                            lng: rawPosition.toJSON().lng,
+                            type: 'NORMAL',
+                            connectedNodeId: null,
+                        });
+                        this.newEdge.line.setMap(null);
+                        this.addEdge({
+                            edgeId: -1,
+                            name: '',
+                            startNodeId: this.newEdge.startNodeId,
+                            endNodeId: newNode.nodeId,
+                            graphId: this.editorGraph.graphId,
+                        });
+                        this.newEdge = null;
+                        this.editingState = 'DEFAULT';
+                    }
+                })
+            }
+            else if (this.editingState === 'ADDEDGE' && this.newEdge) {
+                this.newEdge.line.setMap(null);
+                this.addEdge({
+                    edgeId: -1,
+                    name: '',
+                    startNodeId: this.newEdge.startNodeId,
+                    endNodeId: node.nodeId,
+                    graphId: this.editorGraph.graphId,
+                });
+                this.newEdge = null;
+                this.editingState = 'DEFAULT';
             }
         });
 
@@ -722,7 +758,6 @@ class EditorMapGraph {
                 ]);
             }
         });
-
         // Once the drag has ended, update
         // the node position in the
         // encapsulator
@@ -763,7 +798,7 @@ class EditorMapGraph {
             }
         });
 
-
+        // If line is double-clicked delete it
         line.addListener('dblclick', (e: google.maps.MapMouseEvent) => {
             if (this.editingState === 'DEFAULT') {
                 this.deleteEdge(edge.edgeId);
@@ -917,25 +952,6 @@ export class EditorMap extends GoogleMap {
 
         console.log('editor map constructosdfsdfsdr');
         this.graphs = new Map();
-
-        // this.map.addListener('click', (e: google.maps.MapMouseEvent) => {
-        //     const rawPosition = e.latLng;
-        //     if (!rawPosition) return;
-        //
-        //     if (this.currentGraph) {
-        //         this.currentGraph.addNode({
-        //             nodeId: -1,
-        //             name: '',
-        //             lat: rawPosition.toJSON().lat,
-        //             lng: rawPosition.toJSON().lng,
-        //             type: 'NORMAL',
-        //             connectedNodeId: null,
-        //         });
-        //     }
-        //
-        //     console.log('lat: ' + rawPosition.toJSON().lat + ',\nlng: ' + rawPosition.toJSON().lng + ',');
-        // });
-        console.log('yah');
     }
 
     changeGraph(graphId: number) {
