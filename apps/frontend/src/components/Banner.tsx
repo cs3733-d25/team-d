@@ -60,7 +60,7 @@ export default function Banner({isLoggedIn}: {isLoggedIn: boolean})  {
                             <NavigationMenuItem>
                             </NavigationMenuItem>
 
-                            <SearchBar />
+
                             {isLoggedIn && (
                                 <NavigationMenuItem>
                                     <Link to="/profile" className="inline-block">

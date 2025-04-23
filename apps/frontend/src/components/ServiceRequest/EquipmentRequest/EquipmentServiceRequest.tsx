@@ -3,12 +3,14 @@ import {Button} from "@/components/ui/button.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import {Label} from "@/components/ui/label.tsx";
 import {ScrollArea} from "@/components/ui/scrollarea.tsx";
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import {API_ROUTES} from "common/src/constants.ts";
 import axios from "axios";
 import ReturnEquipmentRequest from "@/components/ServiceRequest/EquipmentRequest/ReturnEquipmentRequest.tsx";
 import SubmissionReqPopup from "@/components/SubmissionReqPopup.tsx";
+import {Department} from "@/routes/Directions.tsx";
 import ReturnSanitationRequest from "@/components/ServiceRequest/SanitationRequest/ReturnSanitationRequest.tsx";
+
 
 type equipmentRequestForm = {
     medicalDevice: string;
@@ -43,6 +45,13 @@ export default function EquipmentServiceRequest() {
     });
 
     const [submitted, setSubmitted] = useState(false);
+    const [departments, setDepartments] = useState<Department[]>([]);
+
+    useEffect(() => {
+        axios.get(API_ROUTES.DEPARTMENT + "/all").then((response) => {
+            setDepartments(response.data)
+        });
+    }, []);
 
     const onSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -61,10 +70,10 @@ export default function EquipmentServiceRequest() {
     return (
         <>
             {!submitted ?
-                <ScrollArea className="max-h-[95vh] overflow-y-auto pr-4 w-full max-w-screen-lg mx-auto bg-zinc-200">
-                <div className="grid place-items-center h-full items-center">
-                    <div className="bg-blue-200 bg-opacity-60 rounded-3xl px-6 py-4 max-w-5xl w-full mx-auto">
-                        <h2 className="text-4xl font-bold text-left">Request a Medical Device</h2>
+                <ScrollArea className="max-h-[95vh] w-115 overflow-y-auto">
+                <div className="flex flex-col items-center gap-4 bg-white">
+                    <div className="bg-blue-900 rounded-md px-6 py-4 max-w-5xl w-full mx-auto">
+                        <h2 className="text-4xl font-bold text-white text-center">Request a Medical Device</h2>
                     </div>
                     <h6 className="pb-3 font-light">Christine Ngo & Keethu Jayamoorthy</h6>
                     <form onSubmit={onSubmit}>
@@ -113,26 +122,11 @@ export default function EquipmentServiceRequest() {
                                     })
                                 }>
                                 <option value="">-- Select Department --</option>
-                                <option value="1">Allergy and Clinical Immunology Floor 3</option>
-                                <option value="2">Allergy and Clinical Immunology Floor 5</option>
-                                <option value="3">Backup Child Care Center</option>
-                                <option value="4">Brigham Dermatology Associates (BDA)</option>
-                                <option value="5">Brigham Obstetrics and Gynecology Group (BOGG)	</option>
-                                <option value="6">Brigham Physicians Group (BPG) Floor 4</option>
-                                <option value="7">Brigham Physicians Group (BPG) Floor 5</option>
-                                <option value="8">Brigham Psychiatric Specialities</option>
-                                <option value="9">Center for Pain Medicine	</option>
-                                <option value="10">Crohn's and Colitis Center</option>
-                                <option value="11">Endoscopy Center</option>
-                                <option value="12">Gretchen S. and Edward A. Fish Center for Women's Health</option>
-                                <option value="13">Laboratory</option>
-                                <option value="14">Multi-Specialty Clinic</option>
-                                <option value="15">Osher Clinical Center for Integrative Health</option>
-                                <option value="16">Patient Financial Services	</option>
-                                <option value="17">Pharmacy</option>
-                                <option value="18">Radiology</option>
-                                <option value="19">Radiology, MRI/CT Scan</option>
-                                <option value="20">Rehabilitation Services</option>
+                                {departments.map((d: Department) => (
+                                    <option key={d.departmentId + 1} value={d.departmentId}>
+                                        {d.name}
+                                    </option>
+                                ))}
                             </select>
                         </div>
 
