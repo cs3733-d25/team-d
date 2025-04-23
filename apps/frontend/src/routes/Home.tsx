@@ -25,16 +25,26 @@ export default function Home() {
             <div className="sticky top-0 z-30">
                 <DisclaimerBar />
             </div>
-            <div className="object-left bg-[url(../public/Hospital.jpg)] bg-no-repeat bg-cover h-screen filter saturate-200 flex flex-col items-center justify-center overflow-hidden">
-                <div className="absolute inset-0 bg-yellow-600/10 mix-blend-multiply pointer-events-none"></div>
-                <div className="absolute inset-0 bg-zinc-900/50 pointer-events-none"></div>
+            {/* Hero Section */}
+            <div className="relative grid w-full h-screen items-center justify-center">
 
-                <div className="relative z-10 pb-10 flex flex-col items-center gap-6 text-center">
-                    <HeroTextBox />
+                {/* Background Layer */}
+                <div className="absolute inset-0 bg-[url(../public/Hospital.jpg)] bg-cover bg-center bg-no-repeat">
+                    <div className="absolute inset-0 bg-yellow-600/10 mix-blend-multiply pointer-events-none"></div>
+                    <div className="absolute inset-0 bg-zinc-900/50 pointer-events-none"></div>
                 </div>
 
-                <div className="flex justify-left items-center w-full min-h-screen ">
-                    <div className="relative flex flex-row w-full  items-center justify-center p-4 gap-10">
+                {/* Content Layer */}
+                <div className="relative z-10 flex flex-col items-center gap-6 text-center">
+
+                    {/* Hero Text */}
+                    <div className="absolute top-[-35vh] left-1/2 transform -translate-x-1/2">
+                        <HeroTextBox />
+                    </div>
+
+                    {/* Buttons Section */}
+                    <div className="flex justify-left items-center w-full min-h-screen ">
+                    <div className="grid flex justify-center grid-cols-3 m-20 gap-70 mt-4 w-full max-w-lg">
                         <div className=" w-[250px] h-[250px] bg-[#F1F1F1] border-white">
                             <div className="flex-grow flex items-center justify-center w-full">
                                 <AnimatedLogin />
@@ -44,6 +54,7 @@ export default function Home() {
                                     <Auth0LoginButton />
                                 </div>)}
                         </div>
+
 
                         {/* Map Section - Purple Box */}
                         <div className=" w-[250px] h-[250px] bg-[#F1F1F1] border-white">
@@ -55,8 +66,12 @@ export default function Home() {
                             <MapButton />
                         </div>
 
+
+
+
                         {/* Directory Button */}
-                        <div className=" w-[250px] h-[250px] bg-[#F1F1F1] border-white">
+
+                        <div className=" w-[250px] h-[250px] bg-[#F1F1F1] rounded-t-lg border-white">
                             {/* Animated Map */}
                             <div className="flex-grow flex items-center justify-center w-full">
                                 <AnimatedService/>
@@ -66,9 +81,12 @@ export default function Home() {
                         </div>
                     </div>
                 </div>
-                <div>
-                    <Footer/>
-                </div>
+            </div>
+            </div>
+
+            {/* Footer */}
+            <div className="w-full">
+                <Footer />
             </div>
         </div>
     );
