@@ -9,6 +9,8 @@ import axios from "axios";
 import ReturnEquipmentRequest from "@/components/ServiceRequest/EquipmentRequest/ReturnEquipmentRequest.tsx";
 import SubmissionReqPopup from "@/components/SubmissionReqPopup.tsx";
 import {Department} from "@/routes/Directions.tsx";
+import ReturnSanitationRequest from "@/components/ServiceRequest/SanitationRequest/ReturnSanitationRequest.tsx";
+
 
 type equipmentRequestForm = {
     medicalDevice: string;
@@ -68,10 +70,10 @@ export default function EquipmentServiceRequest() {
     return (
         <>
             {!submitted ?
-                <ScrollArea className="grid place-items-center h-full items-center max-h-[95vh] overflow-y-auto pr-4 w-full max-w-screen-lg mx-auto">
-                <div className="grid place-items-center h-full items-center">
-                    <div className="bg-blue-950 bg-opacity-60 rounded-3xl px-6 py-4 max-w-5xl w-full mx-auto">
-                        <h2 className="text-4xl font-bold text-white text-left">Request a Medical Device</h2>
+                <ScrollArea className="max-h-[95vh] w-115 overflow-y-auto">
+                <div className="flex flex-col items-center gap-4 bg-white">
+                    <div className="bg-blue-900 rounded-md px-6 py-4 max-w-5xl w-full mx-auto">
+                        <h2 className="text-4xl font-bold text-white text-center">Request a Medical Device</h2>
                     </div>
                     <h6 className="pb-3 font-light">Christine Ngo & Keethu Jayamoorthy</h6>
                     <form onSubmit={onSubmit}>
