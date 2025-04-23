@@ -96,7 +96,7 @@ class Graph {
     private readonly nodesMap: Map<number, GraphNode>;
     private pathFindingStrategy: PathFindingStrategy;
 
-    constructor(strategy: PathFindingStrategy = new BFSStrategy()) {
+    constructor(strategy: PathFindingStrategy) {
         this.nodesMap = new Map();
         this.pathFindingStrategy = strategy;
     }

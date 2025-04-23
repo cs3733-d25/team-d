@@ -4,6 +4,17 @@ const prisma = new PrismaClient();
 
 async function main() {
 
+    // Seed algorithm mode
+    console.log('Seeding algorithm...');
+    const algorithm = await prisma.algorithm.createMany({
+        data: [
+            { algorithmId: 0, name: 'BFS', isActive: true }, // default active
+            { algorithmId: 1, name: 'DFS', isActive: false },
+        ],
+    });
+    console.log('Algorithms seeded!');
+    console.log(algorithm);
+
     // Seed employees
     console.log('Seeding employees...');
     const employees = [

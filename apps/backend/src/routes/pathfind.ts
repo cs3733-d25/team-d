@@ -12,6 +12,34 @@ import {
     PathfindingOptions,
     PathfindingResponse,
 } from 'common/src/constants.ts';
+import prismaClient from '../bin/prisma-client';
+
+import { BFSStrategy, DFSStrategy, PathFindingStrategy } from '../pathfinding/src/bfs.ts';
+
+function getStrategyByName(name: string): PathFindingStrategy {
+    switch (name) {
+        case 'BFS':
+            return new BFSStrategy();
+        case 'DFS':
+            return new DFSStrategy();
+        default:
+            throw new Error(`Unknown algorithm strategy: ${name}`);
+    }
+}
+
+router.get('/algorithm', async (req: Request, res: Response) => {
+    const response = await PrismaClient.algorithm.findMany();
+    // If no service requests are found, send 204 and log it
+    if (response == null) {
+        console.error('No service requests found in database!');
+        res.sendStatus(204);
+    }
+    // Otherwise send 200 and the data
+    else {
+        console.log(response);
+        res.json(response);
+    }
+});
 
 router.get('/options', async (req: Request, res: Response) => {
     const hospitals = await PrismaClient.hospital.findMany({
@@ -58,6 +86,13 @@ router.get('/options', async (req: Request, res: Response) => {
 });
 
 router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
+    // Find the algorithm we want and return it as a new object strategy
+    const activeAlgorithm = await PrismaClient.algorithm.findFirst({
+        where: { isActive: true },
+    });
+
+    const strategy = getStrategyByName(activeAlgorithm?.name || 'BFS'); // default fallback
+
     // Find the department with the given id
     const department = await PrismaClient.department.findUnique({
         where: {
@@ -146,7 +181,7 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
 
     // Load nodes and edges from the
     // top floor into a Graph object
-    const topFloorGraphObj = new Graph();
+    const topFloorGraphObj = new Graph(strategy);
     topFloorGraph.Graph.Nodes.forEach((node) => {
         topFloorGraphObj.addNode(node as NodePathResponse);
     });
@@ -156,7 +191,7 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
 
     // Load nodes and edges from the
     // top floor into a Graph object
-    const parkingLotGraphObj = new Graph();
+    const parkingLotGraphObj = new Graph(strategy);
     console.log('adding parking' + parkingLotGraph.graphId);
     parkingLotGraph.Graph.Nodes.forEach((node) => {
         parkingLotGraphObj.addNode(node as NodePathResponse);
@@ -231,7 +266,7 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
 
         // Load nodes and edges from the
         // bottom floor into a Graph object
-        const bottomFloorGraphObj = new Graph();
+        const bottomFloorGraphObj = new Graph(strategy);
         bottomFloorGraph.Graph.Nodes.forEach((node) => {
             bottomFloorGraphObj.addNode(node as NodePathResponse);
         });
@@ -395,6 +430,29 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
     response.parkingLotPath.path = parkingLotPath;
     response.floorPaths.reverse();
     res.json(response);
+});
+
+router.put('/algorithm/:name', async (req: Request, res: Response) => {
+    const name = req.params.name;
+
+    const existing = await PrismaClient.algorithm.findUnique({ where: { name } });
+    if (!existing) {
+        res.status(404).json({ message: 'Algorithm not found' });
+        return;
+    }
+
+    // Reset all to inactive
+    await PrismaClient.algorithm.updateMany({ data: { isActive: false } });
+
+    // Activate the selected one
+    await PrismaClient.algorithm.update({
+        where: { name },
+        data: { isActive: true },
+    });
+
+    res.status(200).json({
+        message: 'Successfully updated algorithm',
+    });
 });
 
 export default router;
