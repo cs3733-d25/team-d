@@ -637,6 +637,7 @@ class EditorMapGraph {
                         <p>Lat: ${node.lat}</p>
                         <p>Lng: ${node.lng}</p>
                         <p>GID: ${node.graphId}</p>
+                        <p>CID: ${node.connectedNodeId}</p>
                     `
             });
             infowindow.setPosition(marker.getPosition());

@@ -16,9 +16,7 @@ class BFSStrategy implements PathFindingStrategy {
         graph: Graph
     ): NodePathResponse[] {
         const endNode = graph.getNode(endNodeId);
-        if (!endNode) {
-            throw new Error(`Node ${endNodeId} not found`);
-        }
+        if (!endNode) return [];
 
         const visited = new Set<number>();
         const queue: { node: GraphNode; path: GraphNode[] }[] = [
@@ -49,7 +47,7 @@ class DFSStrategy implements PathFindingStrategy {
         graph: Graph
     ): NodePathResponse[] {
         const endNode = graph.getNode(endNodeId);
-        if (!endNode) throw new Error(`Node ${endNodeId} not found`);
+        if (!endNode) return [];
 
         const visited = new Set<number>();
         const stack: { node: GraphNode; path: GraphNode[] }[] = [
@@ -109,6 +107,7 @@ class Graph {
     }
 
     addNode(data: NodePathResponse): void {
+        // console.log(data.nodeId);
         if (!this.nodesMap.has(data.nodeId)) {
             const newNode = new GraphNode(data);
             this.nodesMap.set(data.nodeId, newNode);
@@ -124,8 +123,10 @@ class Graph {
     addEdge(id1: number, id2: number): void {
         const node1 = this.nodesMap.get(id1);
         const node2 = this.nodesMap.get(id2);
-        if (!node1 || !node2) {
-            throw new Error(`Node ${id2} or Node ${id2} does not exist`);
+        if (!node1) {
+            throw new Error(`Node ${id1}does not exist`);
+        } else if (!node2) {
+            throw new Error(`Node ${id2}does not exist`);
         } else {
             node1.addNeighbor(node2);
             node2.addNeighbor(node1);

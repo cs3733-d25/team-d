@@ -42,7 +42,7 @@ model ServiceRequest {
   translatorRequest TranslatorRequest?
   equipmentRequest  EquipmentRequest?
   securityRequest   SecurityRequest?
-  sanitationRequest SanitationRequest?
+  sanitationRequest SanitationServiceRequest?
 
   // assigned relationship to Employee:
   assignedEmployeeId    Int?
