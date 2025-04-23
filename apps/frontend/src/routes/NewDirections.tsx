@@ -127,16 +127,6 @@ export default function NewDirections() {
                     </SelectContent>
                 </Select>
 
-                <div className="mb-5">
-                    <div id="step-instruction">Loading directions...</div>
-                    <button
-                        id="next-step-btn"
-                        className="mt-2 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
-                    >
-                        Next Step
-                    </button>
-                </div>
-
 
                 <Label>Transport Mode</Label>
                 <Select onValueChange={handleModeChange} defaultValue="DRIVING">
@@ -152,6 +142,18 @@ export default function NewDirections() {
                         </SelectGroup>
                     </SelectContent>
                 </Select>
+
+                <div className="mb-5">
+                    <div id="step-instruction">Loading directions...</div>
+                    <button
+                        id="next-step-btn"
+                        className="mt-2 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+                    >
+                        Next Step
+                    </button>
+                </div>
+
+
 
                 {selectedHospital &&
                     <>
