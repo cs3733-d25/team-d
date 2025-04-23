@@ -6,6 +6,7 @@ const router: Router = express.Router();
 // GET ALL SERVICE REQUESTS
 router.get('/', async function (req: Request, res: Response) {
     // Query db, store response
+
     const requests = await PrismaClient.serviceRequest.findMany({
         include: {
             translatorRequest: true,
