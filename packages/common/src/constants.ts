@@ -49,6 +49,7 @@ export type NodePathResponse = {
 
 export type ParkingPathResponse = {
     path: NodePathResponse[];
+    direction: string[];
 }
 
 export type FloorPathResponse = {
@@ -59,7 +60,10 @@ export type FloorPathResponse = {
     imageBoundsEast: number;
     imageBoundsWest: number;
     path: NodePathResponse[];
+    direction: string[];
+
 }
+
 
 export type PathfindingResponse = {
     parkingLotPath: ParkingPathResponse;
@@ -77,6 +81,7 @@ export type EditorGraph = {
     Edges: EditorEdges[];
     FloorGraph: EditorFloorGraph | null;
     ParkingGraph: EditorParkingGraph | null;
+    graphName: string;
 }
 
 export type EditorFloorGraph = {
@@ -103,6 +108,7 @@ export type EditorNode = {
     lat: number;
     lng: number;
     type: EditorNodeType;
+    graphId: number;
     connectedNodeId: number | null;
 }
 

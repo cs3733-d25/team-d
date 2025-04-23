@@ -10,7 +10,6 @@ import {
 import axios from "axios";
 import {Separator} from "@/components/ui/separator.tsx";
 import {Label} from "@/components/ui/label.tsx";
-import {cn} from "@/lib/utils.ts";
 import {
     Select,
     SelectContent,
@@ -22,6 +21,22 @@ import {
 } from "@/components/ui/select.tsx";
 import {Button} from "@/components/ui/button.tsx";
 
+export class EditorEncapsulator {
+    editorGraphs: EditorGraph[];
+
+    constructor(editorGraphs: EditorGraph[]) {
+        this.editorGraphs = editorGraphs;
+    }
+
+    getGraphById(graphId: number): EditorGraph {
+        const graph = this.editorGraphs.find(graph => graph.graphId === graphId);
+        if (!graph) {
+            throw new Error("Graph id not found.");
+        }
+        return graph;
+    }
+}
+
 
 export default function MapEditor() {
 
@@ -32,32 +47,54 @@ export default function MapEditor() {
 
     const [map, setMap] = useState<EditorMap>();
 
-    const [data, setData] = useState<EditorGraph[]>([]);
+    const [displayData, setDisplayData] = useState<EditorGraph[]>([]);
+
+    const [editingData, setEditingData] = useState<EditorEncapsulator>();
 
     useEffect(() => {
+        console.log('useEffect MapEditor');
+        let tempMap: EditorMap
         const fetchMap = async () => {
             if (mapRef.current) {
-                setMap(await EditorMap.makeMap(mapRef.current));
+                tempMap = await EditorMap.makeMap(mapRef.current)
+                setMap(tempMap);
             }
         }
         fetchMap().then(() => {
             axios.get(API_ROUTES.EDITOR).then(response => {
-                setData(response.data as EditorGraph[]);
-                if (map) {
-                    map.initialize(response.data as EditorGraph[]);
+                setDisplayData(response.data as EditorGraph[]);
+                const editorGraphEncapsulator = new EditorEncapsulator(response.data as EditorGraph[]);
+                setEditingData(editorGraphEncapsulator);
+                if (tempMap) {
+                    tempMap.initialize(editorGraphEncapsulator);
                 }
             });
         });
     }, []);
 
     const handleGraphChange = (value: string) => {
-        const graph = data.find(graph => graph.graphId === Number(value));
-        if (!map || !graph) return;
-        map.changeGraph(graph);
+        if (!map) return;
+        map.changeGraph(Number(value));
+    }
+
+    const handleZoom = () => {
+        if (!map) return;
+        map.zoom();
+    }
+
+    const handleSave = () => {
+        if (!editingData) return;
+        axios.put(API_ROUTES.EDITOR, editingData.editorGraphs).then(response => {
+            console.log(response);
+        }).then((res) => {
+            alert('Successfully imported nodes');
+        }).catch((err) => {
+            alert('Error importing nodes');
+        });
     }
 
     return (
-        <div className="flex flex-row flex-1">
+        <div className="flex flex-row flex-1 h-screen overflow-y-hidden">
             <div className="flex-1 p-4">
 
                 <h2 className="text-3xl font-bold">Map Editor</h2>
@@ -71,14 +108,25 @@ export default function MapEditor() {
                     <SelectContent>
                         <SelectGroup>
                             <SelectLabel>Graphs</SelectLabel>
-                            {data.map((g) => (
+                            {displayData.map((g) => (
                                 <SelectItem key={g.graphId + 1} value={g.graphId.toString()}>
-                                    {g.graphId}
+                                    {g.graphName}
                                 </SelectItem>
                             ))}
                         </SelectGroup>
                     </SelectContent>
                 </Select>
+                <Separator className="mt-4 mb-4" />
+                {}
+                <div className="flex flex-row">
+                    <Button className="mb-4" onClick={handleZoom}>
+                        Zoom
+                    </Button>
+                    <Separator className="mr-4 ml-4" orientation="vertical" />
+                    <Button className="mb-4" onClick={handleSave}>
+                        Save
+                    </Button>
+                </div>
             </div>
             <div ref={mapRef} className="flex-3">
                 {/* Google map will go here */}

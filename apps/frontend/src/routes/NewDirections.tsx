@@ -33,16 +33,17 @@ export default function NewDirections() {
 
     const [map, setMap] = useState<PathfindingMap>();
 
-    const [data, setData] = useState<PathfindingOptions>({
+    const [displayData, setDisplayData] = useState<PathfindingOptions>({
         hospitals: [],
     });
 
-    const [hospital, setHospital] = useState<HospitalOptions | null>(null);
-    const [department, setDepartment] = useState<DepartmentOptions | null>(null);
+    const [selectedHospital, setSelectedHospital] = useState<HospitalOptions | null>(null);
+    const [selectedDepartment, setSelectedDepartment] = useState<DepartmentOptions | null>(null);
 
     const [pathfindingResponse, setPathfindingResponse] = useState<PathfindingResponse>();
 
     useEffect(() => {
+        console.log('useEffect NewDirections');
         const fetchMap = async () => {
             if (mapRef.current && autocompleteRef.current ) {
                 setMap(await PathfindingMap.makeMap(mapRef.current, autocompleteRef.current));
@@ -50,22 +51,22 @@ export default function NewDirections() {
         }
         fetchMap().then(() => {
             axios.get(API_ROUTES.PATHFIND + '/options/').then(response => {
-                setData(response.data as PathfindingOptions);
+                setDisplayData(response.data as PathfindingOptions);
             });
         });
 
     }, []);
 
     const handleHospitalChange = (value: string) => {
-        setHospital(data.hospitals.find(h => h.name === value) || null);
+        setSelectedHospital(displayData.hospitals.find(h => h.name === value) || null);
     }
 
     const handleDepartmentChange = (value: string) => {
-        if (!hospital) return;
+        if (!selectedHospital) return;
 
-        const newDepartment = hospital.departments.find(d => d.name === value);
+        const newDepartment = selectedHospital.departments.find(d => d.name === value);
         if (!newDepartment) return;
-        setDepartment(newDepartment);
+        setSelectedDepartment(newDepartment);
 
         if (!map) return;
         axios.get(API_ROUTES.PATHFIND + '/path-to-dept/' + newDepartment.departmentId).then(response => {
@@ -83,12 +84,12 @@ export default function NewDirections() {
         if (!pathfindingResponse || !map) return;
         map.recenter(
             pathfindingResponse.parkingLotPath.path[0].lat,
-            pathfindingResponse.parkingLotPath.path[0].lng, 17
+            pathfindingResponse.parkingLotPath.path[0].lng, 20
         );
     }
 
     return (
-        <div className="flex flex-row flex-1">
+        <div className="flex flex-row flex-1 h-screen overflow-y-hidden">
             <div className="flex-1 p-4">
                 <h2 className="text-3xl font-bold">Get Directions</h2>
                 <Separator className="mt-4 mb-4" />
@@ -117,7 +118,7 @@ export default function NewDirections() {
                     <SelectContent>
                         <SelectGroup>
                             <SelectLabel>Hospitals</SelectLabel>
-                            {data.hospitals.map((h: HospitalOptions) => (
+                            {displayData.hospitals.map((h: HospitalOptions) => (
                                 <SelectItem key={h.hospitalId + 1} value={h.name}>
                                     {h.name}
                                 </SelectItem>
@@ -125,7 +126,6 @@ export default function NewDirections() {
                         </SelectGroup>
                     </SelectContent>
                 </Select>
-
 
 
                 <Label>Transport Mode</Label>
@@ -143,7 +143,19 @@ export default function NewDirections() {
                     </SelectContent>
                 </Select>
 
-                {hospital &&
+                <div className="mb-5">
+                    <div id="step-instruction">Loading directions...</div>
+                    <button
+                        id="next-step-btn"
+                        className="mt-2 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+                    >
+                        Next Step
+                    </button>
+                </div>
+
+
+
+                {selectedHospital &&
                     <>
                         <Separator className="mt-4 mb-4" />
 
@@ -155,7 +167,7 @@ export default function NewDirections() {
                             <SelectContent>
                                 <SelectGroup key="0">
                                     <SelectLabel>Departments</SelectLabel>
-                                    {hospital.departments.map((d: DepartmentOptions) => (
+                                    {selectedHospital.departments.map((d: DepartmentOptions) => (
                                         <SelectItem key={d.departmentId + 1} value={d.name}>
                                             {d.name}
                                         </SelectItem>
@@ -164,10 +176,31 @@ export default function NewDirections() {
                             </SelectContent>
                         </Select>
                         {pathfindingResponse &&
-                            <Button onClick={handleZoom} className="mb-4">
-                                Zoom
-                            </Button>
+                            <div>
+
+
+
+                                <Button onClick={handleZoom} className="mb-4">
+                                    Zoom
+                                </Button>
+
+
+
+                            </div>
+
+
+
                         }
+
+                        <div className="mb-5">
+                            <div id="inner-step-instruction">Loading directions...</div>
+                            <button
+                                id="inner-next-step-btn"
+                                className="mt-2 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+                            >
+                                Next Step
+                            </button>
+                        </div>
                     </>
                 }
                 {/*<Separator className="mt-4 mb-4" />*/}

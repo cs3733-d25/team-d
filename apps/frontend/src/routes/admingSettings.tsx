@@ -1,10 +1,9 @@
 
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-
+import axios from "axios";
 type Panel = "profile" | "algorithms" | "directory";
-type Algo = "BFS" | "DFS";
-
+import AlgorithmSettings from "@/components/AlgorithmSettings.tsx";
 import { Textarea } from "@/components/ui/Textarea"
 import {Label} from "@/components/ui/label.tsx";
 import {Input} from "@/components/ui/input.tsx";
@@ -29,7 +28,8 @@ import {Input} from "@/components/ui/input.tsx";
 
 const AdminSettings: React.FC = () => {
     const [activePanel, setActivePanel] = useState<Panel>("profile");
-    const [algorithm, setAlgorithm] = useState<Algo>("BFS");
+    const [algorithm, setAlgorithm] = useState<string>("BFS");
+
 
     return (
         <div className="min-h-screen bg-white flex">
@@ -142,27 +142,44 @@ const AdminSettings: React.FC = () => {
                 )}
 
                 {activePanel === "algorithms" && (
-                    <div>
-                        <h1 className="text-2xl font-bold mb-6">
-                            Select Pathfinding Algorithm
-                        </h1>
-                        <div className="flex gap-4">
-                            {(["BFS", "DFS"] as Algo[]).map((algo) => (
-                                <Button
-                                    key={algo}
-                                    variant="ghost"
-                                    className={
-                                        algorithm === algo
-                                            ? "bg-blue-900 text-white"
-                                            : "bg-gray-200"
-                                    }
-                                    onClick={() => setAlgorithm(algo)}
-                                >
-                                    {algo}
-                                </Button>
-                            ))}
-                        </div>
-                    </div>
+                    // <div>
+                    //     <h1 className="text-2xl font-bold mb-6">
+                    //         Select Pathfinding Algorithm
+                    //     </h1>
+                    //     <div className="flex gap-4">
+                    //         {(["BFS", "DFS"] as Algo[]).map((algo) => (
+                    //             <div>
+                    //                 <Button
+                    //                     key={algo}
+                    //                     variant="ghost"
+                    //                     className={
+                    //                         algorithm === algo
+                    //                             ? "bg-blue-900 text-white"
+                    //                             : "bg-gray-200"
+                    //                     }
+                    //                     onClick={() => setAlgorithm(algo)}
+                    //                 >
+                    //                     {algo}
+                    //                 </Button>
+                    //
+                    //
+                    //             </div>
+                    //
+                    //         ))}
+                    //     </div>
+                    //     <Button onClick={async () => {
+                    //         try {
+                    //             const res = await axios.put(`/algorithm/${algorithm}`);
+                    //             console.log("Algorithm updated:", res.data.message);
+                    //         } catch (error) {
+                    //             console.error("Failed to update algorithm:", error);
+                    //             alert("Something went wrong while updating the algorithm");
+                    //         }
+                    //     }}>
+                    //         Save Changes
+                    //     </Button>
+                    // </div>
+                    <AlgorithmSettings />
                 )}
 
                 {activePanel === "directory" && (

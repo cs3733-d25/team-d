@@ -16,9 +16,7 @@ class BFSStrategy implements PathFindingStrategy {
         graph: Graph
     ): NodePathResponse[] {
         const endNode = graph.getNode(endNodeId);
-        if (!endNode) {
-            throw new Error(`Node ${endNodeId} not found`);
-        }
+        if (!endNode) return [];
 
         const visited = new Set<number>();
         const queue: { node: GraphNode; path: GraphNode[] }[] = [
@@ -37,6 +35,41 @@ class BFSStrategy implements PathFindingStrategy {
                 }
             }
         }
+        return [];
+    }
+}
+
+// DFS Implementation
+class DFSStrategy implements PathFindingStrategy {
+    search(
+        startNodeType: NodePathResponseType,
+        endNodeId: number,
+        graph: Graph
+    ): NodePathResponse[] {
+        const endNode = graph.getNode(endNodeId);
+        if (!endNode) return [];
+
+        const visited = new Set<number>();
+        const stack: { node: GraphNode; path: GraphNode[] }[] = [
+            { node: endNode, path: [endNode] },
+        ];
+
+        while (stack.length > 0) {
+            const { node, path } = stack.pop()!;
+            if (node.data.type === startNodeType) {
+                return path.map((node) => node.data).reverse();
+            }
+
+            if (!visited.has(node.data.nodeId)) {
+                visited.add(node.data.nodeId);
+                for (const neighbor of node.getNeighbors()) {
+                    if (!visited.has(neighbor.data.nodeId)) {
+                        stack.push({ node: neighbor, path: [...path, neighbor] });
+                    }
+                }
+            }
+        }
+
         return [];
     }
 }
@@ -63,7 +96,7 @@ class Graph {
     private readonly nodesMap: Map<number, GraphNode>;
     private pathFindingStrategy: PathFindingStrategy;
 
-    constructor(strategy: PathFindingStrategy = new BFSStrategy()) {
+    constructor(strategy: PathFindingStrategy) {
         this.nodesMap = new Map();
         this.pathFindingStrategy = strategy;
     }
@@ -74,6 +107,7 @@ class Graph {
     }
 
     addNode(data: NodePathResponse): void {
+        // console.log(data.nodeId);
         if (!this.nodesMap.has(data.nodeId)) {
             const newNode = new GraphNode(data);
             this.nodesMap.set(data.nodeId, newNode);
@@ -89,8 +123,10 @@ class Graph {
     addEdge(id1: number, id2: number): void {
         const node1 = this.nodesMap.get(id1);
         const node2 = this.nodesMap.get(id2);
-        if (!node1 || !node2) {
-            throw new Error(`Node ${id2} or Node ${id2} does not exist`);
+        if (!node1) {
+            throw new Error(`Node ${id1}does not exist`);
+        } else if (!node2) {
+            throw new Error(`Node ${id2}does not exist`);
         } else {
             node1.addNeighbor(node2);
             node2.addNeighbor(node1);
@@ -100,8 +136,66 @@ class Graph {
     search(startNodeType: NodePathResponseType, endNodeId: number): NodePathResponse[] {
         return this.pathFindingStrategy.search(startNodeType, endNodeId, this);
     }
+
+    generateDirectionStepsFromNodes(path: NodePathResponse[]): string[] {
+        if (path.length < 2) return ['Not enough points for directions'];
+
+        const steps: string[] = [`Start at ${path[0].name ?? this.formatCoord(path[0])}`];
+
+        for (let i = 1; i < path.length - 1; i++) {
+            const prev = path[i - 1];
+            const curr = path[i];
+            const next = path[i + 1];
+
+            const v1 = {
+                x: curr.lng - prev.lng,
+                y: curr.lat - prev.lat,
+            };
+            const v2 = {
+                x: next.lng - curr.lng,
+                y: next.lat - curr.lat,
+            };
+
+            const angle = this.angleBetweenVectors(v1, v2);
+            let direction: string;
+
+            if (angle < 30) {
+                direction = 'Continue straight';
+            } else if (angle < 135) {
+                const cross = v1.x * v2.y - v1.y * v2.x;
+                direction = cross > 0 ? 'Turn left' : 'Turn right';
+            } else {
+                direction = 'Make a U-turn';
+            }
+
+            const label = curr.name || curr.type || this.formatCoord(curr);
+            steps.push(`${direction} at ${label}`);
+        }
+
+        steps.push(
+            `Arrive at ${path[path.length - 1].name ?? this.formatCoord(path[path.length - 1])}`
+        );
+        return steps;
+    }
+
+    private angleBetweenVectors(
+        v1: { x: number; y: number },
+        v2: { x: number; y: number }
+    ): number {
+        const dot = v1.x * v2.x + v1.y * v2.y;
+        const mag1 = Math.sqrt(v1.x * v1.x + v1.y * v1.y);
+        const mag2 = Math.sqrt(v2.x * v2.x + v2.y * v2.y);
+
+        const angleRad = Math.acos(dot / (mag1 * mag2));
+        return angleRad * (180 / Math.PI);
+    }
+
+    private formatCoord(node: NodePathResponse): string {
+        return `(${node.lat.toFixed(5)}, ${node.lng.toFixed(5)})`;
+    }
 }
 
 export { Graph };
 export type { PathFindingStrategy };
 export { BFSStrategy };
+export { DFSStrategy };

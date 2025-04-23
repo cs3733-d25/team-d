@@ -30,11 +30,24 @@ export default function Navbar() {
 
 
 
+                            {/*<NavigationMenuItem>*/}
+                            {/*    <NavigationMenuLink className={'text-base hover:bg-[rgba(0,31,63,0.8)] hover:text-white'}>*/}
+                            {/*        <Link to={`/directory`}>Directions</Link>*/}
+                            {/*    </NavigationMenuLink>*/}
+                            {/*</NavigationMenuItem>*/}
+
                             <NavigationMenuItem>
                                 <NavigationMenuLink className={'text-base hover:bg-[rgba(0,31,63,0.8)] hover:text-white'}>
-                                    <Link to={`/directory`}>Directions</Link>
+                                    <span
+                                        onClick={() => (window.location.href = '/directory')}
+                                        className="cursor-pointer"
+                                    >
+                                        Directions
+                                    </span>
                                 </NavigationMenuLink>
                             </NavigationMenuItem>
+
+
 
                             <NavigationMenuItem>
                                 <NavigationMenuLink className={'text-base hover:bg-[rgba(0,31,63,0.8)] hover:text-white'}>
@@ -58,7 +71,12 @@ export default function Navbar() {
 
                                     <NavigationMenuItem>
                                         <NavigationMenuLink className={'text-base hover:bg-[rgba(0,31,63,0.8)] hover:text-white'}>
-                                            <Link to={`/map-editor`}>Map Editor</Link>
+                                            <span
+                                                onClick={() => (window.location.href = '/map-editor')}
+                                                className="cursor-pointer"
+                                            >
+                                                Map Editor
+                                            </span>
                                         </NavigationMenuLink>
                                     </NavigationMenuItem>
 
