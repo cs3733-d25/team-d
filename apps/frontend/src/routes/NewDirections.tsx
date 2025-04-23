@@ -33,12 +33,12 @@ export default function NewDirections() {
 
     const [map, setMap] = useState<PathfindingMap>();
 
-    const [data, setData] = useState<PathfindingOptions>({
+    const [displayData, setDisplayData] = useState<PathfindingOptions>({
         hospitals: [],
     });
 
-    const [hospital, setHospital] = useState<HospitalOptions | null>(null);
-    const [department, setDepartment] = useState<DepartmentOptions | null>(null);
+    const [selectedHospital, setSelectedHospital] = useState<HospitalOptions | null>(null);
+    const [selectedDepartment, setSelectedDepartment] = useState<DepartmentOptions | null>(null);
 
     const [pathfindingResponse, setPathfindingResponse] = useState<PathfindingResponse>();
 
@@ -50,22 +50,22 @@ export default function NewDirections() {
         }
         fetchMap().then(() => {
             axios.get(API_ROUTES.PATHFIND + '/options/').then(response => {
-                setData(response.data as PathfindingOptions);
+                setDisplayData(response.data as PathfindingOptions);
             });
         });
 
     }, []);
 
     const handleHospitalChange = (value: string) => {
-        setHospital(data.hospitals.find(h => h.name === value) || null);
+        setSelectedHospital(displayData.hospitals.find(h => h.name === value) || null);
     }
 
     const handleDepartmentChange = (value: string) => {
-        if (!hospital) return;
+        if (!selectedHospital) return;
 
-        const newDepartment = hospital.departments.find(d => d.name === value);
+        const newDepartment = selectedHospital.departments.find(d => d.name === value);
         if (!newDepartment) return;
-        setDepartment(newDepartment);
+        setSelectedDepartment(newDepartment);
 
         if (!map) return;
         axios.get(API_ROUTES.PATHFIND + '/path-to-dept/' + newDepartment.departmentId).then(response => {
@@ -117,7 +117,7 @@ export default function NewDirections() {
                     <SelectContent>
                         <SelectGroup>
                             <SelectLabel>Hospitals</SelectLabel>
-                            {data.hospitals.map((h: HospitalOptions) => (
+                            {displayData.hospitals.map((h: HospitalOptions) => (
                                 <SelectItem key={h.hospitalId + 1} value={h.name}>
                                     {h.name}
                                 </SelectItem>
@@ -152,7 +152,7 @@ export default function NewDirections() {
                     </SelectContent>
                 </Select>
 
-                {hospital &&
+                {selectedHospital &&
                     <>
                         <Separator className="mt-4 mb-4" />
 
@@ -164,7 +164,7 @@ export default function NewDirections() {
                             <SelectContent>
                                 <SelectGroup key="0">
                                     <SelectLabel>Departments</SelectLabel>
-                                    {hospital.departments.map((d: DepartmentOptions) => (
+                                    {selectedHospital.departments.map((d: DepartmentOptions) => (
                                         <SelectItem key={d.departmentId + 1} value={d.name}>
                                             {d.name}
                                         </SelectItem>

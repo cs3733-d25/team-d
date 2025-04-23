@@ -21,11 +21,19 @@ import {
 } from "@/components/ui/select.tsx";
 import {Button} from "@/components/ui/button.tsx";
 
-export class EditorGraphEncapsulator {
+export class EditorEncapsulator {
     editorGraphs: EditorGraph[];
 
     constructor(editorGraphs: EditorGraph[]) {
         this.editorGraphs = editorGraphs;
+    }
+
+    getGraphById(graphId: number): EditorGraph {
+        const graph = this.editorGraphs.find(graph => graph.graphId === graphId);
+        if (!graph) {
+            throw new Error("Graph id not found.");
+        }
+        return graph;
     }
 }
 
@@ -39,32 +47,33 @@ export default function MapEditor() {
 
     const [map, setMap] = useState<EditorMap>();
 
-    const [data, setData] = useState<EditorGraph[]>([]);
+    const [displayData, setDisplayData] = useState<EditorGraph[]>([]);
 
-    const [editorGraphs, setEditorGraphs] = useState<EditorGraphEncapsulator>();
+    const [editingData, setEditingData] = useState<EditorEncapsulator>();
 
     useEffect(() => {
+        let tempMap: EditorMap
         const fetchMap = async () => {
             if (mapRef.current) {
-                setMap(await EditorMap.makeMap(mapRef.current));
+                tempMap = await EditorMap.makeMap(mapRef.current)
+                setMap(tempMap);
             }
         }
         fetchMap().then(() => {
             axios.get(API_ROUTES.EDITOR).then(response => {
-                setData(response.data as EditorGraph[]);
-                const editorGraphEncapsulator = new EditorGraphEncapsulator(response.data as EditorGraph[]);
-                setEditorGraphs(editorGraphEncapsulator);
-                if (map) {
-                    map.initialize(response.data as EditorGraph[]);
+                setDisplayData(response.data as EditorGraph[]);
+                const editorGraphEncapsulator = new EditorEncapsulator(response.data as EditorGraph[]);
+                setEditingData(editorGraphEncapsulator);
+                if (tempMap) {
+                    tempMap.initialize(editorGraphEncapsulator);
                 }
             });
         });
     }, []);
 
     const handleGraphChange = (value: string) => {
-        const graph = data.find(graph => graph.graphId === Number(value));
-        if (!map || !graph) return;
-        map.changeGraph(graph);
+        if (!map) return;
+        map.changeGraph(Number(value));
     }
 
     return (
@@ -82,7 +91,7 @@ export default function MapEditor() {
                     <SelectContent>
                         <SelectGroup>
                             <SelectLabel>Graphs</SelectLabel>
-                            {data.map((g) => (
+                            {displayData.map((g) => (
                                 <SelectItem key={g.graphId + 1} value={g.graphId.toString()}>
                                     {g.graphId}
                                 </SelectItem>
