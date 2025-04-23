@@ -143,16 +143,8 @@ router.put('/directory/buildings/:id', async function (req: Request, res: Respon
     // success: update specified building
     else {
         try {
-            const {
-                name,
-                address,
-                hospitalId,
-                Hospital,
-                FloorGraphs,
-            } = req.body;
-            const [
-                updateBuilding,
-            ] = await PrismaClient.$transaction([
+            const { name, address, hospitalId, Hospital, FloorGraphs } = req.body;
+            const [updateBuilding] = await PrismaClient.$transaction([
                 PrismaClient.building.update({
                     where: { buildingId: buildingId },
                     data: {
