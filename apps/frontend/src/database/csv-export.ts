@@ -13,7 +13,7 @@ type Department = {
 export async function GetDirectory(selectedHospital: number) {
     //get department data using get request
     let data;
-    if(selectedHospital == 2){
+    if(selectedHospital == 3){
         data = (await axios.get('api/department/all')).data;
     }else {
         data = (await axios.get('api/department/all/'+selectedHospital)).data;

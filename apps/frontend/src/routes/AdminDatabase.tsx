@@ -31,14 +31,14 @@ type Department = {
 const AdminDatabase: React.FC = () => {
     const [departments, currDepartments] = useState<Department[]>([]);
     const [loading, setLoading] = React.useState(false); // true means it needs to reload
-    const [selectedHospital, setSelectedHospital] = useState<0 | 1 | 2>(2);
+    const [selectedHospital, setSelectedHospital] = useState<0 | 1 | 2 | 3>(3);
 
 
     //getting department data for display
     const getDepartments = async() => {
         try{
             let data;
-            if(selectedHospital == 2){
+            if(selectedHospital == 3){
                 data = await axios.get('api/department');
             }else {
                 data = await axios.get('api/department/hospital/'+selectedHospital);
@@ -77,6 +77,12 @@ const AdminDatabase: React.FC = () => {
                 <Button
                     className={selectedHospital === 2 ? "bg-blue-500 text-white" : "bg-gray-200"}
                     onClick={() => setSelectedHospital(2)}
+                >
+                    Faulkner
+                </Button>
+                <Button
+                    className={selectedHospital === 3 ? "bg-blue-500 text-white" : "bg-gray-200"}
+                    onClick={() => setSelectedHospital(3)}
                 >
                     All
                 </Button>
