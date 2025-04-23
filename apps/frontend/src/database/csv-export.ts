@@ -1,16 +1,23 @@
 import axios from 'axios';
 
-interface Department{
+type Department = {
     departmentId: number;
     name: string;
     floorNum: number;
+    lat: number;
+    lng: number;
     room: string;
-    building: string;
+    floorGraphId: number;
 }
 
-export async function GetDirectory() {
+export async function GetDirectory(selectedHospital: number) {
     //get department data using get request
-    const data = (await axios.get('/api/department/all')).data;
+    let data;
+    if(selectedHospital == 2){
+        data = (await axios.get('api/department/all')).data;
+    }else {
+        data = (await axios.get('api/department/all/'+selectedHospital)).data;
+    }
     //converting data from JSON format to CSV format
     const cols = Object.keys(data[0]);
     const colsString = cols.join(',');

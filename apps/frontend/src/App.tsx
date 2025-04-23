@@ -18,13 +18,16 @@ import HospitalDirectory from "@/routes/hospitalDirectory.tsx";
 import AdminSettings from "@/routes/admingSettings.tsx";
 
 import { ProtectedRoute } from "./components/ProtectedRoute";
-import SanitationServiceRequest from "@/components/ServiceRequest/SanitationRequest/SanitationServiceRequest.tsx";
+import NewDirections from "@/routes/NewDirections.tsx";
+import MapEditor from "@/routes/MapEditor.tsx";
 
 function App() {
     return (
         <div className="h-screen bg-accent flex flex-col parent">
             <BrowserRouter>
                 <Routes>
+                    <Route path="/gmap" element={<NewDirections />} />
+                    <Route path="/emap" element={<MapEditor />} />
                     <Route path="/" element={<Navbar />}>
                         <Route index element={<Home />} />
                         <Route path="directory" element={<Directions editor={false} />} />

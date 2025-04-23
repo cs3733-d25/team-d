@@ -15,12 +15,17 @@ import {updateDirectory} from "@/database/csv-import.ts";
 import { useState, useEffect } from 'react';
 import axios from "axios";
 
+type Building = {
+    name: string;
+}
+
 type Department = {
     departmentId: number;
     name: string;
     floorNum: number;
     room: string;
-    building: string;
+    hospitalId: number;
+    Building: Building;
 }
 
 const AdminDatabase: React.FC = () => {
@@ -34,9 +39,9 @@ const AdminDatabase: React.FC = () => {
         try{
             let data;
             if(selectedHospital == 2){
-                data = await axios.get('api/department/all');
+                data = await axios.get('api/department');
             }else {
-                data = await axios.get('api/department/'+selectedHospital+'/all');
+                data = await axios.get('api/department/hospital/'+selectedHospital);
             }
             currDepartments(data.data);
             setLoading(false);
@@ -67,9 +72,8 @@ const AdminDatabase: React.FC = () => {
                     className={selectedHospital === 1 ? "bg-blue-500 text-white" : "bg-gray-200"}
                     onClick={() => setSelectedHospital(1)}
                 >
-                    Patriots Place
+                    Patriot Place
                 </Button>
-
                 <Button
                     className={selectedHospital === 2 ? "bg-blue-500 text-white" : "bg-gray-200"}
                     onClick={() => setSelectedHospital(2)}
@@ -79,7 +83,7 @@ const AdminDatabase: React.FC = () => {
 
                 <Separator orientation="vertical" className="h-8 mx-4" />
                 {/* Export/Import buttons and file input */}
-                <Button onClick={() => GetDirectory()}>Export as CSV</Button>
+                <Button onClick={() => GetDirectory(selectedHospital)}>Export as CSV</Button>
                 <Input type="file" accept=".csv" className="max-w-xs" id="directory"/>
                 <Button onClick={() => importOnClick()}>Import CSV</Button>
 
@@ -108,7 +112,7 @@ const AdminDatabase: React.FC = () => {
                             <TableCell>{department.name}</TableCell>
                             <TableCell>{department.floorNum}</TableCell>
                             <TableCell>{department.room}</TableCell>
-                            <TableCell>{department.building}</TableCell>
+                            <TableCell>{department.Building.name}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>

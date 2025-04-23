@@ -80,7 +80,7 @@ export default function Directions(props: DirectionsProps) {
             console.log(response.data as Hospital[]);
             setData(response.data as Hospital[]);
             console.log('New data: ' + data);
-        })
+        });
     }, []);
 
     const handleHospitalChange = (value: string) => {
@@ -117,6 +117,8 @@ export default function Directions(props: DirectionsProps) {
                 break;
             }
         }
+
+
     }
 
     const handleDepartmentChange = (value: string) => {
