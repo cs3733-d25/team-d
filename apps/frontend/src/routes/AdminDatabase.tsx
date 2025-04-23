@@ -83,7 +83,7 @@ const AdminDatabase: React.FC = () => {
 
                 <Separator orientation="vertical" className="h-8 mx-4" />
                 {/* Export/Import buttons and file input */}
-                <Button onClick={() => GetDirectory()}>Export as CSV</Button>
+                <Button onClick={() => GetDirectory(selectedHospital)}>Export as CSV</Button>
                 <Input type="file" accept=".csv" className="max-w-xs" id="directory"/>
                 <Button onClick={() => importOnClick()}>Import CSV</Button>
 

@@ -3,6 +3,7 @@ import PrismaClient from '../bin/prisma-client';
 import { Prisma } from 'database';
 const router: Router = express.Router();
 
+// Returns all departments with building name, if any
 router.get('/', async (req, res) => {
     const data = await PrismaClient.department.findMany({
         include: {
@@ -22,7 +23,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-// Returns all departments in the directory, if any
+// Returns all departments, if any
 router.get('/all', async function (req: Request, res: Response) {
     const departments = await PrismaClient.department.findMany();
     // if there are no departments found
@@ -35,18 +36,32 @@ router.get('/all', async function (req: Request, res: Response) {
     }
 });
 
-// Returns all departments in the directory, if any
+// Returns all departments a given hospital, if any
+router.get('/all/:id', async function (req: Request, res: Response) {
+    const hospitalId: number = Number(req.params.id);
+    const departments = await PrismaClient.department.findMany({
+        where: {
+            hospitalId: hospitalId,
+        },
+    });
+    // if there are no departments found
+    if (departments == null) {
+        console.error('No departments found in database');
+        res.sendStatus(204);
+    } else {
+        console.log(departments); // display department data to console
+        res.json(departments);
+    }
+});
+
+// Returns all departments a given hospital with building name, if any
 router.get('/hospital/:id', async function (req: Request, res: Response) {
     const hospitalId: number = Number(req.params.id);
     const departments = await PrismaClient.department.findMany({
         where: {
             hospitalId: hospitalId,
         },
-        select: {
-            departmentId: true,
-            name: true,
-            floorNum: true,
-            room: true,
+        include: {
             Building: {
                 select: {
                     name: true,
