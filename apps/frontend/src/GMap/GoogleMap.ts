@@ -1,5 +1,5 @@
 import axios from "axios";
-import {API_ROUTES, EditorGraph, PathfindingResponse} from "common/src/constants.ts";
+import {API_ROUTES, EditorGraph, FloorPathResponse, PathfindingResponse} from "common/src/constants.ts";
 
 const API_KEY: string = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 const SCRIPT_URL: string = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&libraries=places&callback=initMap`
@@ -74,11 +74,16 @@ class PathfindingGraph {
     private highlightedLine: google.maps.Polyline | null = null;
     private loadThisAfter: PathfindingGraph | null = null;
 
-    constructor(map: google.maps.Map, path: google.maps.LatLngLiteral[], color: string, after: PathfindingGraph | null) {
+
+    //
+    private floor: FloorPathResponse | null = null;
+
+    constructor(map: google.maps.Map, path: google.maps.LatLngLiteral[], color: string, after: PathfindingGraph | null, floor: FloorPathResponse | null) {
         this.pathForDisplay = path;
         this.map = map;
         this.pathPolylines = [];
         this.loadThisAfter = after;
+        this.floor = floor;
         for (let i = 0; i < this.pathForDisplay.length - 1; i++) {
             const line = new google.maps.Polyline({
                 path: [this.pathForDisplay[i], this.pathForDisplay[i + 1]],
@@ -206,6 +211,17 @@ class PathfindingGraph {
                             anchor: new google.maps.Point(3.5, 3.5)
                         });
                     }
+                    if(this.floor){
+                        this.remove();
+                        const hicurrentFloorMap = new google.maps.GroundOverlay(this.floor.image, {
+                            north: this.floor.imageBoundsNorth,
+                            south: this.floor.imageBoundsSouth,
+                            east: this.floor.imageBoundsEast,
+                            west: this.floor.imageBoundsWest,
+                        });
+                        hicurrentFloorMap.setMap(this.map);
+
+                    }
                     this.loadThisAfter?.setupInnerNextButton();
                     this.loadThisAfter?.showInnerStep();
                 }
@@ -327,18 +343,21 @@ export class PathfindingMap extends GoogleMap {
         // Load new floor overlay
         console.log(pathfindingResponse.floorPaths.length)
 
+        let floor: FloorPathResponse | null;
+        floor = null;
+
         let previousGraph: PathfindingGraph | null = null;
         for (let i = pathfindingResponse.floorPaths.length - 1 ;i >=0; i--) {
-            const floor = pathfindingResponse.floorPaths[i];
+            floor = pathfindingResponse.floorPaths[i];
             let graph: PathfindingGraph;
             if (i==pathfindingResponse.floorPaths.length - 1) {
-                graph = new PathfindingGraph(this.map, floor.path, '#CC3300', null);
+                graph = new PathfindingGraph(this.map, floor.path, '#CC3300', null, null);
                 graph.innerSteps = floor.direction;
                 console.log(graph);
 
             }
             else {
-                graph = new PathfindingGraph(this.map, floor.path, '#CC3300', previousGraph);
+                graph = new PathfindingGraph(this.map, floor.path, '#CC3300', previousGraph, floor);
                 graph.innerSteps = floor.direction;
                 console.log(graph);
 
@@ -346,14 +365,14 @@ export class PathfindingMap extends GoogleMap {
             previousGraph = graph;
         }
 
-        const floor = pathfindingResponse.floorPaths[0];
-        this.currentFloorMap = new google.maps.GroundOverlay(floor.image, {
-            north: floor.imageBoundsNorth,
-            south: floor.imageBoundsSouth,
-            east: floor.imageBoundsEast,
-            west: floor.imageBoundsWest,
-        });
-        this.currentFloorMap.setMap(this.map);
+        // const floor = pathfindingResponse.floorPaths[0];
+        // this.currentFloorMap = new google.maps.GroundOverlay(floor.image, {
+        //     north: floor.imageBoundsNorth,
+        //     south: floor.imageBoundsSouth,
+        //     east: floor.imageBoundsEast,
+        //     west: floor.imageBoundsWest,
+        // });
+        // this.currentFloorMap.setMap(this.map);
 
 
 
@@ -362,7 +381,7 @@ export class PathfindingMap extends GoogleMap {
         // this.currentFloorPath.innerSteps = floor.direction;
 
         // Now create the parking path and pass in the floor path to trigger after
-        this.currentParkingPath = new PathfindingGraph(this.map, pathfindingResponse.parkingLotPath.path, '#CC3300', previousGraph);
+        this.currentParkingPath = new PathfindingGraph(this.map, pathfindingResponse.parkingLotPath.path, '#CC3300', previousGraph, floor );
         this.currentParkingPath.innerSteps = pathfindingResponse.parkingLotPath.direction;
 
         this.currentParkingPath.showInnerStep(); // start here
@@ -388,35 +407,35 @@ export class PathfindingMap extends GoogleMap {
         this.route();
     }
 
-    updateCurrentFloor(floorNum: number) {
-        if (!this.currentPathfindingResponse) return;
-        const floorPath = this.currentPathfindingResponse.floorPaths.find(fp => fp.floorNum === floorNum);
-
-        if (floorPath) {
-            if (this.currentFloorPath) {
-                this.currentFloorPath.remove();
-                this.currentFloorPath = null;
-            }
-            if (this.currentFloorMap) {
-                this.currentFloorMap.setMap(null);
-                this.currentFloorMap = null;
-            }
-            this.currentFloorPath = new PathfindingGraph(this.map, this.currentPathfindingResponse.floorPaths[0].path, '#00AACC', null);console.log('steps');
-            this.currentFloorPath.innerSteps = this.currentPathfindingResponse.floorPaths[0].direction;
-
-            this.currentFloorPath.showInnerStep();
-            this.currentFloorPath.setupInnerNextButton();
-
-            this.currentFloorMap = new google.maps.GroundOverlay(this.currentPathfindingResponse.floorPaths[0].image, {
-                north: this.currentPathfindingResponse.floorPaths[0].imageBoundsNorth,
-                south: this.currentPathfindingResponse.floorPaths[0].imageBoundsSouth,
-                east: this.currentPathfindingResponse.floorPaths[0].imageBoundsEast,
-                west: this.currentPathfindingResponse.floorPaths[0].imageBoundsWest,
-            });
-
-            this.currentFloorMap.setMap(this.map);
-        }
-    }
+    // updateCurrentFloor(floorNum: number) {
+    //     if (!this.currentPathfindingResponse) return;
+    //     const floorPath = this.currentPathfindingResponse.floorPaths.find(fp => fp.floorNum === floorNum);
+    //
+    //     if (floorPath) {
+    //         if (this.currentFloorPath) {
+    //             this.currentFloorPath.remove();
+    //             this.currentFloorPath = null;
+    //         }
+    //         if (this.currentFloorMap) {
+    //             this.currentFloorMap.setMap(null);
+    //             this.currentFloorMap = null;
+    //         }
+    //         this.currentFloorPath = new PathfindingGraph(this.map, this.currentPathfindingResponse.floorPaths[0].path, '#00AACC', null);console.log('steps');
+    //         this.currentFloorPath.innerSteps = this.currentPathfindingResponse.floorPaths[0].direction;
+    //
+    //         this.currentFloorPath.showInnerStep();
+    //         this.currentFloorPath.setupInnerNextButton();
+    //
+    //         this.currentFloorMap = new google.maps.GroundOverlay(this.currentPathfindingResponse.floorPaths[0].image, {
+    //             north: this.currentPathfindingResponse.floorPaths[0].imageBoundsNorth,
+    //             south: this.currentPathfindingResponse.floorPaths[0].imageBoundsSouth,
+    //             east: this.currentPathfindingResponse.floorPaths[0].imageBoundsEast,
+    //             west: this.currentPathfindingResponse.floorPaths[0].imageBoundsWest,
+    //         });
+    //
+    //         this.currentFloorMap.setMap(this.map);
+    //     }
+    // }
 
     recenter(lat: number, lng: number, zoom: number) {
         this.map.setCenter({lat, lng});
