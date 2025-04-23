@@ -563,6 +563,7 @@ class EditorMapGraph {
                         lat: rawPosition.toJSON().lat,
                         lng: rawPosition.toJSON().lng,
                         type: 'NORMAL',
+                        graphId: this.editorGraph.graphId,
                         connectedNodeId: null,
                     });
                 }
@@ -628,14 +629,18 @@ class EditorMapGraph {
             // }
 
 
-            // const infowindow = new google.maps.InfoWindow({
-            //     content: `
-            //             <button class="bg-blue-700 text-white">Remove</button>
-            //             <button class="bg-blue-700 text-white">Add</button>
-            //         `
-            // });
-            // infowindow.setPosition(marker.getPosition());
-            // infowindow.open(this.map);
+            const infowindow = new google.maps.InfoWindow({
+                content: `
+                        <p>ID: ${node.nodeId}</p>
+                        <p>Name: ${node.name}</p>
+                        <p>Type: ${node.type}</p>
+                        <p>Lat: ${node.lat}</p>
+                        <p>Lng: ${node.lng}</p>
+                        <p>GID: ${node.graphId}</p>
+                    `
+            });
+            infowindow.setPosition(marker.getPosition());
+            infowindow.open(this.map);
         });
 
         // If right clicked in default mode,
@@ -683,6 +688,7 @@ class EditorMapGraph {
                             lat: rawPosition.toJSON().lat,
                             lng: rawPosition.toJSON().lng,
                             type: 'NORMAL',
+                            graphId: this.editorGraph.graphId,
                             connectedNodeId: null,
                         });
                         this.newEdge.line.setMap(null);

@@ -107,6 +107,7 @@ export type EditorNode = {
     lat: number;
     lng: number;
     type: EditorNodeType;
+    graphId: number;
     connectedNodeId: number | null;
 }
 
