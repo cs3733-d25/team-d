@@ -1340,6 +1340,49 @@ async function main() {
                 type: 'CHECKIN',
                 graphId:101
             },
+            {
+                nodeId: 118,
+                name: 'hallway',
+                lat: 42.092669421610005,
+                lng: -71.2656856710187,
+                type: 'NORMAL',
+                graphId:101
+            },
+            {
+                nodeId: 119,
+                name: 'hallway 2',
+                lat: 42.09274704577187,
+                lng: -71.26571785752688,
+                type: 'NORMAL',
+                graphId:101
+            },
+            {
+                nodeId: 120,
+                name: 'hallway 3',
+                lat: 42.09278884335815,
+                lng: -71.2656843299142,
+                type: 'NORMAL',
+                graphId:101
+            },
+            {
+                nodeId: 121,
+                name: 'hallway 4',
+                lat: 42.09276495902648,
+                lng: -71.26565482561503,
+                type: 'NORMAL',
+                graphId:101
+            },
+            {
+                nodeId: 122,
+                name: 'hallway 4',
+                lat: 42.09280476624093,
+                lng: -71.26562592284523,
+                type: 'DOOR',
+                graphId:101
+            },
+
+
+
 
             //PP22 parking
             {
@@ -1545,8 +1588,8 @@ async function main() {
             {
                 nodeId: 310,
                 name: '',
-                lat: 42.09278969100488,
-                lng: -71.26555199445926,
+                lat: 42.09280476624093,
+                lng: -71.26562592284523,
                 type:'DOOR',
                 graphId: 100,
             },
@@ -2027,13 +2070,44 @@ async function main() {
                 endNodeId: 116,
                 graphId: 101,
             },
+
+
             {
                 edgeId: 117,
                 name: '',
                 startNodeId: 116,
-                endNodeId: 117,
+                endNodeId: 118,
                 graphId: 101,
             },
+            {
+                edgeId: 119,
+                name: '',
+                startNodeId: 118,
+                endNodeId: 119,
+                graphId: 101,
+            },
+            {
+                edgeId: 120,
+                name: '',
+                startNodeId: 119,
+                endNodeId: 120,
+                graphId: 101,
+            },
+            {
+                edgeId: 121,
+                name: '',
+                startNodeId: 120,
+                endNodeId: 121,
+                graphId: 101,
+            },
+            {
+                edgeId: 122,
+                name: '',
+                startNodeId: 121,
+                endNodeId: 122,
+                graphId: 101,
+            },
+
             {
                 edgeId: 500,
                 name: '',
@@ -7431,3 +7505,4 @@ main()
         await prisma.$disconnect();
         process.exit(1);
     });
+
