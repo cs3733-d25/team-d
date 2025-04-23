@@ -2422,8 +2422,8 @@ async function main() {
             {
                 nodeId: 303,
                 name: 'ADA3',
-                lat: 42.093747216357364,
-                lng: -71.26432061017472,
+                lat: 42.0936918282146,
+                lng: -71.26436200851916,
                 type: 'NORMAL',
                 graphId: 100,
             },
@@ -2462,8 +2462,8 @@ async function main() {
             {
                 nodeId: 308,
                 name: 'ADA7',
-                lat: 42.09297265241016,
-                lng: -71.26529182018481,
+                lat: 42.092985448448545,
+                lng: -71.26534478181306,
                 type: 'NORMAL',
                 graphId: 100,
             },
@@ -2548,19 +2548,53 @@ async function main() {
             {
                 nodeId: 401,
                 name: 'GIL1',
-                lat: 42.094659928836286,
-                lng: -71.26609964344688,
+                lat: 42.09537199482366,
+                lng: -71.26540501019646,
                 type: 'NORMAL',
                 graphId: 100,
             },
             {
                 nodeId: 402,
                 name: 'ADA3',
-                lat: 42.093747216357364,
-                lng: -71.26432061017472,
+                lat: 42.093864866104056,
+                lng: -71.26468453799531,
                 type: 'NORMAL',
                 graphId: 100,
             },
+            {
+                nodeId: 403,
+                name: 'ADA3',
+                lat: 42.09452499289429,
+                lng: -71.26514563868655,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 404,
+                name: 'ADA3',
+                lat: 42.09478936214051,
+                lng: -71.26489134367182,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 405,
+                name: 'ADA3',
+                lat: 42.09452499289429,
+                lng: -71.26514563868655,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 406,
+                name: 'ADA3',
+                lat: 42.09425592439862,
+                lng: -71.26540098971428,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+
+
 
             {
                 nodeId: 600,
@@ -2853,43 +2887,6 @@ async function main() {
                 type: 'NORMAL',
                 graphId: 301,
             },
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         ],
@@ -3551,16 +3548,39 @@ async function main() {
                 edgeId: 401,
                 name: '',
                 startNodeId: 401,
-                endNodeId: 402,
+                endNodeId: 404,
+                graphId: 100,
+            },
+            {
+                edgeId: 402,
+                name: '',
+                startNodeId: 404,
+                endNodeId: 405,
                 graphId: 100,
             },
             {
                 edgeId: 403,
                 name: '',
-                startNodeId: 401,
-                endNodeId: 303,
-                graphId: 204,
+                startNodeId: 405,
+                endNodeId: 406,
+                graphId: 100,
             },
+            {
+                edgeId: 404,
+                name: '',
+                startNodeId: 406,
+                endNodeId: 402,
+                graphId: 100,
+            },
+            {
+                edgeId: 405,
+                name: '',
+                startNodeId: 402,
+                endNodeId: 303,
+                graphId: 100,
+            },
+
+
 
             //PP floor 4
             {
