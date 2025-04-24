@@ -7,8 +7,9 @@ import employeeRouter from './routes/employee.ts';
 import assignedRouter from './routes/assigned.ts';
 import servicereqsRouter from './routes/servicereqs.ts';
 import directoryRouter from './routes/directory.ts';
-// import pathfindRouter from './routes/pathfind.ts';
-import pathfindingRouter from './routes/pathfinding.ts';
+import pathfindRouter from './routes/pathfind.ts';
+import editorRouter from './routes/editor.ts';
+// import pathfindingRouter from './routes/pathfinding.ts';
 
 // const { auth, requiresAuth } = require('express-openid-connect');
 
@@ -36,8 +37,9 @@ app.use(API_ROUTES.EMPLOYEE, employeeRouter);
 app.use(API_ROUTES.SERVICEREQS, servicereqsRouter);
 app.use(API_ROUTES.ASSIGNED, assignedRouter);
 app.use(API_ROUTES.DEPARTMENT, directoryRouter);
-// app.use(API_ROUTES.PATHFIND, pathfindRouter);
-app.use(API_ROUTES.PATHFINDING, pathfindingRouter);
+app.use(API_ROUTES.PATHFIND, pathfindRouter);
+app.use(API_ROUTES.EDITOR, editorRouter);
+// app.use(API_ROUTES.PATHFINDING, pathfindingRouter);
 
 /**
  * Auth0

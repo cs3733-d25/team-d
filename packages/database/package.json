@@ -20,11 +20,12 @@
     "migrate:resolve:prod": "dotenv -e ${PROJECT_CWD}/.env.prod -- prisma migrate resolve",
     "push": "dotenv -e ${PROJECT_CWD}/.env pnpify prisma db push",
     "push:wpi": "dotenv -e ${PROJECT_CWD}/.env.wpi pnpify prisma db push",
-    "push:prod": "dotenv -e ${PROJECT_CWD}/.env.prod pnpify prisma db push",
+    "push:prod": "dotenv -e ${PROJECT_CWD}/.env.prod pnpify prisma db push --force-reset",
     "studio": "dotenv -e ${PROJECT_CWD}/.env prisma studio",
     "studio:wpi": "dotenv -e ${PROJECT_CWD}/.env.wpi prisma studio",
     "studio:prod": "dotenv -e ${PROJECT_CWD}/.env.prod prisma studio",
-    "seed": "dotenv -e ${PROJECT_CWD}/.env prisma db seed"
+    "seed": "dotenv -e ${PROJECT_CWD}/.env prisma db seed",
+    "seed:prod": "dotenv -e ${PROJECT_CWD}/.env.prod prisma db seed"
   },
   "devDependencies": {
     "@types/node": "*",
@@ -33,7 +34,7 @@
     "eslint-config-custom": "*",
     "prettier": "*",
     "prettier-config-custom": "*",
-    "prisma": "6.5.0",
+    "prisma": "^6.6.0",
     "ts-config-custom": "*",
     "ts-node": "*",
     "typescript": "*"
@@ -42,7 +43,7 @@
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
   "dependencies": {
-    "@prisma/client": "6.5.0",
+    "@prisma/client": "^6.6.0",
     "dotenv": "*",
     "dotenv-cli": "*"
   }

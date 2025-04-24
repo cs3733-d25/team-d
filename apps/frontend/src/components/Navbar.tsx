@@ -12,7 +12,7 @@ import Banner from "@/components/Banner";
 import Auth0LogoutButton from "@/components/Auth0LogoutButton.tsx";
 import AccessDropMenu from "@/components/Accessibility.tsx";
 
-
+//
 
 export default function Navbar() {
     const { isAuthenticated, isLoading } = useAuth0();
@@ -25,20 +25,33 @@ export default function Navbar() {
 
             <div className="bg-blue-900 text-white flex justify-between items-center h-10">
                 <div className={"ml-auto"}>
-                    <NavigationMenu className={'ml-auto p-4'}>
+                    <NavigationMenu className={'ml-auto'}>
                         <NavigationMenuList className={'flex flex-row space-x-5'}>
 
 
+
+                            {/*<NavigationMenuItem>*/}
+                            {/*    <NavigationMenuLink className={'text-base hover:bg-[rgba(0,31,63,0.8)] hover:text-white'}>*/}
+                            {/*        <Link to={`/directory`}>Directions</Link>*/}
+                            {/*    </NavigationMenuLink>*/}
+                            {/*</NavigationMenuItem>*/}
+
                             <NavigationMenuItem>
-                                <NavigationMenuLink className="text-base hover:bg-blue-950 py-1">
-                                    <b><AccessDropMenu /></b>
+                                <NavigationMenuLink className={'text-base hover:bg-[rgba(0,31,63,0.8)] hover:text-white'}>
+                                    <span
+                                        onClick={() => (window.location.href = '/directory')}
+                                        className="cursor-pointer"
+                                    >
+                                        Directions
+                                    </span>
                                 </NavigationMenuLink>
                             </NavigationMenuItem>
 
 
+
                             <NavigationMenuItem>
                                 <NavigationMenuLink className={'text-base hover:bg-[rgba(0,31,63,0.8)] hover:text-white'}>
-                                    <Link to={`/directory`}>Directions</Link>
+                                    <Link to={`/hospital-directory`}>Departments</Link>
                                 </NavigationMenuLink>
                             </NavigationMenuItem>
 
@@ -58,13 +71,12 @@ export default function Navbar() {
 
                                     <NavigationMenuItem>
                                         <NavigationMenuLink className={'text-base hover:bg-[rgba(0,31,63,0.8)] hover:text-white'}>
-                                            <Link to={`/admin-database`}>Directory Management</Link>
-                                        </NavigationMenuLink>
-                                    </NavigationMenuItem>
-
-                                    <NavigationMenuItem>
-                                        <NavigationMenuLink className={'text-base hover:bg-[rgba(0,31,63,0.8)] hover:text-white'}>
-                                            <Link to={`/map-editor`}>Map Editor</Link>
+                                            <span
+                                                onClick={() => (window.location.href = '/map-editor')}
+                                                className="cursor-pointer"
+                                            >
+                                                Map Editor
+                                            </span>
                                         </NavigationMenuLink>
                                     </NavigationMenuItem>
 

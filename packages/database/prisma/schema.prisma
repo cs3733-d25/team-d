@@ -11,6 +11,12 @@ datasource db {
   url      = env("POSTGRES_URL")
 }
 
+model Algorithm {
+  algorithmId Int     @id @default(autoincrement())
+  name        String  @unique
+  isActive    Boolean @default(false)
+}
+
 model Employee {
   employeeId              Int              @id @default(autoincrement())
   createdAt               DateTime         @default(now())
@@ -46,10 +52,10 @@ model ServiceRequest {
 
   // assigned relationship to Employee:
   assignedEmployeeId    Int?
-  assignedEmployee      Employee?  @relation(name: "assignedTo", fields: [assignedEmployeeId], references: [employeeId])
+  assignedEmployee      Employee?   @relation(name: "assignedTo", fields: [assignedEmployeeId], references: [employeeId])
   // the employee who made the request
   employeeRequestedById Int
-  employeeRequestedBy   Employee   @relation(name: "requestedBy", fields: [employeeRequestedById], references: [employeeId])
+  employeeRequestedBy   Employee    @relation(name: "requestedBy", fields: [employeeRequestedById], references: [employeeId])
   // which department it's made under
   departmentUnderId     Int?
   departmentUnder       Department? @relation(fields: [departmentUnderId], references: [departmentId], onDelete: SetNull)
@@ -77,14 +83,14 @@ model EquipmentRequest {
   startDateTime    DateTime
   endDateTime      DateTime
   medicalDevice    String
-  signature        String //picture of signature
+  signature        String // picture of signature
   quantity         Int
   // link to service request
   serviceRequestId Int            @unique
   serviceRequest   ServiceRequest @relation(fields: [serviceRequestId], references: [requestId])
 }
 
-// --- The SanitationRequest model ---
+// --- The SanitationServiceRequest model ---
 model SanitationRequest {
   type   SanitationType
   status RoomStatus
@@ -121,69 +127,229 @@ enum RoomStatus {
 }
 
 model Hospital {
-  hospitalId  Int    @id @default(autoincrement())
-  name        String @unique
-  address     String
-  placeId     String
-  defaultLat  Float
-  defaultLng  Float
-  defaultZoom Int
+  hospitalId Int @id @default(autoincrement())
 
-  Departments Department[]
+  name String @unique
+
+  Buildings    Building[]
+  ParkingGraph ParkingGraph?
+  Department   Department[]
 }
 
-model Department {
-  departmentId Int    @id @default(autoincrement())
-  name         String
-  floorNum     Int
-  room         String
-  building     String
+model Building {
+  buildingId Int @id @default(autoincrement())
 
-  lat Float
-  lng Float
+  name    String
+  address String
 
   hospitalId Int
   Hospital   Hospital @relation(fields: [hospitalId], references: [hospitalId])
 
-  graphId Int
-  Graph   Graph @relation(fields: [graphId], references: [graphId])
+  FloorGraphs FloorGraph[]
+  Department  Department[]
+}
+
+model Department {
+  departmentId Int @id @default(autoincrement())
+
+  name     String
+  floorNum Int
+  room     String
+  lat      Float
+  lng      Float
+
+  hospitalId Int
+  Hospital   Hospital @relation(fields: [hospitalId], references: [hospitalId])
+
+  floorGraphId Int
+  FloorGraph   FloorGraph @relation(fields: [floorGraphId], references: [graphId])
+
+  buildingId Int
+  Building   Building @relation(fields: [buildingId], references: [buildingId])
 
   ServiceRequests ServiceRequest[]
 }
 
-model Graph {
-  graphId Int    @id @default(autoincrement())
-  name    String
+enum GraphType {
+  FLOORGRAPH
+  PARKINGGRAPH
+}
 
-  imageURL String
-  north    Float
-  south    Float
-  east     Float
-  west     Float
+model Graph {
+  graphId Int @id @default(autoincrement())
+
+  graphType    GraphType
+  FloorGraph   FloorGraph?
+  ParkingGraph ParkingGraph?
+  graphName String
+
+  Nodes Node[]
+  Edges Edge[]
+}
+
+model FloorGraph {
+  graphId Int   @id
+  Graph   Graph @relation(fields: [graphId], references: [graphId])
+
+  floorNum Int
+
+  image            String
+  imageBoundsNorth Float
+  imageBoundsSouth Float
+  imageBoundsEast  Float
+  imageBoundsWest  Float
+
+  buildingId Int
+  Building   Building @relation(fields: [buildingId], references: [buildingId])
 
   Departments Department[]
-  Nodes       Node[]
+}
+
+model ParkingGraph {
+  graphId Int   @id
+  Graph   Graph @relation(fields: [graphId], references: [graphId])
+
+  hospitalId Int      @unique
+  Hospital   Hospital @relation(fields: [hospitalId], references: [hospitalId])
+}
+
+enum NodeType {
+  NORMAL
+  PARKING
+  DOOR
+  ELEVATOR
+  CHECKIN
 }
 
 model Node {
-  nodeId    Int    @id @default(autoincrement())
-  tags      String
-  lat       Float
-  lng       Float
-  edgeStart Edge[] @relation(name: "edgeS")
-  edgeEnd   Edge[] @relation(name: "edgeE")
-  graphId   Int
-  Graph     Graph  @relation(fields: [graphId], references: [graphId])
+  nodeId Int @id @default(autoincrement())
+
+  name            String
+  lat             Float
+  lng             Float
+  type            NodeType
+  connectedNodeId Int?
+  ConnectedNode   Node?    @relation(name: "connected", fields: [connectedNodeId], references: [nodeId])
+  ConnectedNodes  Node[]   @relation(name: "connected")
+  // graphConnectionId Int?
+  // GraphConnection   GraphConnection? @relation(fields: [graphConnectionId], references: [graphConnectionId])
+
+  StartEdges Edge[] @relation(name: "start")
+  EndEdges   Edge[] @relation(name: "end")
+
+  graphId Int
+  Graph   Graph @relation(fields: [graphId], references: [graphId])
 }
 
 model Edge {
-  edgeId      Int  @id @default(autoincrement())
-  weight      Int
+  edgeId Int @id @default(autoincrement())
+
+  name String
+
   startNodeId Int
+  StartNode   Node @relation(name: "start", fields: [startNodeId], references: [nodeId])
   endNodeId   Int
-  startNode   Node @relation(name: "edgeS", fields: [startNodeId], references: [nodeId], onDelete: Cascade)
-  endNode     Node @relation(name: "edgeE", fields: [endNodeId], references: [nodeId], onDelete: Cascade)
+  EndNode     Node @relation(name: "end", fields: [endNodeId], references: [nodeId])
+
+  graphId Int
+  Graph   Graph @relation(fields: [graphId], references: [graphId])
 }
+
+// model GraphConnection {
+//   graphConnectionId Int    @id @default(autoincrement())
+//   Nodes             Node[]
+// }
+
+// model Hospital {
+//   hospitalId  Int    @id @default(autoincrement())
+//   name        String @unique
+//   address     String
+//   placeId     String
+//   defaultLat  Float
+//   defaultLng  Float
+//   defaultZoom Int
+//
+//   Departments Department[]
+// }
+//
+// model Department {
+//   departmentId Int    @id @default(autoincrement())
+//   name         String
+//   floorNum     Int
+//   room         String
+//   building     String
+//
+//   lat Float
+//   lng Float
+//
+//   hospitalId Int
+//   Hospital   Hospital @relation(fields: [hospitalId], references: [hospitalId])
+//
+//   graphId Int
+//   Graph   Graph @relation(fields: [graphId], references: [graphId])
+//
+//   ServiceRequests ServiceRequest[]
+// }
+//
+// model Graph {
+//   graphId Int    @id @default(autoincrement())
+//   name    String
+//
+//   imageURL String
+//   north    Float
+//   south    Float
+//   east     Float
+//   west     Float
+//
+//   Departments Department[]
+//   Nodes       Node[]
+//   Edges       Edge[]
+// }
+//
+// model Node {
+//   nodeId    Int    @id @default(autoincrement())
+//   tags      String
+//   lat       Float
+//   lng       Float
+//   edgeStart Edge[] @relation(name: "edgeS")
+//   edgeEnd   Edge[] @relation(name: "edgeE")
+//   graphId   Int
+//   Graph     Graph  @relation(fields: [graphId], references: [graphId])
+//
+//   nodeType         NodeType?
+//   connectingNodeId Int?
+//   connectingNode   Node?     @relation(name: "connections", fields: [connectingNodeId], references: [nodeId])
+//   ConnectingNodes  Node[]    @relation(name: "connections")
+// }
+//
+// model Edge {
+//   edgeId      Int   @id @default(autoincrement())
+//   weight      Int
+//   startNodeId Int
+//   endNodeId   Int
+//   startNode   Node  @relation(name: "edgeS", fields: [startNodeId], references: [nodeId], onDelete: Cascade)
+//   endNode     Node  @relation(name: "edgeE", fields: [endNodeId], references: [nodeId], onDelete: Cascade)
+//   graphId     Int
+//   Graph       Graph @relation(fields: [graphId], references: [graphId])
+// }
+//
+// enum GraphType {
+//   OUTSIDE
+//   INSIDE
+// }
+//
+// enum NodeType {
+//   PARKING
+//   // Connection between hospital's
+//   // outdoor graph and first floor map
+//   DOOROUTSIDE
+//   DOORINSIDE
+//   // Connection between
+//   ELEVATORBOTTOM
+//   ELEVATORTOP
+//
+//   CHECKIN
+// }
 
 // model Hospital {
 //   hospitalId  Int     @id @default(autoincrement())
