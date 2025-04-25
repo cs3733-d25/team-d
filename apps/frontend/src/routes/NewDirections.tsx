@@ -1,5 +1,5 @@
 import {useEffect, useRef, useState} from "react";
-import {PathfindingMap} from "@/GMap/GoogleMap.ts";
+import {DirectionsStep, PathfindingMap, PathfindingResults} from "@/GMap/GoogleMap.ts";
 import {
     API_ROUTES,
     DepartmentOptions,
@@ -31,22 +31,29 @@ export default function NewDirections() {
     const mapRef = useRef<HTMLDivElement>(null);
     const autocompleteRef = useRef<HTMLInputElement>(null);
 
+    // 'backend' for google map
     const [map, setMap] = useState<PathfindingMap>();
 
+    // all hospitals and their departments
     const [displayData, setDisplayData] = useState<PathfindingOptions>({
         hospitals: [],
     });
 
+    // for storing current selection
     const [selectedHospital, setSelectedHospital] = useState<HospitalOptions | null>(null);
     const [selectedDepartment, setSelectedDepartment] = useState<DepartmentOptions | null>(null);
 
-    const [pathfindingResponse, setPathfindingResponse] = useState<PathfindingResponse>();
+    const [pathfindingResults, setPathfindingResults] = useState<PathfindingResults | null>(null);
+
+    // const [pathfindingResponse, setPathfindingResponse] = useState<PathfindingResponse>();
+    //
+    // const [directionsSteps, setDirectionsSteps] = useState<DirectionsStep[]>([]);
 
     useEffect(() => {
         console.log('useEffect NewDirections');
         const fetchMap = async () => {
             if (mapRef.current && autocompleteRef.current ) {
-                setMap(await PathfindingMap.makeMap(mapRef.current, autocompleteRef.current));
+                setMap(await PathfindingMap.makeMap(mapRef.current, autocompleteRef.current, setPathfindingResults));
             }
         }
         fetchMap().then(() => {
@@ -69,10 +76,15 @@ export default function NewDirections() {
         setSelectedDepartment(newDepartment);
 
         if (!map) return;
-        axios.get(API_ROUTES.PATHFIND + '/path-to-dept/' + newDepartment.departmentId).then(response => {
-            setPathfindingResponse(response.data as PathfindingResponse);
-            map.updateDepartmentPathfinding(response.data as PathfindingResponse);
-        });
+        map.setDepartment(newDepartment);
+
+        // map.update();
+
+        // console.log(map.update());
+        // axios.get(API_ROUTES.PATHFIND + '/path-to-dept/' + newDepartment.departmentId).then(response => {
+        //     setPathfindingResponse(response.data as PathfindingResponse);
+        //     map.updateDepartmentPathfinding(response.data as PathfindingResponse);
+        // });
     }
 
     const handleModeChange = (value: string) => {
@@ -81,11 +93,11 @@ export default function NewDirections() {
     }
 
     const handleZoom = () => {
-        if (!pathfindingResponse || !map) return;
-        map.recenter(
-            pathfindingResponse.parkingLotPath.path[0].lat,
-            pathfindingResponse.parkingLotPath.path[0].lng, 20
-        );
+        // if (!pathfindingResponse || !map) return;
+        // map.recenter(
+        //     pathfindingResponse.parkingLotPath.path[0].lat,
+        //     pathfindingResponse.parkingLotPath.path[0].lng, 20
+        // );
     }
 
     return (
@@ -143,15 +155,15 @@ export default function NewDirections() {
                     </SelectContent>
                 </Select>
 
-                <div className="mb-5">
-                    <div id="step-instruction">Loading directions...</div>
-                    <button
-                        id="next-step-btn"
-                        className="mt-2 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
-                    >
-                        Next Step
-                    </button>
-                </div>
+                {/*<div className="mb-5">*/}
+                {/*    <div id="step-instruction">Loading directions...</div>*/}
+                {/*    <button*/}
+                {/*        id="next-step-btn"*/}
+                {/*        className="mt-2 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"*/}
+                {/*    >*/}
+                {/*        Next Step*/}
+                {/*    </button>*/}
+                {/*</div>*/}
 
 
 
@@ -175,32 +187,32 @@ export default function NewDirections() {
                                 </SelectGroup>
                             </SelectContent>
                         </Select>
-                        {pathfindingResponse &&
-                            <div>
+                        {/*{pathfindingResponse &&*/}
+                        {/*    <div>*/}
 
 
 
-                                <Button onClick={handleZoom} className="mb-4">
-                                    Zoom
-                                </Button>
+                        {/*        <Button onClick={handleZoom} className="mb-4">*/}
+                        {/*            Zoom*/}
+                        {/*        </Button>*/}
 
 
 
-                            </div>
+                        {/*    </div>*/}
 
 
 
-                        }
+                        {/*}*/}
 
-                        <div className="mb-5">
-                            <div id="inner-step-instruction">Loading directions...</div>
-                            <button
-                                id="inner-next-step-btn"
-                                className="mt-2 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
-                            >
-                                Next Step
-                            </button>
-                        </div>
+                        {/*<div className="mb-5">*/}
+                        {/*    <div id="inner-step-instruction">Loading directions...</div>*/}
+                        {/*    <button*/}
+                        {/*        id="inner-next-step-btn"*/}
+                        {/*        className="mt-2 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"*/}
+                        {/*    >*/}
+                        {/*        Next Step*/}
+                        {/*    </button>*/}
+                        {/*</div>*/}
                     </>
                 }
                 {/*<Separator className="mt-4 mb-4" />*/}
@@ -224,6 +236,14 @@ export default function NewDirections() {
                 {/*        </div>*/}
                 {/*    </>*/}
                 {/*}*/}
+
+                {pathfindingResults?.floors.map(floor => (
+                    <h1>{floor}</h1>
+                ))}
+
+                {pathfindingResults?.directions.map(step => (
+                    <p>{step.instructions}</p>
+                ))}
             </div>
             <div ref={mapRef} className="flex-3">
                 {/* Google map will go here */}
