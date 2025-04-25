@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { Outlet, Link } from "react-router-dom";
 import {
     NavigationMenu,
@@ -17,13 +17,36 @@ import {faCircleUser} from "@fortawesome/free-solid-svg-icons";
 import hospitalLogo from "@/public/hospital2.png";
 
 import { useAuth0 } from "@auth0/auth0-react";
-import SearchBar from "@/components/SearchStuff/SearchBar.tsx";
-import AccessDropMenu from "@/components/Accessibility.tsx";
-
 
 export default function Banner({isLoggedIn}: {isLoggedIn: boolean})  {
     const { user, isAuthenticated, isLoading } = useAuth0();
     const { loginWithRedirect } = useAuth0();
+    const [showLoginMessage, setShowLoginMessage] = useState(false);
+    const [isFadingOut, setFadingOut] = useState(false);
+    // const [hasShownBanner, setHasShownBanner] = useState(false);
+
+    {/*Timer for the message of logging in*/}
+    useEffect(() => {
+        if (isLoggedIn) {
+            setShowLoginMessage(true);
+
+
+            const fadeTimer = setTimeout(() => {
+                setFadingOut(true);
+            }, 2500); //fade out when its about to disappear
+
+            const hideTimer = setTimeout(() => {
+                setFadingOut(false);
+                setShowLoginMessage(false);
+            }, 3000); //set timer for 3 seconds
+
+            return() => {
+                clearTimeout(fadeTimer);
+                clearTimeout(hideTimer);
+            };
+        }
+    }, [isLoggedIn]);
+
 
 
     return (
@@ -60,6 +83,15 @@ export default function Banner({isLoggedIn}: {isLoggedIn: boolean})  {
                             <NavigationMenuItem>
                             </NavigationMenuItem>
 
+                            {/*Shows which kind of account the user has logged into*/}
+                            {isLoggedIn && showLoginMessage && (
+                                <div  className={`border-4 rounded-b-lg place-content-center text-center bg-black text-white
+                                                 animate-in fade-in zoom-in transition-opacity duration-500 p-4 font-nunito
+                                                 ${ isFadingOut ? 'opacity-0' : 'opacity-100'}`}>
+                                    You are logged in as an Admin.
+                                </div>
+                            )}
+
 
                             {isLoggedIn && (
                                 <NavigationMenuItem>
@@ -70,6 +102,7 @@ export default function Banner({isLoggedIn}: {isLoggedIn: boolean})  {
                                             className="w-10 h-10 rounded-full border-2 border-gray-300 hover:opacity-80 transition duration-200"
                                         />
                                     </Link>
+
                                 </NavigationMenuItem>)}
 
                             {!isLoggedIn && (
