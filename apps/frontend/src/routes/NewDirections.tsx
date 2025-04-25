@@ -77,7 +77,7 @@ export default function NewDirections() {
 
     const handleModeChange = (value: string) => {
         if (!map) return;
-        map.updateTravelMode(value);
+        map.setTravelMode(value);
     }
 
     const handleZoom = () => {

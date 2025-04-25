@@ -1,5 +1,13 @@
 import axios from "axios";
-import {API_ROUTES, EditorEdges, EditorGraph, FloorPathResponse, EditorNode, PathfindingResponse} from "common/src/constants.ts";
+import {
+    API_ROUTES,
+    EditorEdges,
+    EditorGraph,
+    FloorPathResponse,
+    EditorNode,
+    PathfindingResponse,
+    DepartmentOptions
+} from "common/src/constants.ts";
 import {EditorEncapsulator} from "@/routes/MapEditor.tsx";
 
 // import fern from '@/public/floormaps/fern1.png';
@@ -300,6 +308,12 @@ class PathfindingGraph {
     }
 }
 
+
+
+export type Directions = {
+
+}
+
 export class PathfindingMap extends GoogleMap {
 
 
@@ -327,6 +341,8 @@ export class PathfindingMap extends GoogleMap {
     private steps: google.maps.DirectionsStep[] = [];
     private currentStepPolyline: google.maps.Polyline | null = null;
     private currentStepMarker: google.maps.Marker | null = null;
+
+    private department: DepartmentOptions | null;
 
 
 
@@ -370,6 +386,12 @@ export class PathfindingMap extends GoogleMap {
         this.currentParkingPath = null;
         this.currentFloorPath = null;
         this.currentFloorMap = null;
+
+        this.department = null;
+    }
+
+    setDepartment(department: DepartmentOptions) {
+        this.department = department;
     }
 
     updateDepartmentPathfinding(pathfindingResponse: PathfindingResponse) {
@@ -419,8 +441,48 @@ export class PathfindingMap extends GoogleMap {
         this.currentParkingPath.showInnerStep(); // start here
     }
 
+    async update(): Promise<string[]> {
+        // Can't go anywhere if a start place and
+        // destination dept is not found
+        if (!this.startPlaceId || !this.department) return [];
 
-    updateTravelMode(travelMode: string) {
+        const directions: string[] = [];
+
+        // Get directions within the hospital
+        await axios.get(API_ROUTES.PATHFIND + '/path-to-dept/' + this.department.departmentId).then(response => {
+
+            // If no pathfinding available, return 404
+            if (response.status !== 200) {
+                if (response.data.message) {
+                    console.log(response.data.message);
+                }
+                return;
+            }
+            this.currentPathfindingResponse = response.data as PathfindingResponse;
+        });
+
+        if (!this.currentPathfindingResponse) return [];
+
+        // Get directions to the hospital
+        this.endLocation = this.currentPathfindingResponse.parkingLotPath.path[0];
+        await this.directionsService.route({
+            origin: {
+                placeId: this.startPlaceId
+            },
+            destination: this.endLocation,
+            travelMode: this.travelMode,
+        }).then((directions) => {
+            this.directionsRenderer.setDirections(directions);
+        }).catch(error => {
+            console.log(error);
+            this.directionsRenderer.setDirections(null);
+        });
+
+        return directions;
+    }
+
+
+    setTravelMode(travelMode: string) {
         switch (travelMode) {
             case 'DRIVING':
                 this.travelMode = google.maps.TravelMode.DRIVING;
