@@ -16,6 +16,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         clientId="jepCXrJUcBq34pKdSGGzd2sidUxVpnsL"
         authorizationParams={{
             redirect_uri: window.location.origin + '/directory',
+            audience: '/api',
             scope: 'openid profile email offline_access',
         }}
     >
