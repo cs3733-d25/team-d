@@ -10,6 +10,7 @@ import ReturnSecurityRequest from "@/components/ServiceRequest/SecurityRequest/R
 import SubmissionReqPopup from "@/components/SubmissionReqPopup.tsx";
 import ReturnSanitationRequest from "@/components/ServiceRequest/SanitationRequest/ReturnSanitationRequest.tsx";
 import {Department} from "@/routes/Directions.tsx";
+import {Employee} from "@/routes/AllServiceRequests.tsx";
 
 type securityRequestForm = {
     roomNum: string;
@@ -39,17 +40,20 @@ export default function SecurityServiceRequest() {
 
     const [submitted, setSubmitted] = useState(false);
     const [departments, setDepartments] = useState<Department[]>([]);
+    const [employees, setEmployees] = useState<Employee[]>([]);
 
     useEffect(() => {
         axios.get(API_ROUTES.DEPARTMENT + "/all").then((response) => {
             setDepartments(response.data)
+        });
+        axios.get(API_ROUTES.EMPLOYEE + "/names").then((response) => {
+            setEmployees(response.data)
         });
     }, []);
 
     const onSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setSubmitted(false);
-
         axios
             .post(API_ROUTES.SERVICEREQS + "/security", form)
             .then(() => {
@@ -71,34 +75,32 @@ export default function SecurityServiceRequest() {
                     <h6 className="pb-3 font-light">Maggie Hosie & Delia Jasper</h6>
                     <form onSubmit={onSubmit}>
                         <div>
-                            <Label className="pt-4 pb-2" htmlFor="employeeId">Employee ID</Label>
-                            <Input
+                            <Label className="pt-4 pb-2" htmlFor="employeeName">
+                                Employee Name
+                            </Label>
+                            <select
                                 required
-                                type="number"
-                                id="employeeId"
-                                className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
-                                onChange={(e) =>
+                                id="department"
+                                className="w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
+                                onChange={(e) => {
+                                    const selectedEmployee = employees.find(emp => emp.employeeId === Number(e.target.value));
                                     setForm({
                                         ...form,
                                         employeeRequestedById: Number(e.target.value),
+                                        employeeName: selectedEmployee
+                                            ? `${selectedEmployee.firstName} ${selectedEmployee.lastName}`
+                                            : ''
                                     })
                                 }
-                            />
-                        </div>
-
-                        <div>
-                            <Label className="pt-4 pb-2" htmlFor="employeeName">Employee Name</Label>
-                            <Input
-                                required
-                                type="text"
-                                id="employeeName"
-                                className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"                                onChange={(e) =>
-                                    setForm({
-                                        ...form,
-                                        employeeName: e.target.value,
-                                    })
                                 }
-                            />
+                            >
+                                <option value="">-- Select Employee --</option>
+                                {employees.map((e: Employee) => (
+                                    <option key={e.employeeId} value={e.employeeId}>
+                                        {e.firstName} {e.lastName}
+                                    </option>
+                                ))}
+                            </select>
                         </div>
 
                         <div>
@@ -106,7 +108,7 @@ export default function SecurityServiceRequest() {
                             <select
                                 required
                                 id="department"
-                                className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
+                                className="w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                 onChange={(e) =>
                                     setForm({
                                         ...form,
@@ -128,7 +130,7 @@ export default function SecurityServiceRequest() {
                                 required
                                 type="text"
                                 id="roomNum"
-                                className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
+                                className="w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                 onChange={(e) =>
                                     setForm({
                                         ...form,
@@ -144,7 +146,7 @@ export default function SecurityServiceRequest() {
                                 required
                                 type="text"
                                 id="securityType"
-                                className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
+                                className="w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                 onChange={(e) =>
                                     setForm({
                                         ...form,
@@ -160,7 +162,7 @@ export default function SecurityServiceRequest() {
                                 required
                                 type="number"
                                 id="numOfGuards"
-                                className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
+                                className="w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                 onChange={(e) =>
                                     setForm({
                                         ...form,
@@ -175,7 +177,7 @@ export default function SecurityServiceRequest() {
                             <select
                                 required
                                 id="priority"
-                                className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
+                                className="w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                 onChange={(e) =>
                                     setForm({
                                         ...form,
@@ -194,7 +196,7 @@ export default function SecurityServiceRequest() {
                             <select
                                 required
                                 id="requestStatus"
-                                className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
+                                className="w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                 onChange={(e) =>
                                     setForm({
                                         ...form,
@@ -210,19 +212,19 @@ export default function SecurityServiceRequest() {
                         </div>
 
 
-                            <Label className="pt-4 pb-2" htmlFor="comments">Comments</Label>
-                            <textarea
-                                id="comments"
-                                className = "w-80 h-8 rounded-md border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
-                                onChange={(e) =>
-                                    setForm({ ...form, comments: e.target.value })
-                                }
-                            />
+                        <Label className="pt-4 pb-2" htmlFor="comments">Comments</Label>
+                        <textarea
+                            id="comments"
+                            className="w-80 h-8 rounded-md border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
+                            onChange={(e) =>
+                                setForm({...form, comments: e.target.value})
+                            }
+                        />
 
 
-                            <Button type="submit" className="mt-6 w-full">
-                                Submit
-                            </Button>
+                        <Button type="submit" className="mt-6 w-full">
+                            Submit
+                        </Button>
                     </form>
                 </div>
                 </ScrollArea>

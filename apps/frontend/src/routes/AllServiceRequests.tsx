@@ -81,6 +81,12 @@ export type ServiceRequest = {
     // employeeName: string; // For later use
 }
 
+export type Employee = {
+    employeeId: number;
+    firstName: string;
+    lastName: string;
+}
+
 export const getRequestType = (request: ServiceRequest): string => {
     if (request.translatorRequest) {
         return "Translator";

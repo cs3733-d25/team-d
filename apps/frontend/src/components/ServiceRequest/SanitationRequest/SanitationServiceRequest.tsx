@@ -9,6 +9,7 @@ import { API_ROUTES } from "common/src/constants.ts";
 import ReturnSanitationRequest from "@/components/ServiceRequest/SanitationRequest/ReturnSanitationRequest.tsx";
 import SubmissionReqPopup from "@/components/SubmissionReqPopup.tsx";
 import {Department} from "@/routes/Directions.tsx";
+import {Employee} from "@/routes/AllServiceRequests.tsx";
 
 type SanitationRequestForm = {
     roomNum: string;
@@ -37,10 +38,14 @@ export default function SanitationServiceRequest() {
 
     const [submitted, setSubmitted] = useState(false);
     const [departments, setDepartments] = useState<Department[]>([]);
+    const [employees, setEmployees] = useState<Employee[]>([]);
 
     useEffect(() => {
         axios.get(API_ROUTES.DEPARTMENT + "/all").then((response) => {
             setDepartments(response.data)
+        });
+        axios.get(API_ROUTES.EMPLOYEE + "/names").then((response) => {
+            setEmployees(response.data)
         });
     }, []);
 
@@ -68,38 +73,33 @@ export default function SanitationServiceRequest() {
                     </div>
                     <h6 className="pb-3 font-light">Stuvat Dash & Brandon Small</h6>
                     <form onSubmit={onSubmit} className="flex flex-col">
-
                         <div>
-                            <Label className="pt-4 pb-2" htmlFor="employeeId">Employee ID</Label>
-                            <Input
+                            <Label className="pt-4 pb-2" htmlFor="employeeName">
+                                Employee Name
+                            </Label>
+                            <select
                                 required
-                                className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
-                                type="number"
-                                id="employeeId"
-                                onChange={(e) =>
+                                id="department"
+                                className="w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
+                                onChange={(e) => {
+                                    const selectedEmployee = employees.find(emp => emp.employeeId === Number(e.target.value));
                                     setForm({
                                         ...form,
                                         employeeRequestedById: Number(e.target.value),
+                                        employeeName: selectedEmployee
+                                            ? `${selectedEmployee.firstName} ${selectedEmployee.lastName}`
+                                            : ''
                                     })
                                 }
-                            />
-                        </div>
-
-                        <div>
-                            <Label className="pt-4 pb-2" htmlFor="employeeName">Employee Name</Label>
-                            <Input
-                                required
-                                type="text"
-                                id="employeeName"
-                                // className='border border-gray-300 rounded-md p-2'
-                                className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
-                                onChange={(e) =>
-                                    setForm({
-                                        ...form,
-                                        employeeName: e.target.value,
-                                    })
                                 }
-                            />
+                            >
+                                <option value="">-- Select Employee --</option>
+                                {employees.map((e: Employee) => (
+                                    <option key={e.employeeId} value={e.employeeId}>
+                                        {e.firstName} {e.lastName}
+                                    </option>
+                                ))}
+                            </select>
                         </div>
 
                         <div>
@@ -107,7 +107,7 @@ export default function SanitationServiceRequest() {
                             <select
                                 required
                                 id="department"
-                                className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
+                                className="w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                 onChange={(e) =>
                                     setForm({
                                         ...form,
@@ -124,52 +124,52 @@ export default function SanitationServiceRequest() {
                         </div>
 
                         <div>
-                        <Label className="pt-4 pb-2" htmlFor="roomNum">Room Number</Label>
-                        <Input
-                            required
-                            type="text"
-                            className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
-                            id="roomNum"
-                            onChange={(e) =>
-                                setForm({ ...form, roomNum: e.target.value })
-                            }
-                        />
+                            <Label className="pt-4 pb-2" htmlFor="roomNum">Room Number</Label>
+                            <Input
+                                required
+                                type="text"
+                                className="w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
+                                id="roomNum"
+                                onChange={(e) =>
+                                    setForm({...form, roomNum: e.target.value})
+                                }
+                            />
                         </div>
                         <div>
-                        <Label className="pt-4 pb-2" htmlFor="type">Sanitation Type</Label>
-                        <select
-                            required
-                            id="type"
-                            // className="border border-gray-300 rounded-md p-2"
-                            className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
-                            onChange={(e) =>
-                                setForm({ ...form, type: e.target.value })
-                            }
-                        >
-                            <option value="">-- Select Type --</option>
-                            <option value="GENERAL">General</option>
-                            <option value="DISINFECT">Disinfect</option>
-                            <option value="DEEP_CLEANING">Deep Cleaning</option>
-                            <option value="WASTE_REMOVAL">Waste Removal</option>
-                            <option value="PEST_CONTROL">Pest Control</option>
-                        </select>
+                            <Label className="pt-4 pb-2" htmlFor="type">Sanitation Type</Label>
+                            <select
+                                required
+                                id="type"
+                                // className="border border-gray-300 rounded-md p-2"
+                                className="w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
+                                onChange={(e) =>
+                                    setForm({...form, type: e.target.value})
+                                }
+                            >
+                                <option value="">-- Select Type --</option>
+                                <option value="GENERAL">General</option>
+                                <option value="DISINFECT">Disinfect</option>
+                                <option value="DEEP_CLEANING">Deep Cleaning</option>
+                                <option value="WASTE_REMOVAL">Waste Removal</option>
+                                <option value="PEST_CONTROL">Pest Control</option>
+                            </select>
                         </div>
 
                         <div>
-                        <Label className="pt-4 pb-2" htmlFor="status">Room Status</Label>
-                        <select
-                            required
-                            id="status"
-                            // className="border border-gray-300 rounded-md p-2"
-                            className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
-                            onChange={(e) =>
-                                setForm({ ...form, status: e.target.value })
-                            }
-                        >
-                            <option value="">-- Select Room Status --</option>
-                            <option value="VACANT">Vacant</option>
-                            <option value="IN_USE">In Use</option>
-                        </select>
+                            <Label className="pt-4 pb-2" htmlFor="status">Room Status</Label>
+                            <select
+                                required
+                                id="status"
+                                // className="border border-gray-300 rounded-md p-2"
+                                className="w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
+                                onChange={(e) =>
+                                    setForm({...form, status: e.target.value})
+                                }
+                            >
+                                <option value="">-- Select Room Status --</option>
+                                <option value="VACANT">Vacant</option>
+                                <option value="IN_USE">In Use</option>
+                            </select>
                         </div>
 
                         <div>
@@ -178,7 +178,7 @@ export default function SanitationServiceRequest() {
                                 required
                                 id="priority"
                                 // className='border border-gray-300 rounded-md p-2'
-                                className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
+                                className="w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                 onChange={(e) =>
                                     setForm({
                                         ...form,
@@ -199,7 +199,7 @@ export default function SanitationServiceRequest() {
                                 required
                                 id="requestStatus"
                                 // className='border border-gray-300 rounded-md p-2'
-                                className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
+                                className="w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                 onChange={(e) =>
                                     setForm({
                                         ...form,
@@ -215,17 +215,17 @@ export default function SanitationServiceRequest() {
                         </div>
 
                         <div>
-                        <Label className="pt-4 pb-2" htmlFor="comments">
-                            Comments
-                        </Label>
-                        <textarea
-                            id="comments"
-                            // className="border border-gray-300 rounded-md p-2 w-90"
-                            className = "w-80 h-8 rounded-md border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
-                            onChange={(e) =>
-                                setForm({ ...form, comments: e.target.value })
-                            }
-                        />
+                            <Label className="pt-4 pb-2" htmlFor="comments">
+                                Comments
+                            </Label>
+                            <textarea
+                                id="comments"
+                                // className="border border-gray-300 rounded-md p-2 w-90"
+                                className="w-80 h-8 rounded-md border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
+                                onChange={(e) =>
+                                    setForm({...form, comments: e.target.value})
+                                }
+                            />
                         </div>
 
 
