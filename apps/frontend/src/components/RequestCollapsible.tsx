@@ -47,6 +47,7 @@ const RequestCollapsible: React.FC<RequestCollapsibleProps> = ({ID,requestType})
                                     <TableHead className="text-black">Language To</TableHead>
                                     <TableHead className="text-black">Language From</TableHead>
                                     <TableHead className="text-black">Start Date</TableHead>
+                                    <TableHead className="text-black">Comments</TableHead>
                                 </>
                             ) : requestType === "Equipment" ? (
                                 <>
@@ -55,16 +56,19 @@ const RequestCollapsible: React.FC<RequestCollapsibleProps> = ({ID,requestType})
                                     <TableHead className="text-black">Quantity</TableHead>
                                     <TableHead className="text-black">Medical Device</TableHead>
                                     <TableHead className="text-black">Signature</TableHead>
+                                    <TableHead className="text-black">Comments</TableHead>
                                 </>
                             ) : requestType === "Security" ? (
                                 <>
                                     <TableHead className="text-black">Security Needed For</TableHead>
                                     <TableHead className="text-black">Number of Guards</TableHead>
+                                    <TableHead className="text-black">Comments</TableHead>
                                 </>
                             ) : requestType === "Sanitation" ? (
                                 <>
                                     <TableHead className="text-black">Type</TableHead>
                                     <TableHead className="text-black">Status</TableHead>
+                                    <TableHead className="text-black">Comments</TableHead>
                                 </>
                             ) : null}
                         </TableRow>
@@ -79,6 +83,7 @@ const RequestCollapsible: React.FC<RequestCollapsibleProps> = ({ID,requestType})
                                                     <TableCell>{link.translatorRequest.languageTo}</TableCell>
                                                     <TableCell>{link.translatorRequest.languageFrom}</TableCell>
                                                     <TableCell>{link.translatorRequest.startDateTime}</TableCell>
+                                                    <TableCell>{link.comments}</TableCell>
                                                 </>
                                             ) : requestType === "Equipment" ? (
                                                 <>
@@ -87,16 +92,19 @@ const RequestCollapsible: React.FC<RequestCollapsibleProps> = ({ID,requestType})
                                                     <TableCell>{link.equipmentRequest.quantity}</TableCell>
                                                     <TableCell>{link.equipmentRequest.medicalDevice}</TableCell>
                                                     <TableCell>{link.equipmentRequest.signature}</TableCell>
+                                                    <TableCell>{link.comments}</TableCell>
                                                 </>
                                             ) : requestType === "Security" ? (
                                                 <>
                                                     <TableCell>{link.securityRequest.securityType}</TableCell>
                                                     <TableCell>{link.securityRequest.numOfGuards}</TableCell>
+                                                    <TableCell>{link.comments}</TableCell>
                                                 </>
                                             ) : requestType === "Sanitation" ? (
                                                     <>
                                                         <TableCell>{link.sanitationRequest.type}</TableCell>
                                                         <TableCell>{link.sanitationRequest.status}</TableCell>
+                                                        <TableCell>{link.comments}</TableCell>
                                                     </>
                                             ) : null}
                                         </TableRow>
