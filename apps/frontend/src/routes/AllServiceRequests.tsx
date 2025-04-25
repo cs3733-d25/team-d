@@ -103,7 +103,6 @@ export const getRequestType = (request: ServiceRequest): string => {
     }
     return "Unknown";
 };
-
 export const columns: ColumnDef<ServiceRequest>[] = [
     {
         id: "expand",
@@ -188,7 +187,7 @@ export const columns: ColumnDef<ServiceRequest>[] = [
         cell: ({ row }) => {
             const request = row.original as ServiceRequest;
             if (request.assignedEmployee === null) {
-                return "";
+                return ;
             }
             return request.assignedEmployee.firstName + " " + request.assignedEmployee.lastName;
         }
@@ -321,7 +320,10 @@ export const columns: ColumnDef<ServiceRequest>[] = [
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
                         <DropdownMenuItem>Assign Employee</DropdownMenuItem>
                         <DropdownMenuItem>Edit Request</DropdownMenuItem>
-                        <DropdownMenuItem>Delete Request</DropdownMenuItem>
+                        <DropdownMenuItem onClick={async()=> {
+                            const request = row.original as ServiceRequest;
+                            await axios.delete('/api/servicereqs/'+Number(request.requestId));
+                        }}>Delete Request</DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             )

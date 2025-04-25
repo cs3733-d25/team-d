@@ -471,37 +471,37 @@ router.delete('/:id', async function (req: Request, res: Response) {
     else {
         try {
             const [
-                deleteTranslatorRequest,
-                deleteEquipmentRequest,
+                // deleteTranslatorRequest,
+                // deleteEquipmentRequest,
                 deleteServiceRequest,
-                deleteSecurityRequest,
-                deleteSanitationRequest,
+                // deleteSecurityRequest,
+                // deleteSanitationRequest,
             ] = await PrismaClient.$transaction([
-                PrismaClient.translatorRequest.delete({
-                    where: { serviceRequestId: requestId },
-                }),
-                PrismaClient.equipmentRequest.delete({
-                    where: { serviceRequestId: requestId },
-                }),
+                // PrismaClient.translatorRequest.delete({
+                //     where: { serviceRequestId: requestId },
+                // }),
+                // PrismaClient.equipmentRequest.delete({
+                //     where: { serviceRequestId: requestId },
+                // }),
                 PrismaClient.serviceRequest.delete({
                     where: { requestId: requestId },
                 }),
-                PrismaClient.securityRequest.delete({
-                    where: { serviceRequestId: requestId },
-                }),
-                PrismaClient.sanitationRequest.delete({
-                    where: { serviceRequestId: requestId },
-                }),
+                // PrismaClient.securityRequest.delete({
+                //     where: { serviceRequestId: requestId },
+                // }),
+                // PrismaClient.sanitationRequest.delete({
+                //     where: { serviceRequestId: requestId },
+                // }),
             ]);
 
             // send 200 if success
             res.status(200).json({
                 message: 'Successfully deleted service request',
                 deleteServiceRequest,
-                deleteTranslatorRequest,
-                deleteEquipmentRequest,
-                deleteSecurityRequest,
-                deleteSanitationRequest,
+                // deleteTranslatorRequest,
+                // deleteEquipmentRequest,
+                // deleteSecurityRequest,
+                // deleteSanitationRequest,
             });
             // send 400 and error message if request cannot be updated
         } catch (error) {
