@@ -30,8 +30,10 @@ app.use(express.json()); // This processes requests as JSON
 app.use(express.urlencoded({ extended: false })); // URL parser
 app.use(cookieParser()); // Cookie parser
 
-app.use(API_ROUTES.DEPARTMENT, directoryRouter);
 app.use(API_ROUTES.PATHFIND, pathfindRouter);
+app.use(API_ROUTES.DEPARTMENT, directoryRouter);
+
+app.use(API_ROUTES.SERVICEREQS, servicereqsRouter);
 
 // If we're not in test mode, enable the auth0 enforcement
 if (!process.env['VITETEST']) {
@@ -50,7 +52,6 @@ if (!process.env['VITETEST']) {
 // won't be reached by the default proxy and prod setup
 app.use(API_ROUTES.HEALTHCHECK, healthcheckRouter);
 app.use(API_ROUTES.EMPLOYEE, employeeRouter);
-app.use(API_ROUTES.SERVICEREQS, servicereqsRouter);
 app.use(API_ROUTES.ASSIGNED, assignedRouter);
 app.use(API_ROUTES.EDITOR, editorRouter);
 // app.use(API_ROUTES.PATHFINDING, pathfindingRouter);
