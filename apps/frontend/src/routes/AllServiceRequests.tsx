@@ -81,15 +81,6 @@ export type ServiceRequest = {
     // employeeName: string; // For later use
 }
 
-export const exactFilter: FilterFn<any> = (row, columnId, filterValue) => {
-    const cellValue = row.getValue(columnId);
-    if(!Array.isArray(filterValue)) {
-        return true;
-    } else {
-        return filterValue.length === 0 || filterValue.includes(cellValue);
-    }
-}
-
 export const getRequestType = (request: ServiceRequest): string => {
     if (request.translatorRequest) {
         return "Translator";
@@ -446,7 +437,7 @@ export default function ShowAllRequests() {
     )
 }
 
-function Filter({ column }: { column: Column<any, unknown> }) {
+function Filter({ column }: { column: Column<ServiceRequest, unknown> }) {
     const columnFilterValue = column.getFilterValue() as string[] ?? [];
     const meta = column.columnDef.meta;
 
@@ -461,77 +452,32 @@ function Filter({ column }: { column: Column<any, unknown> }) {
 
             column.setFilterValue(newValue.length ? newValue : undefined);
         }
-        if(column.id === "requestType") {
-            return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger className="bg-blue-900 hover:bg-blue-950 inline">
-                        <Button
-                            variant="ghost" className="ml-auto bg-blue-900 hover:bg-blue-950"
-                        >
-                            Service Type
-                            <Funnel/>
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                        {options.map((value) => (
-                            <DropdownMenuCheckboxItem
-                                key={value} className="items-center space-x-2"
-                                checked={columnFilterValue.includes(value)}
-                                onCheckedChange={() => toggleOption(value)}>
-                                {value}
-                            </DropdownMenuCheckboxItem>
-                        ))}
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            );
-        }
-        if(column.id === "priority") {
-            return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger className="bg-blue-900 hover:bg-blue-950 inline">
-                        <Button
-                            variant="ghost" className="ml-auto bg-blue-900 hover:bg-blue-950"
-                        >
-                            Priority
-                            <Funnel/>
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                        {options.map((value) => (
-                            <DropdownMenuCheckboxItem
-                                key={value} className="items-center space-x-2"
-                                checked={columnFilterValue.includes(value)}
-                                onCheckedChange={() => toggleOption(value)}>
-                                {value}
-                            </DropdownMenuCheckboxItem>
-                        ))}
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            );
-        }
-        if(column.id === "requestStatus") {
-            return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger className="bg-blue-900 hover:bg-blue-950 inline">
-                        <Button
-                            variant="ghost" className="ml-auto bg-blue-900 hover:bg-blue-950"
-                        >
-                            Status
-                            <Funnel/>
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                        {options.map((value) => (
-                            <DropdownMenuCheckboxItem
-                                key={value} className="items-center space-x-2"
-                                checked={columnFilterValue.includes(value)}
-                                onCheckedChange={() => toggleOption(value)}>
-                                {value}
-                            </DropdownMenuCheckboxItem>
-                        ))}
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            );
-        }
+        const columnHeaders = {
+            requestType: "Service Type",
+            priority: "Priority",
+            requestStatus: "Status"
+        };
+        return (
+            <DropdownMenu>
+                <DropdownMenuTrigger className="bg-blue-900 hover:bg-blue-950 inline rounded-md">
+                    <Button
+                        variant="ghost" className="ml-auto bg-blue-900 hover:bg-blue-950"
+                    >
+                        {columnHeaders[column.id as keyof typeof columnHeaders]}
+                        <Funnel/>
+                    </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                    {options.map((value) => (
+                        <DropdownMenuCheckboxItem
+                            key={value} className="items-center space-x-2"
+                            checked={columnFilterValue.includes(value)}
+                            onCheckedChange={() => toggleOption(value)}>
+                            {value}
+                        </DropdownMenuCheckboxItem>
+                    ))}
+                </DropdownMenuContent>
+            </DropdownMenu>
+        );
     }
 }
