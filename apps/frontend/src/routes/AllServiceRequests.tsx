@@ -78,7 +78,7 @@ export type ServiceRequest = {
     departmentUnderId: number;
     comments: string;
     roomNum: string;
-    // employeeName: string; // For later use
+    employeeRequestedBy: Employee;
 }
 
 export type Employee = {
@@ -100,7 +100,7 @@ export const getRequestType = (request: ServiceRequest): string => {
     if (request.sanitationRequest) {
         return "Sanitation";
     }
-    return "Unknown"; // Fallback in case nothing matches
+    return "Unknown";
 };
 
 export const columns: ColumnDef<ServiceRequest>[] = [
@@ -153,6 +153,10 @@ export const columns: ColumnDef<ServiceRequest>[] = [
         meta: {
             filterVariant: 'none',
         },
+        cell: ({ row }) => {
+            const request = row.original as ServiceRequest;
+            return request.employeeRequestedBy.firstName + " " + request.employeeRequestedBy.lastName;
+        }
     },
     {
         accessorKey: "assignedEmployeeId",
@@ -264,6 +268,11 @@ export const columns: ColumnDef<ServiceRequest>[] = [
         meta: {
             filterVariant: 'none',
         },
+        cell: ({ row }) => {
+            const request = row.original as ServiceRequest;
+            const date = new Date(request.createdAt);
+            return date.toLocaleDateString("en-US", {})+ "\n" + date.toLocaleTimeString("en-US", {})
+        }
     },
     {
         accessorKey: "updatedAt",
@@ -281,6 +290,11 @@ export const columns: ColumnDef<ServiceRequest>[] = [
         meta: {
             filterVariant: 'none',
         },
+        cell: ({ row }) => {
+            const request = row.original as ServiceRequest;
+            const date = new Date(request.updatedAt);
+            return date.toLocaleDateString("en-US", {})+ "\n" + date.toLocaleTimeString("en-US", {})
+        }
     },
 ]
 
@@ -307,7 +321,7 @@ export default function ShowAllRequests() {
             const sanitationResponse = await axios.get('/api/servicereqs/sanitation');
             setDataSanitation(sanitationResponse.data);
 
-            const dataResponse = await axios.get('/api/servicereqs');
+            const dataResponse = await axios.get('/api/servicereqs/names');
             setData(dataResponse.data);
         } catch (error) {
             console.error('Error fetching data:', error);

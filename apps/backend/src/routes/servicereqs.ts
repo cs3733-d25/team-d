@@ -27,6 +27,31 @@ router.get('/', async function (req: Request, res: Response) {
     }
 });
 
+// GET ALL SERVICE REQUESTS with employee names
+router.get('/names', async function (req: Request, res: Response) {
+    const requests = await PrismaClient.serviceRequest.findMany({
+        include: {
+            translatorRequest: true,
+            equipmentRequest: true,
+            securityRequest: true,
+            sanitationRequest: true,
+            employeeRequestedBy: {
+                select: { firstName: true, lastName: true },
+            },
+        },
+    });
+    // If no service requests are found, send 204 and log it
+    if (requests == null) {
+        console.error('No service requests found in database!');
+        res.sendStatus(204);
+    }
+    // Otherwise send 200 and the data
+    else {
+        console.log(requests);
+        res.json(requests);
+    }
+});
+
 // GET ALL TRANSLATOR REQUESTS
 router.get('/translator', async function (req: Request, res: Response) {
     // Find all service request of type translator request
