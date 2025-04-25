@@ -79,6 +79,7 @@ export type ServiceRequest = {
     comments: string;
     roomNum: string;
     employeeRequestedBy: Employee;
+    assignedEmployee: Employee;
 }
 
 export type Employee = {
@@ -184,6 +185,13 @@ export const columns: ColumnDef<ServiceRequest>[] = [
         meta: {
             filterVariant: 'none',
         },
+        cell: ({ row }) => {
+            const request = row.original as ServiceRequest;
+            if (request.assignedEmployee === null) {
+                return "";
+            }
+            return request.assignedEmployee.firstName + " " + request.assignedEmployee.lastName;
+        }
     },
     {
         accessorKey: "departmentUnderId",

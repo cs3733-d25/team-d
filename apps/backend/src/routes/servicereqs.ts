@@ -13,29 +13,10 @@ router.get('/', async function (req: Request, res: Response) {
             equipmentRequest: true,
             securityRequest: true,
             sanitationRequest: true,
-        },
-    });
-    // If no service requests are found, send 204 and log it
-    if (requests == null) {
-        console.error('No service requests found in database!');
-        res.sendStatus(204);
-    }
-    // Otherwise send 200 and the data
-    else {
-        console.log(requests);
-        res.json(requests);
-    }
-});
-
-// GET ALL SERVICE REQUESTS with employee names
-router.get('/names', async function (req: Request, res: Response) {
-    const requests = await PrismaClient.serviceRequest.findMany({
-        include: {
-            translatorRequest: true,
-            equipmentRequest: true,
-            securityRequest: true,
-            sanitationRequest: true,
             employeeRequestedBy: {
+                select: { firstName: true, lastName: true },
+            },
+            assignedEmployee: {
                 select: { firstName: true, lastName: true },
             },
         },
