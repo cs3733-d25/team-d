@@ -16,7 +16,7 @@ import {
     FilterFn,
     Row, Column, RowData,
 } from "@tanstack/react-table"
-import { ArrowUpDown, ArrowUp, ArrowDown, ChevronDown, Funnel } from "lucide-react"
+import {ArrowUpDown, ArrowUp, ArrowDown, ChevronDown, Funnel, MoreHorizontal} from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
     DropdownMenu,
@@ -105,6 +105,16 @@ export const getRequestType = (request: ServiceRequest): string => {
 
 export const columns: ColumnDef<ServiceRequest>[] = [
     {
+        id: "expand",
+        enableHiding: false,
+        cell: ({ row }) => {
+            const expand = row.original
+            return (
+                <ChevronDown className="text-blue-950 pl-2"/>
+            )
+        }
+    },
+    {
         accessorKey: "requestType",
         header: ({ column }) => {
         },
@@ -166,7 +176,7 @@ export const columns: ColumnDef<ServiceRequest>[] = [
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
-                    Assigned Employee
+                    Assigned To
                     <ArrowUpDown />
                 </Button>
             )
@@ -196,18 +206,7 @@ export const columns: ColumnDef<ServiceRequest>[] = [
         accessorKey: "roomNum",
         header: ({ column }) => {
             return (
-                <Button variant="ghost">Room Number</Button>
-            )
-        },
-        meta: {
-            filterVariant: 'none',
-        },
-    },
-    {
-        accessorKey: "comments",
-        header: ({ column }) => {
-            return (
-                <Button variant="ghost">Comments</Button>
+                <Button variant="ghost">Room</Button>
             )
         },
         meta: {
@@ -296,32 +295,40 @@ export const columns: ColumnDef<ServiceRequest>[] = [
             return date.toLocaleDateString("en-US", {})+ "\n" + date.toLocaleTimeString("en-US", {})
         }
     },
+    {
+        id: "actions",
+        enableHiding: false,
+        cell: ({ row }) => {
+            const request = row.original
+
+            return (
+                <DropdownMenu>
+                    <DropdownMenuTrigger onClick={(e) => e.stopPropagation()}>
+                        <Button variant="secondary" className="h-8 w-8 p-0">
+                            <span className="sr-only">Open Menu</span>
+                            <MoreHorizontal className="text-blue-950"/>
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" onClick={(e) => e.stopPropagation()}>
+                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                        <DropdownMenuItem>Assign Employee</DropdownMenuItem>
+                        <DropdownMenuItem>Edit Request</DropdownMenuItem>
+                        <DropdownMenuItem>Delete Request</DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+            )
+        }
+    },
 ]
 
 
 
 export default function ShowAllRequests() {
-    const [dataTranslator, setDataTranslator] = useState<ServiceRequest[]>([]);
-    const [dataEquipment, setDataEquipment] = useState<ServiceRequest[]>([]);
-    const [dataSecurity, setDataSecurity] = useState<ServiceRequest[]>([]);
-    const [dataSanitation, setDataSanitation] = useState<ServiceRequest[]>([]);
     const [data, setData] = useState<ServiceRequest[]>([]);
 
     const fetchData = async () => {
         try {
-            const translatorResponse = await axios.get('/api/servicereqs/translator');
-            setDataTranslator(translatorResponse.data);
-
-            const equipmentResponse = await axios.get('/api/servicereqs/equipment');
-            setDataEquipment(equipmentResponse.data);
-
-            const securityResponse = await axios.get('/api/servicereqs/security');
-            setDataSecurity(securityResponse.data);
-
-            const sanitationResponse = await axios.get('/api/servicereqs/sanitation');
-            setDataSanitation(sanitationResponse.data);
-
-            const dataResponse = await axios.get('/api/servicereqs/names');
+            const dataResponse = await axios.get('/api/servicereqs');
             setData(dataResponse.data);
         } catch (error) {
             console.error('Error fetching data:', error);
