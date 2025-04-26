@@ -35,7 +35,6 @@ declare global {
     }
 }
 
-
 abstract class GoogleMap {
 
     /**
@@ -124,26 +123,24 @@ class PathfindingGraph {
         this.map = map;
 
         if (floor) {
-            this.floorMap = new google.maps.GroundOverlay(floor.image, {
+            this.floorMap = new google.maps.GroundOverlay(GoogleMap.getImgURL(floor.image), {
                 north: floor.imageBoundsNorth,
                 south: floor.imageBoundsSouth,
                 east: floor.imageBoundsEast,
                 west: floor.imageBoundsWest,
             }, {
-                map: this.map,
+
             });
         }
         else this.floorMap = null;
 
         this.path = new google.maps.Polyline({
-            map: this.map,
             path: path,
-            strokeColor: '#CC3300',
+            strokeColor: '#0cf',
         });
 
         this.nodes = path.map(position =>
             new google.maps.Marker({
-                map: this.map,
                 icon: {
                     path: google.maps.SymbolPath.CIRCLE,
                     scale: 5,
@@ -159,7 +156,6 @@ class PathfindingGraph {
         this.selectedSegment = null;
 
         this.visibility = false;
-        this.setVisibility(false);
     }
 
     setVisibility(visiblity: boolean) {
@@ -374,9 +370,6 @@ class PathfindingGraph {
     // // }
 }
 
-
-
-
 export type PathfindingResults = {
     floors: number[];
     directions: DirectionsStep[];
@@ -414,9 +407,10 @@ export class PathfindingMap extends GoogleMap {
     private travelMode: google.maps.TravelMode;
 
     private currentPathfindingResponse: PathfindingResponse | null;
+    private currentSteps: InternalStep[] | null;
     private currentParkingPath: PathfindingGraph | null;
-    private currentFloorPath: PathfindingGraph | null;
-    private currentFloorMap: google.maps.GroundOverlay | null;
+    private currentFloorPaths: PathfindingGraph[] | null;
+    private selectedFloorPath: PathfindingGraph | null;
 
     // For Google Map directions
     // private stepIndex: number = 0;
@@ -468,9 +462,10 @@ export class PathfindingMap extends GoogleMap {
         this.travelMode = google.maps.TravelMode.DRIVING;
 
         this.currentPathfindingResponse = null;
+        this.currentSteps = null;
         this.currentParkingPath = null;
-        this.currentFloorPath = null;
-        this.currentFloorMap = null;
+        this.currentFloorPaths = null;
+        this.selectedFloorPath = null;
 
         this.department = null;
     }
@@ -563,7 +558,7 @@ export class PathfindingMap extends GoogleMap {
             directions.routes[0].legs[0].steps.forEach((step) => {
                 directionsSteps.push({
                     step: {
-                        instructions: step.instructions.replace(/<[^>]*>/g, ''),
+                        instructions: step.instructions.replace(/<div[^>]*>/g,'\n').replace(/<[^>]*>/g, ''),
                         distance: step.distance?.text || '',
                         time: step.duration?.text || '',
                         icon:
@@ -582,6 +577,11 @@ export class PathfindingMap extends GoogleMap {
         this.currentParkingPath = new PathfindingGraph(this.map, this.currentPathfindingResponse.parkingLotPath.path);
         this.currentParkingPath.setVisibility(true);
 
+        this.currentFloorPaths = this.currentPathfindingResponse.floorPaths.map(floor =>
+            new PathfindingGraph(this.map, floor.path, floor)
+        );
+        this.currentFloorPaths[0].setVisibility(true);
+
         this.updater({
             floors: this.currentPathfindingResponse.floorPaths.map(floor => floor.floorNum),
             directions: directionsSteps.map(step => step.step),
@@ -589,7 +589,7 @@ export class PathfindingMap extends GoogleMap {
     }
 
     setCurrentStepIdx(stepIdx: number, tts: boolean) {
-
+        
     }
 
 
@@ -608,6 +608,7 @@ export class PathfindingMap extends GoogleMap {
                 this.travelMode = google.maps.TravelMode.BICYCLING;
                 break;
         }
+        this.update();
         // this.route();
     }
 
@@ -753,6 +754,8 @@ export class PathfindingMap extends GoogleMap {
     // }
 }
 
+
+
 class EditorMapGraph {
 
     private readonly map: google.maps.Map;
@@ -858,9 +861,12 @@ class EditorMapGraph {
                 lng: node.lng,
             },
             icon: {
-                url: 'https://maps.gstatic.com/intl/en_us/mapfiles/markers2/measle.png',
-                size: new google.maps.Size(10, 10),
-                anchor: new google.maps.Point(5, 5),
+                path: google.maps.SymbolPath.CIRCLE,
+                scale: 5,
+                fillOpacity: 1,
+                fillColor: '#0cf',
+                strokeColor: '#fff',
+                strokeWeight: 2
             },
             draggable: true,
             zIndex: 20,
@@ -872,20 +878,6 @@ class EditorMapGraph {
         marker.addListener("click", (e: google.maps.MapMouseEvent) => {
             const rawPosition = e.latLng;
             if (!rawPosition) return;
-
-            // if (this.editingState === 'ADDEDGE' && this.newEdge) {
-            //     this.newEdge.line.setMap(null);
-            //     this.addEdge({
-            //         edgeId: -1,
-            //         name: '',
-            //         startNodeId: this.newEdge.startNodeId,
-            //         endNodeId: node.nodeId,
-            //         graphId: this.editorGraph.graphId,
-            //     });
-            //     this.newEdge = null;
-            //     this.editingState = 'DEFAULT';
-            // }
-
 
             const infowindow = new google.maps.InfoWindow({
                 content: `
@@ -1007,7 +999,7 @@ class EditorMapGraph {
                 startNode.marker.getPosition() || {lat: 0, lng: 0},
                 endNode.marker.getPosition() || {lat: 0, lng: 0},
             ],
-            strokeColor: '#00AACC',
+            strokeColor: '#0cf',
         });
         line.setMap(this.map);
 
@@ -1204,7 +1196,7 @@ class EditorMapGraph {
 
 export class EditorMap extends GoogleMap {
 
-    public static async makeMap(mapDivElement: HTMLDivElement) {
+    public static async makeMap(mapDivElement: HTMLDivElement, nodeUpdater: (selected: EditorNode | null) => void, edgeUpdater: (selected: EditorEdges | null) => void) {
         await GoogleMap.loadScript();
         return new EditorMap(mapDivElement);
     }
@@ -1215,7 +1207,7 @@ export class EditorMap extends GoogleMap {
     private editorEncapsulator: EditorEncapsulator | null;
     private readonly graphs: Map<number, EditorMapGraph>;
 
-    constructor(mapDivElement: HTMLDivElement) {
+    private constructor(mapDivElement: HTMLDivElement) {
         console.log('editor map constructor');
 
         super(mapDivElement, {
@@ -1223,27 +1215,9 @@ export class EditorMap extends GoogleMap {
                 lat: 42.31934987791928,
                 lng: -71.3162829187303,
             },
-            // center: {
-            //     lat: 42.09310,
-            //     lng: -71.26553,
-            // },
             zoom: 10,
             clickableIcons: false,
         });
-
-        // new google.maps.GroundOverlay('/src/public/floormaps/new/pp22f4.png', {
-        //     north: 42.09307,
-        //     south: 42.092215,
-        //     east: -71.26650,
-        //     west: -71.267445,
-        // }).setMap(this.map);
-        //
-        // new google.maps.GroundOverlay('/src/public/floormaps/pp22f4-trans.png', {
-        //     north: 42.09308,
-        //     south: 42.09223,
-        //     east: -71.26654,
-        //     west: -71.26744,
-        // }).setMap(this.map);
         
         this.currentGraph = null;
         this.currentGraphId = null;
@@ -1251,12 +1225,6 @@ export class EditorMap extends GoogleMap {
 
         console.log('editor map constructosdfsdfsdr');
         this.graphs = new Map();
-
-        this.map.addListener('click', (e: google.maps.MapMouseEvent) => {
-            const rawPosition = e.latLng;
-            if (!rawPosition) return;
-            console.log('lat: ' + rawPosition.toJSON().lat + ',\nlng: ' + rawPosition.toJSON().lng + ',');
-        })
     }
 
     changeGraph(graphId: number) {
@@ -1267,6 +1235,8 @@ export class EditorMap extends GoogleMap {
         newGraph.setVisibility(true);
         this.currentGraph = newGraph;
         this.currentGraphId = graphId;
+
+        this.zoom();
     }
 
     initialize(editorEncapsulator: EditorEncapsulator) {

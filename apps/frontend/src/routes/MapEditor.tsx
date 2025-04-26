@@ -2,11 +2,11 @@ import {useEffect, useRef, useState} from "react";
 import {EditorMap} from "@/GMap/GoogleMap.ts";
 import {
     API_ROUTES,
-    DepartmentOptions, EditorGraph,
+    DepartmentOptions, EditorEdges, EditorGraph, EditorNode,
     HospitalOptions,
     PathfindingOptions,
-    PathfindingResponse
-} from "common/src/constants.ts";
+    PathfindingResponse,
+} from 'common/src/constants.ts';
 import axios from "axios";
 import {Separator} from "@/components/ui/separator.tsx";
 import {Label} from "@/components/ui/label.tsx";
@@ -20,6 +20,7 @@ import {
     SelectValue
 } from "@/components/ui/select.tsx";
 import {Button} from "@/components/ui/button.tsx";
+import { Input } from '@/components/ui/input.tsx';
 
 export class EditorEncapsulator {
     editorGraphs: EditorGraph[];
@@ -51,12 +52,15 @@ export default function MapEditor() {
 
     const [editingData, setEditingData] = useState<EditorEncapsulator>();
 
+    const [selectedNode, setSelectedNode] = useState<EditorNode | null>(null);
+    const [selectedEdge, setSelectedEdge] = useState<EditorEdges | null>(null);
+
     useEffect(() => {
         console.log('useEffect MapEditor');
         let tempMap: EditorMap
         const fetchMap = async () => {
             if (mapRef.current) {
-                tempMap = await EditorMap.makeMap(mapRef.current)
+                tempMap = await EditorMap.makeMap(mapRef.current, setSelectedNode, setSelectedEdge)
                 setMap(tempMap);
             }
         }
@@ -95,7 +99,7 @@ export default function MapEditor() {
 
     return (
         <div className="flex flex-row flex-1 h-screen overflow-y-hidden">
-            <div className="flex-1 p-4">
+            <div className="flex-1 p-4 overflow-y-scroll">
 
                 <h2 className="text-3xl font-bold">Map Editor</h2>
                 <Separator className="mt-4 mb-4" />
@@ -127,6 +131,16 @@ export default function MapEditor() {
                         Save
                     </Button>
                 </div>
+
+                {selectedNode && (
+                    <>
+                        <Separator className="mt-4 mb-4" />
+                        <h2 className="text-xl font-bold mb-4">Node #{selectedNode.nodeId}</h2>
+                        <Label className="mt-4 mb-4">
+                            <Input defaultValue={selectedNode.name} />
+                        </Label>
+                    </>
+                )}
 
                 <Separator className="mt-4 mb-4" />
                 <h2 className="text-xl font-bold mb-4">Instructions</h2>

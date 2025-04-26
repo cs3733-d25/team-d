@@ -77,14 +77,6 @@ export default function NewDirections() {
 
         if (!map) return;
         map.setDepartment(newDepartment);
-
-        // map.update();
-
-        // console.log(map.update());
-        // axios.get(API_ROUTES.PATHFIND + '/path-to-dept/' + newDepartment.departmentId).then(response => {
-        //     setPathfindingResponse(response.data as PathfindingResponse);
-        //     map.updateDepartmentPathfinding(response.data as PathfindingResponse);
-        // });
     }
 
     const handleModeChange = (value: string) => {
@@ -98,6 +90,10 @@ export default function NewDirections() {
         //     pathfindingResponse.parkingLotPath.path[0].lat,
         //     pathfindingResponse.parkingLotPath.path[0].lng, 20
         // );
+    }
+
+    const handleStepSelect = () => {
+
     }
 
     return (
@@ -155,17 +151,6 @@ export default function NewDirections() {
                     </SelectContent>
                 </Select>
 
-                {/*<div className="mb-5">*/}
-                {/*    <div id="step-instruction">Loading directions...</div>*/}
-                {/*    <button*/}
-                {/*        id="next-step-btn"*/}
-                {/*        className="mt-2 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"*/}
-                {/*    >*/}
-                {/*        Next Step*/}
-                {/*    </button>*/}
-                {/*</div>*/}
-
-
 
                 {selectedHospital &&
                     <>
@@ -187,62 +172,13 @@ export default function NewDirections() {
                                 </SelectGroup>
                             </SelectContent>
                         </Select>
-                        {/*{pathfindingResponse &&*/}
-                        {/*    <div>*/}
-
-
-
-                        {/*        <Button onClick={handleZoom} className="mb-4">*/}
-                        {/*            Zoom*/}
-                        {/*        </Button>*/}
-
-
-
-                        {/*    </div>*/}
-
-
-
-                        {/*}*/}
-
-                        {/*<div className="mb-5">*/}
-                        {/*    <div id="inner-step-instruction">Loading directions...</div>*/}
-                        {/*    <button*/}
-                        {/*        id="inner-next-step-btn"*/}
-                        {/*        className="mt-2 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"*/}
-                        {/*    >*/}
-                        {/*        Next Step*/}
-                        {/*    </button>*/}
-                        {/*</div>*/}
                     </>
                 }
-                {/*<Separator className="mt-4 mb-4" />*/}
-                {/*TODO: make a legend*/}
-                {/*{!props.editor &&*/}
-                {/*    <>*/}
-                {/*        <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">*/}
-                {/*            <h2 className="text-xl font-semibold mb-3 text-gray-700 flex items-center">*/}
-                {/*                Legend*/}
-                {/*            </h2>*/}
-                {/*            <ul className="space-y-2">*/}
-                {/*                <li className="flex items-center text-lg">*/}
-                {/*                    <FontAwesomeIcon icon={faCar} className="text-blue-500 w-4 h-4 mr-3" />*/}
-                {/*                    To Hospital*/}
-                {/*                </li>*/}
-                {/*                <li className="flex items-center text-lg">*/}
-                {/*                    <FontAwesomeIcon icon={faWalking} className="text-red-600 w-4 h-4 mr-3" />*/}
-                {/*                    Within Hospital*/}
-                {/*                </li>*/}
-                {/*            </ul>*/}
-                {/*        </div>*/}
-                {/*    </>*/}
-                {/*}*/}
 
-                {pathfindingResults?.floors.map(floor => (
-                    <h1>{floor}</h1>
-                ))}
-
-                {pathfindingResults?.directions.map(step => (
-                    <p>{step.instructions}</p>
+                {pathfindingResults?.directions.map((step, i) => (
+                    <div onClick={() => {
+                        map?.setCurrentStepIdx(i, true);
+                    }}>{step.instructions}</div>
                 ))}
             </div>
             <div ref={mapRef} className="flex-3">
@@ -250,11 +186,4 @@ export default function NewDirections() {
             </div>
         </div>
     );
-}
-
-declare global {
-    interface Window {
-        initMap: () => void;
-        google: typeof google;
-    }
 }
