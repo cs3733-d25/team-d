@@ -13,6 +13,7 @@ import AllServiceRequests from "@/routes/AllServiceRequests.tsx";
 import Directions from "@/routes/Directions.tsx";
 import Auth0Profile from "@/components/Auth0Profile.tsx";
 import HospitalDirectory from "@/routes/hospitalDirectory.tsx";
+import About from "@/routes/About.tsx";
 
 
 import AdminSettings from "@/routes/admingSettings.tsx";
@@ -36,6 +37,7 @@ function App() {
                         <Route path="servicerequesthub" element={<ServiceRequestHub />} />
                         <Route path="hospital-directory" element={<HospitalDirectory />} />
                         <Route path="admin-settings" element={<AdminSettings />} />
+                        <Route path="about" element={<About />} />
 
 
 
