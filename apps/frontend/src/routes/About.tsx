@@ -9,20 +9,20 @@ const faculty: Person[] = [
 
 const members: Person[] = [
     // Co-Leads
-    { name: "Jacob Boyle",       position: "Co-Lead (Front & Back-End)" },
-    { name: "Thanh Ho",          position: "Co-Lead (Front & Back-End)" },
+    { name: "Jacob Boyle",       position: "Co-Lead" },
+    { name: "Thanh Ho",          position: "Co-Lead" },
 
     // Assistant Leads
-    { name: "Keerthana Jayamoorthy", position: "Assistant Lead for Front-End" },
     { name: "Margareth Hosie",   position: "Assistant Lead for Back-End" },
+    { name: "Keerthana Jayamoorthy", position: "Assistant Lead for Front-End" },
 
     { name: "Stuvat Dash",       position: "Front-End & Feature Software Engineer" },
-    { name: "Jiaming Du",        position: "Algorithms & Feature Engineer" },
-    { name: "Delia Jasper",      position: "Front-End & Feature Engineer" },
-    { name: "Lucien La Rock",    position: "Front-End & Feature Engineer / Doc Analyst / PM" },
-    { name: "Christine Ngo",     position: "Back-End DB Engineer & Product Owner" },
-    { name: "Ali Riad",          position: "Algorithms & Feature Engineer" },
     { name: "Brandon Small",     position: "Front-End & Feature Engineer • Scrum Master" },
+    { name: "Delia Jasper",      position: "Front-End & Feature Engineer" },
+    { name: "Lucien La Rock",    position: "Front-End & Feature Engineer • Project Manager" },
+    { name: "Christine Ngo",     position: "Back-End Database Engineer & Product Owner" },
+    { name: "Ali Riad",          position: "Algorithms & Feature Engineer" },
+    { name: "Jiaming Du",        position: "Algorithms & Feature Engineer" },
 ];
 
 const Card: React.FC<Person> = ({ name, position }) => (
