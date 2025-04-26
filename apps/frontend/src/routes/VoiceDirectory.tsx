@@ -190,7 +190,7 @@ const patriotData: Entry[] = [
     },
 ];
 
-/* ───────────────── Fuse helper ────────────────────────────────────── */
+/* use helper */
 const createFuse = (data: Entry[]) =>
     new Fuse(data, {
         keys: ["service", "specialties"],
@@ -198,7 +198,7 @@ const createFuse = (data: Entry[]) =>
         ignoreLocation: true,
     });
 
-/* ───────────────── Component ─────────────────────────────────────── */
+/* Component */
 const VoiceDirectory: React.FC = () => {
     /* directory state */
     const [hospital, setHospital] = useState<0 | 1>(0);
@@ -217,7 +217,7 @@ const VoiceDirectory: React.FC = () => {
         if (filtered.length && !filtered.includes(selected)) setSelected(filtered[0]);
     }, [filtered, selected]);
 
-    /* ─────────────── Voice search (with live debug) ─────────────── */
+    /* voice searc */
     const recognitionRef = useRef<any>(null);
     const [listening, setListening] = useState(false);
 
@@ -240,16 +240,16 @@ const VoiceDirectory: React.FC = () => {
         recognitionRef.current.maxAlternatives = 1;
 
         recognitionRef.current.onstart = () => {
-            console.log("🎙️  Voice capture started");
+            console.log("Voice capture started");
             setListening(true);
         };
         recognitionRef.current.onresult = (e: any) => {
             const spoken = e.results[0][0].transcript;
-            console.log("📝  Transcribed:", spoken);
+            console.log(" Transcribed:", spoken);
             setQuery(spoken);
         };
         recognitionRef.current.onerror = (e: any) => {
-            console.error("💥  Speech error:", e.error);
+            console.error("Speech error:", e.error);
         };
         recognitionRef.current.onend = () => {
             console.log("🔚  Voice capture ended");
@@ -265,12 +265,11 @@ const VoiceDirectory: React.FC = () => {
             try {
                 rec.start();
             } catch {
-                /* ignore DOMException: 'already started' */
             }
         }
     };
 
-    /* ─────────────── UI ─────────────── */
+    /* UI */
     return (
         <div className="min-h-screen bg-white flex flex-col items-center py-8">
             <div className="w-full max-w-6xl h-[80vh] rounded-xl shadow-md border border-gray-200 overflow-hidden flex">
