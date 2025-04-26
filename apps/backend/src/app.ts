@@ -30,7 +30,6 @@ app.use(express.json()); // This processes requests as JSON
 app.use(express.urlencoded({ extended: false })); // URL parser
 app.use(cookieParser()); // Cookie parser
 
-
 /**
  * All routers here should be accessible for both logIned and non-logedIn users
  */
@@ -38,7 +37,6 @@ app.use(API_ROUTES.PATHFIND, pathfindRouter);
 app.use(API_ROUTES.DEPARTMENT, directoryRouter);
 app.use(API_ROUTES.SERVICEREQS, servicereqsRouter);
 app.use(API_ROUTES.EMPLOYEE, employeeRouter);
-
 
 // If we're not in test mode, enable the auth0 enforcement
 if (!process.env['VITETEST']) {
@@ -62,7 +60,6 @@ app.use(API_ROUTES.HEALTHCHECK, healthcheckRouter);
 app.use(API_ROUTES.ASSIGNED, assignedRouter);
 app.use(API_ROUTES.EDITOR, editorRouter);
 // app.use(API_ROUTES.PATHFINDING, pathfindingRouter);
-
 
 /**
  * Catch all 404 errors, and forward them to the error handler

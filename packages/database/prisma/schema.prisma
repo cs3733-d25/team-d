@@ -27,6 +27,7 @@ model Employee {
   middleInitial           String?
   lastName                String
   occupation              String
+  userType                String
   serviceRequestsAssigned ServiceRequest[] @relation(name: "assignedTo")
   serviceRequestsMade     ServiceRequest[] @relation(name: "requestedBy")
 }

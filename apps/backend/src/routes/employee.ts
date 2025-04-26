@@ -121,4 +121,26 @@ router.delete('/:id', async function (req: Request, res: Response) {
     }
 });
 
+// get employee with specific email
+router.get('/employee/:email', async function (req: Request, res: Response) {
+    // parse email into variable
+    const userEmail: string = req.params.email.toLowerCase();
+    // find profile with email
+    const employee = await PrismaClient.employee.findUnique({
+        where: {
+            email: userEmail,
+        },
+    });
+    // If no profiles are found, send 204 and log it
+    if (employee == null) {
+        console.error(`No employee found in database with Id ${userEmail}!`);
+        res.sendStatus(204);
+    }
+    // Otherwise send 200 and the data
+    else {
+        console.log(employee);
+        res.json(employee);
+    }
+});
+
 export default router;

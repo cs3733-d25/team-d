@@ -25,36 +25,39 @@ async function main() {
             where: {employeeId: 1},
             update: {},
             create: {
-                email: 'jlsmith@gmail.com',
-                password: 'rhe0324!',
+                email: 'admind25d@gmail.com',
+                password: 'cs3733D25X',
                 firstName: 'Jen',
                 middleInitial: 'L',
                 lastName: 'Smith',
-                occupation: 'Nurse'
+                occupation: 'Nurse',
+                userType: 'Admin'
             }
         }),
         await prisma.employee.upsert({
             where: {employeeId: 2},
             update: {},
             create: {
-                email: 'mkhaven@gmail.com',
-                password: 'ehw2153!',
+                email: 'softengD25X@gmail.com',
+                password: 'cs3733D25X',
                 firstName: 'Matthew',
                 middleInitial: 'K',
                 lastName: 'Haven',
-                occupation: 'Doctor'
+                occupation: 'Doctor',
+                userType: 'Admin'
             }
         }),
         await prisma.employee.upsert({
             where: {employeeId: 3},
             update: {},
             create: {
-                email: 'palong@gmail.com',
-                password: 'jye4832!',
+                email: 'staffD25X@gmail.com',
+                password: 'cs3733D25X',
                 firstName: 'Piper',
                 middleInitial: 'A',
                 lastName: 'Long',
-                occupation: 'Nurse'
+                occupation: 'Nurse',
+                userType: 'Staff'
             }
         }),
         await prisma.employee.upsert({
@@ -66,7 +69,8 @@ async function main() {
                 firstName: 'Nicole',
                 middleInitial: 'R',
                 lastName: 'Lee',
-                occupation: 'Administrator'
+                occupation: 'Administrator',
+                userType: 'Staff'
             }
         }),
         await prisma.employee.upsert({
@@ -78,7 +82,8 @@ async function main() {
                 firstName: 'Karina',
                 middleInitial: 'K',
                 lastName: 'Ramos',
-                occupation: 'Doctor'
+                occupation: 'Doctor',
+                userType: 'Staff'
             }
         })
     ];
