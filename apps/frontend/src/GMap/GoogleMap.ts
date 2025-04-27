@@ -888,14 +888,14 @@ class EditorMapGraph {
         return '#AAAAAA';
     }
 
-    private getNodeStrokeColor(type: string | null): string {
+    private getNodeStrokeColor(type: number | null): string {
 
-        if (type == null){
+        if (!type){
 
             return '#FFFFFF';
         } else {
 
-            return '#888888';
+            return '#7038c9';
         }
 
     }
@@ -914,7 +914,7 @@ class EditorMapGraph {
                 scale: 5,
                 fillOpacity: 1,
                 fillColor: this.getNodeColor(node.type),
-                strokeColor: this.getNodeStrokeColor(node.type),
+                strokeColor: this.getNodeStrokeColor(node.connectedNodeId),
                 strokeWeight: 2
             },
             draggable: true,
