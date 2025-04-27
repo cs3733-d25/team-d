@@ -863,6 +863,26 @@ class EditorMapGraph {
         });
     }
 
+    function getNodeColor(type: string): string{
+
+        switch(type) {
+
+            case 'PARKING':
+                return '#4285F4';
+
+
+            case 'DOOR':
+                return '#34A853';
+
+            case 'CHECKIN':
+                return '#EA4335';
+
+            case 'NORMAL':
+                return '#AAAAAA';
+
+        }
+    }
+
 
 
     private addNodeLocal(node: EditorNode) {
@@ -876,7 +896,7 @@ class EditorMapGraph {
                 path: google.maps.SymbolPath.CIRCLE,
                 scale: 5,
                 fillOpacity: 1,
-                fillColor: '#0cf',
+                fillColor: getNodeColor(node.type),
                 strokeColor: '#fff',
                 strokeWeight: 2
             },
