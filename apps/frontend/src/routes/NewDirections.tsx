@@ -1,5 +1,7 @@
 import {useEffect, useRef, useState} from "react";
 import {DirectionsStep, PathfindingMap, PathfindingResults} from "@/GMap/GoogleMap.ts";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCar, faWalking, faBus, faBicycle } from "@fortawesome/free-solid-svg-icons";
 import {
     API_ROUTES,
     DepartmentOptions,
@@ -22,6 +24,18 @@ import {
 } from "@/components/ui/select.tsx";
 import {Button} from "@/components/ui/button.tsx";
 
+interface TransportModeOption {
+    value: string;
+    label: string;
+    icon: any; // You might want to be more specific with the icon type
+}
+
+const transportModes: TransportModeOption[] = [
+    { value: "DRIVING", label: "Driving", icon: faCar },
+    { value: "WALKING", label: "Walking", icon: faWalking },
+    { value: "TRANSIT", label: "Transit", icon: faBus },
+    { value: "BICYCLING", label: "Bicycling", icon: faBicycle },
+];
 
 export default function NewDirections() {
 
@@ -48,6 +62,8 @@ export default function NewDirections() {
     // const [pathfindingResponse, setPathfindingResponse] = useState<PathfindingResponse>();
     //
     // const [directionsSteps, setDirectionsSteps] = useState<DirectionsStep[]>([]);
+    // const [pathfindingResponse, setPathfindingResponse] = useState<PathfindingResponse>();
+    const [selectedMode, setSelectedMode] = useState<string>("DRIVING");
 
     useEffect(() => {
         console.log('useEffect NewDirections');
@@ -79,11 +95,11 @@ export default function NewDirections() {
         map.setDepartment(newDepartment);
     }
 
-    const handleModeChange = (value: string) => {
+    const handleModeChange = (mode: string) => {
+        setSelectedMode(mode);
         if (!map) return;
-        map.setTravelMode(value);
+        map.setTravelMode(mode);
     }
-
     const handleZoom = () => {
         // if (!pathfindingResponse || !map) return;
         // map.recenter(
@@ -137,19 +153,25 @@ export default function NewDirections() {
 
 
                 <Label>Transport Mode</Label>
-                <Select onValueChange={handleModeChange} defaultValue="DRIVING">
-                    <SelectTrigger className="w-full mt-1 mb-4">
-                        <SelectValue placeholder="Choose a mode of transport..." />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectGroup>
-                            <SelectLabel>Transport Modes</SelectLabel>
-                            {['Driving', 'Walking', 'Transit', 'Bicycling'].map((mode, i) => (
-                                <SelectItem key={i} value={mode.toUpperCase()}>{mode}</SelectItem>
-                            ))}
-                        </SelectGroup>
-                    </SelectContent>
-                </Select>
+                <div className="flex gap-2 mb-4">
+                    {transportModes.map((mode) => (
+                        <button
+                            key={mode.value}
+                            onClick={() => handleModeChange(mode.value)}
+                            className={cn(
+                                "p-2 rounded-md shadow-sm border",
+                                selectedMode === mode.value
+                                    ? "bg-primary text-primary-foreground border-primary"
+                                    : "bg-white text-gray-700 hover:bg-gray-100 border-gray-300"
+                            )}
+                        >
+                            <div className="flex flex-col items-center">
+                                <FontAwesomeIcon icon={mode.icon} className="text-xl mb-1" />
+                                <span className="text-xs">{mode.label}</span>
+                            </div>
+                        </button>
+                    ))}
+                </div>
 
 
                 {selectedHospital &&
