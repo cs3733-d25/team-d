@@ -23,11 +23,12 @@ import {
     SelectValue
 } from "@/components/ui/select.tsx";
 import {Button} from "@/components/ui/button.tsx";
+import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 
 interface TransportModeOption {
     value: string;
     label: string;
-    icon: any; // You might want to be more specific with the icon type
+    icon: IconDefinition; // You might want to be more specific with the icon type
 }
 
 const transportModes: TransportModeOption[] = [
@@ -153,7 +154,7 @@ export default function NewDirections() {
 
 
                 <Label>Transport Mode</Label>
-                <div className="flex gap-2 mb-4">
+                <div className="flex gap-2 mb-4 mt-1">
                     {transportModes.map((mode) => (
                         <button
                             key={mode.value}
