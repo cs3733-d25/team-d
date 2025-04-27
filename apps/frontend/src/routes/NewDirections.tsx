@@ -2,6 +2,7 @@ import {useEffect, useRef, useState} from "react";
 import {DirectionsStep, PathfindingMap, PathfindingResults} from "@/GMap/GoogleMap.ts";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCar, faWalking, faBus, faBicycle } from "@fortawesome/free-solid-svg-icons";
+import {Switch} from '@/components/ui/switch.tsx';
 import {
     API_ROUTES,
     DepartmentOptions,
@@ -59,6 +60,8 @@ export default function NewDirections() {
     const [selectedDepartment, setSelectedDepartment] = useState<DepartmentOptions | null>(null);
 
     const [pathfindingResults, setPathfindingResults] = useState<PathfindingResults | null>(null);
+
+    const [tts, setTts] = useState<boolean>(false);
 
     // const [pathfindingResponse, setPathfindingResponse] = useState<PathfindingResponse>();
     //
@@ -133,26 +136,6 @@ export default function NewDirections() {
                     )}
                 />
 
-                {/*end to-do here*/}
-
-                <Label>Destination Hospital</Label>
-                <Select onValueChange={handleHospitalChange}>
-                    <SelectTrigger className="w-full mt-1 mb-4">
-                        <SelectValue placeholder="Choose a hospital..." />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectGroup>
-                            <SelectLabel>Hospitals</SelectLabel>
-                            {displayData.hospitals.map((h: HospitalOptions) => (
-                                <SelectItem key={h.hospitalId + 1} value={h.name}>
-                                    {h.name}
-                                </SelectItem>
-                            ))}
-                        </SelectGroup>
-                    </SelectContent>
-                </Select>
-
-
                 <Label>Transport Mode</Label>
                 <div className="flex gap-2 mb-4 mt-1">
                     {transportModes.map((mode) => (
@@ -174,10 +157,29 @@ export default function NewDirections() {
                     ))}
                 </div>
 
+                {/*end to-do here*/}
+
+                <Label>Destination Hospital</Label>
+                <Select onValueChange={handleHospitalChange}>
+                    <SelectTrigger className="w-full mt-1 mb-4">
+                        <SelectValue placeholder="Choose a hospital..." />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectGroup>
+                            <SelectLabel>Hospitals</SelectLabel>
+                            {displayData.hospitals.map((h: HospitalOptions) => (
+                                <SelectItem key={h.hospitalId + 1} value={h.name}>
+                                    {h.name}
+                                </SelectItem>
+                            ))}
+                        </SelectGroup>
+                    </SelectContent>
+                </Select>
+
 
                 {selectedHospital &&
                     <>
-                        <Separator className="mt-4 mb-4" />
+                        {/*<Separator className="mt-4 mb-4" />*/}
 
                         <Label>Department</Label>
                         <Select onValueChange={handleDepartmentChange}>
@@ -198,11 +200,21 @@ export default function NewDirections() {
                     </>
                 }
 
-                {pathfindingResults?.directions.map((step, i) => (
-                    <div onClick={() => {
-                        map?.setCurrentStepIdx(i, true);
-                    }}>{step.instructions} | {step.distance} | {step.time} | {step.icon}</div>
-                ))}
+                {pathfindingResults &&
+                    <>
+                        <Separator className="mt-4 mb-4" />
+
+                        <Label className="mb-4">
+                            Text-to-speech
+                            <Switch onCheckedChange={setTts} />
+                        </Label>
+                        {pathfindingResults.directions.map((step, i) => (
+                            <div onClick={() => {
+                                map?.setCurrentStepIdx(i, tts);
+                            }}>{step.instructions} | {step.distance} | {step.time} | {step.icon}</div>
+                        ))}
+                    </>
+                }
             </div>
             <div ref={mapRef} className="flex-3">
                 {/* Google map will go here */}

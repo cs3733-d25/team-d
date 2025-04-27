@@ -527,7 +527,7 @@ export class PathfindingMap extends GoogleMap {
         // destination dept is not found
         if (!this.startPlaceId || !this.department) return;
 
-        const directionsSteps: InternalStep[] = [];
+        this.currentSteps = [];
 
         // Get directions within the hospital
         await axios.get(API_ROUTES.PATHFIND + '/path-to-dept/' + this.department.departmentId).then(response => {
@@ -554,42 +554,56 @@ export class PathfindingMap extends GoogleMap {
             travelMode: this.travelMode,
         }).then((directions) => {
             this.directionsRenderer.setDirections(directions);
-
-            directions.routes[0].legs[0].steps.forEach((step) => {
-                directionsSteps.push({
-                    step: {
-                        instructions: step.instructions.replace(/<div[^>]*>/g,'\n').replace(/<[^>]*>/g, ''),
-                        distance: step.distance?.text || '',
-                        time: step.duration?.text || '',
-                        icon:
-                            step.maneuver.includes('right') ? 'right' :
-                            step.maneuver.includes('left') ? 'left' :
-                            'straight',
-                    },
-                    data: step,
-                });
-            });
         }).catch(error => {
             console.log(error);
             this.directionsRenderer.setDirections(null);
         });
 
+        // Add the result from above into the steps
+        this.directionsRenderer.getDirections()?.routes[0].legs[0].steps.forEach((step) => {
+            this.currentSteps?.push({
+                step: {
+                    instructions: step.instructions.replace(/<div[^>]*>/g,'\n').replace(/<[^>]*>/g, ''),
+                    distance: step.distance?.text || '',
+                    time: step.duration?.text || '',
+                    icon:
+                        step.maneuver.includes('right') ? 'right' :
+                            step.maneuver.includes('left') ? 'left' :
+                                'straight',
+                },
+                data: step,
+            });
+        });
+
+        // Set the parking path to be visible
         this.currentParkingPath = new PathfindingGraph(this.map, this.currentPathfindingResponse.parkingLotPath.path);
         this.currentParkingPath.setVisibility(true);
 
+        // Set the first floor map to be visible
         this.currentFloorPaths = this.currentPathfindingResponse.floorPaths.map(floor =>
             new PathfindingGraph(this.map, floor.path, floor)
         );
         this.currentFloorPaths[0].setVisibility(true);
 
+        // Update the frontend directions
         this.updater({
             floors: this.currentPathfindingResponse.floorPaths.map(floor => floor.floorNum),
-            directions: directionsSteps.map(step => step.step),
+            directions: this.currentSteps.map(step => step.step),
         });
     }
 
     setCurrentStepIdx(stepIdx: number, tts: boolean) {
-        
+        console.log('setCurrentStepIdx', stepIdx, tts);
+
+        if (!this.currentSteps) return;
+
+        if (tts) {
+            console.log('kajbfj');
+            const utter = new SpeechSynthesisUtterance(this.currentSteps[stepIdx].step.instructions);
+            utter.lang = 'en-US';
+            speechSynthesis.cancel();
+            speechSynthesis.speak(utter);
+        }
     }
 
 
