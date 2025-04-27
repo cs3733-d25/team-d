@@ -9,7 +9,6 @@ import AdminDatabase from "@/routes/AdminDatabase.tsx";
 export type Employee = {
     employeeId: number;
     email: string;
-    password: string;
     firstName: string;
     middleInitial: string;
     lastName: string;
@@ -45,7 +44,6 @@ const Profile = () => {
     }
 
     const fetchData = async () => {
-        const token = await getAccessTokenSilently();
         if(!user?.email) {
             return (
                 <div className="flex justify-center items-center h-screen">
@@ -55,11 +53,7 @@ const Profile = () => {
         }
 
         try {
-            const employeeDataResponse = await axios.get(`/api/employee/user/${user?.email}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                }
-            })
+            const employeeDataResponse = await axios.get(`/api/employee/user/${user?.email}`)
             setEmployeeData(employeeDataResponse.data);
         } catch (error) {
             console.error('Error fetching data:', error);

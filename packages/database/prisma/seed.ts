@@ -26,7 +26,6 @@ async function main() {
             update: {},
             create: {
                 email: 'admind25d@gmail.com',
-                password: 'cs3733D25D',
                 firstName: 'Jen',
                 middleInitial: 'L',
                 lastName: 'Smith',
@@ -39,7 +38,6 @@ async function main() {
             update: {},
             create: {
                 email: 'softengd25d@gmail.com',
-                password: 'cs3733D25D',
                 firstName: 'Matthew',
                 middleInitial: 'K',
                 lastName: 'Haven',
@@ -52,7 +50,6 @@ async function main() {
             update: {},
             create: {
                 email: 'staffd25d@gmail.com',
-                password: 'cs3733D25D',
                 firstName: 'Piper',
                 middleInitial: 'A',
                 lastName: 'Long',
@@ -65,7 +62,6 @@ async function main() {
             update: {},
             create: {
                 email: 'nrlee@gmail.com',
-                password: 'gsl9472!',
                 firstName: 'Nicole',
                 middleInitial: 'R',
                 lastName: 'Lee',
@@ -78,7 +74,6 @@ async function main() {
             update: {},
             create: {
                 email: 'kkramos@gmail.com',
-                password: 'dhs9572!',
                 firstName: 'Karina',
                 middleInitial: 'K',
                 lastName: 'Ramos',

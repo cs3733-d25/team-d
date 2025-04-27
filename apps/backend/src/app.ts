@@ -39,17 +39,17 @@ app.use(API_ROUTES.SERVICEREQS, servicereqsRouter);
 app.use(API_ROUTES.EMPLOYEE, employeeRouter);
 
 // If we're not in test mode, enable the auth0 enforcement
-// if (!process.env['VITETEST']) {
-//     // JWT checker to ensure that routes are authorized
-//     // Enforce on all endpoints
-//     app.use(
-//         auth({
-//             audience: '/api',
-//             issuerBaseURL: 'https://dev-b5d68fi8od5s513y.us.auth0.com/',
-//             tokenSigningAlg: 'RS256',
-//         })
-//     );
-// }
+if (!process.env['VITETEST']) {
+    // JWT checker to ensure that routes are authorized
+    // Enforce on all endpoints
+    app.use(
+        auth({
+            audience: '/api',
+            issuerBaseURL: 'https://dev-b5d68fi8od5s513y.us.auth0.com/',
+            tokenSigningAlg: 'RS256',
+        })
+    );
+}
 
 /**
  * All routers here should be accessible for both ONLY (!!!) logIned users
@@ -59,6 +59,7 @@ app.use(API_ROUTES.EMPLOYEE, employeeRouter);
 app.use(API_ROUTES.HEALTHCHECK, healthcheckRouter);
 app.use(API_ROUTES.ASSIGNED, assignedRouter);
 app.use(API_ROUTES.EDITOR, editorRouter);
+
 // app.use(API_ROUTES.PATHFINDING, pathfindingRouter);
 
 /**
