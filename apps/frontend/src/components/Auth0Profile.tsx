@@ -1,14 +1,25 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { useAuth0 } from "@auth0/auth0-react";
+import axios from "axios";
 
 import {useNavigate} from "react-router-dom";
 import Directions from "@/routes/Directions.tsx";
 import AdminDatabase from "@/routes/AdminDatabase.tsx";
 
-//
+export type Employee = {
+    employeeId: number;
+    email: string;
+    firstName: string;
+    middleInitial: string;
+    lastName: string;
+    occupation: string;
+    userType: string;
+}
 
 const Profile = () => {
-    const { user, isAuthenticated, isLoading } = useAuth0();
+    const { user, isAuthenticated, isLoading, getAccessTokenSilently } = useAuth0();
+
+    const [employeeData, setEmployeeData] = useState<Employee | null>(null);
 
     const navigate = useNavigate();
 
@@ -27,12 +38,41 @@ const Profile = () => {
         navigate("/employee-page");
     }
 
-    if (isLoading) {
+    if (isLoading || !isAuthenticated || !user) {
         return (
             <div className="flex justify-center items-center h-screen">
                 <div className="text-lg font-semibold">Loading...</div>
             </div>
-        );//
+        );
+    }
+
+    const fetchData = async () => {
+        if(!user?.email) {
+            return (
+                <div className="flex justify-center items-center h-screen">
+                    <div className="text-lg font-semibold">Loading...</div>
+                </div>
+            );
+        }
+
+        try {
+            const employeeDataResponse = await axios.get(`/api/employee/user/${user?.email}`)
+            setEmployeeData(employeeDataResponse.data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    if(!employeeData) {
+        return (
+            <div className="flex justify-center items-center h-screen">
+                <div className="text-lg font-semibold">Loading...</div>
+            </div>
+        );
     }
 
     {/*Only if the user is logged in can they see this profile page with their email and profile pic*/}
@@ -51,6 +91,10 @@ const Profile = () => {
                     />
                     <h2 className="mt-4 text-2xl font-bold text-gray-800">{user?.name}</h2>
                     <p className="mt-1 text-md text-gray-600">{user?.email}</p>
+                    <p className="mt-1 text-md text-gray-600"> {
+                        employeeData?.userType
+                    }
+                    </p>
                 </div>
 
                 {/*All the buttons for the profile page*/}
