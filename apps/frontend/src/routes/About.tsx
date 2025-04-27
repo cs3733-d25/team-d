@@ -2,9 +2,16 @@ import React from "react";
 
 import AliImg from "../public/team/Ali.jpg";
 import ChristineImg from "../public/team/Christine.jpg";
+import KeethuImg from "../public/team/Keethu.jpg";
 import StuvatImg from "../public/team/Stuvat.jpg";
 import JiamingImg from "../public/team/Jiaming.jpg";
-
+import EmmaImg from "../public/team/Emma.jpg";
+import JacobImg from "../public/team/Jacob.jpg";
+import MaggieImg from "../public/team/Maggie.jpg";
+import BrandonImg from "../public/team/Brandon.jpg";
+import LucienImg from "../public/team/Lucien.jpg";
+import DeliaImg from "../public/team/Delia.jpg";
+import WongImg from "../public/team/Wong.jpg";
 
 type Person = {
     name: string;
@@ -13,18 +20,18 @@ type Person = {
 };
 
 const faculty: Person[] = [
-    { name: "Prof. Wilson Wong", position: "Course Instructor" },
+    { name: "Prof. Wilson Wong", position: "Course Instructor", photo: WongImg },
     { name: "Katy Stuparu",      position: "Team Coach" },
 ];
 
 const members: Person[] = [
     // Co-Leads
-    { name: "Jacob Boyle", position: "Co-Lead" },
-    { name: "Thanh Ho",    position: "Co-Lead" },
+    { name: "Jacob Boyle", position: "Co-Lead", photo: JacobImg },
+    { name: "Thanh Ho",    position: "Co-Lead", photo: EmmaImg },
 
     // Assistant Leads
-    { name: "Margareth Hosie",       position: "Assistant Lead for Back-End" },
-    { name: "Keerthana Jayamoorthy", position: "Assistant Lead for Front-End" },
+    { name: "Margareth Hosie",       position: "Assistant Lead for Back-End", photo: MaggieImg },
+    { name: "Keerthana Jayamoorthy", position: "Assistant Lead for Front-End", photo: KeethuImg },
 
     // Team
     {
@@ -32,9 +39,9 @@ const members: Person[] = [
         position: "Front-End & Feature Software Engineer",
         photo:    StuvatImg,
     },
-    { name: "Brandon Small",  position: "Front-End & Feature Engineer • Scrum Master" },
-    { name: "Delia Jasper",   position: "Front-End & Feature Engineer" },
-    { name: "Lucien La Rock", position: "Front-End & Feature Engineer • Project Manager" },
+    { name: "Brandon Small",  position: "Front-End & Feature Engineer • Scrum Master", photo: BrandonImg },
+    { name: "Delia Jasper",   position: "Front-End & Feature Engineer", photo: DeliaImg },
+    { name: "Lucien La Rock", position: "Front-End & Feature Engineer • Project Manager", photo: LucienImg },
     { name: "Christine Ngo",  position: "Back-End Database Engineer & Product Owner", photo: ChristineImg },
     { name: "Ali Riad",       position: "Algorithms & Feature Engineer", photo: AliImg },
     { name: "Jiaming Du",     position: "Algorithms & Feature Engineer", photo: JiamingImg },
