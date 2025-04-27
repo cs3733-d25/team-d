@@ -902,6 +902,43 @@ class EditorMapGraph {
         });
     }
 
+    private getNodeColor(type: string): string {
+
+        switch(type) {
+
+            case 'PARKING':
+                return '#4285F4';
+
+
+            case 'DOOR':
+                return '#34A853';
+
+            case 'CHECKIN':
+                return '#EA4335';
+
+            case 'ELEVATOR':
+                return '#FBBC05';
+
+
+            case 'NORMAL':
+                return '#AAAAAA';
+
+        }
+        return '#AAAAAA';
+    }
+
+    private getNodeStrokeColor(type: number | null): string {
+
+        if (!type){
+
+            return '#FFFFFF';
+        } else {
+
+            return '#7038c9';
+        }
+
+    }
+
 
 
     private addNodeLocal(node: EditorNode) {
@@ -915,8 +952,8 @@ class EditorMapGraph {
                 path: google.maps.SymbolPath.CIRCLE,
                 scale: 5,
                 fillOpacity: 1,
-                fillColor: '#0cf',
-                strokeColor: '#fff',
+                fillColor: this.getNodeColor(node.type),
+                strokeColor: this.getNodeStrokeColor(node.connectedNodeId),
                 strokeWeight: 2
             },
             draggable: true,
