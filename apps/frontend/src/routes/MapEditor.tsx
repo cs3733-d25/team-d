@@ -2,7 +2,7 @@ import {useEffect, useRef, useState} from "react";
 import {EditorMap} from "@/GMap/GoogleMap.ts";
 import {
     API_ROUTES,
-    DepartmentOptions, EditorEdges, EditorGraph, EditorNode,
+    DepartmentOptions, EditorEdges, EditorGraph, EditorNode, EditorNodeType,
     HospitalOptions,
     PathfindingOptions,
     PathfindingResponse,
@@ -78,7 +78,7 @@ export default function MapEditor() {
 
     const handleGraphChange = (value: string) => {
         if (!map) return;
-        map.changeGraph(Number(value));
+        map.changeGraph(Number(value) - 1);
     }
 
     const handleZoom = () => {
@@ -97,6 +97,12 @@ export default function MapEditor() {
         });
     }
 
+    const handleUpdateConnectedNodeID = (value: string) => {
+        editingData?.editorGraphs.forEach(graph => {
+
+        })
+    }
+
     return (
         <div className="flex flex-row flex-1 h-screen overflow-y-hidden">
             <div className="flex-1 p-4 overflow-y-scroll">
@@ -113,7 +119,7 @@ export default function MapEditor() {
                         <SelectGroup>
                             <SelectLabel>Graphs</SelectLabel>
                             {displayData.map((g) => (
-                                <SelectItem key={g.graphId + 1} value={g.graphId.toString()}>
+                                <SelectItem key={g.graphId + 1} value={(g.graphId + 1).toString()}>
                                     {g.graphName}
                                 </SelectItem>
                             ))}
@@ -135,10 +141,77 @@ export default function MapEditor() {
                 {selectedNode && (
                     <>
                         <Separator className="mt-4 mb-4" />
-                        <h2 className="text-xl font-bold mb-4">Node #{selectedNode.nodeId}</h2>
-                        <Label className="mt-4 mb-4">
-                            <Input defaultValue={selectedNode.name} />
-                        </Label>
+                        <h2 className="text-xl font-bold mb-4">Node ID: {selectedNode.nodeId}</h2>
+                        <p>({selectedNode.lat}, {selectedNode.lng})</p>
+
+                        {/*<ul className="list-disc ml-4">*/}
+                        {/*    /!*<div key={selectedNode.name}>*!/*/}
+                        {/*    /!*    <input defaultValue={selectedNode.name} />*!/*/}
+                        {/*    /!*</div>*!/*/}
+                        {/*    <li>Name: {selectedNode.name}</li>*/}
+                        {/*    <li>Type: {selectedNode.type}</li>*/}
+                        {/*    <li>Latitude: {selectedNode.lat}</li>*/}
+                        {/*    <li>Longitude: {selectedNode.lng}</li>*/}
+                        {/*    {selectedNode.connectedNodeId && <li>Connected Node ID: {selectedNode.connectedNodeId}</li>}*/}
+                        {/*</ul>*/}
+                        <div key={selectedNode.name}>
+                            <Label className="mt-4 mb-4">
+                                Name
+                                <Input
+                                    defaultValue={selectedNode.name}
+                                    placeholder={'Enter a name'}
+                                    onChange={(e) => selectedNode.name = e.target.value}
+                                />
+                            </Label>
+                        </div>
+                        <div key={selectedNode.type}>
+                            <Label className="mt-4 mb-4">
+                                Type
+                                <Select onValueChange={(value: string) => selectedNode.type = value as EditorNodeType} defaultValue={selectedNode.type}>
+                                    <SelectTrigger className="w-full mt-1 mb-4">
+                                        <SelectValue placeholder="Choose a type..." />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectGroup>
+                                            <SelectLabel>Types</SelectLabel>
+                                            <SelectItem value={'NORMAL'}>NORMAL</SelectItem>
+                                            <SelectItem value={'PARKING'}>PARKING</SelectItem>
+                                            <SelectItem value={'DOOR'}>DOOR</SelectItem>
+                                            <SelectItem value={'ELEVATOR'}>ELEVATOR</SelectItem>
+                                            <SelectItem value={'CHECKIN'}>CHECKIN</SelectItem>
+                                        </SelectGroup>
+                                    </SelectContent>
+                                </Select>
+                            </Label>
+                        </div>
+
+                        <div key={selectedNode.type}>
+                            <Label className="mt-4 mb-4">
+                                Type
+                                <Select onValueChange={(value: string) => selectedNode.type = value as EditorNodeType} defaultValue={selectedNode.type}>
+                                    <SelectTrigger className="w-full mt-1 mb-4">
+                                        <SelectValue placeholder="Choose a type..." />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectGroup>
+                                            <SelectLabel>Types</SelectLabel>
+                                            <SelectItem value={'NORMAL'}>NORMAL</SelectItem>
+                                            <SelectItem value={'PARKING'}>PARKING</SelectItem>
+                                            <SelectItem value={'DOOR'}>DOOR</SelectItem>
+                                            <SelectItem value={'ELEVATOR'}>ELEVATOR</SelectItem>
+                                            <SelectItem value={'CHECKIN'}>CHECKIN</SelectItem>
+                                        </SelectGroup>
+                                    </SelectContent>
+                                </Select>
+                            </Label>
+                        </div>
+
+                    </>
+                )}
+                {selectedEdge && (
+                    <>
+                        <Separator className="mt-4 mb-4" />
+                        <h2 className="text-xl font-bold mb-4">Edge #{selectedEdge.edgeId}</h2>
                     </>
                 )}
 

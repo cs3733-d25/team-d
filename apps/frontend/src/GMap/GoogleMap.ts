@@ -762,7 +762,13 @@ class EditorMapGraph {
     private readonly editorEncapsulator: EditorEncapsulator;
     private readonly editorGraph: EditorGraph;
 
-    private floorMap: google.maps.GroundOverlay | null;
+    private readonly nodeUpdater: (selected: EditorNode | null) => void;
+    private readonly edgeUpdater: (selected: EditorEdges | null) => void;
+
+    private selectedNode: EditorNode | null;
+    private selectedEdge: EditorEdges | null;
+
+    private readonly floorMap: google.maps.GroundOverlay | null;
 
     private nodes: {data: EditorNode, marker: google.maps.Marker}[];
     private edges: {data: EditorEdges, line: google.maps.Polyline}[];
@@ -772,11 +778,14 @@ class EditorMapGraph {
     private editingState: 'DEFAULT' | 'ADDEDGE';
     private visible: boolean;
 
-    constructor(map: google.maps.Map, editorEncapsulator: EditorEncapsulator, editorGraph: EditorGraph) {
+    constructor(map: google.maps.Map, editorEncapsulator: EditorEncapsulator, editorGraph: EditorGraph, nodeUpdater: (selected: EditorNode | null) => void, edgeUpdater: (selected: EditorEdges | null) => void) {
 
         this.map = map;
         this.editorEncapsulator = editorEncapsulator;
         this.editorGraph = editorGraph;
+
+        this.nodeUpdater = nodeUpdater;
+        this.edgeUpdater = edgeUpdater;
 
         this.nodes = [];
         this.edges = [];
@@ -810,6 +819,9 @@ class EditorMapGraph {
 
 
         }
+
+        this.selectedNode = null;
+        this.selectedEdge = null;
 
         // If in default state,
         // add a node at this position
@@ -876,25 +888,27 @@ class EditorMapGraph {
         // display info. If clicked in
         // add edge state, finalize this edge
         marker.addListener("click", (e: google.maps.MapMouseEvent) => {
-            const rawPosition = e.latLng;
-            if (!rawPosition) return;
-
-            const infowindow = new google.maps.InfoWindow({
-                content: `
-                        <p>ID: ${node.nodeId}</p>
-                        <p>Name: ${node.name}</p>
-                        <p>Type: ${node.type}</p>
-                        <p>Lat: ${node.lat}</p>
-                        <p>Lng: ${node.lng}</p>
-                        <p>GID: ${node.graphId}</p>
-                        <p>CID: ${node.connectedNodeId}</p>
-                    `
-            });
-            infowindow.setPosition({
-                lat: rawPosition.toJSON().lat + 0.00001 * ((this.map.getZoom() || 1) / 7),
-                lng: rawPosition.toJSON().lng,
-            });
-            infowindow.open(this.map);
+            this.edgeUpdater(null);
+            this.nodeUpdater(node);
+            // const rawPosition = e.latLng;
+            // if (!rawPosition) return;
+            //
+            // const infowindow = new google.maps.InfoWindow({
+            //     content: `
+            //             <p>ID: ${node.nodeId}</p>
+            //             <p>Name: ${node.name}</p>
+            //             <p>Type: ${node.type}</p>
+            //             <p>Lat: ${node.lat}</p>
+            //             <p>Lng: ${node.lng}</p>
+            //             <p>GID: ${node.graphId}</p>
+            //             <p>CID: ${node.connectedNodeId}</p>
+            //         `
+            // });
+            // infowindow.setPosition({
+            //     lat: rawPosition.toJSON().lat + 0.00001 * ((this.map.getZoom() || 1) / 7),
+            //     lng: rawPosition.toJSON().lng,
+            // });
+            // infowindow.open(this.map);
         });
 
         // If right clicked in default mode,
@@ -1070,6 +1084,13 @@ class EditorMapGraph {
             }
         });
 
+        line.addListener('click', (e: google.maps.MapMouseEvent) => {
+            if (this.editingState === 'DEFAULT') {
+                this.nodeUpdater(null);
+                this.edgeUpdater(edge);
+            }
+        })
+
         this.edges.push({
             data: edge,
             line: line,
@@ -1192,22 +1213,33 @@ class EditorMapGraph {
         }
         this.visible = visibility;
     }
+
+    updateNode(node: EditorNode) {
+
+    }
+
+    updateEdge(edge: EditorEdges) {
+
+    }
 }
 
 export class EditorMap extends GoogleMap {
 
     public static async makeMap(mapDivElement: HTMLDivElement, nodeUpdater: (selected: EditorNode | null) => void, edgeUpdater: (selected: EditorEdges | null) => void) {
         await GoogleMap.loadScript();
-        return new EditorMap(mapDivElement);
+        return new EditorMap(mapDivElement, nodeUpdater, edgeUpdater);
     }
     
     private currentGraph: EditorMapGraph | null;
     private currentGraphId: number | null;
 
+    private readonly nodeUpdater: (selected: EditorNode | null) => void;
+    private readonly edgeUpdater: (selected: EditorEdges | null) => void;
+
     private editorEncapsulator: EditorEncapsulator | null;
     private readonly graphs: Map<number, EditorMapGraph>;
 
-    private constructor(mapDivElement: HTMLDivElement) {
+    private constructor(mapDivElement: HTMLDivElement, nodeUpdater: (selected: EditorNode | null) => void, edgeUpdater: (selected: EditorEdges | null) => void) {
         console.log('editor map constructor');
 
         super(mapDivElement, {
@@ -1222,6 +1254,9 @@ export class EditorMap extends GoogleMap {
         this.currentGraph = null;
         this.currentGraphId = null;
         this.editorEncapsulator = null;
+
+        this.nodeUpdater = nodeUpdater;
+        this.edgeUpdater = edgeUpdater;
 
         console.log('editor map constructosdfsdfsdr');
         this.graphs = new Map();
@@ -1244,7 +1279,7 @@ export class EditorMap extends GoogleMap {
 
         this.editorEncapsulator.editorGraphs.forEach(graph => {
             console.log('Making graph ' + graph.graphId);
-            this.graphs.set(graph.graphId, new EditorMapGraph(this.map, editorEncapsulator, graph));
+            this.graphs.set(graph.graphId, new EditorMapGraph(this.map, editorEncapsulator, graph, this.nodeUpdater, this.edgeUpdater));
         })
     }
 
