@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from "react";
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import {EditorMap} from "@/GMap/GoogleMap.ts";
 import {
     API_ROUTES,
@@ -52,15 +52,22 @@ export default function MapEditor() {
 
     const [editingData, setEditingData] = useState<EditorEncapsulator>();
 
+    const [connectedNodeIdExists, setConnectedNodeIdExists] = useState<boolean>(true);
+
     const [selectedNode, setSelectedNode] = useState<EditorNode | null>(null);
     const [selectedEdge, setSelectedEdge] = useState<EditorEdges | null>(null);
+
+    const nodeUpdater = (node: EditorNode | null) => {
+        setSelectedNode(node);
+        setConnectedNodeIdExists(true);
+    }
 
     useEffect(() => {
         console.log('useEffect MapEditor');
         let tempMap: EditorMap
         const fetchMap = async () => {
             if (mapRef.current) {
-                tempMap = await EditorMap.makeMap(mapRef.current, setSelectedNode, setSelectedEdge)
+                tempMap = await EditorMap.makeMap(mapRef.current, nodeUpdater, setSelectedEdge)
                 setMap(tempMap);
             }
         }
@@ -97,10 +104,32 @@ export default function MapEditor() {
         });
     }
 
-    const handleUpdateConnectedNodeID = (value: string) => {
+    const handleUpdateConnectedNodeID = (e: ChangeEvent<HTMLInputElement>) => {
+        // if (selectedNode) {
+        //     selectedNode.connectedNodeId = e.target.value.length > 0 ? Number(e.target.value) : null;
+        // }
+        if (e.target.value.length === 0) {
+            if (selectedNode) {
+                selectedNode.connectedNodeId = null;
+            }
+            setConnectedNodeIdExists(true);
+            return;
+        }
+        let exists = false;
+        const nodeId = Number(e.target.value)
         editingData?.editorGraphs.forEach(graph => {
+            graph.Nodes.forEach(node => {
+                if (node.nodeId === nodeId && node.nodeId !== selectedNode?.nodeId) {
+                    exists = true;
+                }
+            });
+        });
 
-        })
+        if (selectedNode) {
+            selectedNode.connectedNodeId = exists? nodeId : null;
+            setConnectedNodeIdExists(exists);
+        }
+
     }
 
     return (
@@ -110,9 +139,9 @@ export default function MapEditor() {
                 <h2 className="text-3xl font-bold">Map Editor</h2>
                 <Separator className="mt-4 mb-4" />
 
-                <Label>Choose a Graph</Label>
+                <Label className="mb-1">Choose a Graph</Label>
                 <Select onValueChange={handleGraphChange}>
-                    <SelectTrigger className="w-full mt-1 mb-4">
+                    <SelectTrigger className="w-full mb-4">
                         <SelectValue placeholder="Choose a graph..." />
                     </SelectTrigger>
                     <SelectContent>
@@ -139,86 +168,77 @@ export default function MapEditor() {
                 </div>
 
                 {selectedNode && (
-                    <>
-                        <Separator className="mt-4 mb-4" />
-                        <h2 className="text-xl font-bold mb-4">Node ID: {selectedNode.nodeId}</h2>
-                        <p>({selectedNode.lat}, {selectedNode.lng})</p>
+                    <div key={selectedNode.nodeId}>
+                        <Separator className="mt-4 mb-2" />
+                        <h2 className="text-xl font-bold">Node ID: {selectedNode.nodeId}</h2>
+                        <p className="mb-4">({selectedNode.lat}, {selectedNode.lng})</p>
 
-                        {/*<ul className="list-disc ml-4">*/}
-                        {/*    /!*<div key={selectedNode.name}>*!/*/}
-                        {/*    /!*    <input defaultValue={selectedNode.name} />*!/*/}
-                        {/*    /!*</div>*!/*/}
-                        {/*    <li>Name: {selectedNode.name}</li>*/}
-                        {/*    <li>Type: {selectedNode.type}</li>*/}
-                        {/*    <li>Latitude: {selectedNode.lat}</li>*/}
-                        {/*    <li>Longitude: {selectedNode.lng}</li>*/}
-                        {/*    {selectedNode.connectedNodeId && <li>Connected Node ID: {selectedNode.connectedNodeId}</li>}*/}
-                        {/*</ul>*/}
-                        <div key={selectedNode.name}>
-                            <Label className="mt-4 mb-4">
-                                Name
-                                <Input
-                                    defaultValue={selectedNode.name}
-                                    placeholder={'Enter a name'}
-                                    onChange={(e) => selectedNode.name = e.target.value}
-                                />
-                            </Label>
-                        </div>
-                        <div key={selectedNode.type}>
-                            <Label className="mt-4 mb-4">
-                                Type
-                                <Select onValueChange={(value: string) => selectedNode.type = value as EditorNodeType} defaultValue={selectedNode.type}>
-                                    <SelectTrigger className="w-full mt-1 mb-4">
-                                        <SelectValue placeholder="Choose a type..." />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectGroup>
-                                            <SelectLabel>Types</SelectLabel>
-                                            <SelectItem value={'NORMAL'}>NORMAL</SelectItem>
-                                            <SelectItem value={'PARKING'}>PARKING</SelectItem>
-                                            <SelectItem value={'DOOR'}>DOOR</SelectItem>
-                                            <SelectItem value={'ELEVATOR'}>ELEVATOR</SelectItem>
-                                            <SelectItem value={'CHECKIN'}>CHECKIN</SelectItem>
-                                        </SelectGroup>
-                                    </SelectContent>
-                                </Select>
-                            </Label>
-                        </div>
+                        <Label className="mt-4 mb-1">
+                            Name
+                        </Label>
+                        <Input
+                            defaultValue={selectedNode.name}
+                            placeholder={'Enter a name'}
+                            onChange={(e) => selectedNode.name = e.target.value}
+                        />
 
-                        <div key={selectedNode.type}>
-                            <Label className="mt-4 mb-4">
-                                Type
-                                <Select onValueChange={(value: string) => selectedNode.type = value as EditorNodeType} defaultValue={selectedNode.type}>
-                                    <SelectTrigger className="w-full mt-1 mb-4">
-                                        <SelectValue placeholder="Choose a type..." />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectGroup>
-                                            <SelectLabel>Types</SelectLabel>
-                                            <SelectItem value={'NORMAL'}>NORMAL</SelectItem>
-                                            <SelectItem value={'PARKING'}>PARKING</SelectItem>
-                                            <SelectItem value={'DOOR'}>DOOR</SelectItem>
-                                            <SelectItem value={'ELEVATOR'}>ELEVATOR</SelectItem>
-                                            <SelectItem value={'CHECKIN'}>CHECKIN</SelectItem>
-                                        </SelectGroup>
-                                    </SelectContent>
-                                </Select>
-                            </Label>
-                        </div>
+                        <Label className="mt-4 mb-1">
+                            Type
+                        </Label>
+                        <Select onValueChange={(value: string) => selectedNode.type = value as EditorNodeType} defaultValue={selectedNode.type}>
+                            <SelectTrigger className="w-full mt-1 mb-4">
+                                <SelectValue placeholder="Choose a type..." />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectGroup>
+                                    <SelectLabel>Types</SelectLabel>
+                                    {['Normal', 'Parking', 'Door', 'Elevator', 'Checkin'].map(type => (
+                                        <SelectItem value={type.toUpperCase()}>{type}</SelectItem>
+                                    ))}
+                                    {/*<SelectItem value={'NORMAL'}>NORMAL</SelectItem>*/}
+                                    {/*<SelectItem value={'PARKING'}>PARKING</SelectItem>*/}
+                                    {/*<SelectItem value={'DOOR'}>DOOR</SelectItem>*/}
+                                    {/*<SelectItem value={'ELEVATOR'}>ELEVATOR</SelectItem>*/}
+                                    {/*<SelectItem value={'CHECKIN'}>CHECKIN</SelectItem>*/}
+                                </SelectGroup>
+                            </SelectContent>
+                        </Select>
 
-                    </>
+                        <Label className="mt-4 mb-1">
+                            Connected To Node ID:
+                        </Label>
+                        <Input
+                            defaultValue={selectedNode.connectedNodeId || ''}
+                            placeholder={'(none)'}
+                            onChange={handleUpdateConnectedNodeID}
+                        />
+                        {!connectedNodeIdExists && (
+                            <p className={'text-red-600'}>Connected node ID doesn't exist!</p>
+                        )}
+
+                    </div>
                 )}
                 {selectedEdge && (
-                    <>
-                        <Separator className="mt-4 mb-4" />
-                        <h2 className="text-xl font-bold mb-4">Edge #{selectedEdge.edgeId}</h2>
-                    </>
+                    <div key={selectedEdge.edgeId}>
+                        <Separator className="mt-4 mb-2" />
+                        <h2 className="text-xl font-bold">Edge ID: {selectedEdge.edgeId}</h2>
+                        <p className="mb-4">(Node ID: {selectedEdge.startNodeId}) {'<-->'} (Node ID: {selectedEdge.endNodeId})</p>
+
+                        <Label className="mt-4 mb-1">
+                            Name
+                        </Label>
+                        <Input
+                            defaultValue={selectedEdge.name}
+                            placeholder={'Enter a name'}
+                            onChange={(e) => selectedEdge.name = e.target.value}
+                        />
+                    </div>
                 )}
 
                 <Separator className="mt-4 mb-4" />
                 <h2 className="text-xl font-bold mb-4">Instructions</h2>
                 <ul className="list-disc ml-4">
-                    <li>Left-click a node to view its information</li>
+                    <li>Left-click a node or edge to view or change its information on the sidebar</li>
                     <li>Click and drag a node to change its location</li>
                     <li>Right-click the map to add a node at the click location</li>
                     <li>Right-click a node to start adding an edge

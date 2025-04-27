@@ -6,8 +6,8 @@ import {
     FloorPathResponse,
     EditorNode,
     PathfindingResponse,
-    DepartmentOptions
-} from "common/src/constants.ts";
+    DepartmentOptions, EditorNodeType,
+} from 'common/src/constants.ts';
 import {EditorEncapsulator} from "@/routes/MapEditor.tsx";
 
 // import fern from '@/public/floormaps/fern1.png';
@@ -826,6 +826,9 @@ class EditorMapGraph {
         // If in default state,
         // add a node at this position
         this.map.addListener('rightclick', (e: google.maps.MapMouseEvent) => {
+            this.edgeUpdater(null);
+            this.nodeUpdater(null);
+
             if (this.visible) {
                 if (this.editingState === 'DEFAULT') {
                     const rawPosition = e.latLng;
@@ -914,6 +917,9 @@ class EditorMapGraph {
         // If right clicked in default mode,
         // start to add an edge
         marker.addListener("rightclick", (e: google.maps.MapMouseEvent) => {
+            this.edgeUpdater(null);
+            this.nodeUpdater(null);
+
             const rawPosition = e.latLng;
             if (!rawPosition) return;
 
@@ -987,6 +993,9 @@ class EditorMapGraph {
         });
 
         marker.addListener('dblclick', (e: google.maps.MapMouseEvent) => {
+            this.edgeUpdater(null);
+            this.nodeUpdater(null);
+
             console.log('delete node');
             if (this.editingState === 'DEFAULT') {
                 this.deleteNode(node.nodeId);
@@ -1079,16 +1088,17 @@ class EditorMapGraph {
 
         // If line is double-clicked delete it
         line.addListener('dblclick', (e: google.maps.MapMouseEvent) => {
+            this.edgeUpdater(null);
+            this.nodeUpdater(null);
+
             if (this.editingState === 'DEFAULT') {
                 this.deleteEdge(edge.edgeId);
             }
         });
 
         line.addListener('click', (e: google.maps.MapMouseEvent) => {
-            if (this.editingState === 'DEFAULT') {
-                this.nodeUpdater(null);
-                this.edgeUpdater(edge);
-            }
+            this.nodeUpdater(null);
+            this.edgeUpdater(edge);
         })
 
         this.edges.push({
@@ -1213,14 +1223,6 @@ class EditorMapGraph {
         }
         this.visible = visibility;
     }
-
-    updateNode(node: EditorNode) {
-
-    }
-
-    updateEdge(edge: EditorEdges) {
-
-    }
 }
 
 export class EditorMap extends GoogleMap {
@@ -1284,13 +1286,16 @@ export class EditorMap extends GoogleMap {
     }
 
     zoom() {
-        if (this.currentGraphId && this.editorEncapsulator) {
+        if (this.currentGraphId?.toString() && this.editorEncapsulator) {
             const node = this.editorEncapsulator.editorGraphs.find(graph => graph.graphId === this.currentGraphId)?.Nodes[0];
 
             if (node) {
                 this.map.setCenter({lat: node.lat, lng: node.lng});
                 this.map.setZoom(17);
             }
+        }
+        else {
+            console.log('error');
         }
     }
 }
