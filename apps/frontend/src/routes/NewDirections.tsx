@@ -122,7 +122,7 @@ export default function NewDirections() {
 
     return (
         <div className="flex flex-row flex-1 h-screen overflow-y-hidden">
-            <div className="flex-1 p-4">
+            <div className="flex-1 p-4 overflow-y-scroll">
                 <h2 className="text-3xl font-bold">Get Directions</h2>
                 <Separator className="mt-4 mb-4" />
 
@@ -142,26 +142,26 @@ export default function NewDirections() {
 
                 {/*end to-do here*/}
 
-                <Label>Destination Hospital</Label>
-                <Select onValueChange={handleHospitalChange}>
-                    <SelectTrigger className="w-full mt-1 mb-4">
-                        <SelectValue placeholder="Choose a hospital..." />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectGroup>
-                            <SelectLabel>Hospitals</SelectLabel>
-                            {displayData.hospitals.map((h: HospitalOptions) => (
-                                <SelectItem key={h.hospitalId + 1} value={h.name}>
-                                    {h.name}
-                                </SelectItem>
-                            ))}
-                        </SelectGroup>
-                    </SelectContent>
-                </Select>
+                {/*<Label>Destination Hospital</Label>*/}
+                {/*<Select onValueChange={handleHospitalChange}>*/}
+                {/*    <SelectTrigger className="w-full mt-1 mb-4">*/}
+                {/*        <SelectValue placeholder="Choose a hospital..." />*/}
+                {/*    </SelectTrigger>*/}
+                {/*    <SelectContent>*/}
+                {/*        <SelectGroup>*/}
+                {/*            <SelectLabel>Hospitals</SelectLabel>*/}
+                {/*            {displayData.hospitals.map((h: HospitalOptions) => (*/}
+                {/*                <SelectItem key={h.hospitalId + 1} value={h.name}>*/}
+                {/*                    {h.name}*/}
+                {/*                </SelectItem>*/}
+                {/*            ))}*/}
+                {/*        </SelectGroup>*/}
+                {/*    </SelectContent>*/}
+                {/*</Select>*/}
 
 
                 <Label className="mb-2">Transport Mode</Label>
-                <div className="flex flex-col items-center justify-center gap-6 rounded-md shadow-md p-4 bg-[#012D5A]"> {/* Rounded box container */}
+                <div className="flex flex-col items-center justify-center gap-6 rounded-md shadow-md p-4 bg-[#012D5A] mb-4"> {/* Rounded box container */}
                     <div className="flex gap-6">
                         {transportModes.map((mode) => (
                             <button
@@ -182,16 +182,6 @@ export default function NewDirections() {
                             </button>
                         ))}
                     </div>
-                </div>
-
-                <div className="mb-5">
-                    <div id="step-instruction">Loading directions...</div>
-                    <button
-                        id="next-step-btn"
-                        className="mt-2 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
-                    >
-                        Next Step
-                    </button>
                 </div>
 
                 {/*end to-do here*/}

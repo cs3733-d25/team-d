@@ -415,7 +415,7 @@ export class PathfindingMap extends GoogleMap {
     // For Google Map directions
     // private stepIndex: number = 0;
     // private steps: google.maps.DirectionsStep[] = [];
-    // private currentStepPolyline: google.maps.Polyline | null = null;
+    private currentStepPolyline: google.maps.Polyline | null;
     // private currentStepMarker: google.maps.Marker | null = null;
 
     private department: DepartmentOptions | null;
@@ -466,6 +466,8 @@ export class PathfindingMap extends GoogleMap {
         this.currentParkingPath = null;
         this.currentFloorPaths = null;
         this.selectedFloorPath = null;
+
+        this.currentStepPolyline = null;
 
         this.department = null;
     }
@@ -575,11 +577,16 @@ export class PathfindingMap extends GoogleMap {
             });
         });
 
+
         // Set the parking path to be visible
+        this.currentParkingPath?.setVisibility(false);
         this.currentParkingPath = new PathfindingGraph(this.map, this.currentPathfindingResponse.parkingLotPath.path);
         this.currentParkingPath.setVisibility(true);
 
         // Set the first floor map to be visible
+        this.currentFloorPaths?.forEach(path => {
+            path.setVisibility(false);
+        });
         this.currentFloorPaths = this.currentPathfindingResponse.floorPaths.map(floor =>
             new PathfindingGraph(this.map, floor.path, floor)
         );
@@ -596,14 +603,29 @@ export class PathfindingMap extends GoogleMap {
         console.log('setCurrentStepIdx', stepIdx, tts);
 
         if (!this.currentSteps) return;
+        const step = this.currentSteps[stepIdx];
 
         if (tts) {
             console.log('kajbfj');
-            const utter = new SpeechSynthesisUtterance(this.currentSteps[stepIdx].step.instructions);
+            const utter = new SpeechSynthesisUtterance(step.step.instructions);
             utter.lang = 'en-US';
             speechSynthesis.cancel();
             speechSynthesis.speak(utter);
         }
+
+        if (step.data && step.data.polyline) {
+            this.currentStepPolyline?.setMap(null);
+            this.currentStepPolyline = new google.maps.Polyline({
+                map: this.map,
+                path: google.maps.geometry.encoding.decodePath(step.data.polyline.points),
+            });
+
+            this.map.panTo(step.data.start_location);
+            this.map.setZoom(17);
+        }
+
+
+
     }
 
 
