@@ -118,13 +118,13 @@ export const getEmployees = (): string[] => {
 
 let employeesPlusNothing: string[] = [];
 
-await loadEmployees();
-
 export const getEmployeesPlusNothing = (): string[] => {
     employeesPlusNothing = cachedEmployees.slice();
     employeesPlusNothing.push("")
     return employeesPlusNothing;
 };
+
+await loadEmployees();
 export const columns: ColumnDef<ServiceRequest>[] = [
     {
         id: "expand",
@@ -176,8 +176,9 @@ export const columns: ColumnDef<ServiceRequest>[] = [
             filterVariant: "select",
             filterOptions: getEmployees(),
         },
-        filterFn: (row, columnId, filterValue: string[]) =>
-            filterValue.includes(`${(row.original as ServiceRequest).employeeRequestedBy.firstName} ${(row.original as ServiceRequest).employeeRequestedBy.lastName}`),
+        filterFn: (row, columnId, filterValue: string[]) => {
+            return filterValue.includes(`${(row.original as ServiceRequest).employeeRequestedBy.firstName} ${(row.original as ServiceRequest).employeeRequestedBy.lastName}`)
+        },
         cell: ({ row }) => {
             const request = row.original as ServiceRequest;
             return `${request.employeeRequestedBy.firstName} ${request.employeeRequestedBy.lastName}`;
@@ -190,8 +191,13 @@ export const columns: ColumnDef<ServiceRequest>[] = [
             filterVariant: "select",
             filterOptions: getEmployeesPlusNothing(),
         },
-        filterFn: (row, columnId, filterValue: string[]) =>
-            filterValue.includes(`${(row.original as ServiceRequest).assignedEmployee.firstName} ${(row.original as ServiceRequest).assignedEmployee.lastName}` || ""),
+        filterFn: (row, columnId, filterValue: string[]) => {
+            const assignedEmployee = (row.original as ServiceRequest).assignedEmployee;
+            const name = assignedEmployee
+                ? `${assignedEmployee.firstName} ${assignedEmployee.lastName}`
+                : ""; // Ensure empty string if assignedEmployee is null or undefined
+            return filterValue.includes(name);
+        },
         cell: ({ row }) => {
             const request = row.original as ServiceRequest;
             if (request.assignedEmployee === null) {
@@ -521,7 +527,7 @@ function Filter({ column }: { column: Column<ServiceRequest, unknown> }) {
                             key={value} className="items-center space-x-2"
                             checked={columnFilterValue.includes(value)}
                             onCheckedChange={() => toggleOption(value)}>
-                            {value}
+                            {value === "" ? "Unassigned" : value}
                         </DropdownMenuCheckboxItem>
                     ))}
                 </DropdownMenuContent>
