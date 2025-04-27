@@ -30,6 +30,7 @@ import {
 import { Input } from "@/components/ui/input"
 import {Collapsible, CollapsibleContent, CollapsibleTrigger} from "@radix-ui/react-collapsible";
 import RequestCollapsible from "@/components/RequestCollapsible.tsx"
+import RequestSheet from "@/components/RequestSheet.tsx"
 
 declare module '@tanstack/react-table' {
     interface ColumnMeta<TData extends RowData, TValue> {
@@ -297,9 +298,11 @@ export const columns: ColumnDef<ServiceRequest>[] = [
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" onClick={(e) => e.stopPropagation()}>
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem>Assign Employee</DropdownMenuItem>
-                        <DropdownMenuItem>Edit Request</DropdownMenuItem>
-                        <DropdownMenuItem>Delete Request</DropdownMenuItem>
+                        <DropdownMenuItem className="pl-4">Assign Employee</DropdownMenuItem>
+                            <RequestSheet ID={row.original.requestId}
+                                          requestType={getRequestType(row.original)}>
+                            </RequestSheet>
+                        <DropdownMenuItem className="pl-4">Delete Request</DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             )
