@@ -914,7 +914,7 @@ class EditorMapGraph {
                 scale: 5,
                 fillOpacity: 1,
                 fillColor: this.getNodeColor(node.type),
-                strokeColor: this.getNodeStrokeColor(),
+                strokeColor: this.getNodeStrokeColor(node.type),
                 strokeWeight: 2
             },
             draggable: true,
