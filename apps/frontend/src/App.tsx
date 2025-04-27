@@ -20,6 +20,7 @@ import AdminSettings from "@/routes/admingSettings.tsx";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import NewDirections from "@/routes/NewDirections.tsx";
 import MapEditor from "@/routes/MapEditor.tsx";
+import EmployeeDirectory from "@/routes/EmployeeDirectory.tsx";
 
 function App() {
     return (
@@ -36,6 +37,7 @@ function App() {
                         <Route path="servicerequesthub" element={<ServiceRequestHub />} />
                         <Route path="hospital-directory" element={<HospitalDirectory />} />
                         <Route path="admin-settings" element={<AdminSettings />} />
+                        <Route path="employee-page" element={<EmployeeDirectory />} />
 
 
 
