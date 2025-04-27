@@ -53,10 +53,9 @@ const Profile = () => {
                 </div>
             );
         }
-        const email = encodeURIComponent(user?.email.toLowerCase());
 
         try {
-            const employeeDataResponse = await axios.get(`/employee/${email}`, {
+            const employeeDataResponse = await axios.get(`/api/employee/user/${user?.email}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 }

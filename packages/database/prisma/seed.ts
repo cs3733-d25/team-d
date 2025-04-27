@@ -26,11 +26,11 @@ async function main() {
             update: {},
             create: {
                 email: 'admind25d@gmail.com',
-                password: 'cs3733D25X',
+                password: 'cs3733D25D',
                 firstName: 'Jen',
                 middleInitial: 'L',
                 lastName: 'Smith',
-                occupation: 'Nurse',
+                occupation: 'Administrator',
                 userType: 'Admin'
             }
         }),
@@ -38,12 +38,12 @@ async function main() {
             where: {employeeId: 2},
             update: {},
             create: {
-                email: 'softengD25X@gmail.com',
-                password: 'cs3733D25X',
+                email: 'softengd25d@gmail.com',
+                password: 'cs3733D25D',
                 firstName: 'Matthew',
                 middleInitial: 'K',
                 lastName: 'Haven',
-                occupation: 'Doctor',
+                occupation: 'Administrator',
                 userType: 'Admin'
             }
         }),
@@ -51,8 +51,8 @@ async function main() {
             where: {employeeId: 3},
             update: {},
             create: {
-                email: 'staffD25X@gmail.com',
-                password: 'cs3733D25X',
+                email: 'staffd25d@gmail.com',
+                password: 'cs3733D25D',
                 firstName: 'Piper',
                 middleInitial: 'A',
                 lastName: 'Long',
