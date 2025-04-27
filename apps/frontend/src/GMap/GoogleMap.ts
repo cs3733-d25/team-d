@@ -877,11 +877,27 @@ class EditorMapGraph {
             case 'CHECKIN':
                 return '#EA4335';
 
+            case 'ELEVATOR':
+                return '#FBBC05';
+
+
             case 'NORMAL':
                 return '#AAAAAA';
 
         }
         return '#AAAAAA';
+    }
+
+    private getNodeStrokeColor(type: string | null): string {
+
+        if (type == null){
+
+            return '#FFFFFF';
+        } else {
+
+            return '#888888';
+        }
+
     }
 
 
@@ -898,7 +914,7 @@ class EditorMapGraph {
                 scale: 5,
                 fillOpacity: 1,
                 fillColor: this.getNodeColor(node.type),
-                strokeColor: '#fff',
+                strokeColor: this.getNodeStrokeColor(),
                 strokeWeight: 2
             },
             draggable: true,
