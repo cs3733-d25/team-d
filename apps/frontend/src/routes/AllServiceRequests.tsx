@@ -30,6 +30,7 @@ import {
 import { Input } from "@/components/ui/input"
 import {Collapsible, CollapsibleContent, CollapsibleTrigger} from "@radix-ui/react-collapsible";
 import RequestCollapsible from "@/components/RequestCollapsible.tsx"
+import {API_ROUTES} from "common/src/constants.ts";
 
 declare module '@tanstack/react-table' {
     interface ColumnMeta<TData extends RowData, TValue> {
@@ -103,6 +104,27 @@ export const getRequestType = (request: ServiceRequest): string => {
     }
     return "Unknown";
 };
+
+let cachedEmployees: string[] = [];
+
+export const loadEmployees = async () => {
+    const employees = (await axios.get(API_ROUTES.EMPLOYEE)).data;
+    cachedEmployees = employees.map((e: Employee) => `${e.firstName} ${e.lastName}`);
+};
+
+export const getEmployees = (): string[] => {
+    return cachedEmployees;
+};
+
+let employeesPlusNothing: string[] = [];
+
+await loadEmployees();
+
+export const getEmployeesPlusNothing = (): string[] => {
+    employeesPlusNothing = cachedEmployees.slice();
+    employeesPlusNothing.push("")
+    return employeesPlusNothing;
+};
 export const columns: ColumnDef<ServiceRequest>[] = [
     {
         id: "expand",
@@ -149,47 +171,33 @@ export const columns: ColumnDef<ServiceRequest>[] = [
     },
     {
         accessorKey: "employeeRequestedById",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Requested By
-                    <ArrowUpDown />
-                </Button>
-            )
-        },
+        header: ({ column }) => {},
         meta: {
-            filterVariant: 'none',
+            filterVariant: "select",
+            filterOptions: getEmployees(),
         },
+        filterFn: (row, columnId, filterValue: string[]) =>
+            filterValue.includes(`${(row.original as ServiceRequest).employeeRequestedBy.firstName} ${(row.original as ServiceRequest).employeeRequestedBy.lastName}`),
         cell: ({ row }) => {
             const request = row.original as ServiceRequest;
-            return request.employeeRequestedBy.firstName + " " + request.employeeRequestedBy.lastName;
+            return `${request.employeeRequestedBy.firstName} ${request.employeeRequestedBy.lastName}`;
         }
     },
     {
         accessorKey: "assignedEmployeeId",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Assigned To
-                    <ArrowUpDown />
-                </Button>
-            )
-        },
+        header: ({ column }) => {},
         meta: {
-            filterVariant: 'none',
+            filterVariant: "select",
+            filterOptions: getEmployeesPlusNothing(),
         },
+        filterFn: (row, columnId, filterValue: string[]) =>
+            filterValue.includes(`${(row.original as ServiceRequest).assignedEmployee.firstName} ${(row.original as ServiceRequest).assignedEmployee.lastName}` || ""),
         cell: ({ row }) => {
             const request = row.original as ServiceRequest;
             if (request.assignedEmployee === null) {
-                return ;
+                return "";
             }
-            return request.assignedEmployee.firstName + " " + request.assignedEmployee.lastName;
+            return `${request.assignedEmployee.firstName} ${request.assignedEmployee.lastName}`;
         }
     },
     {
@@ -351,6 +359,7 @@ export default function ShowAllRequests() {
     )
 
     useEffect(() => {
+        console.log(getEmployees());
         fetchData();
     }, []);
 
@@ -492,7 +501,9 @@ function Filter({ column }: { column: Column<ServiceRequest, unknown> }) {
         const columnHeaders = {
             requestType: "Service Type",
             priority: "Priority",
-            requestStatus: "Status"
+            requestStatus: "Status",
+            employeeRequestedById: "Requested By",
+            assignedEmployeeId: "Assigned To"
         };
         return (
             <DropdownMenu>
