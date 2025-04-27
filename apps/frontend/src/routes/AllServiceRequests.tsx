@@ -16,7 +16,7 @@ import {
     FilterFn,
     Row, Column, RowData,
 } from "@tanstack/react-table"
-import { ArrowUpDown, ArrowUp, ArrowDown, ChevronDown, Funnel } from "lucide-react"
+import {ArrowUpDown, ArrowUp, ArrowDown, ChevronDown, Funnel, MoreHorizontal} from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
     DropdownMenu,
@@ -30,6 +30,7 @@ import {
 import { Input } from "@/components/ui/input"
 import {Collapsible, CollapsibleContent, CollapsibleTrigger} from "@radix-ui/react-collapsible";
 import RequestCollapsible from "@/components/RequestCollapsible.tsx"
+import {API_ROUTES} from "common/src/constants.ts";
 
 declare module '@tanstack/react-table' {
     interface ColumnMeta<TData extends RowData, TValue> {
@@ -78,16 +79,14 @@ export type ServiceRequest = {
     departmentUnderId: number;
     comments: string;
     roomNum: string;
-    // employeeName: string; // For later use
+    employeeRequestedBy: Employee;
+    assignedEmployee: Employee;
 }
 
-export const exactFilter: FilterFn<any> = (row, columnId, filterValue) => {
-    const cellValue = row.getValue(columnId);
-    if(!Array.isArray(filterValue)) {
-        return true;
-    } else {
-        return filterValue.length === 0 || filterValue.includes(cellValue);
-    }
+export type Employee = {
+    employeeId: number;
+    firstName: string;
+    lastName: string;
 }
 
 export const getRequestType = (request: ServiceRequest): string => {
@@ -103,10 +102,40 @@ export const getRequestType = (request: ServiceRequest): string => {
     if (request.sanitationRequest) {
         return "Sanitation";
     }
-    return "Unknown"; // Fallback in case nothing matches
+    return "Unknown";
 };
 
+let cachedEmployees: string[] = [];
+
+export const loadEmployees = async () => {
+    const employees = (await axios.get(API_ROUTES.EMPLOYEE)).data;
+    cachedEmployees = employees.map((e: Employee) => `${e.firstName} ${e.lastName}`);
+};
+
+export const getEmployees = (): string[] => {
+    return cachedEmployees;
+};
+
+let employeesPlusNothing: string[] = [];
+
+export const getEmployeesPlusNothing = (): string[] => {
+    employeesPlusNothing = cachedEmployees.slice();
+    employeesPlusNothing.push("")
+    return employeesPlusNothing;
+};
+
+await loadEmployees();
 export const columns: ColumnDef<ServiceRequest>[] = [
+    {
+        id: "expand",
+        enableHiding: false,
+        cell: ({ row }) => {
+            const expand = row.original
+            return (
+                <ChevronDown className="text-blue-950 pl-2"/>
+            )
+        }
+    },
     {
         accessorKey: "requestType",
         header: ({ column }) => {
@@ -142,37 +171,40 @@ export const columns: ColumnDef<ServiceRequest>[] = [
     },
     {
         accessorKey: "employeeRequestedById",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Requested By
-                    <ArrowUpDown />
-                </Button>
-            )
-        },
+        header: ({ column }) => {},
         meta: {
-            filterVariant: 'none',
+            filterVariant: "select",
+            filterOptions: getEmployees(),
         },
+        filterFn: (row, columnId, filterValue: string[]) => {
+            return filterValue.includes(`${(row.original as ServiceRequest).employeeRequestedBy.firstName} ${(row.original as ServiceRequest).employeeRequestedBy.lastName}`)
+        },
+        cell: ({ row }) => {
+            const request = row.original as ServiceRequest;
+            return `${request.employeeRequestedBy.firstName} ${request.employeeRequestedBy.lastName}`;
+        }
     },
     {
         accessorKey: "assignedEmployeeId",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Assigned Employee
-                    <ArrowUpDown />
-                </Button>
-            )
-        },
+        header: ({ column }) => {},
         meta: {
-            filterVariant: 'none',
+            filterVariant: "select",
+            filterOptions: getEmployeesPlusNothing(),
         },
+        filterFn: (row, columnId, filterValue: string[]) => {
+            const assignedEmployee = (row.original as ServiceRequest).assignedEmployee;
+            const name = assignedEmployee
+                ? `${assignedEmployee.firstName} ${assignedEmployee.lastName}`
+                : ""; // Ensure empty string if assignedEmployee is null or undefined
+            return filterValue.includes(name);
+        },
+        cell: ({ row }) => {
+            const request = row.original as ServiceRequest;
+            if (request.assignedEmployee === null) {
+                return "";
+            }
+            return `${request.assignedEmployee.firstName} ${request.assignedEmployee.lastName}`;
+        }
     },
     {
         accessorKey: "departmentUnderId",
@@ -195,18 +227,7 @@ export const columns: ColumnDef<ServiceRequest>[] = [
         accessorKey: "roomNum",
         header: ({ column }) => {
             return (
-                <Button variant="ghost">Room Number</Button>
-            )
-        },
-        meta: {
-            filterVariant: 'none',
-        },
-    },
-    {
-        accessorKey: "comments",
-        header: ({ column }) => {
-            return (
-                <Button variant="ghost">Comments</Button>
+                <Button variant="ghost">Room</Button>
             )
         },
         meta: {
@@ -267,6 +288,11 @@ export const columns: ColumnDef<ServiceRequest>[] = [
         meta: {
             filterVariant: 'none',
         },
+        cell: ({ row }) => {
+            const request = row.original as ServiceRequest;
+            const date = new Date(request.createdAt);
+            return date.toLocaleDateString("en-US", {})+ "\n" + date.toLocaleTimeString("en-US", {})
+        }
     },
     {
         accessorKey: "updatedAt",
@@ -284,32 +310,48 @@ export const columns: ColumnDef<ServiceRequest>[] = [
         meta: {
             filterVariant: 'none',
         },
+        cell: ({ row }) => {
+            const request = row.original as ServiceRequest;
+            const date = new Date(request.updatedAt);
+            return date.toLocaleDateString("en-US", {})+ "\n" + date.toLocaleTimeString("en-US", {})
+        }
+    },
+    {
+        id: "actions",
+        enableHiding: false,
+        cell: ({ row }) => {
+            const request = row.original
+
+            return (
+                <DropdownMenu>
+                    <DropdownMenuTrigger onClick={(e) => e.stopPropagation()}>
+                        <Button variant="secondary" className="h-8 w-8 p-0">
+                            <span className="sr-only">Open Menu</span>
+                            <MoreHorizontal className="text-blue-950"/>
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" onClick={(e) => e.stopPropagation()}>
+                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                        <DropdownMenuItem>Assign Employee</DropdownMenuItem>
+                        <DropdownMenuItem>Edit Request</DropdownMenuItem>
+                        <DropdownMenuItem onClick={async()=> {
+                            const request = row.original as ServiceRequest;
+                            await axios.delete('/api/servicereqs/'+Number(request.requestId));
+                        }}>Delete Request</DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+            )
+        }
     },
 ]
 
 
 
 export default function ShowAllRequests() {
-    const [dataTranslator, setDataTranslator] = useState<ServiceRequest[]>([]);
-    const [dataEquipment, setDataEquipment] = useState<ServiceRequest[]>([]);
-    const [dataSecurity, setDataSecurity] = useState<ServiceRequest[]>([]);
-    const [dataSanitation, setDataSanitation] = useState<ServiceRequest[]>([]);
     const [data, setData] = useState<ServiceRequest[]>([]);
 
     const fetchData = async () => {
         try {
-            const translatorResponse = await axios.get('/api/servicereqs/translator');
-            setDataTranslator(translatorResponse.data);
-
-            const equipmentResponse = await axios.get('/api/servicereqs/equipment');
-            setDataEquipment(equipmentResponse.data);
-
-            const securityResponse = await axios.get('/api/servicereqs/security');
-            setDataSecurity(securityResponse.data);
-
-            const sanitationResponse = await axios.get('/api/servicereqs/sanitation');
-            setDataSanitation(sanitationResponse.data);
-
             const dataResponse = await axios.get('/api/servicereqs');
             setData(dataResponse.data);
         } catch (error) {
@@ -323,6 +365,7 @@ export default function ShowAllRequests() {
     )
 
     useEffect(() => {
+        console.log(getEmployees());
         fetchData();
     }, []);
 
@@ -446,7 +489,7 @@ export default function ShowAllRequests() {
     )
 }
 
-function Filter({ column }: { column: Column<any, unknown> }) {
+function Filter({ column }: { column: Column<ServiceRequest, unknown> }) {
     const columnFilterValue = column.getFilterValue() as string[] ?? [];
     const meta = column.columnDef.meta;
 
@@ -461,77 +504,34 @@ function Filter({ column }: { column: Column<any, unknown> }) {
 
             column.setFilterValue(newValue.length ? newValue : undefined);
         }
-        if(column.id === "requestType") {
-            return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger className="bg-blue-900 hover:bg-blue-950 inline">
-                        <Button
-                            variant="ghost" className="ml-auto bg-blue-900 hover:bg-blue-950"
-                        >
-                            Service Type
-                            <Funnel/>
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                        {options.map((value) => (
-                            <DropdownMenuCheckboxItem
-                                key={value} className="items-center space-x-2"
-                                checked={columnFilterValue.includes(value)}
-                                onCheckedChange={() => toggleOption(value)}>
-                                {value}
-                            </DropdownMenuCheckboxItem>
-                        ))}
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            );
-        }
-        if(column.id === "priority") {
-            return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger className="bg-blue-900 hover:bg-blue-950 inline">
-                        <Button
-                            variant="ghost" className="ml-auto bg-blue-900 hover:bg-blue-950"
-                        >
-                            Priority
-                            <Funnel/>
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                        {options.map((value) => (
-                            <DropdownMenuCheckboxItem
-                                key={value} className="items-center space-x-2"
-                                checked={columnFilterValue.includes(value)}
-                                onCheckedChange={() => toggleOption(value)}>
-                                {value}
-                            </DropdownMenuCheckboxItem>
-                        ))}
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            );
-        }
-        if(column.id === "requestStatus") {
-            return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger className="bg-blue-900 hover:bg-blue-950 inline">
-                        <Button
-                            variant="ghost" className="ml-auto bg-blue-900 hover:bg-blue-950"
-                        >
-                            Status
-                            <Funnel/>
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                        {options.map((value) => (
-                            <DropdownMenuCheckboxItem
-                                key={value} className="items-center space-x-2"
-                                checked={columnFilterValue.includes(value)}
-                                onCheckedChange={() => toggleOption(value)}>
-                                {value}
-                            </DropdownMenuCheckboxItem>
-                        ))}
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            );
-        }
+        const columnHeaders = {
+            requestType: "Service Type",
+            priority: "Priority",
+            requestStatus: "Status",
+            employeeRequestedById: "Requested By",
+            assignedEmployeeId: "Assigned To"
+        };
+        return (
+            <DropdownMenu>
+                <DropdownMenuTrigger className="bg-blue-900 hover:bg-blue-950 inline rounded-md">
+                    <Button
+                        variant="ghost" className="ml-auto bg-blue-900 hover:bg-blue-950"
+                    >
+                        {columnHeaders[column.id as keyof typeof columnHeaders]}
+                        <Funnel/>
+                    </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                    {options.map((value) => (
+                        <DropdownMenuCheckboxItem
+                            key={value} className="items-center space-x-2"
+                            checked={columnFilterValue.includes(value)}
+                            onCheckedChange={() => toggleOption(value)}>
+                            {value === "" ? "Unassigned" : value}
+                        </DropdownMenuCheckboxItem>
+                    ))}
+                </DropdownMenuContent>
+            </DropdownMenu>
+        );
     }
 }

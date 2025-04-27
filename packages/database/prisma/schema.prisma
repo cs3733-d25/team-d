@@ -68,7 +68,7 @@ model TranslatorRequest {
   endDateTime      DateTime
   // link to service request:
   serviceRequestId Int            @unique
-  serviceRequest   ServiceRequest @relation(fields: [serviceRequestId], references: [requestId])
+  serviceRequest   ServiceRequest @relation(fields: [serviceRequestId], references: [requestId], onDelete: Cascade)
 }
 
 model SecurityRequest {
@@ -76,7 +76,7 @@ model SecurityRequest {
   securityType     String
   // link to service request:
   serviceRequestId Int            @unique
-  serviceRequest   ServiceRequest @relation(fields: [serviceRequestId], references: [requestId])
+  serviceRequest   ServiceRequest @relation(fields: [serviceRequestId], references: [requestId], onDelete: Cascade)
 }
 
 model EquipmentRequest {
@@ -87,7 +87,7 @@ model EquipmentRequest {
   quantity         Int
   // link to service request
   serviceRequestId Int            @unique
-  serviceRequest   ServiceRequest @relation(fields: [serviceRequestId], references: [requestId])
+  serviceRequest   ServiceRequest @relation(fields: [serviceRequestId], references: [requestId], onDelete: Cascade)
 }
 
 // --- The SanitationServiceRequest model ---
@@ -97,7 +97,7 @@ model SanitationRequest {
 
   // link to service request:
   serviceRequestId Int            @unique
-  ServiceRequest   ServiceRequest @relation(fields: [serviceRequestId], references: [requestId])
+  ServiceRequest   ServiceRequest @relation(fields: [serviceRequestId], references: [requestId], onDelete: Cascade)
 }
 
 enum RequestType {
