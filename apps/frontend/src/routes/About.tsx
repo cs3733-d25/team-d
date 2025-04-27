@@ -1,6 +1,10 @@
 import React from "react";
 
+import AliImg from "../public/team/Ali.jpg";
+import ChristineImg from "../public/team/Christine.jpg";
 import StuvatImg from "../public/team/Stuvat.jpg";
+import JiamingImg from "../public/team/Jiaming.jpg";
+
 
 type Person = {
     name: string;
@@ -26,14 +30,14 @@ const members: Person[] = [
     {
         name:     "Stuvat Dash",
         position: "Front-End & Feature Software Engineer",
-        photo:    StuvatImg,        // ← imported URL
+        photo:    StuvatImg,
     },
     { name: "Brandon Small",  position: "Front-End & Feature Engineer • Scrum Master" },
     { name: "Delia Jasper",   position: "Front-End & Feature Engineer" },
     { name: "Lucien La Rock", position: "Front-End & Feature Engineer • Project Manager" },
-    { name: "Christine Ngo",  position: "Back-End Database Engineer & Product Owner" },
-    { name: "Ali Riad",       position: "Algorithms & Feature Engineer" },
-    { name: "Jiaming Du",     position: "Algorithms & Feature Engineer" },
+    { name: "Christine Ngo",  position: "Back-End Database Engineer & Product Owner", photo: ChristineImg },
+    { name: "Ali Riad",       position: "Algorithms & Feature Engineer", photo: AliImg },
+    { name: "Jiaming Du",     position: "Algorithms & Feature Engineer", photo: JiamingImg },
 ];
 
 /*  Card component */
