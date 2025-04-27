@@ -31,6 +31,8 @@ interface TransportModeOption {
     icon: IconDefinition; // You might want to be more specific with the icon type
 }
 
+//const primaryDarkBlue = "#012D5A";
+//const primaryOrange = "#D47F00";
 const transportModes: TransportModeOption[] = [
     { value: "DRIVING", label: "Driving", icon: faCar },
     { value: "WALKING", label: "Walking", icon: faWalking },
@@ -101,6 +103,8 @@ export default function NewDirections() {
         if (!map) return;
         map.setTravelMode(mode);
     }
+
+
     const handleZoom = () => {
         // if (!pathfindingResponse || !map) return;
         // map.recenter(
@@ -153,25 +157,38 @@ export default function NewDirections() {
                 </Select>
 
 
-                <Label>Transport Mode</Label>
-                <div className="flex gap-2 mb-4 mt-1">
-                    {transportModes.map((mode) => (
-                        <button
-                            key={mode.value}
-                            onClick={() => handleModeChange(mode.value)}
-                            className={cn(
-                                "p-2 rounded-md shadow-sm border",
-                                selectedMode === mode.value
-                                    ? "bg-primary text-primary-foreground border-primary"
-                                    : "bg-white text-gray-700 hover:bg-gray-100 border-gray-300"
-                            )}
-                        >
-                            <div className="flex flex-col items-center">
-                                <FontAwesomeIcon icon={mode.icon} className="text-xl mb-1" />
-                                <span className="text-xs">{mode.label}</span>
-                            </div>
-                        </button>
-                    ))}
+                <Label className="mb-2">Transport Mode</Label>
+                <div className="flex flex-col items-center justify-center gap-6 rounded-md shadow-md p-4 bg-[#012D5A]"> {/* Rounded box container */}
+                    <div className="flex gap-6">
+                        {transportModes.map((mode) => (
+                            <button
+                                key={mode.value}
+                                onClick={() => handleModeChange(mode.value)}
+                                className={cn(
+                                    "p-2 rounded-md shadow-sm border", // Added border back
+                                    `text-[#012D5A]`, // Default text color
+                                    selectedMode === mode.value
+                                        ? `bg-[#012D5A] text-[#D47F00] foreground border-[#D47F00]`
+                                        : `bg-[#F1F1F1] text-[#012D5A] hover:bg-gray-100 border-gray-300`
+                                )}
+                            >
+                                <div className="flex flex-col items-center">
+                                    <FontAwesomeIcon icon={mode.icon} className="text-xl mb-1" />
+                                    <span className="text-xs">{mode.label}</span>
+                                </div>
+                            </button>
+                        ))}
+                    </div>
+                </div>
+
+                <div className="mb-5">
+                    <div id="step-instruction">Loading directions...</div>
+                    <button
+                        id="next-step-btn"
+                        className="mt-2 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+                    >
+                        Next Step
+                    </button>
                 </div>
 
 
