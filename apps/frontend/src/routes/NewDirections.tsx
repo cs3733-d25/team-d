@@ -178,7 +178,7 @@ export default function NewDirections() {
                 {pathfindingResults?.directions.map((step, i) => (
                     <div onClick={() => {
                         map?.setCurrentStepIdx(i, true);
-                    }}>{step.instructions}</div>
+                    }}>{step.instructions} | {step.distance} | {step.time} | {step.icon}</div>
                 ))}
             </div>
             <div ref={mapRef} className="flex-3">

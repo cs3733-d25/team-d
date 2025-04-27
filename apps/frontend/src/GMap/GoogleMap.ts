@@ -1294,8 +1294,5 @@ export class EditorMap extends GoogleMap {
                 this.map.setZoom(17);
             }
         }
-        else {
-            console.log('error');
-        }
     }
 }
