@@ -863,7 +863,7 @@ class EditorMapGraph {
         });
     }
 
-    function getNodeColor(type: string): string{
+    private getNodeColor(type: string): string {
 
         switch(type) {
 
@@ -878,12 +878,10 @@ class EditorMapGraph {
                 return '#EA4335';
 
             case 'NORMAL':
-            default:
                 return '#AAAAAA';
 
-
-
         }
+        return '#AAAAAA';
     }
 
 
@@ -899,7 +897,7 @@ class EditorMapGraph {
                 path: google.maps.SymbolPath.CIRCLE,
                 scale: 5,
                 fillOpacity: 1,
-                fillColor: getNodeColor(node.type),
+                fillColor: this.getNodeColor(node.type),
                 strokeColor: '#fff',
                 strokeWeight: 2
             },
