@@ -878,7 +878,10 @@ class EditorMapGraph {
                 return '#EA4335';
 
             case 'NORMAL':
+            default:
                 return '#AAAAAA';
+
+
 
         }
     }
