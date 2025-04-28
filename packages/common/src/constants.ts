@@ -59,6 +59,7 @@ export type FloorPathResponse = {
     imageBoundsSouth: number;
     imageBoundsEast: number;
     imageBoundsWest: number;
+    imageRotation: number;
     path: NodePathResponse[];
     direction: string[];
 

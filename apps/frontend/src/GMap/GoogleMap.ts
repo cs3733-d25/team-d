@@ -115,6 +115,8 @@ class PathfindingGraph {
     private readonly nodes: google.maps.Marker[];
     private readonly floorMap: google.maps.GroundOverlay | null;
 
+    private readonly rotation: number;
+
     private selectedSegment: google.maps.Polyline | null;
 
     private visibility: boolean;
@@ -155,11 +157,13 @@ class PathfindingGraph {
 
         this.selectedSegment = null;
 
+        this.rotation = floor?.imageRotation || 0;
+
         this.visibility = false;
     }
 
-    setVisibility(visiblity: boolean) {
-        const map = visiblity ? this.map : null;
+    setVisibility(visibility: boolean) {
+        const map = visibility ? this.map : null;
 
         this.path.setMap(map);
         this.nodes.forEach(node => {
@@ -167,8 +171,9 @@ class PathfindingGraph {
         });
         this.floorMap?.setMap(map);
         this.selectedSegment?.setMap(null);
+        this.map.setHeading(this.rotation);
 
-        this.visibility = visiblity;
+        this.visibility = visibility;
     }
 
 
@@ -409,9 +414,12 @@ export class PathfindingMap extends GoogleMap {
 
     private currentPathfindingResponse: PathfindingResponse | null;
     private currentSteps: InternalStep[] | null;
-    private currentParkingPath: PathfindingGraph | null;
-    private currentFloorPaths: PathfindingGraph[] | null;
-    private selectedFloorPath: PathfindingGraph | null;
+    // private currentParkingPath: PathfindingGraph | null;
+    // private currentFloorPaths: PathfindingGraph[] | null;
+    // private selectedFloorPath: PathfindingGraph | null;
+
+    private currentPath: PathfindingGraph | null;
+    private allPaths: PathfindingGraph[];
 
     // For Google Map directions
     // private stepIndex: number = 0;
@@ -464,9 +472,11 @@ export class PathfindingMap extends GoogleMap {
 
         this.currentPathfindingResponse = null;
         this.currentSteps = null;
-        this.currentParkingPath = null;
-        this.currentFloorPaths = null;
-        this.selectedFloorPath = null;
+        // this.currentParkingPath = null;
+        // this.currentFloorPaths = null;
+        // this.selectedFloorPath = null;
+        this.currentPath = null;
+        this.allPaths = [];
 
         this.currentStepPolyline = null;
 
@@ -579,20 +589,32 @@ export class PathfindingMap extends GoogleMap {
             });
         });
 
+        this.currentPath?.setVisibility(false);
+        this.allPaths = [new PathfindingGraph(this.map, this.currentPathfindingResponse.parkingLotPath.path)];
 
-        // Set the parking path to be visible
-        this.currentParkingPath?.setVisibility(false);
-        this.currentParkingPath = new PathfindingGraph(this.map, this.currentPathfindingResponse.parkingLotPath.path);
-        this.currentParkingPath.setVisibility(true);
-
-        // Set the first floor map to be visible
-        this.currentFloorPaths?.forEach(path => {
-            path.setVisibility(false);
-        });
-        this.currentFloorPaths = this.currentPathfindingResponse.floorPaths.map(floor =>
-            new PathfindingGraph(this.map, floor.path, floor)
+        this.allPaths.push();
+        this.currentPathfindingResponse.floorPaths.forEach(floor =>
+            this.allPaths.push(new PathfindingGraph(this.map, floor.path, floor))
         );
-        this.currentFloorPaths[0].setVisibility(true);
+
+        this.setCurrentGraphIdx(1);
+
+        // this.currentPath.setVisibility(true);
+
+
+        // // Set the parking path to be visible
+        // this.currentParkingPath?.setVisibility(false);
+        // this.currentParkingPath = new PathfindingGraph(this.map, this.currentPathfindingResponse.parkingLotPath.path);
+        // this.currentParkingPath.setVisibility(true);
+        //
+        // // Set the first floor map to be visible
+        // this.currentFloorPaths?.forEach(path => {
+        //     path.setVisibility(false);
+        // });
+        // this.currentFloorPaths = this.currentPathfindingResponse.floorPaths.map(floor =>
+        //     new PathfindingGraph(this.map, floor.path, floor)
+        // );
+        // this.currentFloorPaths[0].setVisibility(true);
 
         // Update the frontend directions
         this.updater({
@@ -628,6 +650,15 @@ export class PathfindingMap extends GoogleMap {
             this.map.panTo(step.googleMapData.start_location);
             this.map.setZoom(17);
         }
+
+
+
+    }
+
+    setCurrentGraphIdx(idx: number) {
+        this.currentPath?.setVisibility(false);
+        this.currentPath = this.allPaths[idx];
+        this.currentPath.setVisibility(true);
 
 
 
