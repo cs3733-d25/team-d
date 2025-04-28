@@ -78,7 +78,7 @@ const Profile = () => {
             <>
                 <div  className="w-full border-4 border-white rounded-b-lg text-center bg-black text-white
                     animate-in fade-in zoom-in duration-500 p-4 font-nunito">
-                    You are logged in as an Admin.
+                    You are logged in as an {employeeData?.userType}.
                 </div>
                 <div className="flex flex-col items-center bg-gray-50 px-4 py-15">
                     <img
