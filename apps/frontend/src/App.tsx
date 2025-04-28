@@ -13,6 +13,7 @@ import AllServiceRequests from "@/routes/AllServiceRequests.tsx";
 import Directions from "@/routes/Directions.tsx";
 import Auth0Profile from "@/components/Auth0Profile.tsx";
 import HospitalDirectory from "@/routes/hospitalDirectory.tsx";
+import About from "@/routes/About.tsx";
 
 
 import AdminSettings from "@/routes/admingSettings.tsx";
@@ -20,6 +21,7 @@ import AdminSettings from "@/routes/admingSettings.tsx";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import NewDirections from "@/routes/NewDirections.tsx";
 import MapEditor from "@/routes/MapEditor.tsx";
+import EmployeeDirectory from "@/routes/EmployeeDirectory.tsx";
 import Statistics from "@/routes/Statistics.tsx";
 
 function App() {
@@ -37,6 +39,8 @@ function App() {
                         <Route path="servicerequesthub" element={<ServiceRequestHub />} />
                         <Route path="hospital-directory" element={<HospitalDirectory />} />
                         <Route path="admin-settings" element={<AdminSettings />} />
+                        <Route path="employee-page" element={<EmployeeDirectory />} />
+                        <Route path="about" element={<About />} />
 
 
 
