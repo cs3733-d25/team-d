@@ -1,7 +1,7 @@
 import { Coordinates, NodePathResponse, NodePathResponseType } from 'common/src/constants.ts';
 import { readFileSync } from 'fs';
 import { PrismaClient } from 'database';
-import {euclideanDistance, haversineDistance} from './distance.ts';
+import { euclideanDistance, haversineDistance } from './distance.ts';
 
 // Search Strategy Interface
 interface PathFindingStrategy {
@@ -74,7 +74,6 @@ class DFSStrategy implements PathFindingStrategy {
     }
 }
 
-
 class DijkstraStrategy implements PathFindingStrategy {
     search(
         startNodeType: NodePathResponseType,
@@ -84,13 +83,11 @@ class DijkstraStrategy implements PathFindingStrategy {
         const endNode = graph.getNode(endNodeId);
         if (!endNode) return [];
 
-
         const queue: [number, GraphNode, GraphNode[]][] = [[0, endNode, [endNode]]];
         const visited = new Set<number>();
         const costs: Map<number, number> = new Map();
         costs.set(endNode.data.nodeId, 0);
         while (queue.length > 0) {
-
             queue.sort((a, b) => a[0] - b[0]);
             const [cost, node, path] = queue.shift()!;
             if (node.data.type === startNodeType) {

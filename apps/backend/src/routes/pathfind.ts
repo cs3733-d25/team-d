@@ -14,7 +14,12 @@ import {
 } from 'common/src/constants.ts';
 import prismaClient from '../bin/prisma-client';
 
-import {BFSStrategy, DFSStrategy, DijkstraStrategy, PathFindingStrategy} from '../pathfinding/src/bfs.ts';
+import {
+    BFSStrategy,
+    DFSStrategy,
+    DijkstraStrategy,
+    PathFindingStrategy,
+} from '../pathfinding/src/bfs.ts';
 
 function getStrategyByName(name: string): PathFindingStrategy {
     switch (name) {
