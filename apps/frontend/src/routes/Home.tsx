@@ -53,23 +53,13 @@ export default function Home() {
                                     </div>
                                 )}
                                 {/* Map Section - Purple Box */}
-                                <div className=" w-[250px] h-[250px] bg-[#F1F1F1] rounded-t-lg border-white">
-                                    {/* Animated Map */}
-                                    <div className="flex-grow flex items-center justify-center w-full">
-                                        <AnimatedMap/>
-                                    </div>
-
+                                <div className=" w-[250px] h-[250px]">
                                     <MapButton/>
                                 </div>
 
                                 {/* Directory Button */}
 
-                                <div className=" w-[250px] h-[250px] bg-[#F1F1F1] rounded-t-lg border-white">
-                                    {/* Animated Map */}
-                                    <div className="flex-grow flex items-center justify-center w-full">
-                                        <AnimatedService/>
-                                    </div>
-
+                                <div className=" w-[250px] h-[250px]">
                                     <ServiceRequestbutton/>
                                 </div>
                             </div>
