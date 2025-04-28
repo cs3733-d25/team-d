@@ -60,7 +60,6 @@ if (!process.env['VITETEST']) {
 // Setup routers. ALL ROUTERS MUST use /api as a start point, or they
 // won't be reached by the default proxy and prod setup
 
-
 // app.use(API_ROUTES.PATHFINDING, pathfindingRouter);
 
 /**

@@ -224,15 +224,15 @@ export default function NewDirections() {
                             }}>{step.instructions} | {step.distance} | {step.time} | {step.icon}</div>
                         ))}
 
-                        <div className="mb-5">
-                            <div id="inner-step-instruction">Loading directions...</div>
-                            <button
-                                id="inner-next-step-btn"
-                                className="mt-2 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
-                            >
-                                Next Step
-                            </button>
-                        </div>
+                        {/*<div className="mb-5">*/}
+                        {/*    <div id="inner-step-instruction">Loading directions...</div>*/}
+                        {/*    <button*/}
+                        {/*        id="inner-next-step-btn"*/}
+                        {/*        className="mt-2 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"*/}
+                        {/*    >*/}
+                        {/*        Next Step*/}
+                        {/*    </button>*/}
+                        {/*</div>*/}
                     </>
                 }
             </div>

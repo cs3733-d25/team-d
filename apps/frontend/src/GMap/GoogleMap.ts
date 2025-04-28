@@ -10,11 +10,6 @@ import {
 } from 'common/src/constants.ts';
 import {EditorEncapsulator} from "@/routes/MapEditor.tsx";
 
-// import fern from '@/public/floormaps/fern1.png';
-// import chf1 from '@/public/floormaps/chf1.png';
-// import pp20f1 from '@/public/floormaps/pp20f1.png';
-// import pp22f3 from '@/public/floormaps/pp22f3.png';
-// import pp22f4 from '@/public/floormaps/pp22f4.png';
 import chf1 from '@/public/floormaps/new/chf1.png';
 import ff1 from '@/public/floormaps/new/ff1.png';
 import pp20f1 from '@/public/floormaps/new/pp20f1.png';
@@ -25,7 +20,7 @@ import pp22f4 from '@/public/floormaps/new/pp22f4.png';
 import {Button} from '@/components/ui/button.tsx'
 
 const API_KEY: string = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
-const SCRIPT_URL: string = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&libraries=places&callback=initMap`
+const SCRIPT_URL: string = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&libraries=geometry,places&callback=initMap`
 
 
 declare global {
@@ -110,14 +105,15 @@ abstract class GoogleMap {
 
 class PathfindingGraph {
     private readonly map: google.maps.Map;
-
     private readonly path: google.maps.Polyline;
     private readonly nodes: google.maps.Marker[];
     private readonly floorMap: google.maps.GroundOverlay | null;
-
     private selectedSegment: google.maps.Polyline | null;
-
     private visibility: boolean;
+
+    // Distance and time for inner
+    private innerDistances: number[] = []; // in meters
+    private innerDurations: number[] = []; // in seconds (estimate)
 
     constructor(map: google.maps.Map, path: google.maps.LatLngLiteral[], floor?: FloorPathResponse) {
         this.map = map;
@@ -132,6 +128,7 @@ class PathfindingGraph {
 
             });
         }
+
         else this.floorMap = null;
 
         this.path = new google.maps.Polyline({
@@ -152,6 +149,24 @@ class PathfindingGraph {
                 position: position,
             })
         );
+
+        // Calculate the distance and time
+        for (let i = 0; i < this.nodes.length - 1; i++) {
+            const pos1 = this.nodes[i].getPosition();
+            const pos2 = this.nodes[i + 1].getPosition();
+
+            if (pos1 && pos2) {
+                const distanceMeters = google.maps.geometry.spherical.computeDistanceBetween(pos1, pos2);
+                this.innerDistances.push(distanceMeters);
+
+                // Estimate duration assuming average indoor walking speed (~1.4 meters/sec)
+                const estimatedSeconds = distanceMeters / 1.4;
+                this.innerDurations.push(estimatedSeconds);
+            } else {
+                this.innerDistances.push(0);
+                this.innerDurations.push(0);
+            }
+        }
 
         this.selectedSegment = null;
 
@@ -589,6 +604,10 @@ export class PathfindingMap extends GoogleMap {
             this.directionsRenderer.setDirections(null);
         });
 
+        console.log('im tired');
+        console.log(this.currentPathfindingResponse);
+
+
         // Add the result from above into the steps
         this.directionsRenderer.getDirections()?.routes[0].legs[0].steps.forEach((step) => {
             this.currentSteps?.push({
@@ -605,6 +624,72 @@ export class PathfindingMap extends GoogleMap {
                 pathFindingData: null,
             });
         });
+
+        for (let i=0; i<this.currentPathfindingResponse.floorPaths.length; i++) {
+            for (let j=0; j<=this.currentPathfindingResponse.floorPaths[i].path.length - 1; j++) {
+
+                let distance: number;
+                // distance is in meter
+                let time: number;
+                const pos1 = this.currentPathfindingResponse.floorPaths[i].path[j];
+                const pos2 = this.currentPathfindingResponse.floorPaths[i].path[j+1];
+
+                if (pos1 && pos2) {
+                    distance = google.maps.geometry.spherical.computeDistanceBetween(pos1, pos2);
+
+                    // Estimate duration assuming average indoor walking speed (~1.4 meters/sec)
+                    time = distance / 1.4;
+                } else {
+                    distance = 0;
+                    time = 0;
+                }
+
+                if (j==0){
+                    this.currentSteps?.push({
+                        step: {
+                            instructions: this.currentPathfindingResponse.floorPaths[i].direction[j],
+                            distance: distance.toFixed(2).toString() + ' meters',
+                            time: time.toFixed(2).toString() + ' seconds',
+                            icon:'',
+                        },
+                        googleMapData: null,
+                        pathFindingData: null,
+                    });
+                    continue;
+                }
+
+                if (j == this.currentPathfindingResponse.floorPaths[i].path.length - 1){
+                    this.currentSteps?.push({
+                        step: {
+                            instructions: this.currentPathfindingResponse.floorPaths[i].direction[j],
+                            distance: '',
+                            time: '',
+                            icon:'',
+                        },
+                        googleMapData: null,
+                        pathFindingData: null,
+                    });
+                    console.log('final');
+                    continue;
+                }
+
+                this.currentSteps?.push({
+                    step: {
+                        instructions: this.currentPathfindingResponse.floorPaths[i].direction[j],
+                        distance: distance.toFixed(2).toString() + ' meter',
+                        time: time.toFixed(2).toString() + ' seconds',
+                        icon:'',
+                    },
+                    googleMapData: null,
+                    pathFindingData: null,
+                });
+
+            }
+        }
+
+
+
+
 
 
         // Set the parking path to be visible
@@ -686,29 +771,6 @@ export class PathfindingMap extends GoogleMap {
     }
 
 
-
-    // To route from home to the wanted hospital
-    private route() {
-        if (!this.startPlaceId || !this.endLocation) return;
-
-        this.directionsService.route(
-            {
-                origin: {placeId: this.startPlaceId},
-                destination: this.endLocation,
-                travelMode: this.travelMode,
-            },
-            (response, status) => {
-                if (status === 'OK') {
-                    console.log('Routed!');
-                    this.directionsRenderer.setDirections(response);
-
-                    console.log(response);
-                } else {
-                    window.alert('Directions request failed due to ' + status);
-                }
-            }
-        );
-    }
 }
 
 
