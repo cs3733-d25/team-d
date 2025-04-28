@@ -45,17 +45,11 @@ export default function Home() {
 
                         {/* Buttons Section */}
 
-                        <div className="relative z-10 flex justify-center items-center h-full w-full px-12">
-                            <div className="relative flex flex-row w-full  items-center justify-center p-4 gap-10">
+                        <div className="relative z-10 flex justify-center items-center h-full w-full">
+                            <div className="relative flex flex-row w-full  items-center justify-center gap-10">
                                 {!isAuthenticated && (
-                                    <div className=" w-[250px] h-[250px] bg-[#F1F1F1] rounded-t-lg border-white">
-                                        <div className="grid-cols-3 gap-16 max-w-4xl mx-auto flex-grow flex items-center justify-center w-full">
-                                            <AnimatedLogin/>
-                                        </div>
-
-                                        <div>
-                                            <Auth0LoginButton/>
-                                        </div>
+                                    <div className="w-[250px] h-[250px]">
+                                        <Auth0LoginButton/>
                                     </div>
                                 )}
                                 {/* Map Section - Purple Box */}
