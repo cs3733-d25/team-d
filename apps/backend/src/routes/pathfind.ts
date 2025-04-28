@@ -4,7 +4,7 @@ const router: Router = express.Router();
 import { Graph } from 'backend/src/pathfinding/src/bfs.ts';
 import PrismaClient from '../bin/prisma-client';
 
-import { euclideanDistance } from '../pathfinding/src/distance.ts';
+import { euclideanDistance, haversineDistance } from '../pathfinding/src/distance.ts';
 import {
     FloorPathResponse,
     HospitalOptions,
