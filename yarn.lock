@@ -3194,6 +3194,31 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@radix-ui/react-switch@npm:^1.2.2":
+  version: 1.2.2
+  resolution: "@radix-ui/react-switch@npm:1.2.2"
+  dependencies:
+    "@radix-ui/primitive": "npm:1.1.2"
+    "@radix-ui/react-compose-refs": "npm:1.1.2"
+    "@radix-ui/react-context": "npm:1.1.2"
+    "@radix-ui/react-primitive": "npm:2.1.0"
+    "@radix-ui/react-use-controllable-state": "npm:1.2.2"
+    "@radix-ui/react-use-previous": "npm:1.1.1"
+    "@radix-ui/react-use-size": "npm:1.1.1"
+  peerDependencies:
+    "@types/react": "*"
+    "@types/react-dom": "*"
+    react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    react-dom: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+    "@types/react-dom":
+      optional: true
+  checksum: 10c0/0cae52e27fd65fc68dea5078312985c8b9f4c98447ddde9d0b913c2d31d79c1054975f2f6c52485d64c5804aa638a2e5b0877f7ea58e2cc46bfc60aaa442df2f
+  languageName: node
+  linkType: hard
+
 "@radix-ui/react-use-callback-ref@npm:1.1.0":
   version: 1.1.0
   resolution: "@radix-ui/react-use-callback-ref@npm:1.1.0"
@@ -5378,11 +5403,11 @@ __metadata:
     eslint: "npm:*"
     eslint-config-custom: "npm:*"
     express: "npm:^4.19.2"
-    express-oauth2-jwt-bearer: "npm:^1.5.0"
+    express-oauth2-jwt-bearer: "npm:^1.6.1"
     express-openid-connect: "npm:^2.18.0"
     http-errors: "npm:~1.6.3"
     http-terminator: "npm:^3.2.0"
-    jose: "npm:^5.4.0"
+    jose: "npm:^6.0.10"
     morgan: "npm:^1.9.9"
     nodemon: "npm:^3.1.9"
     pg: "npm:^8.11.1"
@@ -7224,7 +7249,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"express-oauth2-jwt-bearer@npm:^1.5.0":
+"express-oauth2-jwt-bearer@npm:^1.6.1":
   version: 1.6.1
   resolution: "express-oauth2-jwt-bearer@npm:1.6.1"
   dependencies:
@@ -7601,6 +7626,7 @@ __metadata:
     "@radix-ui/react-scroll-area": "npm:^1.2.4"
     "@radix-ui/react-select": "npm:^2.1.7"
     "@radix-ui/react-slot": "npm:^1.1.2"
+    "@radix-ui/react-switch": "npm:^1.2.2"
     "@tailwindcss/vite": "npm:^4.0.17"
     "@tanstack/react-table": "npm:^8.21.3"
     "@types/google.maps": "npm:^3.58.1"
@@ -8728,10 +8754,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jose@npm:^5.0.0, jose@npm:^5.4.0":
+"jose@npm:^5.0.0":
   version: 5.10.0
   resolution: "jose@npm:5.10.0"
   checksum: 10c0/e20d9fc58d7e402f2e5f04e824b8897d5579aae60e64cb88ebdea1395311c24537bf4892f7de413fab1acf11e922797fb1b42269bc8fc65089a3749265ccb7b0
+  languageName: node
+  linkType: hard
+
+"jose@npm:^6.0.10":
+  version: 6.0.10
+  resolution: "jose@npm:6.0.10"
+  checksum: 10c0/d1327afd7fe6011a6648b570b8a220dd89c3d427d6fb3225825650df3249b58bf0f76494179a34a0f7ad185832fb083d6402092d3c7f880c677d0dd38cc75eae
   languageName: node
   linkType: hard
 

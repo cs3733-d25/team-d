@@ -1,5 +1,8 @@
 import {useEffect, useRef, useState} from "react";
-import {PathfindingMap} from "@/GMap/GoogleMap.ts";
+import {DirectionsStep, PathfindingMap, PathfindingResults} from "@/GMap/GoogleMap.ts";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCar, faWalking, faBus, faBicycle } from "@fortawesome/free-solid-svg-icons";
+import {Switch} from '@/components/ui/switch.tsx';
 import {
     API_ROUTES,
     DepartmentOptions,
@@ -21,7 +24,22 @@ import {
     SelectValue
 } from "@/components/ui/select.tsx";
 import {Button} from "@/components/ui/button.tsx";
+import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 
+interface TransportModeOption {
+    value: string;
+    label: string;
+    icon: IconDefinition; // You might want to be more specific with the icon type
+}
+
+//const primaryDarkBlue = "#012D5A";
+//const primaryOrange = "#D47F00";
+const transportModes: TransportModeOption[] = [
+    { value: "DRIVING", label: "Driving", icon: faCar },
+    { value: "WALKING", label: "Walking", icon: faWalking },
+    { value: "TRANSIT", label: "Transit", icon: faBus },
+    { value: "BICYCLING", label: "Bicycling", icon: faBicycle },
+];
 
 export default function NewDirections() {
 
@@ -31,22 +49,33 @@ export default function NewDirections() {
     const mapRef = useRef<HTMLDivElement>(null);
     const autocompleteRef = useRef<HTMLInputElement>(null);
 
+    // 'backend' for google map
     const [map, setMap] = useState<PathfindingMap>();
 
+    // all hospitals and their departments
     const [displayData, setDisplayData] = useState<PathfindingOptions>({
         hospitals: [],
     });
 
+    // for storing current selection
     const [selectedHospital, setSelectedHospital] = useState<HospitalOptions | null>(null);
     const [selectedDepartment, setSelectedDepartment] = useState<DepartmentOptions | null>(null);
 
-    const [pathfindingResponse, setPathfindingResponse] = useState<PathfindingResponse>();
+    const [pathfindingResults, setPathfindingResults] = useState<PathfindingResults | null>(null);
+
+    const [tts, setTts] = useState<boolean>(false);
+
+    // const [pathfindingResponse, setPathfindingResponse] = useState<PathfindingResponse>();
+    //
+    // const [directionsSteps, setDirectionsSteps] = useState<DirectionsStep[]>([]);
+    // const [pathfindingResponse, setPathfindingResponse] = useState<PathfindingResponse>();
+    const [selectedMode, setSelectedMode] = useState<string>("DRIVING");
 
     useEffect(() => {
         console.log('useEffect NewDirections');
         const fetchMap = async () => {
             if (mapRef.current && autocompleteRef.current ) {
-                setMap(await PathfindingMap.makeMap(mapRef.current, autocompleteRef.current));
+                setMap(await PathfindingMap.makeMap(mapRef.current, autocompleteRef.current, setPathfindingResults));
             }
         }
         fetchMap().then(() => {
@@ -69,28 +98,49 @@ export default function NewDirections() {
         setSelectedDepartment(newDepartment);
 
         if (!map) return;
-        axios.get(API_ROUTES.PATHFIND + '/path-to-dept/' + newDepartment.departmentId).then(response => {
-            setPathfindingResponse(response.data as PathfindingResponse);
-            map.updateDepartmentPathfinding(response.data as PathfindingResponse);
-        });
+        map.setDepartment(newDepartment);
     }
 
-    const handleModeChange = (value: string) => {
+    const handleModeChange = (mode: string) => {
+        setSelectedMode(mode);
         if (!map) return;
-        map.updateTravelMode(value);
+        map.setTravelMode(mode);
     }
+
+    const [currentStep, setCurrentStep] = useState<number>(-1);
+
+    const handleNextStep = () => {
+        if (!pathfindingResults || currentStep >= pathfindingResults.directions.length - 1) return;
+
+        map?.setCurrentStepIdx(currentStep + 1, tts);
+        setCurrentStep(currentStep + 1);
+        console.log(currentStep + 1);
+    }
+
+    const handlePrevStep = () => {
+        if (!pathfindingResults || currentStep < 1) return;
+
+        map?.setCurrentStepIdx(currentStep - 1, tts);
+        setCurrentStep(currentStep - 1);
+        console.log(currentStep - 1);
+    }
+
 
     const handleZoom = () => {
-        if (!pathfindingResponse || !map) return;
-        map.recenter(
-            pathfindingResponse.parkingLotPath.path[0].lat,
-            pathfindingResponse.parkingLotPath.path[0].lng, 20
-        );
+        // if (!pathfindingResponse || !map) return;
+        // map.recenter(
+        //     pathfindingResponse.parkingLotPath.path[0].lat,
+        //     pathfindingResponse.parkingLotPath.path[0].lng, 20
+        // );
+    }
+
+    const handleStepSelect = () => {
+
     }
 
     return (
         <div className="flex flex-row flex-1 h-screen overflow-y-hidden">
-            <div className="flex-1 p-4">
+            <div className="flex-1 p-4 overflow-y-scroll">
                 <h2 className="text-3xl font-bold">Get Directions</h2>
                 <Separator className="mt-4 mb-4" />
 
@@ -107,6 +157,50 @@ export default function NewDirections() {
                         "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive", "mb-4"
                     )}
                 />
+
+                {/*end to-do here*/}
+
+                {/*<Label>Destination Hospital</Label>*/}
+                {/*<Select onValueChange={handleHospitalChange}>*/}
+                {/*    <SelectTrigger className="w-full mt-1 mb-4">*/}
+                {/*        <SelectValue placeholder="Choose a hospital..." />*/}
+                {/*    </SelectTrigger>*/}
+                {/*    <SelectContent>*/}
+                {/*        <SelectGroup>*/}
+                {/*            <SelectLabel>Hospitals</SelectLabel>*/}
+                {/*            {displayData.hospitals.map((h: HospitalOptions) => (*/}
+                {/*                <SelectItem key={h.hospitalId + 1} value={h.name}>*/}
+                {/*                    {h.name}*/}
+                {/*                </SelectItem>*/}
+                {/*            ))}*/}
+                {/*        </SelectGroup>*/}
+                {/*    </SelectContent>*/}
+                {/*</Select>*/}
+
+
+                <Label className="mb-2">Transport Mode</Label>
+                <div className="flex flex-col items-center justify-center gap-6 rounded-md shadow-md p-4 bg-[#012D5A] mb-4"> {/* Rounded box container */}
+                    <div className="flex gap-6">
+                        {transportModes.map((mode) => (
+                            <button
+                                key={mode.value}
+                                onClick={() => handleModeChange(mode.value)}
+                                className={cn(
+                                    "p-2 rounded-md shadow-sm border", // Added border back
+                                    `text-[#012D5A]`, // Default text color
+                                    selectedMode === mode.value
+                                        ? `bg-[#012D5A] text-[#D47F00] foreground border-[#D47F00]`
+                                        : `bg-[#F1F1F1] text-[#012D5A] hover:bg-gray-100 border-gray-300`
+                                )}
+                            >
+                                <div className="flex flex-col items-center">
+                                    <FontAwesomeIcon icon={mode.icon} className="text-xl mb-1" />
+                                    <span className="text-xs">{mode.label}</span>
+                                </div>
+                            </button>
+                        ))}
+                    </div>
+                </div>
 
                 {/*end to-do here*/}
 
@@ -128,36 +222,9 @@ export default function NewDirections() {
                 </Select>
 
 
-                <Label>Transport Mode</Label>
-                <Select onValueChange={handleModeChange} defaultValue="DRIVING">
-                    <SelectTrigger className="w-full mt-1 mb-4">
-                        <SelectValue placeholder="Choose a mode of transport..." />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectGroup>
-                            <SelectLabel>Transport Modes</SelectLabel>
-                            {['Driving', 'Walking', 'Transit', 'Bicycling'].map((mode, i) => (
-                                <SelectItem key={i} value={mode.toUpperCase()}>{mode}</SelectItem>
-                            ))}
-                        </SelectGroup>
-                    </SelectContent>
-                </Select>
-
-                <div className="mb-5">
-                    <div id="step-instruction">Loading directions...</div>
-                    <button
-                        id="next-step-btn"
-                        className="mt-2 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
-                    >
-                        Next Step
-                    </button>
-                </div>
-
-
-
                 {selectedHospital &&
                     <>
-                        <Separator className="mt-4 mb-4" />
+                        {/*<Separator className="mt-4 mb-4" />*/}
 
                         <Label>Department</Label>
                         <Select onValueChange={handleDepartmentChange}>
@@ -175,66 +242,44 @@ export default function NewDirections() {
                                 </SelectGroup>
                             </SelectContent>
                         </Select>
-                        {pathfindingResponse &&
-                            <div>
-
-
-
-                                <Button onClick={handleZoom} className="mb-4">
-                                    Zoom
-                                </Button>
-
-
-
-                            </div>
-
-
-
-                        }
-
-                        <div className="mb-5">
-                            <div id="inner-step-instruction">Loading directions...</div>
-                            <button
-                                id="inner-next-step-btn"
-                                className="mt-2 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
-                            >
-                                Next Step
-                            </button>
-                        </div>
                     </>
                 }
-                {/*<Separator className="mt-4 mb-4" />*/}
-                {/*TODO: make a legend*/}
-                {/*{!props.editor &&*/}
-                {/*    <>*/}
-                {/*        <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">*/}
-                {/*            <h2 className="text-xl font-semibold mb-3 text-gray-700 flex items-center">*/}
-                {/*                Legend*/}
-                {/*            </h2>*/}
-                {/*            <ul className="space-y-2">*/}
-                {/*                <li className="flex items-center text-lg">*/}
-                {/*                    <FontAwesomeIcon icon={faCar} className="text-blue-500 w-4 h-4 mr-3" />*/}
-                {/*                    To Hospital*/}
-                {/*                </li>*/}
-                {/*                <li className="flex items-center text-lg">*/}
-                {/*                    <FontAwesomeIcon icon={faWalking} className="text-red-600 w-4 h-4 mr-3" />*/}
-                {/*                    Within Hospital*/}
-                {/*                </li>*/}
-                {/*            </ul>*/}
-                {/*        </div>*/}
-                {/*    </>*/}
-                {/*}*/}
+
+                {pathfindingResults &&
+                    <>
+                        <Separator className="mt-4 mb-4" />
+
+                        <Label className="mb-4">
+                            Text-to-speech
+                            <Switch onCheckedChange={setTts} />
+                        </Label>
+                        <div className="flex flex-row">
+                            <Button className="flex-1 grow m-2" onClick={handlePrevStep}>Previous</Button>
+                            <Separator className="mt-4 mb-4" orientation="vertical" />
+                            <Button className="flex-1 grow m-2" onClick={handleNextStep}>Next</Button>
+                        </div>
+                        {pathfindingResults.directions.map((step, i) => (
+                            <div className="relative group"
+                                onClick={() => {
+                                map?.setCurrentStepIdx(i, tts);
+                                setCurrentStep(i);
+                                console.log(i);
+                            }}> {step.icon}
+                                <span className="text-blue-500">{step.instructions}</span>
+                                <br/>
+                                <span className="text-gray-500">{step.time} ({step.distance})</span>
+                                <span className="absolute bottom-0 right-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-gray-600 ml-30">
+                                    Click to view
+                                </span>
+                                <br/><br/>
+                            </div>
+                        ))}
+                    </>
+                }
             </div>
             <div ref={mapRef} className="flex-3">
                 {/* Google map will go here */}
             </div>
         </div>
     );
-}
-
-declare global {
-    interface Window {
-        initMap: () => void;
-        google: typeof google;
-    }
 }

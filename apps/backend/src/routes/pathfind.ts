@@ -4,7 +4,7 @@ const router: Router = express.Router();
 import { Graph } from 'backend/src/pathfinding/src/bfs.ts';
 import PrismaClient from '../bin/prisma-client';
 
-import { euclideanDistance } from '../pathfinding/src/distance.ts';
+import { euclideanDistance, haversineDistance } from '../pathfinding/src/distance.ts';
 import {
     FloorPathResponse,
     HospitalOptions,
@@ -213,16 +213,17 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
     }
 
     const checkInNodeId = checkInCandidates.reduce((closest, node) => {
-        if (
-            euclideanDistance(
-                { lat: node.lat, lng: node.lng },
-                { lat: department.lat, lng: department.lng }
-            ) <
-            euclideanDistance(
-                { lat: closest.lat, lng: closest.lng },
-                { lat: department.lat, lng: department.lng }
-            )
-        ) {
+        const nodeDistance = haversineDistance(
+            { lat: node.lat, lng: node.lng },
+            { lat: department.lat, lng: department.lng }
+        );
+
+        const closestDistance = haversineDistance(
+            { lat: closest.lat, lng: closest.lng },
+            { lat: department.lat, lng: department.lng }
+        );
+
+        if (nodeDistance < closestDistance) {
             return node;
         } else {
             return closest;
