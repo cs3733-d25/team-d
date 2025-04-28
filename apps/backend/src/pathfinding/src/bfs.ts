@@ -84,28 +84,22 @@ class DijkstraStrategy implements PathFindingStrategy {
         const endNode = graph.getNode(endNodeId);
         if (!endNode) return [];
 
-        // Min-heap priority queue: [cost, node, path]
+
         const queue: [number, GraphNode, GraphNode[]][] = [[0, endNode, [endNode]]];
         const visited = new Set<number>();
         const costs: Map<number, number> = new Map();
         costs.set(endNode.data.nodeId, 0);
-
         while (queue.length > 0) {
-            // Sort queue by cost (min-heap behavior)
+
             queue.sort((a, b) => a[0] - b[0]);
             const [cost, node, path] = queue.shift()!;
-
             if (node.data.type === startNodeType) {
                 return path.map((n) => n.data).reverse();
             }
-
             if (visited.has(node.data.nodeId)) continue;
             visited.add(node.data.nodeId);
-
             for (const neighbor of node.getNeighbors()) {
                 if (visited.has(neighbor.data.nodeId)) continue;
-
-                // Use euclideanDistance as the edge weight
                 const edgeWeight = euclideanDistance(
                     { lat: node.data.lat, lng: node.data.lng },
                     { lat: neighbor.data.lat, lng: neighbor.data.lng }
