@@ -171,6 +171,7 @@ class PathfindingGraph {
         });
         this.floorMap?.setMap(map);
         this.selectedSegment?.setMap(null);
+        this.map.setHeading(this.rotation);
 
         this.visibility = visibility;
     }
@@ -596,7 +597,7 @@ export class PathfindingMap extends GoogleMap {
             this.allPaths.push(new PathfindingGraph(this.map, floor.path, floor))
         );
 
-        this.setCurrentGraphIdx(0);
+        this.setCurrentGraphIdx(1);
 
         // this.currentPath.setVisibility(true);
 
