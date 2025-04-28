@@ -11,12 +11,22 @@ export default function AnimatedLogin() {
         }
     }, []);
 
+    const handleHover = () => {
+        animationRef.current?.play();
+    }
+
+    const handleNoHover = () => {
+        animationRef.current?.stop();
+    }
+
     return (
-        <div className="w-full h-full flex justify-center items-center opacity-80">
+        <div className="w-full h-full flex justify-center items-center opacity-80"
+            onMouseEnter={handleHover}
+            onMouseLeave={handleNoHover}>
             <Lottie
                 animationData={loginAnimation}
                 loop={true}
-                autoplay={true}
+                autoplay={false}
                 lottieRef={animationRef}
                 className="w-full h-full"
             />
