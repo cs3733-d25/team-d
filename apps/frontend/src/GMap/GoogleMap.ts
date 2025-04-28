@@ -625,6 +625,67 @@ export class PathfindingMap extends GoogleMap {
             });
         });
 
+        // Pushing the directions in the parking lot
+        for (let j=0; j<=this.currentPathfindingResponse.parkingLotPath.path.length - 1; j++) {
+
+            let distance: number;
+            // distance is in meter
+            let time: number;
+            const pos1 = this.currentPathfindingResponse.parkingLotPath.path[j];
+            const pos2 = this.currentPathfindingResponse.parkingLotPath.path[j+1];
+
+            if (pos1 && pos2) {
+                distance = google.maps.geometry.spherical.computeDistanceBetween(pos1, pos2);
+
+                // Estimate duration assuming average indoor walking speed (~1.4 meters/sec)
+                time = distance / 1.4;
+            } else {
+                distance = 0;
+                time = 0;
+            }
+
+            if (j==0){
+                this.currentSteps?.push({
+                    step: {
+                        instructions: 'PARKING LOT INSTRUCTIONS: '+ this.currentPathfindingResponse.parkingLotPath.direction[j],
+                        distance: distance.toFixed(2).toString() + ' meters',
+                        time: time.toFixed(2).toString() + ' seconds',
+                        icon:'',
+                    },
+                    googleMapData: null,
+                    pathFindingData: null,
+                });
+                continue;
+            }
+
+            if (j == this.currentPathfindingResponse.parkingLotPath.path.length - 1){
+                this.currentSteps?.push({
+                    step: {
+                        instructions: this.currentPathfindingResponse.parkingLotPath.direction[j],
+                        distance: '',
+                        time: '',
+                        icon:'',
+                    },
+                    googleMapData: null,
+                    pathFindingData: null,
+                });
+                continue;
+            }
+
+            this.currentSteps?.push({
+                step: {
+                    instructions: this.currentPathfindingResponse.parkingLotPath.direction[j],
+                    distance: distance.toFixed(2).toString() + ' meter',
+                    time: time.toFixed(2).toString() + ' seconds',
+                    icon:'',
+                },
+                googleMapData: null,
+                pathFindingData: null,
+            });
+
+        }
+
+        // Pushing the directions in the floor paths
         for (let i=0; i<this.currentPathfindingResponse.floorPaths.length; i++) {
             for (let j=0; j<=this.currentPathfindingResponse.floorPaths[i].path.length - 1; j++) {
 
@@ -647,7 +708,7 @@ export class PathfindingMap extends GoogleMap {
                 if (j==0){
                     this.currentSteps?.push({
                         step: {
-                            instructions: this.currentPathfindingResponse.floorPaths[i].direction[j],
+                            instructions: 'FLOOR ' + i +' INSTRUCTIONS: ' + this.currentPathfindingResponse.floorPaths[i].direction[j],
                             distance: distance.toFixed(2).toString() + ' meters',
                             time: time.toFixed(2).toString() + ' seconds',
                             icon:'',
@@ -669,7 +730,6 @@ export class PathfindingMap extends GoogleMap {
                         googleMapData: null,
                         pathFindingData: null,
                     });
-                    console.log('final');
                     continue;
                 }
 
