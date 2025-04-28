@@ -259,11 +259,20 @@ export default function NewDirections() {
                             <Button className="flex-1 grow m-2" onClick={handleNextStep}>Next</Button>
                         </div>
                         {pathfindingResults.directions.map((step, i) => (
-                            <div onClick={() => {
+                            <div className="group"
+                                onClick={() => {
                                 map?.setCurrentStepIdx(i, tts);
                                 setCurrentStep(i);
                                 console.log(i);
-                            }}>{step.instructions} | {step.distance} | {step.time} | {step.icon}</div>
+                            }}> {step.icon}
+                                <span className="text-blue-500">{step.instructions}</span>
+                                <br/>
+                                <span className="text-gray-500">{step.time} ({step.distance})</span>
+                                <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-gray-600 ml-40">
+                                    View step
+                                </span>
+                                <br/><br/>
+                            </div>
                         ))}
                     </>
                 }
