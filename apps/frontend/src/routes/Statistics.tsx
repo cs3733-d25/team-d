@@ -1,6 +1,5 @@
 "use client"
 
-import { TrendingUp } from "lucide-react"
 import {Cell, Label, LabelList, Pie, PieChart, ResponsiveContainer} from "recharts"
 
 import {
@@ -29,6 +28,7 @@ export type ServiceReqBreakdown = {
 const chartConfig = {
     num: {
         label: "Num",
+        color: "",
     },
     Translator: {
         label: "Translator",
@@ -44,7 +44,7 @@ const chartConfig = {
     },
     Sanitation: {
         label: "Sanitation",
-        color: "#95A8EB",
+        color: "#A8C3ED",
     },
 } satisfies ChartConfig
 
@@ -64,14 +64,14 @@ export function Statistics() {
     }, []);
 
     return (
-        <Card className="flex flex-col shadow-md border border-muted bg-white">
+        <Card className="flex flex-col shadow-md border border-muted bg-white md:w">
         <CardHeader className="items-center pb-0">
                 <CardTitle>Service Request Type Breakdown</CardTitle>
             </CardHeader>
             <CardContent className="flex-1 pb-0">
                 <ChartContainer
                     config={chartConfig}
-                    className="mx-auto aspect-square max-h-[500px] [&_.recharts-text]:fill-background"
+                    className="max-w-[400px] mx-auto aspect-square max-h-[500px] [&_.recharts-text]:fill-background"
                 >
                     <ResponsiveContainer width="100%" height="100%">
                         <PieChart>
@@ -112,14 +112,14 @@ export function Statistics() {
                                                 >
                                                     <tspan
                                                         x={viewBox.cx}
-                                                        y={(viewBox.cy || 0) - 1}
+                                                        y={(viewBox.cy || 0) - 3}
                                                         className="fill-foreground text-3xl font-bold"
                                                     >
                                                         {data.reduce((sum, item) => sum + item.num, 0)}
                                                     </tspan>
                                                     <tspan
                                                         x={viewBox.cx}
-                                                        y={(viewBox.cy || 0) + 19}
+                                                        y={(viewBox.cy || 0) + 18}
                                                         className="fill-muted-foreground"
                                                     >
                                                         Requests
@@ -130,9 +130,6 @@ export function Statistics() {
                                     }}
                                 />
                             </Pie>
-                            {/*<Pie data={data} dataKey="num" className={"bg-blue-50"}>*/}
-
-                            {/*</Pie>*/}
                         </PieChart>
                     </ResponsiveContainer>
                 </ChartContainer>
