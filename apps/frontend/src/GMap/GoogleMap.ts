@@ -409,9 +409,12 @@ export class PathfindingMap extends GoogleMap {
 
     private currentPathfindingResponse: PathfindingResponse | null;
     private currentSteps: InternalStep[] | null;
-    private currentParkingPath: PathfindingGraph | null;
-    private currentFloorPaths: PathfindingGraph[] | null;
-    private selectedFloorPath: PathfindingGraph | null;
+    // private currentParkingPath: PathfindingGraph | null;
+    // private currentFloorPaths: PathfindingGraph[] | null;
+    // private selectedFloorPath: PathfindingGraph | null;
+
+    private currentPath: PathfindingGraph | null;
+    private allPaths: PathfindingGraph[];
 
     // For Google Map directions
     // private stepIndex: number = 0;
@@ -464,9 +467,11 @@ export class PathfindingMap extends GoogleMap {
 
         this.currentPathfindingResponse = null;
         this.currentSteps = null;
-        this.currentParkingPath = null;
-        this.currentFloorPaths = null;
-        this.selectedFloorPath = null;
+        // this.currentParkingPath = null;
+        // this.currentFloorPaths = null;
+        // this.selectedFloorPath = null;
+        this.currentPath = null;
+        this.allPaths = [];
 
         this.currentStepPolyline = null;
 
@@ -579,20 +584,32 @@ export class PathfindingMap extends GoogleMap {
             });
         });
 
+        this.currentPath?.setVisibility(false);
+        this.allPaths = [new PathfindingGraph(this.map, this.currentPathfindingResponse.parkingLotPath.path)];
 
-        // Set the parking path to be visible
-        this.currentParkingPath?.setVisibility(false);
-        this.currentParkingPath = new PathfindingGraph(this.map, this.currentPathfindingResponse.parkingLotPath.path);
-        this.currentParkingPath.setVisibility(true);
-
-        // Set the first floor map to be visible
-        this.currentFloorPaths?.forEach(path => {
-            path.setVisibility(false);
-        });
-        this.currentFloorPaths = this.currentPathfindingResponse.floorPaths.map(floor =>
-            new PathfindingGraph(this.map, floor.path, floor)
+        this.allPaths.push();
+        this.currentPathfindingResponse.floorPaths.forEach(floor =>
+            this.allPaths.push(new PathfindingGraph(this.map, floor.path, floor))
         );
-        this.currentFloorPaths[0].setVisibility(true);
+
+        this.setCurrentGraphIdx(0);
+
+        // this.currentPath.setVisibility(true);
+
+
+        // // Set the parking path to be visible
+        // this.currentParkingPath?.setVisibility(false);
+        // this.currentParkingPath = new PathfindingGraph(this.map, this.currentPathfindingResponse.parkingLotPath.path);
+        // this.currentParkingPath.setVisibility(true);
+        //
+        // // Set the first floor map to be visible
+        // this.currentFloorPaths?.forEach(path => {
+        //     path.setVisibility(false);
+        // });
+        // this.currentFloorPaths = this.currentPathfindingResponse.floorPaths.map(floor =>
+        //     new PathfindingGraph(this.map, floor.path, floor)
+        // );
+        // this.currentFloorPaths[0].setVisibility(true);
 
         // Update the frontend directions
         this.updater({
@@ -631,6 +648,12 @@ export class PathfindingMap extends GoogleMap {
 
 
 
+    }
+
+    setCurrentGraphIdx(idx: number) {
+        this.currentPath?.setVisibility(false);
+        this.currentPath = this.allPaths[idx];
+        this.currentPath.setVisibility(true);
     }
 
 
