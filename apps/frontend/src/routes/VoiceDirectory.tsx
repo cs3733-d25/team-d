@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Mic, MicOff } from "lucide-react";
 
+/* Browser type helpers */
 declare global {
     interface Window {
         webkitSpeechRecognition: any;
@@ -105,22 +106,19 @@ const chestnutData: Entry[] = [
     },
     {
         service: "Patient Financial Services",
-        specialties:
-            "Patient financial counselling (Payment, Insurance, Billing questions)",
+        specialties: "Patient financial counselling (Payment, Insurance, Billing questions)",
         floorSuite: "2nd floor, suite 204-B",
         phone: "(617) 732–9677",
     },
     {
-        service:
-            "Pharmacy (Monday - Friday, 9 am-4 pm excluding holidays)",
+        service: "Pharmacy (Monday - Friday, 9 am-4 pm excluding holidays)",
         specialties: "Outpatient Pharmacy Service",
         floorSuite: "3rd floor, suite 317",
         phone: "(617) 732–9040",
     },
     {
         service: "Radiology",
-        specialties:
-            "Bone Density, Breast Imaging/Mammography, Ultrasound, X-Ray",
+        specialties: "Bone Density, Breast Imaging/Mammography, Ultrasound, X-Ray",
         floorSuite: "5th floor, suite 560",
         phone: "(617) 732–9801",
     },
@@ -149,8 +147,7 @@ const patriotData: Entry[] = [
     },
     {
         service: "Surgical Specialities",
-        specialties:
-            "Audiology, ENT, Genereal and Gastrointestinal Surgery, Plastic Surgery, Thoracic Surgery, Vascular Surgery, Weight Management and Wellness",
+        specialties: "Audiology, ENT, Genereal and Gastrointestinal Surgery, Plastic Surgery, Thoracic Surgery, Vascular Surgery, Weight Management and Wellness",
         floorSuite: "20 Patriot Place, 3rd floor",
         phone: "",
     },
@@ -162,22 +159,19 @@ const patriotData: Entry[] = [
     },
     {
         service: "Multi Specialty Clinic",
-        specialties:
-            "Allergy, Cardiac Arrhythmia, Dermatology, Endocrinology, Gastroenterology, Kidney (Renal) Medicine, Neurology, Neurosurgery, Ophthalmology, Optometry, Pulmonology, Rheumatology, Women's Health, Patient Financial Seervices",
+        specialties: "Allergy, Cardiac Arrhythmia, Dermatology, Endocrinology, Gastroenterology, Kidney (Renal) Medicine, Neurology, Neurosurgery, Ophthalmology, Optometry, Pulmonology, Rheumatology, Women's Health, Patient Financial Seervices",
         floorSuite: "22 Patriot Place, 3rd floor",
         phone: "",
     },
     {
         service: "Orthopaedics",
-        specialties:
-            "Hand and Upper Extremity, Arthroplasty, Pediatric Trauma, Physiatry, Podiatry",
+        specialties: "Hand and Upper Extremity, Arthroplasty, Pediatric Trauma, Physiatry, Podiatry",
         floorSuite: "20 Patriot Place, 2nd floor",
         phone: "",
     },
     {
         service: "Rehabilitation Services",
-        specialties:
-            "Cardiac Rehab, Occupational Therapy (Hand and Upper Extremity), Physical Therapy, Speech - Language, Clinical Lab, Surgi-Care",
+        specialties: "Cardiac Rehab, Occupational Therapy (Hand and Upper Extremity), Physical Therapy, Speech - Language, Clinical Lab, Surgi-Care",
         floorSuite: "20 Patriot Place, 2nd floor",
         phone: "",
     },
@@ -189,8 +183,7 @@ const patriotData: Entry[] = [
         phone: "",
     },
 ];
-
-/* use helper */
+/* Fuse helper  */
 const createFuse = (data: Entry[]) =>
     new Fuse(data, {
         keys: ["service", "specialties"],
@@ -198,7 +191,6 @@ const createFuse = (data: Entry[]) =>
         ignoreLocation: true,
     });
 
-/* Component */
 const VoiceDirectory: React.FC = () => {
     /* directory state */
     const [hospital, setHospital] = useState<0 | 1>(0);
@@ -214,20 +206,14 @@ const VoiceDirectory: React.FC = () => {
     );
 
     useEffect(() => {
-        if (filtered.length && !filtered.includes(selected)) setSelected(filtered[0]);
+        if (filtered.length && !filtered.includes(selected)) {
+            setSelected(filtered[0]);
+        }
     }, [filtered, selected]);
 
-    /* voice searc */
+    /* Voice search */
     const recognitionRef = useRef<any>(null);
     const [listening, setListening] = useState(false);
-
-    /* tiny banner so you can see when the mic is hot */
-    const VoiceBanner = () =>
-        listening ? (
-            <div className="fixed bottom-4 left-4 bg-blue-900 text-white text-sm px-3 py-1 rounded-md shadow">
-                Listening…
-            </div>
-        ) : null;
 
     useEffect(() => {
         const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -239,27 +225,19 @@ const VoiceDirectory: React.FC = () => {
         recognitionRef.current.lang = "en-US";
         recognitionRef.current.maxAlternatives = 1;
 
-        recognitionRef.current.onstart = () => {
-            console.log("Voice capture started");
-            setListening(true);
-        };
+        recognitionRef.current.onstart = () => setListening(true);
         recognitionRef.current.onresult = (e: any) => {
             const spoken = e.results[0][0].transcript;
-            console.log(" Transcribed:", spoken);
             setQuery(spoken);
         };
-        recognitionRef.current.onerror = (e: any) => {
+        recognitionRef.current.onerror = (e: any) =>
             console.error("Speech error:", e.error);
-        };
-        recognitionRef.current.onend = () => {
-            console.log("🔚  Voice capture ended");
-            setListening(false);
-        };
+        recognitionRef.current.onend = () => setListening(false);
     }, []);
 
     const toggleMic = () => {
         const rec = recognitionRef.current;
-        if (!rec) return; // unsupported browser
+        if (!rec) return;
         if (listening) rec.stop();
         else {
             try {
@@ -301,20 +279,27 @@ const VoiceDirectory: React.FC = () => {
                         </Button>
                     </div>
 
-                    {/* search + mic */}
+                    {/* search bar + mic */}
                     <div className="relative mb-4 flex items-center">
                         <Input
                             placeholder="Search services or specialties…"
                             value={query}
                             onChange={(e) => setQuery(e.target.value)}
-                            className="pr-12"
+                            className="pr-14"
                         />
+
+                        {/* mic button */}
                         <button
                             onClick={toggleMic}
                             aria-label="voice search"
-                            className="absolute right-3 text-gray-500 hover:text-blue-900"
+                            className={`absolute right-3 w-8 h-8 flex items-center justify-center rounded-full border transition-colors
+                ${
+                                listening
+                                    ? "bg-blue-900 text-white border-blue-900"
+                                    : "bg-white text-blue-900 border-blue-900"
+                            }`}
                         >
-                            {listening ? <MicOff size={20} /> : <Mic size={20} />}
+                            {listening ? <MicOff size={18} /> : <Mic size={18} />}
                         </button>
                     </div>
 
@@ -379,9 +364,6 @@ const VoiceDirectory: React.FC = () => {
                     </div>
                 </div>
             </div>
-
-            {/* live voice banner */}
-            <VoiceBanner />
         </div>
     );
 };
