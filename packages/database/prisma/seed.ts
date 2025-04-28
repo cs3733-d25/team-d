@@ -210,6 +210,7 @@ async function main() {
                 imageBoundsSouth: 42.32569,
                 imageBoundsEast: -71.14921,
                 imageBoundsWest: -71.15013,
+                imageRotation: 4.444581493,
                 buildingId: 0,
             },
             {
@@ -225,6 +226,7 @@ async function main() {
                 imageBoundsSouth: 42.09245,
                 imageBoundsEast: -71.26550,
                 imageBoundsWest: -71.26658,
+                imageRotation: 19.27248604,
                 buildingId: 1,
             },
             {
@@ -240,6 +242,7 @@ async function main() {
                 imageBoundsSouth: 42.09222,
                 imageBoundsEast: -71.26655,
                 imageBoundsWest: -71.26746,
+                imageRotation: 54.1826623,
                 buildingId: 2,
             },
             {
@@ -255,6 +258,7 @@ async function main() {
                 imageBoundsSouth: 42.09222,
                 imageBoundsEast: -71.26630,
                 imageBoundsWest: -71.26744,
+                imageRotation: 54.1826623,
                 buildingId: 2,
             },
             {
@@ -270,6 +274,7 @@ async function main() {
                 imageBoundsSouth: 42.092215,
                 imageBoundsEast: -71.26650,
                 imageBoundsWest: -71.267445,
+                imageRotation: 54.1826623,
                 buildingId: 2,
             },
             {
@@ -281,6 +286,7 @@ async function main() {
                 imageBoundsSouth: 42.300859574636796,
                 imageBoundsEast: -71.12680971364097,
                 imageBoundsWest: -71.12961427703588,
+                imageRotation: 0,
                 buildingId: 3,
             },
         ],
