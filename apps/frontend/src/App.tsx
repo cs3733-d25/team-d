@@ -13,6 +13,7 @@ import AllServiceRequests from "@/routes/AllServiceRequests.tsx";
 import Directions from "@/routes/Directions.tsx";
 import Auth0Profile from "@/components/Auth0Profile.tsx";
 import HospitalDirectory from "@/routes/hospitalDirectory.tsx";
+import VoiceDirectory from "@/routes/VoiceDirectory.tsx";
 import About from "@/routes/About.tsx";
 
 
@@ -40,6 +41,7 @@ function App() {
                         <Route path="admin-settings" element={<AdminSettings />} />
                         <Route path="employee-page" element={<EmployeeDirectory />} />
                         <Route path="about" element={<About />} />
+                        <Route path="voice-directory" element={<VoiceDirectory />} />
 
 
 
