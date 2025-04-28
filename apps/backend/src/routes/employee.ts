@@ -19,6 +19,25 @@ router.get('/', async function (req: Request, res: Response) {
     }
 });
 
+// Returns all employee naems, if any
+router.get('/names', async function (req: Request, res: Response) {
+    // Query db, store response
+    const employees = await PrismaClient.employee.findMany({
+        select: { employeeId: true, firstName: true, lastName: true },
+        orderBy: { employeeId: 'asc' },
+    });
+    // If no employees are found, send 204 and log it
+    if (employees == null) {
+        console.error('No employees found in database!');
+        res.sendStatus(204);
+    }
+    // Otherwise send 200 and the data
+    else {
+        console.log(employees);
+        res.json(employees);
+    }
+});
+
 // post request to add employees to the database
 router.post('/', async function (req: Request, res: Response) {
     const employeeDataAttempt: Prisma.EmployeeCreateInput = req.body;

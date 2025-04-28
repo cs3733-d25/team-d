@@ -21,7 +21,7 @@ export default function Footer() {
                             <ul className="list-none py-1 space-y-1">
                                 <li>
                                     <a
-                                        href="#"
+                                        href="/about"
                                         className=" hover:text-gray-400 transition-all duration-500 ease-in-out"
                                     >
                                         About us{' '}
