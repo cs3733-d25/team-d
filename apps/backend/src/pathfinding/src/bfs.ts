@@ -1,7 +1,7 @@
 import { Coordinates, NodePathResponse, NodePathResponseType } from 'common/src/constants.ts';
 import { readFileSync } from 'fs';
 import { PrismaClient } from 'database';
-import { euclideanDistance } from './distance.ts';
+import {euclideanDistance, haversineDistance} from './distance.ts';
 
 // Search Strategy Interface
 interface PathFindingStrategy {
@@ -100,7 +100,7 @@ class DijkstraStrategy implements PathFindingStrategy {
             visited.add(node.data.nodeId);
             for (const neighbor of node.getNeighbors()) {
                 if (visited.has(neighbor.data.nodeId)) continue;
-                const edgeWeight = euclideanDistance(
+                const edgeWeight = haversineDistance(
                     { lat: node.data.lat, lng: node.data.lng },
                     { lat: neighbor.data.lat, lng: neighbor.data.lng }
                 );

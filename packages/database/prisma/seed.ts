@@ -11,6 +11,7 @@ async function main() {
         data: [
             { algorithmId: 0, name: 'BFS', isActive: true }, // default active
             { algorithmId: 1, name: 'DFS', isActive: false },
+            {algorithmId: 2, name: 'Dijkstra', isActive: false },
         ],
     });
     console.log('Algorithms seeded!');
