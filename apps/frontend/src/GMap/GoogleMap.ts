@@ -384,7 +384,8 @@ export type DirectionsStep = {
 
 type InternalStep = {
     step: DirectionsStep;
-    data: google.maps.DirectionsStep | null;
+    googleMapData: google.maps.DirectionsStep | null;
+    pathFindingData: string[] | null;
 }
 
 export class PathfindingMap extends GoogleMap {
@@ -573,7 +574,8 @@ export class PathfindingMap extends GoogleMap {
                             step.maneuver.includes('left') ? 'left' :
                                 'straight',
                 },
-                data: step,
+                googleMapData: step,
+                pathFindingData: null,
             });
         });
 
@@ -613,14 +615,17 @@ export class PathfindingMap extends GoogleMap {
             speechSynthesis.speak(utter);
         }
 
-        if (step.data && step.data.polyline) {
+        if (step.googleMapData?.polyline) {
             this.currentStepPolyline?.setMap(null);
             this.currentStepPolyline = new google.maps.Polyline({
                 map: this.map,
-                path: google.maps.geometry.encoding.decodePath(step.data.polyline.points),
+                path: google.maps.geometry.encoding.decodePath(step.googleMapData.polyline.points),
+                strokeWeight: 10,
+                strokeColor: '#0f0',
+                zIndex: 0,
             });
 
-            this.map.panTo(step.data.start_location);
+            this.map.panTo(step.googleMapData.start_location);
             this.map.setZoom(17);
         }
 
