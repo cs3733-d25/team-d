@@ -142,23 +142,6 @@ export default function NewDirections() {
 
                 {/*end to-do here*/}
 
-                {/*<Label>Destination Hospital</Label>*/}
-                {/*<Select onValueChange={handleHospitalChange}>*/}
-                {/*    <SelectTrigger className="w-full mt-1 mb-4">*/}
-                {/*        <SelectValue placeholder="Choose a hospital..." />*/}
-                {/*    </SelectTrigger>*/}
-                {/*    <SelectContent>*/}
-                {/*        <SelectGroup>*/}
-                {/*            <SelectLabel>Hospitals</SelectLabel>*/}
-                {/*            {displayData.hospitals.map((h: HospitalOptions) => (*/}
-                {/*                <SelectItem key={h.hospitalId + 1} value={h.name}>*/}
-                {/*                    {h.name}*/}
-                {/*                </SelectItem>*/}
-                {/*            ))}*/}
-                {/*        </SelectGroup>*/}
-                {/*    </SelectContent>*/}
-                {/*</Select>*/}
-
 
                 <Label className="mb-2">Transport Mode</Label>
                 <div className="flex flex-col items-center justify-center gap-6 rounded-md shadow-md p-4 bg-[#012D5A] mb-4"> {/* Rounded box container */}
@@ -240,6 +223,16 @@ export default function NewDirections() {
                                 map?.setCurrentStepIdx(i, tts);
                             }}>{step.instructions} | {step.distance} | {step.time} | {step.icon}</div>
                         ))}
+
+                        <div className="mb-5">
+                            <div id="inner-step-instruction">Loading directions...</div>
+                            <button
+                                id="inner-next-step-btn"
+                                className="mt-2 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+                            >
+                                Next Step
+                            </button>
+                        </div>
                     </>
                 }
             </div>
