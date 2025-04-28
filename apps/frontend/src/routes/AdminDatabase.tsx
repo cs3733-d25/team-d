@@ -32,8 +32,7 @@ const AdminDatabase: React.FC = () => {
     const [departments, currDepartments] = useState<Department[]>([]);
     const [loading, setLoading] = React.useState(false); // true means it needs to reload
     const [selectedHospital, setSelectedHospital] = useState<0 | 1 | 2 | 3>(3);
-
-
+    
     //getting department data for display
     const getDepartments = async() => {
         try{

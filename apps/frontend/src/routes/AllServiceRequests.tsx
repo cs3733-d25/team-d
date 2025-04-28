@@ -365,7 +365,6 @@ export default function ShowAllRequests() {
     )
 
     useEffect(() => {
-        console.log(getEmployees());
         fetchData();
     }, []);
 

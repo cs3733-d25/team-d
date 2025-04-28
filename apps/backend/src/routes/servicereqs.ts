@@ -137,6 +137,67 @@ router.get('/sanitation', async function (req: Request, res: Response) {
     }
 });
 
+// GET SERVICE REQ TYPE BREAKDOWN
+router.get('/typeBreakdown', async function (req: Request, res: Response) {
+    //count num of translator requests
+    const translatorRequests = await PrismaClient.serviceRequest.aggregate({
+        _count: {
+            requestId: true,
+        },
+        where: {
+            translatorRequest: {
+                isNot: null, //filter for translator request
+            },
+        },
+    });
+
+    //count num of equipment requests
+    const equipmentRequests = await PrismaClient.serviceRequest.aggregate({
+        _count: {
+            requestId: true,
+        },
+        where: {
+            equipmentRequest: {
+                isNot: null, //filter for equipment request
+            },
+        },
+    });
+
+    //count num of security requests
+    const securityRequests = await PrismaClient.serviceRequest.aggregate({
+        _count: {
+            requestId: true,
+        },
+        where: {
+            securityRequest: {
+                isNot: null, //filter for security request
+            },
+        },
+    });
+
+    //count num of sanitation requests
+    const sanitationRequests = await PrismaClient.serviceRequest.aggregate({
+        _count: {
+            requestId: true,
+        },
+        where: {
+            sanitationRequest: {
+                isNot: null, //filter for sanitation request
+            },
+        },
+    });
+
+    //breakdown of request types
+    const typeBreakdown = [
+        { Type: 'Translator', num: translatorRequests._count.requestId },
+        { Type: 'Equipment', num: equipmentRequests._count.requestId },
+        { Type: 'Security', num: securityRequests._count.requestId },
+        { Type: 'Sanitation', num: sanitationRequests._count.requestId },
+    ];
+
+    res.json(typeBreakdown);
+});
+
 // POST TRANSLATOR REQUESTS TO DATABASE
 router.post('/translator', async function (req: Request, res: Response) {
     const {
