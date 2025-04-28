@@ -30,6 +30,7 @@ import {
 import { Input } from "@/components/ui/input"
 import {Collapsible, CollapsibleContent, CollapsibleTrigger} from "@radix-ui/react-collapsible";
 import RequestCollapsible from "@/components/RequestCollapsible.tsx"
+import { useAuth0 } from "@auth0/auth0-react";
 
 declare module '@tanstack/react-table' {
     interface ColumnMeta<TData extends RowData, TValue> {
@@ -295,22 +296,46 @@ export default function ShowAllRequests() {
     const [dataSecurity, setDataSecurity] = useState<ServiceRequest[]>([]);
     const [dataSanitation, setDataSanitation] = useState<ServiceRequest[]>([]);
     const [data, setData] = useState<ServiceRequest[]>([]);
+    const { getAccessTokenSilently } = useAuth0();
+
 
     const fetchData = async () => {
+        const token = await getAccessTokenSilently();
+
         try {
-            const translatorResponse = await axios.get('/api/servicereqs/translator');
+            const translatorResponse = await axios.get('/api/servicereqs/translator', {
+                headers:{
+                    Authorization: `Bearer ${token}`,
+                }
+            });
             setDataTranslator(translatorResponse.data);
 
-            const equipmentResponse = await axios.get('/api/servicereqs/equipment');
+            const equipmentResponse = await axios.get('/api/servicereqs/equipment', {
+                headers:{
+                    Authorization: `Bearer ${token}`,
+                }
+            });
             setDataEquipment(equipmentResponse.data);
 
-            const securityResponse = await axios.get('/api/servicereqs/security');
+            const securityResponse = await axios.get('/api/servicereqs/security', {
+                headers:{
+                    Authorization: `Bearer ${token}`,
+                }
+            });
             setDataSecurity(securityResponse.data);
 
-            const sanitationResponse = await axios.get('/api/servicereqs/sanitation');
+            const sanitationResponse = await axios.get('/api/servicereqs/sanitation', {
+                headers:{
+                    Authorization: `Bearer ${token}`,
+                }
+            });
             setDataSanitation(sanitationResponse.data);
 
-            const dataResponse = await axios.get('/api/servicereqs');
+            const dataResponse = await axios.get('/api/servicereqs', {
+                headers:{
+                    Authorization: `Bearer ${token}`,
+                }
+            });
             setData(dataResponse.data);
         } catch (error) {
             console.error('Error fetching data:', error);

@@ -25,36 +25,36 @@ async function main() {
             where: {employeeId: 1},
             update: {},
             create: {
-                email: 'jlsmith@gmail.com',
-                password: 'rhe0324!',
+                email: 'admind25d@gmail.com',
                 firstName: 'Jen',
                 middleInitial: 'L',
                 lastName: 'Smith',
-                occupation: 'Nurse'
+                occupation: 'Administrator',
+                userType: 'Admin'
             }
         }),
         await prisma.employee.upsert({
             where: {employeeId: 2},
             update: {},
             create: {
-                email: 'mkhaven@gmail.com',
-                password: 'ehw2153!',
+                email: 'softengd25d@gmail.com',
                 firstName: 'Matthew',
                 middleInitial: 'K',
                 lastName: 'Haven',
-                occupation: 'Doctor'
+                occupation: 'Administrator',
+                userType: 'Admin'
             }
         }),
         await prisma.employee.upsert({
             where: {employeeId: 3},
             update: {},
             create: {
-                email: 'palong@gmail.com',
-                password: 'jye4832!',
+                email: 'staffd25d@gmail.com',
                 firstName: 'Piper',
                 middleInitial: 'A',
                 lastName: 'Long',
-                occupation: 'Nurse'
+                occupation: 'Nurse',
+                userType: 'Staff'
             }
         }),
         await prisma.employee.upsert({
@@ -62,11 +62,11 @@ async function main() {
             update: {},
             create: {
                 email: 'nrlee@gmail.com',
-                password: 'gsl9472!',
                 firstName: 'Nicole',
                 middleInitial: 'R',
                 lastName: 'Lee',
-                occupation: 'Administrator'
+                occupation: 'Administrator',
+                userType: 'Staff'
             }
         }),
         await prisma.employee.upsert({
@@ -74,11 +74,11 @@ async function main() {
             update: {},
             create: {
                 email: 'kkramos@gmail.com',
-                password: 'dhs9572!',
                 firstName: 'Karina',
                 middleInitial: 'K',
                 lastName: 'Ramos',
-                occupation: 'Doctor'
+                occupation: 'Doctor',
+                userType: 'Staff'
             }
         })
     ];
