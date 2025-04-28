@@ -115,6 +115,8 @@ class PathfindingGraph {
     private readonly nodes: google.maps.Marker[];
     private readonly floorMap: google.maps.GroundOverlay | null;
 
+    private readonly rotation: number;
+
     private selectedSegment: google.maps.Polyline | null;
 
     private visibility: boolean;
@@ -155,11 +157,13 @@ class PathfindingGraph {
 
         this.selectedSegment = null;
 
+        this.rotation = floor?.imageRotation || 0;
+
         this.visibility = false;
     }
 
-    setVisibility(visiblity: boolean) {
-        const map = visiblity ? this.map : null;
+    setVisibility(visibility: boolean) {
+        const map = visibility ? this.map : null;
 
         this.path.setMap(map);
         this.nodes.forEach(node => {
@@ -168,7 +172,7 @@ class PathfindingGraph {
         this.floorMap?.setMap(map);
         this.selectedSegment?.setMap(null);
 
-        this.visibility = visiblity;
+        this.visibility = visibility;
     }
 
 
@@ -654,6 +658,9 @@ export class PathfindingMap extends GoogleMap {
         this.currentPath?.setVisibility(false);
         this.currentPath = this.allPaths[idx];
         this.currentPath.setVisibility(true);
+
+
+
     }
 
 
