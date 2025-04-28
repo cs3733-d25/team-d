@@ -3,6 +3,7 @@ import Fuse from "fuse.js";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Mic, MicOff } from "lucide-react";
+import beep from "../components/beep.mp3";
 
 /* Browser type helpers */
 declare global {
@@ -247,6 +248,10 @@ const VoiceDirectory: React.FC = () => {
         }
     };
 
+    function play() {
+        new Audio(beep).play();
+    }
+
     /* UI */
     return (
         <div className="min-h-screen bg-white flex flex-col items-center py-8">
@@ -290,10 +295,13 @@ const VoiceDirectory: React.FC = () => {
 
                         {/* mic button */}
                         <button
-                            onClick={toggleMic}
+                            onClick={() => {
+                            toggleMic();
+                            play();
+                        }}
                             aria-label="voice search"
                             className={`absolute right-3 w-8 h-8 flex items-center justify-center rounded-full border transition-colors
-                ${
+                        ${
                                 listening
                                     ? "bg-blue-900 text-white border-blue-900"
                                     : "bg-white text-blue-900 border-blue-900"
