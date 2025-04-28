@@ -1,4 +1,6 @@
 import express, { Router, Request, Response } from 'express';
+import fs from 'fs';
+
 const router: Router = express.Router();
 
 import PrismaClient from '../bin/prisma-client';
@@ -55,8 +57,11 @@ router.put('/', async (req: Request, res: Response) => {
         await PrismaClient.edge.createMany({
             data: newEdges,
         });
-        console.log(nodesMessage);
-        console.log(edgesMessage);
+        // console.log(nodesMessage);
+        // console.log(edgesMessage);
+
+        fs.writeFile('nodes.txt', nodesMessage, (err) => {});
+        fs.writeFile('edges.txt', edgesMessage, (err) => {});
         res.sendStatus(200);
     } catch (err) {
         console.error(err);

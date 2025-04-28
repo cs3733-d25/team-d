@@ -14,7 +14,12 @@ import {
 } from 'common/src/constants.ts';
 import prismaClient from '../bin/prisma-client';
 
-import { BFSStrategy, DFSStrategy, PathFindingStrategy } from '../pathfinding/src/bfs.ts';
+import {
+    BFSStrategy,
+    DFSStrategy,
+    DijkstraStrategy,
+    PathFindingStrategy,
+} from '../pathfinding/src/bfs.ts';
 
 function getStrategyByName(name: string): PathFindingStrategy {
     switch (name) {
@@ -22,6 +27,8 @@ function getStrategyByName(name: string): PathFindingStrategy {
             return new BFSStrategy();
         case 'DFS':
             return new DFSStrategy();
+        case 'Dijkstra':
+            return new DijkstraStrategy();
         default:
             throw new Error(`Unknown algorithm strategy: ${name}`);
     }

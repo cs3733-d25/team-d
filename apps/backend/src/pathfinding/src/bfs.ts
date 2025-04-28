@@ -1,7 +1,7 @@
 import { Coordinates, NodePathResponse, NodePathResponseType } from 'common/src/constants.ts';
 import { readFileSync } from 'fs';
 import { PrismaClient } from 'database';
-import { euclideanDistance } from './distance.ts';
+import { euclideanDistance, haversineDistance } from './distance.ts';
 
 // Search Strategy Interface
 interface PathFindingStrategy {
@@ -70,6 +70,48 @@ class DFSStrategy implements PathFindingStrategy {
             }
         }
 
+        return [];
+    }
+}
+
+class DijkstraStrategy implements PathFindingStrategy {
+    search(
+        startNodeType: NodePathResponseType,
+        endNodeId: number,
+        graph: Graph
+    ): NodePathResponse[] {
+        const endNode = graph.getNode(endNodeId);
+        if (!endNode) return [];
+
+        const queue: [number, GraphNode, GraphNode[]][] = [[0, endNode, [endNode]]];
+        const visited = new Set<number>();
+        const costs: Map<number, number> = new Map();
+        costs.set(endNode.data.nodeId, 0);
+        while (queue.length > 0) {
+            queue.sort((a, b) => a[0] - b[0]);
+            const [cost, node, path] = queue.shift()!;
+            if (node.data.type === startNodeType) {
+                return path.map((n) => n.data).reverse();
+            }
+            if (visited.has(node.data.nodeId)) continue;
+            visited.add(node.data.nodeId);
+            for (const neighbor of node.getNeighbors()) {
+                if (visited.has(neighbor.data.nodeId)) continue;
+                const edgeWeight = haversineDistance(
+                    { lat: node.data.lat, lng: node.data.lng },
+                    { lat: neighbor.data.lat, lng: neighbor.data.lng }
+                );
+                const newCost = cost + edgeWeight;
+
+                if (
+                    !costs.has(neighbor.data.nodeId) ||
+                    newCost < costs.get(neighbor.data.nodeId)!
+                ) {
+                    costs.set(neighbor.data.nodeId, newCost);
+                    queue.push([newCost, neighbor, [...path, neighbor]]);
+                }
+            }
+        }
         return [];
     }
 }
@@ -199,3 +241,4 @@ export { Graph };
 export type { PathFindingStrategy };
 export { BFSStrategy };
 export { DFSStrategy };
+export { DijkstraStrategy };
