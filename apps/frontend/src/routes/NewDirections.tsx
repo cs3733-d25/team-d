@@ -107,6 +107,24 @@ export default function NewDirections() {
         map.setTravelMode(mode);
     }
 
+    const [currentStep, setCurrentStep] = useState<number>(-1);
+
+    const handleNextStep = () => {
+        if (!pathfindingResults || currentStep >= pathfindingResults.directions.length - 1) return;
+
+        map?.setCurrentStepIdx(currentStep + 1, tts);
+        setCurrentStep(currentStep + 1);
+        console.log(currentStep + 1);
+    }
+
+    const handlePrevStep = () => {
+        if (!pathfindingResults || currentStep < 1) return;
+
+        map?.setCurrentStepIdx(currentStep - 1, tts);
+        setCurrentStep(currentStep - 1);
+        console.log(currentStep - 1);
+    }
+
 
     const handleZoom = () => {
         // if (!pathfindingResponse || !map) return;
@@ -235,9 +253,16 @@ export default function NewDirections() {
                             Text-to-speech
                             <Switch onCheckedChange={setTts} />
                         </Label>
+                        <div className="flex flex-row">
+                            <Button className="flex-1 grow m-2" onClick={handlePrevStep}>Previous</Button>
+                            <Separator className="mt-4 mb-4" orientation="vertical" />
+                            <Button className="flex-1 grow m-2" onClick={handleNextStep}>Next</Button>
+                        </div>
                         {pathfindingResults.directions.map((step, i) => (
                             <div onClick={() => {
                                 map?.setCurrentStepIdx(i, tts);
+                                setCurrentStep(i);
+                                console.log(i);
                             }}>{step.instructions} | {step.distance} | {step.time} | {step.icon}</div>
                         ))}
                     </>
