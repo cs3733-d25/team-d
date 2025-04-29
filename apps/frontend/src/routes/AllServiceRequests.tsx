@@ -16,7 +16,7 @@ import {
     FilterFn,
     Row, Column, RowData,
 } from "@tanstack/react-table"
-import {ArrowUpDown, ArrowUp, ArrowDown, ChevronDown, Funnel, MoreHorizontal} from "lucide-react"
+import {ArrowUpDown, ArrowUp, ArrowDown, ChevronDown, Funnel, MoreHorizontal, SquarePen} from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
     DropdownMenu,
@@ -68,7 +68,7 @@ export type ServiceRequest = {
     requestId: number;
     createdAt: number;
     updatedAt: number;
-    assignedEmployeeId: number;
+    assignedEmployeeId: number | null;
     translatorRequest: TranslatorRequest;
     equipmentRequest: EquipmentRequest;
     securityRequest: SecurityRequest;
@@ -289,22 +289,10 @@ export const columns: ColumnDef<ServiceRequest>[] = [
             const request = row.original
 
             return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger onClick={(e) => e.stopPropagation()}>
-                        <Button variant="secondary" className="h-8 w-8 p-0">
-                            <span className="sr-only">Open Menu</span>
-                            <MoreHorizontal className="text-blue-950"/>
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" onClick={(e) => e.stopPropagation()}>
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem className="pl-4">Assign Employee</DropdownMenuItem>
-                            <RequestSheet ID={row.original.requestId}
-                                          requestType={getRequestType(row.original)}>
-                            </RequestSheet>
-                        <DropdownMenuItem className="pl-4">Delete Request</DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
+                <RequestSheet ID={row.original.requestId}
+                              requestType={getRequestType(row.original)}
+                              trigger={<div className="pl-4 w-full text-left"><SquarePen className="text-gray-400"/></div>}
+                />
             )
         }
     },

@@ -20,9 +20,10 @@ import {Input} from "@/components/ui/input.tsx";
 type RequestSheetProps = {
     ID: number;
     requestType: string;
+    trigger?: React.ReactNode;
 };
 
-const RequestSheet: React.FC<RequestSheetProps> = ({ID, requestType}) => {
+const RequestSheet: React.FC<RequestSheetProps> = ({ID, requestType, trigger}) => {
     const [request, setRequest] = useState<ServiceRequest | null>(null);
     const [translator, setTranslator] = useState<TranslatorRequest | null>(null);
     const [equipment, setEquipment] = useState<EquipmentRequest | null>(null);
@@ -58,301 +59,362 @@ const RequestSheet: React.FC<RequestSheetProps> = ({ID, requestType}) => {
         }
     };
 
+    const formattedDate = new Date().toISOString().slice(0, 16);
+
+    const [requestedById, setRequestedById] = useState("");
+    //const [assignedToId, setAssignedToId] = useState("");
+    const [department, setDepartment] = useState("");
+    const [roomNum, setRoomNum] = useState("");
+    const [priority, setPriority] = useState("");
+    const [status, setStatus] = useState("");
+    const [languageTo, setLanguageTo] = useState("");
+    const [languageFrom, setLanguageFrom] = useState("");
+    const [translatorStart, setTranslatorStart] = useState(formattedDate);
+    const [translatorEnd, setTranslatorEnd] = useState(formattedDate);
+    const [equipmentStart, setEquipmentStart] = useState(formattedDate);
+    const [equipmentEnd, setEquipmentEnd] = useState(formattedDate);
+    const [quantity, setQuantity] = useState("");
+    const [medicalDevice, setMedicalDevice] = useState("");
+    const [signature, setSignature] = useState("");
+    const [securityType, setSecurityType] = useState("");
+    const [guards, setGuards] = useState("");
+    const [sanitationType, setSanitationType] = useState("");
+    const [roomStatus, setRoomStatus] = useState("");
+    const [comments, setComments] = useState("");
+
     useEffect(() => {
-        if (open) {
-            fetchData();
+        fetchData();
+    }, []);
+
+    useEffect(() => {
+        if (request) {
+            setRequestedById(request.employeeRequestedById.toString());
+            // if (request.assignedEmployeeId) {
+            //     setAssignedToId(request.assignedEmployeeId.toString());
+            // }
+            setDepartment(request.departmentUnderId.toString());
+            setRoomNum(request.roomNum);
+            setPriority(request.priority);
+            setStatus(request.requestStatus)
+            if (request.translatorRequest) {
+                setLanguageTo(request.translatorRequest.languageTo)
+                setLanguageFrom(request.translatorRequest.languageFrom)
+                setTranslatorStart(new Date(request.translatorRequest.startDateTime).toISOString().slice(0, 16))
+                setTranslatorEnd(new Date(request.translatorRequest.endDateTime).toISOString().slice(0, 16))
+            }
+            if (request.equipmentRequest) {
+                setEquipmentStart(new Date(request.equipmentRequest.endDateTime).toISOString().slice(0, 16))
+                setEquipmentEnd(new Date(request.equipmentRequest.endDateTime).toISOString().slice(0, 16))
+                setQuantity(request.equipmentRequest.quantity.toString())
+                setMedicalDevice(request.equipmentRequest.medicalDevice)
+                setSignature(request.equipmentRequest.signature)
+            }
+            if (request.securityRequest) {
+                setSecurityType(request.securityRequest.securityType)
+                setGuards(request.securityRequest.numOfGuards.toString())
+            }
+            if (request.sanitationRequest) {
+                setSanitationType(request.sanitationRequest.type)
+                setRoomStatus(request.sanitationRequest.status)
+            }
+            setComments(request.comments)
         }
-    }, [open]);
+
+        // if (open) {
+        //     fetchData();
+        // }
+    }, [request]);
 
     return (
         <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
-                <Button variant="outline">Edit Request</Button>
+                {trigger ? trigger : (
+                    <Button variant="outline">Edit Request</Button>
+                )}
             </SheetTrigger>
-            <SheetContent>
+            <SheetContent className="grid gap-1s py-4">
                 {request && (
                     <React.Fragment>
                         <SheetHeader>
                             <SheetTitle>Edit request</SheetTitle>
                         </SheetHeader>
                         <div className="grid grid-cols-4 items-center gap-4">
-                            <Label htmlFor="employeeRequestedById" className="text-right">
+                            <Label htmlFor="employeeRequestedById" className="text-left">
                                 Requested By
                             </Label>
                             <Input id="employeeRequestedById"
-                                   value={request.employeeRequestedById}
+                                   value={requestedById}
                                    className="col-span-3"
                                    onChange={(e) =>
-                                       setRequest(prev => prev ? {
-                                           ...prev, employeeRequestedById: Number(e.target.value)} : null)
-                                   }
+                                       setRequestedById(e.target.value)}
                             />
                         </div>
+                        {/*<div className="grid grid-cols-4 items-center gap-4">*/}
+                        {/*    <Label htmlFor="assignedEmployeeId" className="text-left">*/}
+                        {/*        Assigned To*/}
+                        {/*    </Label>*/}
+                        {/*    <Input id="assignedEmployeeId"*/}
+                        {/*           value={assignedToId}*/}
+                        {/*           className="col-span-3"*/}
+                        {/*           onChange={(e) =>*/}
+                        {/*               setAssignedToId(e.target.value)}*/}
+                        {/*    />*/}
+                        {/*</div>*/}
                         <div className="grid grid-cols-4 items-center gap-4">
-                            <Label htmlFor="assignedEmployeeId" className="text-right">
-                                Assigned To
-                            </Label>
-                            <Input id="assignedEmployeeId"
-                                   value={request.assignedEmployeeId}
-                                   className="col-span-3"
-                                   onChange={(e) =>
-                                       setRequest(prev => prev ? {
-                                           ...prev, assignedEmployeeId: Number(e.target.value)} : null)
-                                   }
-                            />
-                        </div>
-                        <div className="grid grid-cols-4 items-center gap-4">
-                            <Label htmlFor="departmentUnderId" className="text-right">
+                            <Label htmlFor="departmentUnderId" className="text-left">
                                 Department
                             </Label>
                             <Input id="departmentUnderId"
-                                   value={request.departmentUnderId}
+                                   value={department}
                                    className="col-span-3"
                                    onChange={(e) =>
-                                       setRequest(prev => prev ? {
-                                           ...prev, departmentUnderId: Number(e.target.value)} : null)
-                                   }
+                                       setDepartment(e.target.value)}
                             />
                         </div>
                         <div className="grid grid-cols-4 items-center gap-4">
-                            <Label htmlFor="roomNum" className="text-right">
+                            <Label htmlFor="roomNum" className="text-left">
                                 Room
                             </Label>
                             <Input id="roomNum"
-                                   value={request.roomNum || ""}
+                                   value={roomNum}
                                    className="col-span-3"
                                    onChange={(e) =>
-                                       setRequest(prev => prev ? {
-                                           ...prev, roomNum: e.target.value} : null)
-                                   }
+                                       setRoomNum(e.target.value)}
                             />
                         </div>
                         <div className="grid grid-cols-4 items-center gap-4">
-                            <Label htmlFor="priority" className="text-right">
+                            <Label htmlFor="priority" className="text-left">
                                 Priority
                             </Label>
-                            <Input id="priority"
-                                   value={request.priority || ""}
-                                   className="col-span-3"
-                                   onChange={(e) =>
-                                       setRequest(prev => prev ? {
-                                           ...prev, priority: e.target.value} : null)
-                                   }
-                            />
+                            <select
+                                required
+                                id="priority"
+                                className="w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
+                                onChange={(e) =>
+                                    setPriority(e.target.value)}
+                            >
+                                <option value={request.priority}>{request.priority}</option>
+                                <option value="Low">Low</option>
+                                <option value="Medium">Medium</option>
+                                <option value="High">High</option>
+                                <option value="Emergency">Emergency</option>
+                            </select>
                         </div>
-                        <div className="grid grid-cols-4 items-center gap-4">
-                            <Label htmlFor="requestStatus" className="text-right">
-                                Status
+                        <div>
+                            <Label className="pt-4 pb-2" htmlFor="requestStatus">
+                                Request Status
                             </Label>
-                            <Input id="requestStatus"
-                                   value={request.requestStatus || ""}
-                                   className="col-span-3"
-                                   onChange={(e) =>
-                                       setRequest(prev => prev ? {
-                                           ...prev, requestStatus: e.target.value} : null)
-                                   }
-                            />
+                            <select
+                                required
+                                id="requestStatus"
+                                className="w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
+                                onChange={(e) =>
+                                    setStatus(e.target.value)}
+                            >
+                                <option value={request.requestStatus}>{request.requestStatus}</option>
+                                <option value="Unassigned">Unassigned</option>
+                                <option value="Assigned">Assigned</option>
+                                <option value="Working">Working</option>
+                                <option value="Done">Done</option>
+                            </select>
                         </div>
                         {requestType === "Translator" ? (
                             <div className="grid gap-4 py-4">
                                 <div className="grid grid-cols-4 items-center gap-4">
-                                    <Label htmlFor="langaugeTo" className="text-right">
+                                    <Label htmlFor="langaugeTo" className="text-left">
                                         Language To
                                     </Label>
                                     <Input id="langaugeTo"
-                                           value={request.translatorRequest.languageTo || ""}
+                                           value={languageTo}
                                            className="col-span-3"
                                            onChange={(e) =>
-                                               setRequest(prev => prev ? {
-                                                   ...prev, languageTo: e.target.value} : null)
-                                               }
+                                               setLanguageTo(e.target.value)}
                                     />
                                 </div>
                                 <div className="grid grid-cols-4 items-center gap-4">
-                                    <Label htmlFor="langaugeFrom" className="text-right">
+                                    <Label htmlFor="langaugeFrom" className="text-left">
                                         Language From
                                     </Label>
                                     <Input id="languageFrom"
-                                           value={request.translatorRequest.languageFrom || ""}
+                                           value={languageFrom}
                                            className="col-span-3"
                                            onChange={(e) =>
-                                               setRequest(prev => prev ? {
-                                                   ...prev, languageFrom: e.target.value} : null)
-                                           }
+                                               setLanguageFrom(e.target.value)}
                                     />
                                 </div>
                                 <div className="grid grid-cols-4 items-center gap-4">
-                                    <Label htmlFor="startDateTime" className="text-right">
+                                    <Label htmlFor="startDateTime" className="text-left">
                                         Start Date
                                     </Label>
                                     <Input id="startDateTime"
-                                           value={request.translatorRequest.startDateTime || ""}
+                                           value={translatorStart}
+                                           type="datetime-local"
                                            className="col-span-3"
                                            onChange={(e) =>
-                                               setRequest(prev => prev ? {
-                                                   ...prev, startDateTime: e.target.value} : null)
-                                           }
+                                               setTranslatorStart(e.target.value)}
                                     />
                                 </div>
                                 <div className="grid grid-cols-4 items-center gap-4">
-                                    <Label htmlFor="endDateTime" className="text-right">
+                                    <Label htmlFor="endDateTime" className="text-left">
                                         End Date
                                     </Label>
                                     <Input id="endDateTime"
-                                           value={request.translatorRequest.endDateTime || ""}
+                                           value={translatorEnd}
+                                           type="datetime-local"
                                            className="col-span-3"
                                            onChange={(e) =>
-                                               setRequest(prev => prev ? {
-                                                   ...prev, endDateTime: e.target.value} : null)
-                                           }
+                                               setTranslatorEnd(e.target.value)}
                                     />
                                 </div>
                             </div>
-                            ) : requestType === "Equipment" ? (
-                                <div className="grid gap-4 py-4">
-                                    <div className="grid grid-cols-4 items-center gap-4">
-                                        <Label htmlFor="startDateTime" className="text-right">
-                                            Start Date
-                                        </Label>
-                                        <Input id="startDateTime"
-                                               value={request.equipmentRequest.startDateTime || ""}
-                                               className="col-span-3"
-                                               onChange={(e) =>
-                                                   setRequest(prev => prev ? {
-                                                       ...prev, startDateTime: e.target.value} : null)
-                                               }
-                                        />
-                                    </div>
-                                    <div className="grid grid-cols-4 items-center gap-4">
-                                        <Label htmlFor="endDateTime" className="text-right">
-                                            End Date
-                                        </Label>
-                                        <Input id="endDateTime"
-                                               value={request.equipmentRequest.endDateTime || ""}
-                                               className="col-span-3"
-                                               onChange={(e) =>
-                                                   setRequest(prev => prev ? {
-                                                       ...prev, endDateTime: e.target.value} : null)
-                                               }
-                                        />
-                                    </div>
-                                    <div className="grid grid-cols-4 items-center gap-4">
-                                        <Label htmlFor="quantity" className="text-right">
-                                            Quantity
-                                        </Label>
-                                        <Input id="quantity"
-                                               value={request.equipmentRequest.quantity}
-                                               className="col-span-3"
-                                               onChange={(e) =>
-                                                   setRequest(prev => prev ? {
-                                                       ...prev, quantity: Number(e.target.value)} : null)
-                                               }
-                                        />
-                                    </div>
-                                    <div className="grid grid-cols-4 items-center gap-4">
-                                        <Label htmlFor="medicalDevice" className="text-right">
-                                            Medical Device
-                                        </Label>
-                                        <Input id="medicalDevice"
-                                               value={request.equipmentRequest.medicalDevice || ""}
-                                               className="col-span-3"
-                                               onChange={(e) =>
-                                                   setRequest(prev => prev ? {
-                                                       ...prev, medicalDevice: e.target.value} : null)
-                                               }
-                                        />
-                                    </div>
-                                    <div className="grid grid-cols-4 items-center gap-4">
-                                        <Label htmlFor="signature" className="text-right">
-                                            Signature
-                                        </Label>
-                                        <Input id="signature"
-                                               value={request.equipmentRequest.signature || ""}
-                                               className="col-span-3"
-                                               onChange={(e) =>
-                                                   setRequest(prev => prev ? {
-                                                       ...prev, signature: e.target.value} : null)
-                                               }
-                                        />
-                                    </div>
+                        ) : requestType === "Equipment" ? (
+                            <div className="grid gap-4 py-4">
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label htmlFor="startDateTime" className="text-left">
+                                        Start Date
+                                    </Label>
+                                    <Input id="startDateTime"
+                                           value={equipmentStart}
+                                           type="datetime-local"
+                                           className="col-span-3"
+                                           onChange={(e) =>
+                                               setEquipmentStart(e.target.value)}
+                                    />
                                 </div>
-                            ) : requestType === "Security" ? (
-                                <div className="grid gap-4 py-4">
-                                    <div className="grid grid-cols-4 items-center gap-4">
-                                        <Label htmlFor="securityType" className="text-right">
-                                            Security Type
-                                        </Label>
-                                        <Input id="securityType"
-                                               value={request.securityRequest.securityType || ""}
-                                               className="col-span-3"
-                                               onChange={(e) =>
-                                                   setRequest(prev => prev ? {
-                                                       ...prev, securityType: e.target.value} : null)
-                                               }
-                                        />
-                                    </div>
-                                    <div className="grid grid-cols-4 items-center gap-4">
-                                        <Label htmlFor="numOfGuards" className="text-right">
-                                            Number of Guards
-                                        </Label>
-                                        <Input id="numOfGuards"
-                                               value={request.securityRequest.numOfGuards}
-                                               className="col-span-3"
-                                               onChange={(e) =>
-                                                   setRequest(prev => prev ? {
-                                                       ...prev, numOfGuards: Number(e.target.value)} : null)
-                                               }
-                                        />
-                                    </div>
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label htmlFor="endDateTime" className="text-left">
+                                        End Date
+                                    </Label>
+                                    <Input id="endDateTime"
+                                           value={equipmentEnd}
+                                           className="col-span-3"
+                                           type="datetime-local"
+                                           onChange={(e) =>
+                                               setEquipmentEnd(e.target.value)}
+                                    />
                                 </div>
-                            ) : requestType === "Sanitation" ? (
-                                <div className="grid gap-4 py-4">
-                                    <div className="grid grid-cols-4 items-center gap-4">
-                                        <Label htmlFor="type" className="text-right">
-                                            Type
-                                        </Label>
-                                        <Input id="type"
-                                               value={request.sanitationRequest.type || ""}
-                                               className="col-span-3"
-                                               onChange={(e) =>
-                                                   setRequest(prev => prev ? {
-                                                       ...prev, type: e.target.value} : null)
-                                               }
-                                        />
-                                    </div>
-                                    <div className="grid grid-cols-4 items-center gap-4">
-                                        <Label htmlFor="status" className="text-right">
-                                            Room Status
-                                        </Label>
-                                        <Input id="status"
-                                               value={request.sanitationRequest.status || ""}
-                                               className="col-span-3"
-                                               onChange={(e) =>
-                                                   setRequest(prev => prev ? {
-                                                       ...prev, status: e.target.value} : null)
-                                               }
-                                        />
-                                    </div>
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label htmlFor="quantity" className="text-left">
+                                        Quantity
+                                    </Label>
+                                    <Input id="quantity"
+                                           value={quantity}
+                                           className="col-span-3"
+                                           onChange={(e) =>
+                                               setQuantity(e.target.value)}
+                                    />
                                 </div>
-                            ) : null}
-                            <div className="grid grid-cols-4 items-center gap-4">
-                                <Label htmlFor="comments" className="text-right">
-                                    Comments
-                                </Label>
-                                <Input id="comments"
-                                       value={request.comments || ""}
-                                       className="col-span-3"
-                                       onChange={(e) =>
-                                           setRequest(prev => prev ? {
-                                               ...prev, comments: e.target.value} : null)
-                                       }
-                                />
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label htmlFor="medicalDevice" className="text-left">
+                                        Medical Device
+                                    </Label>
+                                    <Input id="medicalDevice"
+                                           value={medicalDevice}
+                                           className="col-span-3"
+                                           onChange={(e) =>
+                                               setMedicalDevice(e.target.value)}
+                                    />
+                                </div>
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label htmlFor="signature" className="text-left">
+                                        Signature
+                                    </Label>
+                                    <Input id="signature"
+                                           value={signature}
+                                           className="col-span-3"
+                                           onChange={(e) =>
+                                               setSignature(e.target.value)}
+                                    />
+                                </div>
                             </div>
+                        ) : requestType === "Security" ? (
+                            <div className="grid gap-4 py-4">
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label htmlFor="securityType" className="text-left">
+                                        Security Type
+                                    </Label>
+                                    <Input id="securityType"
+                                           value={securityType}
+                                           className="col-span-3"
+                                           onChange={(e) =>
+                                               setSecurityType(e.target.value)}
+                                    />
+                                </div>
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label htmlFor="numOfGuards" className="text-left">
+                                        Number of Guards
+                                    </Label>
+                                    <Input id="numOfGuards"
+                                           value={guards}
+                                           className="col-span-3"
+                                           onChange={(e) =>
+                                               setGuards(e.target.value)}
+                                    />
+                                </div>
+                            </div>
+                        ) : requestType === "Sanitation" ? (
+                            <div className="grid gap-4 py-4">
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label htmlFor="type" className="text-left">
+                                        Type
+                                    </Label>
+                                    <Input id="type"
+                                           value={sanitationType}
+                                           className="col-span-3"
+                                           onChange={(e) =>
+                                               setSanitationType(e.target.value)}
+                                    />
+                                </div>
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label htmlFor="status" className="text-left">
+                                        Room Status
+                                    </Label>
+                                    <Input id="status"
+                                           value={roomStatus}
+                                           className="col-span-3"
+                                           onChange={(e) =>
+                                               setRoomStatus(e.target.value)}
+                                    />
+                                </div>
+                            </div>
+                        ) : null}
+                        <div className="grid grid-cols-4 items-center gap-4">
+                            <Label htmlFor="comments" className="text-left">
+                                Comments
+                            </Label>
+                            <Input id="comments"
+                                   value={comments}
+                                   className="col-span-3"
+                                   onChange={(e) =>
+                                       setComments(e.target.value)}
+                            />
+                        </div>
                             <SheetFooter>
                                 <Button type="submit"
                                         onClick={async () => {
                                             try {
-                                                await axios.put(`/api/servicereqs/${ID}`, request);
+                                                const updatedRequest = {
+                                                    ...request!,
+                                                    employeeRequestedById: Number(requestedById),
+                                                    //assignedEmployeeId: Number(assignedToId),
+                                                    departmentUnderId: Number(department),
+                                                    roomNum: roomNum,
+                                                    priority: priority,
+                                                    requestStatus: status,
+                                                    languageTo: languageTo,
+                                                    languageFrom: languageFrom,
+                                                    startDateTime: translatorStart || equipmentStart,
+                                                    endDateTime: translatorEnd || equipmentEnd,
+                                                    quantity: quantity,
+                                                    medicalDevice: medicalDevice,
+                                                    signature: signature,
+                                                    securityType: securityType,
+                                                    numOfGuards: guards,
+                                                    sanitationType: sanitationType,
+                                                    status: roomStatus,
+                                                    comments: comments,
+                                                };
+                                                await axios.put(`/api/servicereqs/${ID}`, updatedRequest);
                                                 console.log('Request updated successfully.');
                                                 setOpen(false);
                                             } catch (error) {

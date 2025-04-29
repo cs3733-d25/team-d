@@ -335,8 +335,8 @@ router.put('/:id', async function (req: Request, res: Response) {
             translatorRequest: true,
             equipmentRequest: true,
             securityRequest: true,
-            sanitationRequest: true
-        }
+            sanitationRequest: true,
+        },
     });
 
     // error if no service request with the id is found
@@ -371,49 +371,49 @@ router.put('/:id', async function (req: Request, res: Response) {
         if (request) {
             if (request.translatorRequest) {
                 const updateTranslatorRequest = await PrismaClient.translatorRequest.update({
-                    where: {serviceRequestId: requestId},
+                    where: { serviceRequestId: requestId },
                     data: {
                         languageTo,
                         languageFrom,
                         startDateTime,
                         endDateTime,
                     },
-                })
+                });
             }
 
             if (request.equipmentRequest) {
                 const updateEquipmentRequest = await PrismaClient.equipmentRequest.update({
-                    where: {serviceRequestId: requestId},
+                    where: { serviceRequestId: requestId },
                     data: {
                         medicalDevice,
                         quantity,
                         signature,
                     },
-                })
+                });
             }
 
             if (request.securityRequest) {
                 const updateSecurityRequest = await PrismaClient.securityRequest.update({
-                    where: {serviceRequestId: requestId},
+                    where: { serviceRequestId: requestId },
                     data: {
                         numOfGuards,
                         securityType,
                     },
-                })
+                });
             }
 
             if (request.sanitationRequest) {
                 const updateSanitationRequest = await PrismaClient.sanitationRequest.update({
-                    where: {serviceRequestId: requestId},
+                    where: { serviceRequestId: requestId },
                     data: {
                         type,
                         status,
                     },
-                })
+                });
             }
 
             const updateServiceRequest = await PrismaClient.serviceRequest.update({
-                where: {requestId: requestId},
+                where: { requestId: requestId },
                 data: {
                     assignedEmployeeId,
                     priority,
