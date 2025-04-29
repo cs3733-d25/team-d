@@ -219,11 +219,15 @@ export default function NewDirections() {
                             <SelectContent>
                                 <SelectGroup key="0">
                                     <SelectLabel>Departments</SelectLabel>
-                                    {selectedHospital.departments.map((d: DepartmentOptions) => (
-                                        <SelectItem key={d.departmentId + 1} value={d.name}>
-                                            {d.name}
-                                        </SelectItem>
-                                    ))}
+                                    {selectedHospital.departments
+                                        .slice()
+                                        .sort((a, b) => a.name.localeCompare(b.name))
+                                        .map((d: DepartmentOptions) => (
+                                            <SelectItem key={d.departmentId + 1} value={d.name}>
+                                                {d.name}
+                                            </SelectItem>
+                                        ))}
+
                                 </SelectGroup>
                             </SelectContent>
                         </Select>
