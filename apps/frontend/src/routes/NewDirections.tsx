@@ -1,7 +1,7 @@
 import {useEffect, useRef, useState} from "react";
 import {DirectionsStep, PathfindingMap, PathfindingResults} from "@/GMap/GoogleMap.ts";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCar, faWalking, faBus, faBicycle } from "@fortawesome/free-solid-svg-icons";
+import {faCar, faWalking, faBus, faBicycle, faArrowLeft, faArrowRight, faArrowUp} from "@fortawesome/free-solid-svg-icons";
 import {Switch} from '@/components/ui/switch.tsx';
 import {
     API_ROUTES,
@@ -244,23 +244,29 @@ export default function NewDirections() {
                             <Button className="flex-1 grow m-2 bg-blue-900" onClick={handleNextStep} disabled={currentStep >= pathfindingResults.directions.length - 1}>Next</Button>
                         </div>
                         <div className="h-[400px] overflow-y-scroll">
+
                             {pathfindingResults.directions.map((step, i) => (
                                 <div className= {`relative group px-2 ${currentStep === i ? 'bg-gray-200 rounded-md' : 'bg-white'}`}
-                                     onClick={() => {
-                                         map?.setCurrentStepIdx(i, tts);
-                                         setCurrentStep(i);
-                                         console.log(i);
-                                     }}> {step.icon}
+                                    onClick={() => {
+                                    map?.setCurrentStepIdx(i, tts);
+                                    setCurrentStep(i);
+                                    console.log(i);
+                                }}>
+                                    {step.icon === "right" ? <FontAwesomeIcon icon={faArrowRight}/>
+                                        : step.icon === "left" ? <FontAwesomeIcon icon={faArrowLeft}/>
+                                        : <FontAwesomeIcon icon={faArrowUp}/>}
+                                    <span> </span>
                                     <span className="text-blue-500">{step.instructions}</span>
                                     <br/>
                                     <span className="text-gray-500">{step.time} ({step.distance})</span>
                                     <span className="absolute bottom-0 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-black ml-30">
-                                    Click to view
-                                </span>
-                                    <br/><br/>
-                                </div>
-                            ))}
+                                        Click to view
+                                    </span>
+                                        <br/><br/>
+                                    </div>
+                                ))}
                         </div>
+
 
 
                         {/*<div className="mb-5">*/}
