@@ -21,9 +21,10 @@ type RequestSheetProps = {
     ID: number;
     requestType: string;
     trigger?: React.ReactNode;
+    onUpdate?: () => void;
 };
 
-const RequestSheet: React.FC<RequestSheetProps> = ({ID, requestType, trigger}) => {
+const RequestSheet: React.FC<RequestSheetProps> = ({ID, requestType, trigger, onUpdate}) => {
     const [request, setRequest] = useState<ServiceRequest | null>(null);
     const [translator, setTranslator] = useState<TranslatorRequest | null>(null);
     const [equipment, setEquipment] = useState<EquipmentRequest | null>(null);
@@ -59,7 +60,7 @@ const RequestSheet: React.FC<RequestSheetProps> = ({ID, requestType, trigger}) =
         }
     };
 
-    const formattedDate = new Date().toISOString().slice(0, 16);
+    const formattedDate = new Date();
 
     const [requestedById, setRequestedById] = useState("");
     const [department, setDepartment] = useState("");
@@ -95,12 +96,12 @@ const RequestSheet: React.FC<RequestSheetProps> = ({ID, requestType, trigger}) =
             if (request.translatorRequest) {
                 setLanguageTo(request.translatorRequest.languageTo)
                 setLanguageFrom(request.translatorRequest.languageFrom)
-                setTranslatorStart(new Date(request.translatorRequest.startDateTime).toISOString())
-                setTranslatorEnd(new Date(request.translatorRequest.endDateTime).toISOString())
+                setTranslatorStart(new Date(request.translatorRequest.startDateTime))
+                setTranslatorEnd(new Date(request.translatorRequest.endDateTime))
             }
             if (request.equipmentRequest) {
-                setEquipmentStart(new Date(request.equipmentRequest.endDateTime).toISOString())
-                setEquipmentEnd(new Date(request.equipmentRequest.endDateTime).toISOString())
+                setEquipmentStart(new Date(request.equipmentRequest.endDateTime))
+                setEquipmentEnd(new Date(request.equipmentRequest.endDateTime))
                 setQuantity(request.equipmentRequest.quantity.toString())
                 setMedicalDevice(request.equipmentRequest.medicalDevice)
                 setSignature(request.equipmentRequest.signature)
@@ -228,11 +229,13 @@ const RequestSheet: React.FC<RequestSheetProps> = ({ID, requestType, trigger}) =
                                         Start Date
                                     </Label>
                                     <Input id="startDateTime"
-                                           value={translatorStart.slice(0, 16)}
+                                           value={translatorStart.toISOString().slice(0, 16)}
                                            type="datetime-local"
                                            className="col-span-3"
-                                           onChange={(e) =>
-                                               setTranslatorStart(e.target.value)}
+                                           onChange={(e) => {
+                                               const date = new Date(e.target.value)
+                                               setTranslatorStart(date)}
+                                           }
                                     />
                                 </div>
                                 <div className="grid grid-cols-4 items-center gap-4">
@@ -240,11 +243,13 @@ const RequestSheet: React.FC<RequestSheetProps> = ({ID, requestType, trigger}) =
                                         End Date
                                     </Label>
                                     <Input id="endDateTime"
-                                           value={translatorEnd.slice(0, 16)}
+                                           value={translatorEnd.toISOString().slice(0, 16)}
                                            type="datetime-local"
                                            className="col-span-3"
-                                           onChange={(e) =>
-                                               setTranslatorEnd(e.target.value)}
+                                           onChange={(e) => {
+                                               const date = new Date(e.target.value)
+                                               setTranslatorEnd(date)}
+                                           }
                                     />
                                 </div>
                             </div>
@@ -255,11 +260,13 @@ const RequestSheet: React.FC<RequestSheetProps> = ({ID, requestType, trigger}) =
                                         Start Date
                                     </Label>
                                     <Input id="startDateTime"
-                                           value={equipmentStart.slice(0, 16)}
+                                           value={equipmentStart.toISOString().slice(0, 16)}
                                            type="datetime-local"
                                            className="col-span-3"
-                                           onChange={(e) =>
-                                               setEquipmentStart(e.target.value)}
+                                           onChange={(e) => {
+                                               const date = new Date(e.target.value)
+                                               setEquipmentStart(date)}
+                                           }
                                     />
                                 </div>
                                 <div className="grid grid-cols-4 items-center gap-4">
@@ -267,11 +274,13 @@ const RequestSheet: React.FC<RequestSheetProps> = ({ID, requestType, trigger}) =
                                         End Date
                                     </Label>
                                     <Input id="endDateTime"
-                                           value={equipmentEnd.slice(0, 16)}
+                                           value={equipmentEnd.toISOString().slice(0, 16)}
                                            className="col-span-3"
                                            type="datetime-local"
-                                           onChange={(e) =>
-                                               setEquipmentEnd(e.target.value)}
+                                           onChange={(e) => {
+                                               const date = new Date(e.target.value)
+                                               setEquipmentEnd(date)}
+                                           }
                                     />
                                 </div>
                                 <div className="grid grid-cols-4 items-center gap-4">
@@ -396,6 +405,9 @@ const RequestSheet: React.FC<RequestSheetProps> = ({ID, requestType, trigger}) =
                                                 };
                                                 await axios.put(`/api/servicereqs/${ID}`, updatedRequest);
                                                 console.log('Request updated successfully.');
+                                                if (onUpdate) {
+                                                    onUpdate();
+                                                }
                                                 setOpen(false);
                                             } catch (error) {
                                                 console.error('Failed to update request', error);

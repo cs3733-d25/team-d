@@ -105,227 +105,6 @@ export const getRequestType = (request: ServiceRequest): string => {
     return "Unknown"; // Fallback in case nothing matches
 };
 
-export const columns: ColumnDef<ServiceRequest>[] = [
-    {
-        id: "expand",
-        enableHiding: false,
-        cell: ({ row }) => {
-            const expand = row.original
-            return (
-                <ChevronDown className="text-blue-950 pl-2"/>
-            )
-        }
-    },
-    {
-        accessorKey: "requestType",
-        header: ({ column }) => {
-        },
-        meta: {
-            filterVariant: 'select',
-            filterOptions: ["Translator", "Sanitation", "Equipment", "Security"],
-        },
-        filterFn: (row, columnId, filterValue: string[]) => {
-            return filterValue.includes(getRequestType(row.original as ServiceRequest))
-        },
-        cell: ({ row }) => {
-            const request = row.original as ServiceRequest;
-            return getRequestType(request);
-        },
-    },
-    {
-        accessorKey: "requestId",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Request ID
-                    <ArrowUpDown />
-                </Button>
-            )
-        },
-        meta: {
-            filterVariant: 'none',
-        },
-    },
-    {
-        accessorKey: "employeeRequestedById",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Requested By
-                    <ArrowUpDown />
-                </Button>
-            )
-        },
-        meta: {
-            filterVariant: 'none',
-        },
-    },
-    {
-        accessorKey: "assignedEmployeeId",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Assigned To
-                    <ArrowUpDown />
-                </Button>
-            )
-        },
-        meta: {
-            filterVariant: 'none',
-        },
-    },
-    {
-        accessorKey: "departmentUnderId",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Department
-                    <ArrowUpDown />
-                </Button>
-            )
-        },
-        meta: {
-            filterVariant: 'none',
-        },
-    },
-    {
-        accessorKey: "roomNum",
-        header: ({ column }) => {
-            return (
-                <Button variant="ghost">Room</Button>
-            )
-        },
-        meta: {
-            filterVariant: 'none',
-        },
-    },
-    {
-        accessorKey: "priority",
-        header: ({ column }) => {},
-        meta: {
-            filterVariant: "select",
-            filterOptions: ["Low", "Medium", "High", "Emergency"],
-        },
-        filterFn: (row, columnId, filterValue: string[]) =>
-            filterValue.includes(row.getValue(columnId)),
-        cell: ({ getValue }) => {
-            const value = getValue<string>();
-            const styles =
-                value === "Low"
-                    ? "bg-yellow-200 text-yellow-800"
-                    : value === "Medium"
-                        ? "bg-orange-300 text-orange-900"
-                        : value === "High"
-                            ? "bg-orange-500 text-white"
-                            : "bg-red-600 text-white";
-            return (
-                <span className={`px-2 py-1 rounded font-semibold ${styles}`}>
-        {value}
-      </span>
-            );
-        },
-    },
-    {
-        accessorKey: "requestStatus",
-        header: ({ column }) => {
-        },
-        meta: {
-            filterVariant: 'select',
-            filterOptions: ["Unassigned", "Assigned", "Working", "Done"],
-        },
-        filterFn: (row, columnId, filterValue: string[]) => {
-            return filterValue.includes(row.getValue(columnId))
-        },
-    },
-    {
-        accessorKey: "createdAt",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Created At
-                    <ArrowUpDown />
-                </Button>
-            )
-        },
-        meta: {
-            filterVariant: 'none',
-        },
-    },
-    {
-        accessorKey: "updatedAt",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Updated At
-                    <ArrowUpDown />
-                </Button>
-            )
-        },
-        meta: {
-            filterVariant: 'none',
-        },
-    },
-    {
-        id: "assignEmployee",
-        enableHiding: false,
-        cell: ({ row }) => {
-            const request = row.original
-
-            return (
-                <AssignEmployeeDialog ID={row.original.requestId}
-                              requestType={getRequestType(row.original)}
-                              trigger={<div className="pl-4 w-full text-left"><UserPen className="text-gray-500"/></div>}
-                />
-            )
-        }
-    },
-    {
-        id: "editRequest",
-        enableHiding: false,
-        cell: ({ row }) => {
-            const request = row.original
-
-            return (
-                <RequestSheet ID={row.original.requestId}
-                              requestType={getRequestType(row.original)}
-                              trigger={<div className="pl-4 w-full text-left"><SquarePen className="text-gray-500"/></div>}
-                />
-            )
-        }
-    },
-    {
-        id: "deleteRequest",
-        enableHiding: false,
-        cell: ({ row }) => {
-            const request = row.original
-
-            return (
-                <div className="pl-4 w-full text-left"><Trash className="text-gray-500"/></div>
-            )
-        }
-    },
-]
-
-
-
 export default function ShowAllRequests() {
     const [data, setData] = useState<ServiceRequest[]>([]);
 
@@ -337,6 +116,227 @@ export default function ShowAllRequests() {
             console.error('Error fetching data:', error);
         }
     };
+
+    const columns: ColumnDef<ServiceRequest>[] = [
+        {
+            id: "expand",
+            enableHiding: false,
+            cell: ({ row }) => {
+                const expand = row.original
+                return (
+                    <ChevronDown className="text-blue-950 pl-2"/>
+                )
+            }
+        },
+        {
+            accessorKey: "requestType",
+            header: ({ column }) => {
+            },
+            meta: {
+                filterVariant: 'select',
+                filterOptions: ["Translator", "Sanitation", "Equipment", "Security"],
+            },
+            filterFn: (row, columnId, filterValue: string[]) => {
+                return filterValue.includes(getRequestType(row.original as ServiceRequest))
+            },
+            cell: ({ row }) => {
+                const request = row.original as ServiceRequest;
+                return getRequestType(request);
+            },
+        },
+        {
+            accessorKey: "requestId",
+            header: ({ column }) => {
+                return (
+                    <Button
+                        variant="ghost"
+                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    >
+                        Request ID
+                        <ArrowUpDown />
+                    </Button>
+                )
+            },
+            meta: {
+                filterVariant: 'none',
+            },
+        },
+        {
+            accessorKey: "employeeRequestedById",
+            header: ({ column }) => {
+                return (
+                    <Button
+                        variant="ghost"
+                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    >
+                        Requested By
+                        <ArrowUpDown />
+                    </Button>
+                )
+            },
+            meta: {
+                filterVariant: 'none',
+            },
+        },
+        {
+            accessorKey: "assignedEmployeeId",
+            header: ({ column }) => {
+                return (
+                    <Button
+                        variant="ghost"
+                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    >
+                        Assigned To
+                        <ArrowUpDown />
+                    </Button>
+                )
+            },
+            meta: {
+                filterVariant: 'none',
+            },
+        },
+        {
+            accessorKey: "departmentUnderId",
+            header: ({ column }) => {
+                return (
+                    <Button
+                        variant="ghost"
+                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    >
+                        Department
+                        <ArrowUpDown />
+                    </Button>
+                )
+            },
+            meta: {
+                filterVariant: 'none',
+            },
+        },
+        {
+            accessorKey: "roomNum",
+            header: ({ column }) => {
+                return (
+                    <Button variant="ghost">Room</Button>
+                )
+            },
+            meta: {
+                filterVariant: 'none',
+            },
+        },
+        {
+            accessorKey: "priority",
+            header: ({ column }) => {},
+            meta: {
+                filterVariant: "select",
+                filterOptions: ["Low", "Medium", "High", "Emergency"],
+            },
+            filterFn: (row, columnId, filterValue: string[]) =>
+                filterValue.includes(row.getValue(columnId)),
+            cell: ({ getValue }) => {
+                const value = getValue<string>();
+                const styles =
+                    value === "Low"
+                        ? "bg-yellow-200 text-yellow-800"
+                        : value === "Medium"
+                            ? "bg-orange-300 text-orange-900"
+                            : value === "High"
+                                ? "bg-orange-500 text-white"
+                                : "bg-red-600 text-white";
+                return (
+                    <span className={`px-2 py-1 rounded font-semibold ${styles}`}>
+        {value}
+      </span>
+                );
+            },
+        },
+        {
+            accessorKey: "requestStatus",
+            header: ({ column }) => {
+            },
+            meta: {
+                filterVariant: 'select',
+                filterOptions: ["Unassigned", "Assigned", "Working", "Done"],
+            },
+            filterFn: (row, columnId, filterValue: string[]) => {
+                return filterValue.includes(row.getValue(columnId))
+            },
+        },
+        {
+            accessorKey: "createdAt",
+            header: ({ column }) => {
+                return (
+                    <Button
+                        variant="ghost"
+                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    >
+                        Created At
+                        <ArrowUpDown />
+                    </Button>
+                )
+            },
+            meta: {
+                filterVariant: 'none',
+            },
+        },
+        {
+            accessorKey: "updatedAt",
+            header: ({ column }) => {
+                return (
+                    <Button
+                        variant="ghost"
+                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    >
+                        Updated At
+                        <ArrowUpDown />
+                    </Button>
+                )
+            },
+            meta: {
+                filterVariant: 'none',
+            },
+        },
+        {
+            id: "assignEmployee",
+            enableHiding: false,
+            cell: ({ row }) => {
+                const request = row.original
+
+                return (
+                    <AssignEmployeeDialog ID={row.original.requestId}
+                                          requestType={getRequestType(row.original)}
+                                          onUpdate={fetchData}
+                                          trigger={<div className="pl-4 w-full text-left"><UserPen className="text-gray-500"/></div>}
+                    />
+                )
+            }
+        },
+        {
+            id: "editRequest",
+            enableHiding: false,
+            cell: ({ row }) => {
+                const request = row.original
+
+                return (
+                    <RequestSheet ID={row.original.requestId}
+                                  requestType={getRequestType(row.original)}
+                                  onUpdate={fetchData}
+                                  trigger={<div className="pl-4 w-full text-left"><SquarePen className="text-gray-500"/></div>}
+                    />
+                )
+            }
+        },
+        {
+            id: "deleteRequest",
+            enableHiding: false,
+            cell: ({ row }) => {
+                const request = row.original
+
+                return (
+                    <div className="pl-4 w-full text-left"><Trash className="text-gray-500"/></div>
+                )
+            }
+        },
+    ]
 
     const [sorting, setSorting] = React.useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(

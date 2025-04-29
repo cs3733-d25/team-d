@@ -22,9 +22,10 @@ type AssignEmployeeDialogProps = {
     ID: number;
     requestType: string;
     trigger?: React.ReactNode;
+    onUpdate?: () => void;
 };
 
-const AssignEmployeeDialog: React.FC<AssignEmployeeDialogProps> = ({ID, requestType, trigger}) => {
+const AssignEmployeeDialog: React.FC<AssignEmployeeDialogProps> = ({ID, requestType, trigger, onUpdate}) => {
     const [request, setRequest] = useState<ServiceRequest | null>(null);
     const [translator, setTranslator] = useState<TranslatorRequest | null>(null);
     const [equipment, setEquipment] = useState<EquipmentRequest | null>(null);
@@ -69,7 +70,7 @@ const AssignEmployeeDialog: React.FC<AssignEmployeeDialogProps> = ({ID, requestT
         if (request?.assignedEmployeeId) {
             setAssignedEmployee(request.assignedEmployeeId.toString());
         }
-    }, []);
+    }, [request]);
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
@@ -106,6 +107,9 @@ const AssignEmployeeDialog: React.FC<AssignEmployeeDialogProps> = ({ID, requestT
                                     };
                                     await axios.put(`/api/servicereqs/${ID}`, updatedRequest);
                                     console.log('Assigned employee successfully.');
+                                    if (onUpdate) {
+                                        onUpdate();
+                                    }
                                     setOpen(false);
                                 } catch (error) {
                                     console.error('Failed to assign an employee', error);
