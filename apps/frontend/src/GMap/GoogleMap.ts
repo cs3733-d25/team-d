@@ -10,11 +10,6 @@ import {
 } from 'common/src/constants.ts';
 import {EditorEncapsulator} from "@/routes/MapEditor.tsx";
 
-// import fern from '@/public/floormaps/fern1.png';
-// import chf1 from '@/public/floormaps/chf1.png';
-// import pp20f1 from '@/public/floormaps/pp20f1.png';
-// import pp22f3 from '@/public/floormaps/pp22f3.png';
-// import pp22f4 from '@/public/floormaps/pp22f4.png';
 import chf1 from '@/public/floormaps/new/chf1.png';
 import ff1 from '@/public/floormaps/new/ff1.png';
 import pp20f1 from '@/public/floormaps/new/pp20f1.png';
@@ -25,7 +20,7 @@ import pp22f4 from '@/public/floormaps/new/pp22f4.png';
 import {Button} from '@/components/ui/button.tsx'
 
 const API_KEY: string = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
-const SCRIPT_URL: string = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&libraries=places&callback=initMap`
+const SCRIPT_URL: string = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&libraries=geometry,places&callback=initMap`
 
 
 declare global {
@@ -121,6 +116,10 @@ class PathfindingGraph {
 
     private visibility: boolean;
 
+    // Distance and time for inner
+    private innerDistances: number[] = []; // in meters
+    private innerDurations: number[] = []; // in seconds (estimate)
+
     constructor(map: google.maps.Map, path: google.maps.LatLngLiteral[], floor?: FloorPathResponse) {
         this.map = map;
 
@@ -155,6 +154,24 @@ class PathfindingGraph {
             })
         );
 
+        // Calculate the distance and time
+        for (let i = 0; i < this.nodes.length - 1; i++) {
+            const pos1 = this.nodes[i].getPosition();
+            const pos2 = this.nodes[i + 1].getPosition();
+
+            if (pos1 && pos2) {
+                const distanceMeters = google.maps.geometry.spherical.computeDistanceBetween(pos1, pos2);
+                this.innerDistances.push(distanceMeters);
+
+                // Estimate duration assuming average indoor walking speed (~1.4 meters/sec)
+                const estimatedSeconds = distanceMeters / 1.4;
+                this.innerDurations.push(estimatedSeconds);
+            } else {
+                this.innerDistances.push(0);
+                this.innerDurations.push(0);
+            }
+        }
+
         this.selectedSegment = null;
 
         this.rotation = floor?.imageRotation || 0;
@@ -164,8 +181,76 @@ class PathfindingGraph {
         this.visibility = false;
     }
 
-    setVisibility(visibility: boolean) {
-        const map = visibility ? this.map : null;
+
+    private color: string;
+
+
+    // For inner map directions
+
+    private isFinal: boolean;
+    private pathForDisplay: google.maps.LatLngLiteral[];
+    public innerSteps: string[] = [];
+    private pathPolylines: google.maps.Polyline[] = [];
+    public innerStepIndex: number = 0;
+    private highlightedCircle: google.maps.Circle | null = null;
+    private highlightedLine: google.maps.Polyline | null = null;
+    private loadThisAfter: PathfindingGraph | null = null;
+
+
+    // floor is the map of the map of the graph itself
+    public floor: FloorPathResponse | null = null;
+
+    // constructor(map: google.maps.Map, path: google.maps.LatLngLiteral[], color: string, after: PathfindingGraph | null, floor: FloorPathResponse | null, isFinal: boolean) {
+    //     this.map = map;
+    //
+    //     // For outside map
+    //     this.selectedSegment = null;
+    //     this.visibility = false;
+    //
+    //     if (floor) {
+    //         this.floorMap = new google.maps.GroundOverlay(GoogleMap.getImgURL(floor.image), {
+    //             north: floor.imageBoundsNorth,
+    //             south: floor.imageBoundsSouth,
+    //             east: floor.imageBoundsEast,
+    //             west: floor.imageBoundsWest,
+    //         }, {
+    //
+    //         });
+    //     }
+    //     else this.floorMap = null;
+    //
+    //     this.path = new google.maps.Polyline({
+    //         path: path,
+    //         strokeColor: '#0cf',
+    //     });
+    //
+    //     this.nodes = path.map(position =>
+    //         new google.maps.Marker({
+    //             icon: {
+    //                 path: google.maps.SymbolPath.CIRCLE,
+    //                 scale: 5,
+    //                 fillOpacity: 1,
+    //                 fillColor: '#0cf',
+    //                 strokeColor: '#fff',
+    //                 strokeWeight: 2
+    //             },
+    //             position: position,
+    //         })
+    //     );
+    //
+    //     // For inner map
+    //     this.pathForDisplay = path;
+    //     this.pathPolylines = [];
+    //     this.loadThisAfter = after;
+    //     this.floor = floor;
+    //     this.isFinal = isFinal;
+    //     this.color = color;
+    //
+    // }
+
+
+    setVisibility(visiblity: boolean) {
+        const map = visiblity ? this.map : null;
 
         this.path.setMap(map);
         this.nodes.forEach(node => {
@@ -182,202 +267,170 @@ class PathfindingGraph {
     }
 
 
-    // private path: google.maps.Polyline | null = null;
-    // private nodes: google.maps.Marker[] | null = null;
-    //
-    // private color: string;
-    // // For inner map directions
-    //
-    // private isFinal: boolean;
-    // private map: google.maps.Map;
-    // private pathForDisplay: google.maps.LatLngLiteral[];
-    // public innerSteps: string[] = [];
-    // private pathPolylines: google.maps.Polyline[] = [];
-    // public innerStepIndex: number = 0;
-    // private highlightedCircle: google.maps.Circle | null = null;
-    // private highlightedLine: google.maps.Polyline | null = null;
-    // private loadThisAfter: PathfindingGraph | null = null;
-    //
-    //
-    // // floor is the map of the map of the graph next to itself
-    // public floor: FloorPathResponse | null = null;
-    //
-    // constructor(map: google.maps.Map, path: google.maps.LatLngLiteral[], color: string, after: PathfindingGraph | null, floor: FloorPathResponse | null, isFinal: boolean) {
-    //     this.pathForDisplay = path;
-    //     this.map = map;
-    //     this.pathPolylines = [];
-    //     this.loadThisAfter = after;
-    //     this.floor = floor;
-    //     this.isFinal = isFinal;
-    //     this.color = color;
-    //
-    //
-    // }
-    //
-    // // Text to directions functions for inside of hospital
-    //
-    // // private highlightStep(index: number): void {
-    // //
-    // //     // TODO: DECIDE IF U WANNA KEEP THE LINE THAT HAVE WALKED OR NOT, ASK EMMA!!
-    // //
-    // //     if (this.highlightedCircle) {
-    // //         this.highlightedCircle.setIcon({
-    // //             url: 'https://maps.gstatic.com/intl/en_us/mapfiles/markers2/measle.png',
-    // //             size: new google.maps.Size(7, 7),
-    // //             anchor: new google.maps.Point(3.5, 3.5)
-    // //         });
-    // //     }
-    // //
-    // //     const newMarker = this.nodes[index];
-    // //     newMarker.setIcon({
-    // //         url: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
-    // //         size: new google.maps.Size(30, 30),
-    // //         // anchor: new google.maps.Point(3., 10)
-    // //     });
-    // //     this.highlightedCircle = newMarker;
-    // //
-    // //
-    // //     // Highlight path segment leading to this node, if it exists
-    // //     const newLine = index > 0 ? this.pathPolylines[index - 1] : undefined;
-    // //     if (newLine) {
-    // //         newLine.setOptions({
-    // //             strokeColor: '#00AACC',
-    // //             zIndex: 9999, // bring to front
-    // //         });
-    // //         this.highlightedLine = newLine;
-    // //     } else {
-    // //         if (index > 0) console.warn(`highlightStep: No path at index ${index - 1}`);
-    // //         this.highlightedLine = undefined;
-    // //     }
-    // //
-    // // }
-    //
-    // // public showInnerStep(): void {
-    // //     const stepDisplay = document.getElementById("inner-step-instruction");
-    // //
-    // //
-    // //     if (stepDisplay && this.innerSteps.length > 0) {
-    // //         const stepText = this.innerSteps[this.innerStepIndex];
-    // //
-    // //         // Update instruction UI
-    // //         stepDisplay.innerHTML = `
-    // //         <strong>Step ${this.innerStepIndex + 1}/${this.innerSteps.length}</strong><br>
-    // //         ${stepText}
-    // //     `;
-    // //
-    // //         // Text-to-speech
-    // //         const utter = new SpeechSynthesisUtterance(stepText);
-    // //         utter.lang = 'en-US';
-    // //         speechSynthesis.cancel();
-    // //         speechSynthesis.speak(utter);
-    // //
-    // //         // Highlight the corresponding step on map
-    // //         this.highlightStep(this.innerStepIndex);
-    // //
-    // //         // Optional: pan the map to the current step’s marker/center
-    // //         const currentNode = this.nodes[this.innerStepIndex];
-    // //         if (currentNode) {
-    // //             this.map.panTo(currentNode.getPosition()!);
-    // //         }
-    // //     } else {
-    // //         console.log("No inner steps found or stepDisplay element is missing.");
-    // //     }
-    // // }
-    //
-    // // private innerNextButtonSetup = false;
-    //
-    // // public setupInnerNextButton(): void {
-    // //     if (this.innerNextButtonSetup) return; // prevent adding listener multiple times
-    // //     this.innerNextButtonSetup = true;
-    // //
-    // //     this.innerStepIndex =0;
-    // //     // this.path.binder =
-    // //     this.nodes = this.pathForDisplay.map((position, i) =>
-    // //         new google.maps.Marker({
-    // //             map: this.map,
-    // //             position: position,
-    // //             icon: {
-    // //                 url: 'https://maps.gstatic.com/intl/en_us/mapfiles/markers2/measle.png',
-    // //                 size: new google.maps.Size(7, 7),
-    // //                 anchor: new google.maps.Point(3.5, 3.5)
-    // //             },
-    // //         })
-    // //     );
-    // //
-    // //     const lineSymbol = {
-    // //         path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-    // //     };
-    // //
-    // //     this.path = new google.maps.Polyline({
-    // //         map: this.map,
-    // //         path: this.pathForDisplay,
-    // //         strokeColor: this.color,
-    // //         icons: [
-    // //             {
-    // //                 icon: lineSymbol,
-    // //                 offset: '100%',
-    // //             },
-    // //         ],
-    // //     });
-    // //
-    // //     for (let i = 0; i < this.pathForDisplay.length - 1; i++) {
-    // //         const line = new google.maps.Polyline({
-    // //             path: [this.pathForDisplay[i], this.pathForDisplay[i + 1]],
-    // //             geodesic: true,
-    // //             strokeColor: '#CC3300',
-    // //             strokeOpacity: 1.0,
-    // //             strokeWeight: 4,
-    // //             map: this.map,
-    // //         });
-    // //         this.pathPolylines.push(line);
-    // //     }
-    // //
-    // //     const nextButton = document.getElementById("inner-next-step-btn");
-    // //     if (nextButton) {
-    // //         nextButton.addEventListener("click", () => {
-    // //             if (this.innerStepIndex < this.innerSteps.length - 1) {
-    // //                 this.innerStepIndex++;
-    // //                 this.showInnerStep();
-    // //                 console.log(this.innerStepIndex);
-    // //                 console.log('This graph');
-    // //                 console.log(this.floor?.image);
-    // //             } else {
-    // //
-    // //                 if(this.isFinal){
-    // //                     alert('You have reached the final destination!');
-    // //                 } else {
-    // //                     this.remove();
-    // //                 }
-    // //
-    // //                 if (this.highlightedCircle) {
-    // //                     this.highlightedCircle.setIcon({
-    // //                         url: 'https://maps.gstatic.com/intl/en_us/mapfiles/markers2/measle.png',
-    // //                         size: new google.maps.Size(7, 7),
-    // //                         anchor: new google.maps.Point(3.5, 3.5)
-    // //                     });
-    // //                 }
-    // //
-    // //                 const theNextFloorMap = new google.maps.GroundOverlay(GoogleMap.getImgURL(this.loadThisAfter.floor.image), {
-    // //                     north: this.loadThisAfter.floor.imageBoundsNorth,
-    // //                     south: this.loadThisAfter.floor.imageBoundsSouth,
-    // //                     east: this.loadThisAfter.floor.imageBoundsEast,
-    // //                     west: this.loadThisAfter.floor.imageBoundsWest,
-    // //                 });
-    // //                 theNextFloorMap.setMap(this.map);
-    // //                 console.log('Next graph');
-    // //                 console.log(this.loadThisAfter.floor.image);
-    // //                 this.loadThisAfter?.setupInnerNextButton();
-    // //                 this.loadThisAfter?.showInnerStep();
-    // //             }
-    // //         });
-    // //     }
-    // // }
-    //
-    // // public remove() {
-    // //     this.path.setMap(null);
-    // //     this.nodes.forEach(node => node.setMap(null));
-    // //     this.pathPolylines.forEach(polyline => polyline.setMap(null));
-    // // }
+    // Text to directions functions for inside of hospital
+
+    private highlightStep(index: number): void {
+
+        // TODO: DECIDE IF U WANNA KEEP THE LINE THAT HAVE WALKED OR NOT, ASK EMMA!!
+
+        if (this.highlightedCircle) {
+            this.highlightedCircle.setIcon({
+                url: 'https://maps.gstatic.com/intl/en_us/mapfiles/markers2/measle.png',
+                size: new google.maps.Size(7, 7),
+                anchor: new google.maps.Point(3.5, 3.5)
+            });
+        }
+
+        const newMarker = this.nodes[index];
+        newMarker.setIcon({
+            url: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
+            size: new google.maps.Size(30, 30),
+            // anchor: new google.maps.Point(3., 10)
+        });
+        this.highlightedCircle = newMarker;
+
+
+        // Highlight path segment leading to this node, if it exists
+        const newLine = index > 0 ? this.pathPolylines[index - 1] : undefined;
+        if (newLine) {
+            newLine.setOptions({
+                strokeColor: '#00AACC',
+                zIndex: 9999, // bring to front
+            });
+            this.highlightedLine = newLine;
+        } else {
+            if (index > 0) console.warn(`highlightStep: No path at index ${index - 1}`);
+            this.highlightedLine = undefined;
+        }
+
+    }
+
+    public showInnerStep(): void {
+        const stepDisplay = document.getElementById("inner-step-instruction");
+
+
+        if (stepDisplay && this.innerSteps.length > 0) {
+            const stepText = this.innerSteps[this.innerStepIndex];
+
+            // Update instruction UI
+            stepDisplay.innerHTML = `
+            <strong>Step ${this.innerStepIndex + 1}/${this.innerSteps.length}</strong><br>
+            ${stepText}
+        `;
+
+            // Text-to-speech
+            const utter = new SpeechSynthesisUtterance(stepText);
+            utter.lang = 'en-US';
+            speechSynthesis.cancel();
+            speechSynthesis.speak(utter);
+
+            // Highlight the corresponding step on map
+            this.highlightStep(this.innerStepIndex);
+
+            // Optional: pan the map to the current step’s marker/center
+            const currentNode = this.nodes[this.innerStepIndex];
+            if (currentNode) {
+                this.map.panTo(currentNode.getPosition()!);
+            }
+        } else {
+            console.log("No inner steps found or stepDisplay element is missing.");
+        }
+    }
+
+    private innerNextButtonSetup = false;
+
+    public setupInnerNextButton(): void {
+        if (this.innerNextButtonSetup) return; // prevent adding listener multiple times
+        this.innerNextButtonSetup = true;
+
+        this.innerStepIndex =0;
+        // this.path.binder =
+        this.nodes = this.pathForDisplay.map((position, i) =>
+            new google.maps.Marker({
+                map: this.map,
+                position: position,
+                icon: {
+                    url: 'https://maps.gstatic.com/intl/en_us/mapfiles/markers2/measle.png',
+                    size: new google.maps.Size(7, 7),
+                    anchor: new google.maps.Point(3.5, 3.5)
+                },
+            })
+        );
+
+        const lineSymbol = {
+            path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+        };
+
+        this.path = new google.maps.Polyline({
+            map: this.map,
+            path: this.pathForDisplay,
+            strokeColor: this.color,
+            icons: [
+                {
+                    icon: lineSymbol,
+                    offset: '100%',
+                },
+            ],
+        });
+
+        for (let i = 0; i < this.pathForDisplay.length - 1; i++) {
+            const line = new google.maps.Polyline({
+                path: [this.pathForDisplay[i], this.pathForDisplay[i + 1]],
+                geodesic: true,
+                strokeColor: '#CC3300',
+                strokeOpacity: 1.0,
+                strokeWeight: 4,
+                map: this.map,
+            });
+            this.pathPolylines.push(line);
+        }
+
+        const nextButton = document.getElementById("inner-next-step-btn");
+        if (nextButton) {
+            nextButton.addEventListener("click", () => {
+                if (this.innerStepIndex < this.innerSteps.length - 1) {
+                    this.innerStepIndex++;
+                    this.showInnerStep();
+                    console.log(this.innerStepIndex);
+                    console.log('This graph');
+                    console.log(this.floor?.image);
+                } else {
+
+                    if(this.isFinal){
+                        alert('You have reached the final destination!');
+                    } else {
+                        this.remove();
+                    }
+
+                    if (this.highlightedCircle) {
+                        this.highlightedCircle.setIcon({
+                            url: 'https://maps.gstatic.com/intl/en_us/mapfiles/markers2/measle.png',
+                            size: new google.maps.Size(7, 7),
+                            anchor: new google.maps.Point(3.5, 3.5)
+                        });
+                    }
+
+                    const theNextFloorMap = new google.maps.GroundOverlay(GoogleMap.getImgURL(this.loadThisAfter.floor.image), {
+                        north: this.loadThisAfter.floor.imageBoundsNorth,
+                        south: this.loadThisAfter.floor.imageBoundsSouth,
+                        east: this.loadThisAfter.floor.imageBoundsEast,
+                        west: this.loadThisAfter.floor.imageBoundsWest,
+                    });
+                    theNextFloorMap.setMap(this.map);
+                    console.log('Next graph');
+                    console.log(this.loadThisAfter.floor.image);
+                    this.loadThisAfter?.setupInnerNextButton();
+                    this.loadThisAfter?.showInnerStep();
+                }
+            });
+        }
+    }
+
+    public remove() {
+        this.path.setMap(null);
+        this.nodes.forEach(node => node.setMap(null));
+        this.pathPolylines.forEach(polyline => polyline.setMap(null));
+    }
 }
 
 export type PathfindingResults = {
@@ -427,10 +480,10 @@ export class PathfindingMap extends GoogleMap {
     private allPaths: PathfindingGraph[];
 
     // For Google Map directions
-    // private stepIndex: number = 0;
-    // private steps: google.maps.DirectionsStep[] = [];
+    private stepIndex: number = 0;
+    private steps: google.maps.DirectionsStep[] = [];
     private currentStepPolyline: google.maps.Polyline | null;
-    // private currentStepMarker: google.maps.Marker | null = null;
+    private currentStepMarker: google.maps.Marker | null = null;
 
     private department: DepartmentOptions | null;
 
@@ -495,52 +548,43 @@ export class PathfindingMap extends GoogleMap {
         this.update();
     }
 
-    // updateDepartmentPathfinding(pathfindingResponse: PathfindingResponse) {
-    //     this.currentPathfindingResponse = pathfindingResponse;
-    //     this.endLocation = pathfindingResponse.parkingLotPath.path[0];
-    //     this.route();
-    //
-    //     // Clean up previous paths and map
-    //     if (this.currentParkingPath) this.currentParkingPath.remove();
-    //     if (this.currentFloorPath) this.currentFloorPath.remove();
-    //     if (this.currentFloorMap) {
-    //         this.currentFloorMap.setMap(null);
-    //         this.currentFloorMap = null;
-    //     }
-    //
-    //     // Load new floor overlay
-    //     console.log(pathfindingResponse.floorPaths.length)
-    //
-    //     let floor: FloorPathResponse | null;
-    //     floor = null;
-    //     let graph: PathfindingGraph;
-    //     let previousGraph: PathfindingGraph | null = null;
-    //     for (let i = pathfindingResponse.floorPaths.length - 1 ;i >=0; i--) {
-    //         floor = pathfindingResponse.floorPaths[i];
-    //
-    //         // 4th floor
-    //         if (i==pathfindingResponse.floorPaths.length - 1) {
-    //             graph = new PathfindingGraph(this.map, floor.path, '#CC3300', null, floor, true);
-    //             graph.innerSteps = floor.direction;
-    //             console.log(graph);
-    //
-    //         }
-    //         else {
-    //             graph = new PathfindingGraph(this.map, floor.path, '#CC3300', previousGraph, floor, false);
-    //             graph.innerSteps = floor.direction;
-    //             console.log(graph);
-    //
-    //         }
-    //         previousGraph = graph;
-    //     }
-    //
-    //
-    //     // Now create the parking path and pass in the floor path to trigger after
-    //     // this.currentParkingPath = new PathfindingGraph(this.map, pathfindingResponse.parkingLotPath.path, '#CC3300', previousGraph, null , false);
-    //     // this.currentParkingPath.innerSteps = pathfindingResponse.parkingLotPath.direction;
-    //     // this.currentParkingPath.setupInnerNextButton();
-    //     // this.currentParkingPath.showInnerStep(); // start here
-    // }
+    updateDepartmentPathfinding(pathfindingResponse: PathfindingResponse) {
+        this.currentPathfindingResponse = pathfindingResponse;
+        this.endLocation = pathfindingResponse.parkingLotPath.path[0];
+
+        // Load new floor overlay
+        console.log(pathfindingResponse.floorPaths.length)
+
+        let floor: FloorPathResponse | null;
+        floor = null;
+        let graph: PathfindingGraph;
+        let previousGraph: PathfindingGraph | null = null;
+        for (let i = pathfindingResponse.floorPaths.length - 1 ;i >=0; i--) {
+            floor = pathfindingResponse.floorPaths[i];
+
+            // 4th floor
+            if (i==pathfindingResponse.floorPaths.length - 1) {
+                graph = new PathfindingGraph(this.map, floor.path, '#CC3300', null, floor, true);
+                graph.innerSteps = floor.direction;
+                console.log(graph);
+
+            }
+            else {
+                graph = new PathfindingGraph(this.map, floor.path, '#CC3300', previousGraph, floor, false);
+                graph.innerSteps = floor.direction;
+                console.log(graph);
+
+            }
+            previousGraph = graph;
+        }
+
+
+        // Now create the parking path and pass in the floor path to trigger after
+        this.currentParkingPath = new PathfindingGraph(this.map, pathfindingResponse.parkingLotPath.path, '#CC3300', previousGraph, null , false);
+        this.currentParkingPath.innerSteps = pathfindingResponse.parkingLotPath.direction;
+        this.currentParkingPath.setupInnerNextButton();
+        this.currentParkingPath.showInnerStep(); // start here
+    }
 
     async update() {
         // Can't go anywhere if a start place and
@@ -579,6 +623,10 @@ export class PathfindingMap extends GoogleMap {
             this.directionsRenderer.setDirections(null);
         });
 
+        console.log('im tired');
+        console.log(this.currentPathfindingResponse);
+
+
         // Add the result from above into the steps
         this.directionsRenderer.getDirections()?.routes[0].legs[0].steps.forEach((step) => {
             this.currentSteps?.push({
@@ -595,6 +643,132 @@ export class PathfindingMap extends GoogleMap {
                 pathFindingData: null,
             });
         });
+
+        // Pushing the directions in the parking lot
+        for (let j=0; j<=this.currentPathfindingResponse.parkingLotPath.path.length - 1; j++) {
+
+            let distance: number;
+            // distance is in meter
+            let time: number;
+            const pos1 = this.currentPathfindingResponse.parkingLotPath.path[j];
+            const pos2 = this.currentPathfindingResponse.parkingLotPath.path[j+1];
+
+            if (pos1 && pos2) {
+                distance = google.maps.geometry.spherical.computeDistanceBetween(pos1, pos2);
+
+                // Estimate duration assuming average indoor walking speed (~1.4 meters/sec)
+                time = distance / 1.4;
+            } else {
+                distance = 0;
+                time = 0;
+            }
+
+            if (j==0){
+                this.currentSteps?.push({
+                    step: {
+                        instructions: 'PARKING LOT INSTRUCTIONS: '+ this.currentPathfindingResponse.parkingLotPath.direction[j],
+                        distance: distance.toFixed(2).toString() + ' meters',
+                        time: time.toFixed(2).toString() + ' seconds',
+                        icon:'',
+                    },
+                    googleMapData: null,
+                    pathFindingData: null,
+                });
+                continue;
+            }
+
+            if (j == this.currentPathfindingResponse.parkingLotPath.path.length - 1){
+                this.currentSteps?.push({
+                    step: {
+                        instructions: this.currentPathfindingResponse.parkingLotPath.direction[j],
+                        distance: '',
+                        time: '',
+                        icon:'',
+                    },
+                    googleMapData: null,
+                    pathFindingData: null,
+                });
+                continue;
+            }
+
+            this.currentSteps?.push({
+                step: {
+                    instructions: this.currentPathfindingResponse.parkingLotPath.direction[j],
+                    distance: distance.toFixed(2).toString() + ' meter',
+                    time: time.toFixed(2).toString() + ' seconds',
+                    icon:'',
+                },
+                googleMapData: null,
+                pathFindingData: null,
+            });
+
+        }
+
+        // Pushing the directions in the floor paths
+        for (let i=0; i<this.currentPathfindingResponse.floorPaths.length; i++) {
+            for (let j=0; j<=this.currentPathfindingResponse.floorPaths[i].path.length - 1; j++) {
+
+                let distance: number;
+                // distance is in meter
+                let time: number;
+                const pos1 = this.currentPathfindingResponse.floorPaths[i].path[j];
+                const pos2 = this.currentPathfindingResponse.floorPaths[i].path[j+1];
+
+                if (pos1 && pos2) {
+                    distance = google.maps.geometry.spherical.computeDistanceBetween(pos1, pos2);
+
+                    // Estimate duration assuming average indoor walking speed (~1.4 meters/sec)
+                    time = distance / 1.4;
+                } else {
+                    distance = 0;
+                    time = 0;
+                }
+
+                if (j==0){
+                    this.currentSteps?.push({
+                        step: {
+                            instructions: 'FLOOR ' + i +' INSTRUCTIONS: ' + this.currentPathfindingResponse.floorPaths[i].direction[j],
+                            distance: distance.toFixed(2).toString() + ' meters',
+                            time: time.toFixed(2).toString() + ' seconds',
+                            icon:'',
+                        },
+                        googleMapData: null,
+                        pathFindingData: null,
+                    });
+                    continue;
+                }
+
+                if (j == this.currentPathfindingResponse.floorPaths[i].path.length - 1){
+                    this.currentSteps?.push({
+                        step: {
+                            instructions: this.currentPathfindingResponse.floorPaths[i].direction[j],
+                            distance: '',
+                            time: '',
+                            icon:'',
+                        },
+                        googleMapData: null,
+                        pathFindingData: null,
+                    });
+                    continue;
+                }
+
+                this.currentSteps?.push({
+                    step: {
+                        instructions: this.currentPathfindingResponse.floorPaths[i].direction[j],
+                        distance: distance.toFixed(2).toString() + ' meter',
+                        time: time.toFixed(2).toString() + ' seconds',
+                        icon:'',
+                    },
+                    googleMapData: null,
+                    pathFindingData: null,
+                });
+
+            }
+        }
+
+
+
+
 
         this.currentPath?.setVisibility(false);
         this.allPaths = [new PathfindingGraph(this.map, this.currentPathfindingResponse.parkingLotPath.path)];
@@ -691,146 +865,12 @@ export class PathfindingMap extends GoogleMap {
         // this.route();
     }
 
-    // updateCurrentFloor(floorNum: number) {
-    //     if (!this.currentPathfindingResponse) return;
-    //     const floorPath = this.currentPathfindingResponse.floorPaths.find(fp => fp.floorNum === floorNum);
-    //
-    //     if (floorPath) {
-    //         if (this.currentFloorPath) {
-    //             this.currentFloorPath.remove();
-    //             this.currentFloorPath = null;
-    //         }
-    //         if (this.currentFloorMap) {
-    //             this.currentFloorMap.setMap(null);
-    //             this.currentFloorMap = null;
-    //         }
-    //         this.currentFloorPath = new PathfindingGraph(this.map, this.currentPathfindingResponse.floorPaths[0].path, '#00AACC', null);console.log('steps');
-    //         this.currentFloorPath.innerSteps = this.currentPathfindingResponse.floorPaths[0].direction;
-    //
-    //         this.currentFloorPath.showInnerStep();
-    //         this.currentFloorPath.setupInnerNextButton();
-    //
-    //         this.currentFloorMap = new google.maps.GroundOverlay(this.currentPathfindingResponse.floorPaths[0].image, {
-    //             north: this.currentPathfindingResponse.floorPaths[0].imageBoundsNorth,
-    //             south: this.currentPathfindingResponse.floorPaths[0].imageBoundsSouth,
-    //             east: this.currentPathfindingResponse.floorPaths[0].imageBoundsEast,
-    //             west: this.currentPathfindingResponse.floorPaths[0].imageBoundsWest,
-    //         });
-    //
-    //         this.currentFloorMap.setMap(this.map);
-    //     }
-    // }
-
     recenter(lat: number, lng: number, zoom: number) {
         this.map.setCenter({lat, lng});
         this.map.setZoom(zoom);
     }
 
 
-    // Text to directions functions for outside of hospital
-    // private showCurrentStep(): void {
-    //     const stepDisplay = document.getElementById("step-instruction");
-    //     if (stepDisplay && this.steps.length > 0) {
-    //         const step = this.steps[this.stepIndex];
-    //
-    //         // Update instruction UI
-    //         stepDisplay.innerHTML = `
-    //         <strong>Step ${this.stepIndex + 1}/${this.steps.length}</strong><br>
-    //         ${step.instructions}<br>
-    //         <small>${step.distance?.text}, ${step.duration?.text}</small>
-    //     `;
-    //
-    //         // Text-to-speech
-    //         const plainText = step.instructions.replace(/<[^>]*>/g, '');
-    //         const utter = new SpeechSynthesisUtterance(plainText);
-    //         utter.lang = 'en-US';
-    //         speechSynthesis.cancel();
-    //         speechSynthesis.speak(utter);
-    //
-    //         // Clear previous step polyline
-    //         if (this.currentStepPolyline) {
-    //             this.currentStepPolyline.setMap(null);
-    //         }
-    //
-    //         // Draw current step polyline
-    //         this.currentStepPolyline = new google.maps.Polyline({
-    //             path: google.maps.geometry.encoding.decodePath(step.polyline.points),
-    //             strokeOpacity: 1.0,
-    //             strokeWeight: 6,
-    //             map: this.map,
-    //         });
-    //
-    //         // Pan and zoom to current step start location
-    //         this.map.panTo(step.start_location);
-    //         this.map.setZoom(17); // or adjust dynamically
-    //
-    //         // Optional: Add a marker to indicate position
-    //         if (this.currentStepMarker) {
-    //             this.currentStepMarker.setMap(null);
-    //         }
-    //
-    //         this.currentStepMarker = new google.maps.Marker({
-    //             position: step.start_location,
-    //             map: this.map,
-    //             icon: {
-    //                 path: google.maps.SymbolPath.CIRCLE,
-    //                 scale: 6,
-    //                 fillOpacity: 1,
-    //                 strokeColor: "#fff",
-    //                 strokeWeight: 2
-    //             }
-    //         });
-    //     } else {
-    //         console.log("No steps found or stepDisplay element is missing.");
-    //     }
-    // }
-
-    // private setupNextButton(): void {
-    //     const nextButton = document.getElementById("next-step-btn");
-    //     if (nextButton) {
-    //         nextButton.addEventListener("click", () => {
-    //             if (this.stepIndex < this.steps.length - 1) {
-    //                 this.stepIndex++;
-    //                 this.showCurrentStep();
-    //             } else {
-    //                 alert("You’ve reached the destination for outside map!");
-    //             }
-    //         });
-    //     }
-    // }
-
-
-
-
-    // To route from home to the wanted hospital
-    // private route() {
-    //     if (!this.startPlaceId || !this.endLocation) return;
-    //
-    //     this.directionsService.route(
-    //         {
-    //             origin: {placeId: this.startPlaceId},
-    //             destination: this.endLocation,
-    //             travelMode: this.travelMode,
-    //         },
-    //         (response, status) => {
-    //             if (status === 'OK') {
-    //                 console.log('Routed!');
-    //                 this.directionsRenderer.setDirections(response);
-    //
-    //                 const route = response?.routes[0];
-    //                 const leg = route?.legs[0];
-    //                 this.steps = leg?.steps;
-    //                 this.stepIndex = 0;
-    //
-    //                 console.log(response);
-    //                 this.showCurrentStep();
-    //                 this.setupNextButton();
-    //             } else {
-    //                 window.alert('Directions request failed due to ' + status);
-    //             }
-    //         }
-    //     );
-    // }
 }
 
 
