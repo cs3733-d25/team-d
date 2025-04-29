@@ -25,7 +25,9 @@ class BFSStrategy implements PathFindingStrategy {
 
         while (queue.length > 0) {
             const { node, path } = queue.shift()!;
-            if (node.data.type === startNodeType) {
+
+            if (this.isGoalNode(startNodeType, node)) { 
+
                 return path.map((node) => node.data).reverse();
             }
             visited.add(node.data.nodeId);
@@ -37,6 +39,28 @@ class BFSStrategy implements PathFindingStrategy {
         }
         return [];
     }
+
+
+    
+    private isGoalNode( startNodeType: NodePathResponseType, node: GraphNode): boolean {
+        if (startNodeType === 'PARKING') {
+
+            return node.data.type === 'DOOR';
+
+        } else if ( startNodeType === 'DOOR') {
+
+            return node.data.type === 'CHECKIN' || node.data.type === 'ELEVATOR';
+
+        }else if (startNodeType === 'ELEVATOR') {
+
+            return node.data.type === 'CHECKIN';
+        } else {
+
+            return node.data.type === startNodeType;
+        }
+    }
+    
+
 }
 
 // DFS Implementation
