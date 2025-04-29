@@ -130,7 +130,7 @@ const RequestSheet: React.FC<RequestSheetProps> = ({ID, requestType, trigger}) =
                         <SheetHeader>
                             <SheetTitle>Edit request</SheetTitle>
                         </SheetHeader>
-                        <div className="grid grid-cols-4 items-center gap-4">
+                        <div className="flex flex-row items-center gap-4">
                             <Label htmlFor="employeeRequestedById" className="text-left">
                                 Requested By
                             </Label>
@@ -141,7 +141,7 @@ const RequestSheet: React.FC<RequestSheetProps> = ({ID, requestType, trigger}) =
                                        setRequestedById(e.target.value)}
                             />
                         </div>
-                        <div className="grid grid-cols-4 items-center gap-4">
+                        <div className="flex flex-row items-center gap-4">
                             <Label htmlFor="departmentUnderId" className="text-left">
                                 Department
                             </Label>
@@ -152,7 +152,7 @@ const RequestSheet: React.FC<RequestSheetProps> = ({ID, requestType, trigger}) =
                                        setDepartment(e.target.value)}
                             />
                         </div>
-                        <div className="grid grid-cols-4 items-center gap-4">
+                        <div className="flex flex-row items-center gap-4">
                             <Label htmlFor="roomNum" className="text-left">
                                 Room
                             </Label>
@@ -163,14 +163,14 @@ const RequestSheet: React.FC<RequestSheetProps> = ({ID, requestType, trigger}) =
                                        setRoomNum(e.target.value)}
                             />
                         </div>
-                        <div className="grid grid-cols-4 items-center gap-4">
-                            <Label htmlFor="priority" className="text-left">
+                        <div className="flex flex-row items-center gap-4">
+                            <Label htmlFor="priority" className="">
                                 Priority
                             </Label>
                             <select
                                 required
                                 id="priority"
-                                className="w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
+                                className="w-65 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                 onChange={(e) =>
                                     setPriority(e.target.value)}
                             >
@@ -181,14 +181,14 @@ const RequestSheet: React.FC<RequestSheetProps> = ({ID, requestType, trigger}) =
                                 <option value="Emergency">Emergency</option>
                             </select>
                         </div>
-                        <div>
-                            <Label className="pt-4 pb-2" htmlFor="requestStatus">
+                        <div className="flex flex-row items-center gap-4">
+                            <Label htmlFor="requestStatus">
                                 Request Status
                             </Label>
                             <select
                                 required
                                 id="requestStatus"
-                                className="w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
+                                className="w-50 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                 onChange={(e) =>
                                     setStatus(e.target.value)}
                             >
@@ -200,7 +200,7 @@ const RequestSheet: React.FC<RequestSheetProps> = ({ID, requestType, trigger}) =
                             </select>
                         </div>
                         {requestType === "Translator" ? (
-                            <div className="grid gap-4 py-4">
+                            <div className="grid gap-4">
                                 <div className="grid grid-cols-4 items-center gap-4">
                                     <Label htmlFor="langaugeTo" className="text-left">
                                         Language To
@@ -249,7 +249,7 @@ const RequestSheet: React.FC<RequestSheetProps> = ({ID, requestType, trigger}) =
                                 </div>
                             </div>
                         ) : requestType === "Equipment" ? (
-                            <div className="grid gap-4 py-4">
+                            <div className="grid gap-4">
                                 <div className="grid grid-cols-4 items-center gap-4">
                                     <Label htmlFor="startDateTime" className="text-left">
                                         Start Date
@@ -309,7 +309,7 @@ const RequestSheet: React.FC<RequestSheetProps> = ({ID, requestType, trigger}) =
                                 </div>
                             </div>
                         ) : requestType === "Security" ? (
-                            <div className="grid gap-4 py-4">
+                            <div className="grid gap-4">
                                 <div className="grid grid-cols-4 items-center gap-4">
                                     <Label htmlFor="securityType" className="text-left">
                                         Security Type
@@ -334,7 +334,7 @@ const RequestSheet: React.FC<RequestSheetProps> = ({ID, requestType, trigger}) =
                                 </div>
                             </div>
                         ) : requestType === "Sanitation" ? (
-                            <div className="grid gap-4 py-4">
+                            <div className="grid gap-4">
                                 <div className="grid grid-cols-4 items-center gap-4">
                                     <Label htmlFor="type" className="text-left">
                                         Type
@@ -359,19 +359,21 @@ const RequestSheet: React.FC<RequestSheetProps> = ({ID, requestType, trigger}) =
                                 </div>
                             </div>
                         ) : null}
-                        <div className="grid grid-cols-4 items-center gap-4">
+                        <div className="flex flex-row gap-4">
                             <Label htmlFor="comments" className="text-left">
                                 Comments
                             </Label>
                             <Input id="comments"
                                    value={comments}
-                                   className="col-span-3"
+                                   className="col-span-3 h-20"
                                    onChange={(e) =>
                                        setComments(e.target.value)}
                             />
                         </div>
                             <SheetFooter>
-                                <Button type="submit"
+                                <Button
+                                        className = "bg-blue-500 w-full"
+                                        type="submit"
                                         onClick={async () => {
                                             try {
                                                 const updatedRequest = {
