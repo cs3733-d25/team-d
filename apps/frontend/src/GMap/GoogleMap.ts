@@ -636,7 +636,7 @@ export class PathfindingMap extends GoogleMap {
         this.directionsRenderer.getDirections()?.routes[0].legs[0].steps.forEach((step) => {
             this.currentSteps?.push({
                 step: {
-                    instructions: step.instructions.replace(/<div[^>]*>/g,'\n').replace(/<[^>]*>/g, ''),
+                    instructions: step.instructions.split('<div')[0].replace(/<[^>]*>/g, ''),
                     distance: step.distance?.text || '',
                     time: step.duration?.text || '',
                     icon:
