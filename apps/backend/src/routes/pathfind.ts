@@ -301,6 +301,7 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
             imageBoundsSouth: topFloorGraph.imageBoundsSouth,
             imageBoundsEast: topFloorGraph.imageBoundsEast,
             imageBoundsWest: topFloorGraph.imageBoundsWest,
+            imageRotation: topFloorGraph.imageRotation,
             path: topFloorPath,
             direction: topFloorDirection,
         } as FloorPathResponse);
@@ -355,6 +356,7 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
             imageBoundsSouth: bottomFloorGraph.imageBoundsSouth,
             imageBoundsEast: bottomFloorGraph.imageBoundsEast,
             imageBoundsWest: bottomFloorGraph.imageBoundsWest,
+            imageRotation: bottomFloorGraph.imageRotation,
             path: bottomFloorPath,
             direction: bottomFloorDirection,
         });
@@ -387,6 +389,7 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
             imageBoundsSouth: topFloorGraph.imageBoundsSouth,
             imageBoundsEast: topFloorGraph.imageBoundsEast,
             imageBoundsWest: topFloorGraph.imageBoundsWest,
+            imageRotation: topFloorGraph.imageRotation,
             path: topFloorPath,
             direction: topFloorDiretion,
         });

@@ -159,6 +159,8 @@ class PathfindingGraph {
 
         this.rotation = floor?.imageRotation || 0;
 
+        console.log(this.rotation);
+
         this.visibility = false;
     }
 
@@ -171,7 +173,10 @@ class PathfindingGraph {
         });
         this.floorMap?.setMap(map);
         this.selectedSegment?.setMap(null);
-        this.map.setHeading(this.rotation);
+
+
+        this.map.setHeading(-this.rotation);
+        console.log(this.rotation, this.map.getHeading());
 
         this.visibility = visibility;
     }
@@ -439,13 +444,15 @@ export class PathfindingMap extends GoogleMap {
                 lng: -71.3162829187303,
             },
             zoom: 10,
+            mapId: '22c86d134d7873f9',
         });
 
         console.log('pathfinding constructor');
 
         this.directionsService = new google.maps.DirectionsService();
         this.directionsRenderer = new google.maps.DirectionsRenderer({
-            map: this.map
+            map: this.map,
+            // preserveViewport: true,
         });
 
         this.autocomplete = new google.maps.places.Autocomplete(autocompleteInput, {
@@ -597,7 +604,7 @@ export class PathfindingMap extends GoogleMap {
             this.allPaths.push(new PathfindingGraph(this.map, floor.path, floor))
         );
 
-        this.setCurrentGraphIdx(1);
+        this.setCurrentGraphIdx(0);
 
         // this.currentPath.setVisibility(true);
 
