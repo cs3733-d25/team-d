@@ -99,6 +99,8 @@ export default function NewDirections() {
 
         if (!map) return;
         map.setDepartment(newDepartment);
+
+        setCurrentStep(-1);
     }
 
     const handleModeChange = (mode: string) => {
@@ -234,12 +236,12 @@ export default function NewDirections() {
 
                         <Label className="mb-4">
                             Text-to-speech
-                            <Switch onCheckedChange={setTts} />
+                            <Switch className="data-[state=checked]:bg-blue-900" onCheckedChange={setTts} />
                         </Label>
                         <div className="flex flex-row">
-                            <Button className="flex-1 grow m-2" onClick={handlePrevStep}>Previous</Button>
+                            <Button className="flex-1 grow m-2 bg-blue-900" onClick={handlePrevStep}>Previous</Button>
                             <Separator className="mt-4 mb-4" orientation="vertical" />
-                            <Button className="flex-1 grow m-2" onClick={handleNextStep}>Next</Button>
+                            <Button className="flex-1 grow m-2 bg-blue-900" onClick={handleNextStep}>Next</Button>
                         </div>
                         {pathfindingResults.directions.map((step, i) => (
                             <div className= {`relative group px-2 ${currentStep === i ? 'bg-gray-200 rounded-md' : 'bg-white'}`}
