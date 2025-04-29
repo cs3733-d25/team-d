@@ -16,7 +16,7 @@ import {
     FilterFn,
     Row, Column, RowData,
 } from "@tanstack/react-table"
-import {ArrowUpDown, ArrowUp, ArrowDown, ChevronDown, Funnel, MoreHorizontal, SquarePen} from "lucide-react"
+import {ArrowUpDown, ChevronDown, Funnel, MoreHorizontal, SquarePen, Trash, UserPen} from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
     DropdownMenu,
@@ -31,6 +31,7 @@ import { Input } from "@/components/ui/input"
 import {Collapsible, CollapsibleContent, CollapsibleTrigger} from "@radix-ui/react-collapsible";
 import RequestCollapsible from "@/components/RequestCollapsible.tsx"
 import RequestSheet from "@/components/RequestSheet.tsx"
+import AssignEmployeeDialog from "@/components/AssignEmployeeDialog.tsx"
 
 declare module '@tanstack/react-table' {
     interface ColumnMeta<TData extends RowData, TValue> {
@@ -283,7 +284,21 @@ export const columns: ColumnDef<ServiceRequest>[] = [
         },
     },
     {
-        id: "actions",
+        id: "assignEmployee",
+        enableHiding: false,
+        cell: ({ row }) => {
+            const request = row.original
+
+            return (
+                <AssignEmployeeDialog ID={row.original.requestId}
+                              requestType={getRequestType(row.original)}
+                              trigger={<div className="pl-4 w-full text-left"><UserPen className="text-gray-500"/></div>}
+                />
+            )
+        }
+    },
+    {
+        id: "editRequest",
         enableHiding: false,
         cell: ({ row }) => {
             const request = row.original
@@ -291,8 +306,19 @@ export const columns: ColumnDef<ServiceRequest>[] = [
             return (
                 <RequestSheet ID={row.original.requestId}
                               requestType={getRequestType(row.original)}
-                              trigger={<div className="pl-4 w-full text-left"><SquarePen className="text-gray-400"/></div>}
+                              trigger={<div className="pl-4 w-full text-left"><SquarePen className="text-gray-500"/></div>}
                 />
+            )
+        }
+    },
+    {
+        id: "deleteRequest",
+        enableHiding: false,
+        cell: ({ row }) => {
+            const request = row.original
+
+            return (
+                <div className="pl-4 w-full text-left"><Trash className="text-gray-500"/></div>
             )
         }
     },
