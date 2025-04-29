@@ -159,7 +159,39 @@ export default function NewDirections() {
     return (
         <div className="flex flex-row flex-1 h-screen overflow-y-hidden">
             <div className="flex-1 p-4 overflow-y-scroll">
-                <h2 className="text-3xl font-bold">Get Directions</h2>
+                {/* Header + inline help button */}
+                <div className="flex items-center justify-between">
+                    <h2 className="text-3xl font-bold">Get Directions</h2>
+
+                    {/* help button + bubble tooltip */}
+                    <div className="relative group">
+                        <button
+                            type="button"
+                            className="w-7 h-7 flex items-center justify-center rounded-full
+                 border border-gray-400 bg-white text-gray-600
+                 hover:bg-gray-200 focus:outline-none"
+                        >
+                            ?
+                        </button>
+
+                        <div
+                            className="absolute right-0 mt-2 w-64 z-10 p-4 text-sm text-white
+                 bg-gray-800 rounded-lg shadow-lg
+                 opacity-0 pointer-events-none
+                 transition-opacity duration-200
+                 group-hover:opacity-100 group-focus-within:opacity-100"
+                        >
+                            <p className="font-semibold mb-2">Steps for navigation:</p>
+                            <ol className="list-decimal ml-4 space-y-1">
+                                <li>Enter your current address</li>
+                                <li>Choose transportation mode</li>
+                                <li>Choose destination hospital</li>
+                                <li>Once at the hospital, pick the department</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+
                 <Separator className="mt-4 mb-4" />
 
                 <div className="flex flex-row">
