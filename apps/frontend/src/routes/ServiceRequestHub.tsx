@@ -20,7 +20,6 @@ import SecurityServiceRequest from "@/components/ServiceRequest/SecurityRequest/
 import ServiceHubBackground from "../public/ServiceHubBackground.png";
 
 
-
 const ServiceRequestHub = () => {
     return (
         <div className="min-h-screen flex flex-col bg-[url(../public/service_request_bg.jpg)] bg-cover bg-center bg-no-repeat">
@@ -56,11 +55,11 @@ const ServiceRequestHub = () => {
                             popupComponent={<SecurityServiceRequest />}
                         />
                     </div>
-
                 </div>
             </main>
         </div>
     );
 }
 
+//
 export default ServiceRequestHub;
