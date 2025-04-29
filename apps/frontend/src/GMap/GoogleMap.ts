@@ -886,7 +886,6 @@ export class PathfindingMap extends GoogleMap {
         if (tts) {
             console.log('kajbfj');
             const utter = new SpeechSynthesisUtterance(step.step.instructions);
-            this.setCurrentGraphIdx(0);
             utter.lang = 'en-US';
             speechSynthesis.cancel();
             speechSynthesis.speak(utter);
@@ -895,6 +894,7 @@ export class PathfindingMap extends GoogleMap {
         const bounds = new google.maps.LatLngBounds();
 
         if (step.googleMapData?.polyline) {
+            this.setCurrentGraphIdx(0);
             this.currentStepPolyline?.setMap(null);
             const path = google.maps.geometry.encoding.decodePath(step.googleMapData.polyline.points);
             this.currentStepPolyline = new google.maps.Polyline({
