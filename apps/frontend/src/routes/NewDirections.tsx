@@ -239,26 +239,29 @@ export default function NewDirections() {
                             <Switch className="data-[state=checked]:bg-blue-900" onCheckedChange={setTts} />
                         </Label>
                         <div className="flex flex-row">
-                            <Button className="flex-1 grow m-2 bg-blue-900" onClick={handlePrevStep}>Previous</Button>
+                            <Button className="flex-1 grow m-2 bg-blue-900" onClick={handlePrevStep} disabled={currentStep < 1}>Previous</Button>
                             <Separator className="mt-4 mb-4" orientation="vertical" />
-                            <Button className="flex-1 grow m-2 bg-blue-900" onClick={handleNextStep}>Next</Button>
+                            <Button className="flex-1 grow m-2 bg-blue-900" onClick={handleNextStep} disabled={currentStep >= pathfindingResults.directions.length - 1}>Next</Button>
                         </div>
-                        {pathfindingResults.directions.map((step, i) => (
-                            <div className= {`relative group px-2 ${currentStep === i ? 'bg-gray-200 rounded-md' : 'bg-white'}`}
-                                onClick={() => {
-                                map?.setCurrentStepIdx(i, tts);
-                                setCurrentStep(i);
-                                console.log(i);
-                            }}> {step.icon}
-                                <span className="text-blue-500">{step.instructions}</span>
-                                <br/>
-                                <span className="text-gray-500">{step.time} ({step.distance})</span>
-                                <span className="absolute bottom-0 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-black ml-30">
+                        <div className="h-[400px] overflow-y-scroll">
+                            {pathfindingResults.directions.map((step, i) => (
+                                <div className= {`relative group px-2 ${currentStep === i ? 'bg-gray-200 rounded-md' : 'bg-white'}`}
+                                     onClick={() => {
+                                         map?.setCurrentStepIdx(i, tts);
+                                         setCurrentStep(i);
+                                         console.log(i);
+                                     }}> {step.icon}
+                                    <span className="text-blue-500">{step.instructions}</span>
+                                    <br/>
+                                    <span className="text-gray-500">{step.time} ({step.distance})</span>
+                                    <span className="absolute bottom-0 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-black ml-30">
                                     Click to view
                                 </span>
-                                <br/><br/>
-                            </div>
-                        ))}
+                                    <br/><br/>
+                                </div>
+                            ))}
+                        </div>
+
 
                         {/*<div className="mb-5">*/}
                         {/*    <div id="inner-step-instruction">Loading directions...</div>*/}

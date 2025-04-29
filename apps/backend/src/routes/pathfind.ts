@@ -89,6 +89,10 @@ router.get('/options', async (req: Request, res: Response) => {
         });
     });
 
+    response.hospitals.forEach((hospital) => {
+        hospital.departments.sort((a, b) => a.name.localeCompare(b.name));
+    });
+
     res.json(response);
 });
 
