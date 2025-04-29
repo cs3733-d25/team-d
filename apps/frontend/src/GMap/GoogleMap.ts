@@ -12,6 +12,7 @@ import {EditorEncapsulator} from "@/routes/MapEditor.tsx";
 
 import chf1 from '@/public/floormaps/new/chf1.png';
 import ff1 from '@/public/floormaps/new/ff1.png';
+import mcf2 from '@/public/floormaps/new/mcf2.png';
 import pp20f1 from '@/public/floormaps/new/pp20f1.png';
 import pp22f1 from '@/public/floormaps/new/pp22f1.png';
 import pp22f3 from '@/public/floormaps/new/pp22f3.png';
@@ -75,6 +76,8 @@ abstract class GoogleMap {
                 return pp22f3;
             case 'pp22f4.png':
                 return pp22f4;
+            case 'mcf2.png':
+                return mcf2;
             default:
                 return '';
         }
@@ -1520,6 +1523,18 @@ export class EditorMap extends GoogleMap {
 
         console.log('editor map constructosdfsdfsdr');
         this.graphs = new Map();
+
+        new google.maps.GroundOverlay(mcf2, {
+            north: 42.33694,
+            south: 42.33594,
+            east: -71.10395,
+            west: -71.10595,
+        }, {
+            map: this.map,
+        });
+
+        this.map.setZoom(20);
+        this.map.panTo({lat: 42.33694, lng: -71.10895});
     }
 
     changeGraph(graphId: number) {
