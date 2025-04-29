@@ -138,6 +138,7 @@ class PathfindingGraph {
         this.path = new google.maps.Polyline({
             path: path,
             strokeColor: '#00c',
+            strokeWeight: 3,
         });
 
         this.nodes = path.map(position =>
@@ -506,6 +507,10 @@ export class PathfindingMap extends GoogleMap {
         this.directionsRenderer = new google.maps.DirectionsRenderer({
             map: this.map,
             // preserveViewport: true,
+            polylineOptions: {
+                strokeColor: '#00c',
+                strokeWeight: 3,
+            }
         });
 
         this.autocomplete = new google.maps.places.Autocomplete(autocompleteInput, {
