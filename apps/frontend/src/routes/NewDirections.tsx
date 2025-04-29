@@ -1,7 +1,7 @@
 import {useEffect, useRef, useState} from "react";
 import {DirectionsStep, PathfindingMap, PathfindingResults} from "@/GMap/GoogleMap.ts";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCar, faWalking, faBus, faBicycle } from "@fortawesome/free-solid-svg-icons";
+import {faCar, faWalking, faBus, faBicycle, faArrowLeft, faArrowRight, faArrowUp} from "@fortawesome/free-solid-svg-icons";
 import {Switch} from '@/components/ui/switch.tsx';
 import {
     API_ROUTES,
@@ -249,7 +249,11 @@ export default function NewDirections() {
                                 map?.setCurrentStepIdx(i, tts);
                                 setCurrentStep(i);
                                 console.log(i);
-                            }}> {step.icon}
+                            }}>
+                                {step.icon === "right" ? <FontAwesomeIcon icon={faArrowRight}/>
+                                    : step.icon === "left" ? <FontAwesomeIcon icon={faArrowLeft}/>
+                                    : <FontAwesomeIcon icon={faArrowUp}/>}
+                                <span> </span>
                                 <span className="text-blue-500">{step.instructions}</span>
                                 <br/>
                                 <span className="text-gray-500">{step.time} ({step.distance})</span>
