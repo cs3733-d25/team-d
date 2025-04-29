@@ -6,7 +6,7 @@ import {
     FloorPathResponse,
     EditorNode,
     PathfindingResponse,
-    DepartmentOptions, EditorNodeType,
+    DepartmentOptions,
 } from 'common/src/constants.ts';
 import {EditorEncapsulator} from "@/routes/MapEditor.tsx";
 
@@ -17,7 +17,7 @@ import pp22f1 from '@/public/floormaps/new/pp22f1.png';
 import pp22f3 from '@/public/floormaps/new/pp22f3.png';
 import pp22f4 from '@/public/floormaps/new/pp22f4.png';
 
-import {Button} from '@/components/ui/button.tsx'
+// import {Button} from '@/components/ui/button.tsx'
 
 const API_KEY: string = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 const SCRIPT_URL: string = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&libraries=geometry,places&callback=initMap`
@@ -36,7 +36,7 @@ abstract class GoogleMap {
      * Loads the Google Maps API script.
      */
     protected static async loadScript() {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             const existingScript = document.querySelector(`script[src="${SCRIPT_URL}"]`);
 
             if (!existingScript) {
@@ -137,17 +137,17 @@ class PathfindingGraph {
 
         this.path = new google.maps.Polyline({
             path: path,
-            strokeColor: '#0cf',
+            strokeColor: '#00c',
         });
 
         this.nodes = path.map(position =>
             new google.maps.Marker({
                 icon: {
                     path: google.maps.SymbolPath.CIRCLE,
-                    scale: 5,
+                    scale: 2,
                     fillOpacity: 1,
-                    fillColor: '#0cf',
-                    strokeColor: '#fff',
+                    strokeColor: '#00c',
+                    fillColor: '#ddd',
                     strokeWeight: 2
                 },
                 position: position,
@@ -480,10 +480,10 @@ export class PathfindingMap extends GoogleMap {
     private allPaths: PathfindingGraph[];
 
     // For Google Map directions
-    private stepIndex: number = 0;
-    private steps: google.maps.DirectionsStep[] = [];
+    // private stepIndex: number = 0;
+    // private steps: google.maps.DirectionsStep[] = [];
     private currentStepPolyline: google.maps.Polyline | null;
-    private currentStepMarker: google.maps.Marker | null = null;
+    // private currentStepMarker: google.maps.Marker | null = null;
 
     private department: DepartmentOptions | null;
 
@@ -676,13 +676,15 @@ export class PathfindingMap extends GoogleMap {
                 time = 0;
             }
 
+            const direction = this.currentPathfindingResponse.parkingLotPath.direction[j];
+
             if (j==0){
                 this.currentSteps?.push({
                     step: {
-                        instructions: 'PARKING LOT INSTRUCTIONS: '+ this.currentPathfindingResponse.parkingLotPath.direction[j],
+                        instructions: 'PARKING LOT INSTRUCTIONS: '+ direction,
                         distance: distance.toFixed(2).toString() + ' m',
                         time: time.toFixed(2).toString() + ' sec',
-                        icon:'',
+                        icon: direction.includes('right') ? 'right' : direction.includes('left') ? 'left' : 'straight',
                     },
                     googleMapData: null,
                     pathFindingData:  {
@@ -705,10 +707,10 @@ export class PathfindingMap extends GoogleMap {
             if (j == this.currentPathfindingResponse.parkingLotPath.path.length - 1){
                 this.currentSteps?.push({
                     step: {
-                        instructions: this.currentPathfindingResponse.parkingLotPath.direction[j],
+                        instructions: direction,
                         distance: '0 m',
                         time: '0 sec',
-                        icon:'',
+                        icon: direction.includes('right') ? 'right' : direction.includes('left') ? 'left' : 'straight',
                     },
                     googleMapData: null,
                     pathFindingData:  {
@@ -726,10 +728,10 @@ export class PathfindingMap extends GoogleMap {
 
             this.currentSteps?.push({
                 step: {
-                    instructions: this.currentPathfindingResponse.parkingLotPath.direction[j],
+                    instructions: direction,
                     distance: distance.toFixed(2).toString() + ' m',
                     time: time.toFixed(2).toString() + ' sec',
-                    icon:'',
+                    icon: direction.includes('right') ? 'right' : direction.includes('left') ? 'left' : 'straight',
                 },
                 googleMapData: null,
                 pathFindingData:  {
@@ -769,13 +771,15 @@ export class PathfindingMap extends GoogleMap {
                     time = 0;
                 }
 
+                const direction = this.currentPathfindingResponse.floorPaths[i].direction[j];
+
                 if (j == 0){
                     this.currentSteps?.push({
                         step: {
-                            instructions: 'FLOOR ' + i +' INSTRUCTIONS: ' + this.currentPathfindingResponse.floorPaths[i].direction[j],
+                            instructions: 'FLOOR ' + i +' INSTRUCTIONS: ' + direction,
                             distance: distance.toFixed(2).toString() + ' m',
                             time: time.toFixed(2).toString() + ' sec',
-                            icon:'',
+                            icon: direction.includes('right') ? 'right' : direction.includes('left') ? 'left' : 'straight',
                         },
                         googleMapData: null,
                         pathFindingData: {
@@ -799,10 +803,10 @@ export class PathfindingMap extends GoogleMap {
                 if (j == this.currentPathfindingResponse.floorPaths[i].path.length - 1){
                     this.currentSteps?.push({
                         step: {
-                            instructions: this.currentPathfindingResponse.floorPaths[i].direction[j],
+                            instructions: direction,
                             distance: '0 m',
                             time: '0 sec',
-                            icon:'',
+                            icon: direction.includes('right') ? 'right' : direction.includes('left') ? 'left' : 'straight',
                         },
                         googleMapData: null,
                         pathFindingData: {
@@ -820,10 +824,10 @@ export class PathfindingMap extends GoogleMap {
 
                 this.currentSteps?.push({
                     step: {
-                        instructions: this.currentPathfindingResponse.floorPaths[i].direction[j],
+                        instructions: direction,
                         distance: distance.toFixed(2).toString() + ' m',
                         time: time.toFixed(2).toString() + ' sec',
-                        icon:'',
+                        icon: direction.includes('right') ? 'right' : direction.includes('left') ? 'left' : 'straight',
                     },
                     googleMapData: null,
                     pathFindingData: {
@@ -877,6 +881,7 @@ export class PathfindingMap extends GoogleMap {
         if (tts) {
             console.log('kajbfj');
             const utter = new SpeechSynthesisUtterance(step.step.instructions);
+            this.setCurrentGraphIdx(0);
             utter.lang = 'en-US';
             speechSynthesis.cancel();
             speechSynthesis.speak(utter);
@@ -888,8 +893,8 @@ export class PathfindingMap extends GoogleMap {
                 map: this.map,
                 path: google.maps.geometry.encoding.decodePath(step.googleMapData.polyline.points),
                 strokeWeight: 10,
-                strokeColor: '#0f0',
-                zIndex: 0,
+                strokeColor: '#f04',
+                zIndex: 50,
             });
 
             this.map.panTo(step.googleMapData.start_location);
@@ -903,8 +908,8 @@ export class PathfindingMap extends GoogleMap {
                 map: this.map,
                 path: step.pathFindingData.points,
                 strokeWeight: 10,
-                strokeColor: '#0f0',
-                zIndex: 0,
+                strokeColor: '#f04',
+                zIndex: 50,
             });
 
             this.map.panTo(step.pathFindingData.points[0]);
@@ -1521,7 +1526,7 @@ export class EditorMap extends GoogleMap {
 
             if (node) {
                 this.map.setCenter({lat: node.lat, lng: node.lng});
-                this.map.setZoom(17);
+                this.map.setZoom(20);
             }
         }
     }
