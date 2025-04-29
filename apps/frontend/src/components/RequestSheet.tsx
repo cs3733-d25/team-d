@@ -62,7 +62,6 @@ const RequestSheet: React.FC<RequestSheetProps> = ({ID, requestType, trigger}) =
     const formattedDate = new Date().toISOString().slice(0, 16);
 
     const [requestedById, setRequestedById] = useState("");
-    //const [assignedToId, setAssignedToId] = useState("");
     const [department, setDepartment] = useState("");
     const [roomNum, setRoomNum] = useState("");
     const [priority, setPriority] = useState("");
@@ -89,9 +88,6 @@ const RequestSheet: React.FC<RequestSheetProps> = ({ID, requestType, trigger}) =
     useEffect(() => {
         if (request) {
             setRequestedById(request.employeeRequestedById.toString());
-            // if (request.assignedEmployeeId) {
-            //     setAssignedToId(request.assignedEmployeeId.toString());
-            // }
             setDepartment(request.departmentUnderId.toString());
             setRoomNum(request.roomNum);
             setPriority(request.priority);
@@ -119,10 +115,6 @@ const RequestSheet: React.FC<RequestSheetProps> = ({ID, requestType, trigger}) =
             }
             setComments(request.comments)
         }
-
-        // if (open) {
-        //     fetchData();
-        // }
     }, [request]);
 
     return (
@@ -149,17 +141,6 @@ const RequestSheet: React.FC<RequestSheetProps> = ({ID, requestType, trigger}) =
                                        setRequestedById(e.target.value)}
                             />
                         </div>
-                        {/*<div className="grid grid-cols-4 items-center gap-4">*/}
-                        {/*    <Label htmlFor="assignedEmployeeId" className="text-left">*/}
-                        {/*        Assigned To*/}
-                        {/*    </Label>*/}
-                        {/*    <Input id="assignedEmployeeId"*/}
-                        {/*           value={assignedToId}*/}
-                        {/*           className="col-span-3"*/}
-                        {/*           onChange={(e) =>*/}
-                        {/*               setAssignedToId(e.target.value)}*/}
-                        {/*    />*/}
-                        {/*</div>*/}
                         <div className="grid grid-cols-4 items-center gap-4">
                             <Label htmlFor="departmentUnderId" className="text-left">
                                 Department
@@ -396,7 +377,6 @@ const RequestSheet: React.FC<RequestSheetProps> = ({ID, requestType, trigger}) =
                                                 const updatedRequest = {
                                                     ...request!,
                                                     employeeRequestedById: Number(requestedById),
-                                                    //assignedEmployeeId: Number(assignedToId),
                                                     departmentUnderId: Number(department),
                                                     roomNum: roomNum,
                                                     priority: priority,
