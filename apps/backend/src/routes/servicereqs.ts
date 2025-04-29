@@ -1,6 +1,7 @@
 import express, { Router, Request, Response } from 'express';
 import PrismaClient from '../bin/prisma-client';
 import { Prisma } from 'database';
+import { transcode } from 'node:buffer';
 const router: Router = express.Router();
 
 // GET ALL SERVICE REQUESTS

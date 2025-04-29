@@ -95,12 +95,12 @@ const RequestSheet: React.FC<RequestSheetProps> = ({ID, requestType, trigger}) =
             if (request.translatorRequest) {
                 setLanguageTo(request.translatorRequest.languageTo)
                 setLanguageFrom(request.translatorRequest.languageFrom)
-                setTranslatorStart(new Date(request.translatorRequest.startDateTime).toISOString().slice(0, 16))
-                setTranslatorEnd(new Date(request.translatorRequest.endDateTime).toISOString().slice(0, 16))
+                setTranslatorStart(new Date(request.translatorRequest.startDateTime).toISOString())
+                setTranslatorEnd(new Date(request.translatorRequest.endDateTime).toISOString())
             }
             if (request.equipmentRequest) {
-                setEquipmentStart(new Date(request.equipmentRequest.endDateTime).toISOString().slice(0, 16))
-                setEquipmentEnd(new Date(request.equipmentRequest.endDateTime).toISOString().slice(0, 16))
+                setEquipmentStart(new Date(request.equipmentRequest.endDateTime).toISOString())
+                setEquipmentEnd(new Date(request.equipmentRequest.endDateTime).toISOString())
                 setQuantity(request.equipmentRequest.quantity.toString())
                 setMedicalDevice(request.equipmentRequest.medicalDevice)
                 setSignature(request.equipmentRequest.signature)
@@ -228,7 +228,7 @@ const RequestSheet: React.FC<RequestSheetProps> = ({ID, requestType, trigger}) =
                                         Start Date
                                     </Label>
                                     <Input id="startDateTime"
-                                           value={translatorStart}
+                                           value={translatorStart.slice(0, 16)}
                                            type="datetime-local"
                                            className="col-span-3"
                                            onChange={(e) =>
@@ -240,7 +240,7 @@ const RequestSheet: React.FC<RequestSheetProps> = ({ID, requestType, trigger}) =
                                         End Date
                                     </Label>
                                     <Input id="endDateTime"
-                                           value={translatorEnd}
+                                           value={translatorEnd.slice(0, 16)}
                                            type="datetime-local"
                                            className="col-span-3"
                                            onChange={(e) =>
@@ -255,7 +255,7 @@ const RequestSheet: React.FC<RequestSheetProps> = ({ID, requestType, trigger}) =
                                         Start Date
                                     </Label>
                                     <Input id="startDateTime"
-                                           value={equipmentStart}
+                                           value={equipmentStart.slice(0, 16)}
                                            type="datetime-local"
                                            className="col-span-3"
                                            onChange={(e) =>
@@ -267,7 +267,7 @@ const RequestSheet: React.FC<RequestSheetProps> = ({ID, requestType, trigger}) =
                                         End Date
                                     </Label>
                                     <Input id="endDateTime"
-                                           value={equipmentEnd}
+                                           value={equipmentEnd.slice(0, 16)}
                                            className="col-span-3"
                                            type="datetime-local"
                                            onChange={(e) =>
@@ -383,8 +383,8 @@ const RequestSheet: React.FC<RequestSheetProps> = ({ID, requestType, trigger}) =
                                                     requestStatus: status,
                                                     languageTo: languageTo,
                                                     languageFrom: languageFrom,
-                                                    startDateTime: translatorStart || equipmentStart,
-                                                    endDateTime: translatorEnd || equipmentEnd,
+                                                    startDateTime: new Date((translatorStart || equipmentStart) + ":00").toISOString(),
+                                                    endDateTime: new Date((translatorEnd|| equipmentEnd) + ":00").toISOString(),
                                                     quantity: quantity,
                                                     medicalDevice: medicalDevice,
                                                     signature: signature,
