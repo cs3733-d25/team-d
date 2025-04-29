@@ -139,7 +139,7 @@ export default function MapEditor() {
                 <h2 className="text-3xl font-bold">Map Editor</h2>
                 <Separator className="mt-4 mb-4" />
 
-                <Label className="mb-1">Choose a Graph</Label>
+                <Label className="mb-1">Graph</Label>
                 <Select onValueChange={handleGraphChange}>
                     <SelectTrigger className="w-full mb-4">
                         <SelectValue placeholder="Choose a graph..." />
@@ -149,7 +149,7 @@ export default function MapEditor() {
                             <SelectLabel>Graphs</SelectLabel>
                             {displayData.map((g) => (
                                 <SelectItem key={g.graphId + 1} value={(g.graphId + 1).toString()}>
-                                    {g.graphName}
+                                    {g.graphName} (ID: {g.graphId})
                                 </SelectItem>
                             ))}
                         </SelectGroup>
@@ -158,11 +158,11 @@ export default function MapEditor() {
                 <Separator className="mt-4 mb-4" />
                 {}
                 <div className="flex flex-row">
-                    <Button className="mb-4" onClick={handleZoom}>
+                    <Button className="mb-4 bg-blue-900" onClick={handleZoom}>
                         Zoom
                     </Button>
                     <Separator className="mr-4 ml-4" orientation="vertical" />
-                    <Button className="mb-4" onClick={handleSave}>
+                    <Button className="mb-4 bg-blue-900" onClick={handleSave}>
                         Save
                     </Button>
                 </div>
