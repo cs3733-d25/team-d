@@ -332,7 +332,14 @@ export default function ShowAllRequests() {
                 const request = row.original
 
                 return (
-                    <div className="pl-4 w-full text-left"><Trash className="text-gray-500"/></div>
+                    <button className="pl-4 w-full text-left"
+                        onClick={async()=> {
+                            const request = row.original as ServiceRequest;
+                            await axios.delete('/api/servicereqs/'+Number(request.requestId));
+                            await fetchData();
+                        }}>
+                        <Trash className="text-gray-500"/>
+                    </button>
                 )
             }
         },

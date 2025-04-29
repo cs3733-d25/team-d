@@ -466,33 +466,15 @@ router.delete('/:id', async function (req: Request, res: Response) {
         securityRequest == null &&
         sanitationRequest == null
     ) {
-        console.error(`The request with Id ${requestId} not found in database!`);
+        console.error('The request with Id ${requestId} not found in database!');
         res.status(404);
     }
     // success: delete specified service request
     else {
         try {
-            const [
-                deleteTranslatorRequest,
-                deleteEquipmentRequest,
-                deleteServiceRequest,
-                deleteSecurityRequest,
-                deleteSanitationRequest,
-            ] = await PrismaClient.$transaction([
-                PrismaClient.translatorRequest.delete({
-                    where: { serviceRequestId: requestId },
-                }),
-                PrismaClient.equipmentRequest.delete({
-                    where: { serviceRequestId: requestId },
-                }),
+            const [deleteServiceRequest] = await PrismaClient.$transaction([
                 PrismaClient.serviceRequest.delete({
                     where: { requestId: requestId },
-                }),
-                PrismaClient.securityRequest.delete({
-                    where: { serviceRequestId: requestId },
-                }),
-                PrismaClient.sanitationRequest.delete({
-                    where: { serviceRequestId: requestId },
                 }),
             ]);
 
@@ -500,14 +482,10 @@ router.delete('/:id', async function (req: Request, res: Response) {
             res.status(200).json({
                 message: 'Successfully deleted service request',
                 deleteServiceRequest,
-                deleteTranslatorRequest,
-                deleteEquipmentRequest,
-                deleteSecurityRequest,
-                deleteSanitationRequest,
             });
             // send 400 and error message if request cannot be updated
         } catch (error) {
-            console.error(`Unable to delete service request ${requestId}: ${error}`);
+            console.error('Unable to delete service request ${requestId}: ${error}');
             res.sendStatus(400);
         }
     }
