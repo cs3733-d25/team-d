@@ -138,6 +138,7 @@ class PathfindingGraph {
         this.path = new google.maps.Polyline({
             path: path,
             strokeColor: '#00c',
+            strokeWeight: 3,
         });
 
         this.nodes = path.map(position =>
@@ -506,6 +507,10 @@ export class PathfindingMap extends GoogleMap {
         this.directionsRenderer = new google.maps.DirectionsRenderer({
             map: this.map,
             // preserveViewport: true,
+            polylineOptions: {
+                strokeColor: '#00c',
+                strokeWeight: 3,
+            }
         });
 
         this.autocomplete = new google.maps.places.Autocomplete(autocompleteInput, {
@@ -872,7 +877,7 @@ export class PathfindingMap extends GoogleMap {
         });
     }
 
-    setCurrentStepIdx(stepIdx: number, tts: boolean) {
+    async setCurrentStepIdx(stepIdx: number, tts: boolean) {
         console.log('setCurrentStepIdx', stepIdx, tts);
 
         if (!this.currentSteps) return;
@@ -887,21 +892,37 @@ export class PathfindingMap extends GoogleMap {
             speechSynthesis.speak(utter);
         }
 
+        const bounds = new google.maps.LatLngBounds();
+
         if (step.googleMapData?.polyline) {
             this.currentStepPolyline?.setMap(null);
+            const path = google.maps.geometry.encoding.decodePath(step.googleMapData.polyline.points);
             this.currentStepPolyline = new google.maps.Polyline({
                 map: this.map,
-                path: google.maps.geometry.encoding.decodePath(step.googleMapData.polyline.points),
+                path: path,
                 strokeWeight: 10,
                 strokeColor: '#f04',
                 zIndex: 50,
             });
+            path.forEach(point => {
+                bounds.extend(point);
+            });
 
-            this.map.panTo(step.googleMapData.start_location);
-            this.map.setZoom(17);
+            this.map.fitBounds(bounds);
+            this.map.setZoom((this.map.getZoom() || 10) - 1);
+
+
+            // this.map.panTo(step.googleMapData.start_location);
+            // this.map.setZoom(17);
         }
 
         if (step.pathFindingData) {
+            step.pathFindingData.points.forEach(point => {
+                bounds.extend(point);
+            });
+            this.map.fitBounds(bounds);
+            this.map.setZoom((this.map.getZoom() || 10) - 1);
+
             this.setCurrentGraphIdx(step.pathFindingData.graphIdx);
             this.currentStepPolyline?.setMap(null);
             this.currentStepPolyline = new google.maps.Polyline({
@@ -912,8 +933,10 @@ export class PathfindingMap extends GoogleMap {
                 zIndex: 50,
             });
 
-            this.map.panTo(step.pathFindingData.points[0]);
-            this.map.setZoom(21);
+            // await new Promise(f => setTimeout(f, 100));
+
+            // this.map.panTo(step.pathFindingData.points[0]);
+            // this.map.setZoom(21);
         }
     }
 
@@ -1521,13 +1544,24 @@ export class EditorMap extends GoogleMap {
     }
 
     zoom() {
-        if (this.currentGraphId?.toString() && this.editorEncapsulator) {
-            const node = this.editorEncapsulator.editorGraphs.find(graph => graph.graphId === this.currentGraphId)?.Nodes[0];
-
-            if (node) {
+        const bounds = new google.maps.LatLngBounds();
+        this.editorEncapsulator?.getGraphById(this.currentGraphId || 0)?.Nodes.forEach((node, i) => {
+            if (i === 0) {
                 this.map.setCenter({lat: node.lat, lng: node.lng});
-                this.map.setZoom(20);
+                this.map.setZoom(30);
             }
-        }
+            bounds.extend({lat: node.lat, lng: node.lng});
+        });
+        this.map.fitBounds(bounds);
+        this.map.setZoom((this.map.getZoom() || 10) - 1);
+
+        // if (this.currentGraphId?.toString() && this.editorEncapsulator) {
+        //     const node = this.editorEncapsulator.editorGraphs.find(graph => graph.graphId === this.currentGraphId)?.Nodes[0];
+        //
+        //     if (node) {
+        //         this.map.setCenter({lat: node.lat, lng: node.lng});
+        //         this.map.setZoom(20);
+        //     }
+        // }
     }
 }
