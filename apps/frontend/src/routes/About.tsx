@@ -12,6 +12,8 @@ import BrandonImg from "../public/team/Brandon.jpg";
 import LucienImg from "../public/team/Lucien.jpg";
 import DeliaImg from "../public/team/Delia.jpg";
 import WongImg from "../public/team/Wong.jpg";
+import KatyImg from "../public/team/Katy.jpg";
+
 
 type Person = {
     name: string;
@@ -21,7 +23,7 @@ type Person = {
 
 const faculty: Person[] = [
     { name: "Prof. Wilson Wong", position: "Course Instructor", photo: WongImg },
-    { name: "Katy Stuparu",      position: "Team Coach" },
+    { name: "Katy Stuparu",      position: "Team Coach", photo: KatyImg },
 ];
 
 const members: Person[] = [
