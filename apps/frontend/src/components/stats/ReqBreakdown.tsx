@@ -65,9 +65,9 @@ export function ReqBreakdown() {
 
     return (
         //service request type breakdown
-        <Card className="inline-flex flex flex-col shadow-md border border-muted bg-white w-100">
+        <Card className="inline-flex flex flex-col shadow-md border border-muted bg-white w-lg h-100">
             <CardHeader className="items-center pb-0">
-                <CardTitle>Service Request Type Breakdown</CardTitle>
+                <CardTitle>Service Request Type</CardTitle>
             </CardHeader>
             <CardContent className="flex-1 pb-0">
                 <ChartContainer

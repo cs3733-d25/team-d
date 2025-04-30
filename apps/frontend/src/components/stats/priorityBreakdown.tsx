@@ -64,9 +64,9 @@ export function priorityBreakdown() {
     }, []);
 
     return (
-        <Card className="inline-flex flex flex-col shadow-md border border-muted bg-white w-100 ">
+        <Card className="inline-flex flex flex-col shadow-md border border-muted bg-white w-lg h-100">
             <CardHeader>
-                <CardTitle>Bar Chart</CardTitle>
+                <CardTitle>Service Request Priority</CardTitle>
                 <CardDescription>Priority Breakdown</CardDescription>
             </CardHeader>
             <CardContent>

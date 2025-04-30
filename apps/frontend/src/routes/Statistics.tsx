@@ -4,17 +4,21 @@ import PastWeekReqs from "@/components/stats/PastWeekReqs.tsx";
 
 export function Statistics() {
     return (
-        <>
-            <div className="inline-flex">
-                <ReqBreakdown/>
+        <div className="flex flex-col items-center gap-4 m-4">
+
+            <div className="grid grid-cols-2 gap-4">
+                <div className="inline-flex">
+                    <ReqBreakdown/>
+                </div>
+                <div className="inline-flex">
+                    <PriorityBreakdown/>
+                </div>
             </div>
-            <div className="inline-flex">
-                <PriorityBreakdown/>
-            </div>
+
             <div>
                 <PastWeekReqs/>
             </div>
-        </>
+        </div>
 
     );
 }
