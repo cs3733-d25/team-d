@@ -1524,14 +1524,18 @@ export class EditorMap extends GoogleMap {
         console.log('editor map constructosdfsdfsdr');
         this.graphs = new Map();
 
-        new google.maps.GroundOverlay(mcf2, {
-            north: 42.33694,
-            south: 42.33594,
-            east: -71.10395,
-            west: -71.10595,
-        }, {
-            map: this.map,
-        });
+        // new google.maps.GroundOverlay(mcf2, {
+        //     north: 42.33694,
+        //     south: 42.33450,
+        //     east: -71.10385,
+        //     west: -71.10915,
+        // }, {
+        //     map: this.map,
+        // });
+        //
+        // this.map.addListener('click', (e: google.maps.MapMouseEvent) => {
+        //     console.log(e.latLng?.toJSON());
+        // });
 
         this.map.setZoom(20);
         this.map.panTo({lat: 42.33694, lng: -71.10895});
