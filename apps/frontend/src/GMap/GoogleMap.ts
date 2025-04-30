@@ -545,8 +545,52 @@ export class PathfindingMap extends GoogleMap {
             polylineOptions: {
                 strokeColor: '#00c',
                 strokeWeight: 3,
+                strokeOpacity: 1,
+                icons: [{
+                    icon: {
+                        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                        scale: 2,
+                        strokeColor: '#666666',
+                        strokeWeight: 2,
+                        fillColor: '#666666',
+                        fillOpacity: 1
+                    },
+                    offset: '0px',
+                    repeat: '20px'
+                }]
             }
         });
+
+        // Add animation for the directions polyline
+        function animateDirectionsLine(this: PathfindingMap) {
+            const offsetPixels = (Date.now() / 50) % 1000; // Use timestamp for smoother animation
+            this.directionsRenderer.setOptions({
+                polylineOptions: {
+                    strokeColor: '#00c',
+                    strokeWeight: 3,
+                    strokeOpacity: 1,
+                    icons: [{
+                        icon: {
+                            path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                            scale: 2,
+                            strokeColor: '#666666',
+                            strokeWeight: 2,
+                            fillColor: '#666666',
+                            fillOpacity: 1
+                        },
+                        offset: `${offsetPixels}px`,
+                        repeat: '20px'
+                    }]
+                }
+            });
+
+            setTimeout(() => {
+                requestAnimationFrame(() => animateDirectionsLine.call(this));
+            }, 50);
+        }
+
+        // Start the animation
+        animateDirectionsLine.call(this);
 
         this.autocomplete = new google.maps.places.Autocomplete(autocompleteInput, {
             fields: ['place_id'],
