@@ -156,6 +156,9 @@ const RequestSheet: React.FC<RequestSheetProps> = ({ID, requestType, trigger, on
                         <SheetHeader>
                             <SheetTitle>Edit request</SheetTitle>
                         </SheetHeader>
+                        <SheetDescription>
+                            Service Request {request?.requestId}
+                        </SheetDescription>
                         <div>
                             <Label className="pt-4 pb-2" htmlFor="employeeName">
                                 Employee Name
