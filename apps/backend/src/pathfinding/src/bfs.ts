@@ -27,7 +27,6 @@ class BFSStrategy implements PathFindingStrategy {
             const { node, path } = queue.shift()!;
 
             if (node.data.type === startNodeType) {
-
                 return path.map((node) => node.data).reverse();
             }
             visited.add(node.data.nodeId);
@@ -39,7 +38,6 @@ class BFSStrategy implements PathFindingStrategy {
         }
         return [];
     }
-
 }
 
 // DFS Implementation
@@ -185,11 +183,9 @@ class Graph {
     generateDirectionStepsFromNodes(path: NodePathResponse[]): string[] {
         if (path.length < 2) return ['Not enough points for directions'];
 
-        
         const startNode = path[0];
         let startLabel = 'start';
-        switch(startNode.type) {
-
+        switch (startNode.type) {
             case 'PARKING':
                 startLabel = 'Start at the parking lot';
                 break;
@@ -208,14 +204,8 @@ class Graph {
 
             default:
                 startLabel = `Start at ${startNode.name ?? this.formatCoord(startNode)}`;
-
-
-
         }
         const steps: string[] = [startLabel];
-
-
-        
 
         for (let i = 1; i < path.length - 1; i++) {
             const prev = path[i - 1];
@@ -244,19 +234,15 @@ class Graph {
             }
 
             const label = curr.name || curr.type || this.formatCoord(curr);
-            steps.push(`${direction} at ${label}`);
+            steps.push(`${direction}`);
         }
 
-        
-        
+        const endNode = path[path.length - 1];
+        let endLabel = 'your destination';
 
-        const endNode = path[path.length-1];
-        let endLabel= 'your destination';
-
-        switch(endNode.type){
-
+        switch (endNode.type) {
             case 'DOOR':
-            endLabel = 'the building entrance';
+                endLabel = 'the building entrance';
                 break;
 
             case 'CHECKIN':
@@ -273,7 +259,6 @@ class Graph {
 
             default:
                 endLabel = endNode.name ?? this.formatCoord(endNode);
-
         }
         steps.push(`Arrive at ${endLabel}`);
 
