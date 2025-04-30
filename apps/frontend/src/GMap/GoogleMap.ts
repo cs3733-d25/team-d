@@ -1315,7 +1315,7 @@ class EditorMapGraph {
                 lng: node.lng,
             },
             icon: {
-                path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                path: google.maps.SymbolPath.CIRCLE,
                 scale: 5,
                 fillOpacity: 1,
                 fillColor: this.getNodeColor(node.type),
