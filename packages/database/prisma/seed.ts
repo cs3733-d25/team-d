@@ -148,7 +148,7 @@ async function main() {
                 buildingId: 4,
                 name: 'Main Campus',
                 address: '75 Francis St, Boston, MA 02115',
-                hospitalId: 2,
+                hospitalId: 3,
             },
         ],
     });

@@ -252,7 +252,7 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
 
     let insideDoorNode;
 
-    if (topFloorGraph.floorNum !== 1) {
+    if (topFloorGraph.floorNum > 2) {
         // Return the bottom floor of that building
         const bottomFloorGraph = await PrismaClient.floorGraph.findFirst({
             where: {
