@@ -157,56 +157,54 @@ export default function NewDirections() {
     }
 
     return (
-        <div className="flex flex-row flex-1 h-screen overflow-y-hidden">
+        <div className="flex flex-row flex-1 h-screen overflow-y-hidden border-2 border-[#012D5A] rounded-md shadow-md bg-[#F1F1F1]">
             <div className="flex-1 p-4 overflow-y-scroll">
                 <h2 className="text-3xl font-bold">Get Directions</h2>
-                <Separator className="mt-4 mb-4" />
+                <Separator className="mt-4 mb-4 border-[#012D5A]" />
 
                 <div className="flex flex-row">
-                    <Card className="flex-1 grow">
+                    <Card className="flex-1 grow border-4 border-[#012D5A] rounded-md shadow-md bg-[#F1F1F1]">
                         <CardContent>
-                            {/*TODO: find a better way of doing this, copied from components/ui/input.tsx*/}
-                            <Label className="mb-1">Start Location</Label>
+                            {/* Start Location */}
+                            <Label className="mb-1 mb-2 border-2 border-amber-600 rounded-md inline-block px-2 py-1">Start Location</Label>
                             <input
                                 ref={autocompleteRef}
                                 id="start-input"
                                 type="text"
-                                data-slot="input"
                                 className={cn(
-                                    "file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input flex h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
-                                    "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
-                                    "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive", "mb-4"
+                                    "file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 flex h-9 w-full min-w-0 rounded-md border-2 border-[#012D5A] bg-transparent px-3 py-1 text-base shadow-sm transition-[color,box-shadow] outline-none focus:border-[#D47F00] focus:ring-[#D47F00]/50 focus:ring-[3px]",
+                                    "mb-4"
                                 )}
                             />
 
-
-                            <Label className="mb-2">Transport Mode</Label>
-                            <div className="flex flex-col items-center justify-center gap-6 rounded-md shadow-md p-4 bg-[#012D5A] mb-4"> {/* Rounded box container */}
-                                <div className="flex gap-6">
+                            {/* Transport Mode */}
+                            <Label className="mb-1 mb-2 border-2 border-amber-600 rounded-md inline-block px-2 py-1">Transport Mode</Label>
+                            <div className="flex flex-col items-center justify-center gap-6 rounded-md shadow-md p-4 bg-[#012D5A] mb-4 w-full max-w-lg border-2 border-[#012D5A]">
+                                <div className="flex flex-wrap gap-4 justify-center w-full">
                                     {transportModes.map((mode) => (
                                         <button
                                             key={mode.value}
                                             onClick={() => handleModeChange(mode.value)}
                                             className={cn(
-                                                "p-2 rounded-md shadow-sm border", // Added border back
-                                                `text-[#012D5A]`, // Default text color
+                                                "p-2 rounded-md shadow-sm border w-[30%] min-w-[80px] max-w-[120px] border-2 border-[#012D5A]",
                                                 selectedMode === mode.value
-                                                    ? `bg-[#012D5A] text-[#D47F00] foreground border-[#D47F00]`
-                                                    : `bg-[#F1F1F1] text-[#012D5A] hover:bg-gray-100 border-gray-300`
+                                                    ? `bg-[#012D5A] text-[#D47F00] border-[#D47F00]`
+                                                    : `bg-[#F1F1F1] text-[#012D5A] hover:bg-gray-100 hover:border-[#D47F00]`
                                             )}
                                         >
                                             <div className="flex flex-col items-center">
-                                                <FontAwesomeIcon icon={mode.icon} className="text-xl mb-1" />
-                                                <span className="text-xs">{mode.label}</span>
+                                                <FontAwesomeIcon icon={mode.icon} className="text-lg md:text-xl mb-1" />
+                                                <span className="text-xs md:text-sm">{mode.label}</span>
                                             </div>
                                         </button>
                                     ))}
                                 </div>
                             </div>
 
-                            <Label>Destination Hospital</Label>
+                            {/* Destination Hospital */}
+                            <Label className="mb-1 mb-2 border-2 border-amber-600 rounded-md inline-block px-2 py-1">Destination Hospital</Label>
                             <Select onValueChange={handleHospitalChange}>
-                                <SelectTrigger className="w-full mt-1 mb-4">
+                                <SelectTrigger className="w-full mt-1 mb-4 border-2 border-[#012D5A] focus:border-[#D47F00] focus:ring-[#D47F00]/50 focus:ring-[3px]">
                                     <SelectValue placeholder="Choose a hospital..." />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -222,11 +220,13 @@ export default function NewDirections() {
                             </Select>
 
 
-                            {selectedHospital &&
+
+
+                                {selectedHospital &&
                                 <>
                                     {/*<Separator className="mt-4 mb-4" />*/}
 
-                                    <Label>Department</Label>
+                                    <Label className="mb-1 mb-2 border-2 border-amber-600 rounded-md inline-block px-2 py-1">Department</Label>
                                     <Select onValueChange={handleDepartmentChange}>
                                         <SelectTrigger className="w-full mt-1 mb-4">
                                             <SelectValue placeholder="Choose a department..." />
