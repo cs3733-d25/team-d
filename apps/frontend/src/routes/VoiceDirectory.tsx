@@ -1,16 +1,25 @@
-import React, { useMemo, useState, useEffect } from "react";
-import Fuse from "fuse.js"; //yarn add fuse.js
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import Fuse from "fuse.js";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Mic, MicOff } from "lucide-react";
+import beep from "../components/beep.mp3";
 
-// Both hospita datasets are below
+/* Browser type helpers */
+declare global {
+    interface Window {
+        webkitSpeechRecognition: any;
+        SpeechRecognition: any;
+    }
+}
+
 type Entry = {
     service: string;
     specialties: string;
     floorSuite: string;
     phone: string;
 };
- ///xyxy
+
 const chestnutData: Entry[] = [
     {
         service: "Allergy and Clinical Immunology",
@@ -175,8 +184,7 @@ const patriotData: Entry[] = [
         phone: "",
     },
 ];
-
-/* helper to build Fuse when the dataset changes */
+/* Fuse helper  */
 const createFuse = (data: Entry[]) =>
     new Fuse(data, {
         keys: ["service", "specialties"],
@@ -184,48 +192,87 @@ const createFuse = (data: Entry[]) =>
         ignoreLocation: true,
     });
 
-const HospitalDirectory: React.FC = () => {
-    const [hospital, setHospital] = useState<0 | 1>(0); // 0‑CH, 1‑PP
+const VoiceDirectory: React.FC = () => {
+    /* directory state */
+    const [hospital, setHospital] = useState<0 | 1>(0);
     const data = hospital === 0 ? chestnutData : patriotData;
 
     const [query, setQuery] = useState("");
     const [selected, setSelected] = useState<Entry>(data[0]);
 
     const fuse = useMemo(() => createFuse(data), [data]);
+    const filtered = useMemo(
+        () => (query.trim() ? fuse.search(query).map((r) => r.item) : data),
+        [query, fuse]
+    );
 
-    /* Filters the list whenever query or hospital changes */
-    const filtered = useMemo(() => {
-        const q = query.trim();
-        return q ? fuse.search(q).map((r) => r.item) : data;
-    }, [query, fuse]);
-
-    /* this is to keep th right pane synced with first filtered item */
     useEffect(() => {
         if (filtered.length && !filtered.includes(selected)) {
             setSelected(filtered[0]);
         }
     }, [filtered, selected]);
 
+    /* Voice search */
+    const recognitionRef = useRef<any>(null);
+    const [listening, setListening] = useState(false);
+
+    useEffect(() => {
+        const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SR) {
+            console.warn("Web-Speech API missing → voice search disabled");
+            return;
+        }
+        recognitionRef.current = new SR();
+        recognitionRef.current.lang = "en-US";
+        recognitionRef.current.maxAlternatives = 1;
+
+        recognitionRef.current.onstart = () => setListening(true);
+        recognitionRef.current.onresult = (e: any) => {
+            const spoken = e.results[0][0].transcript;
+            setQuery(spoken);
+        };
+        recognitionRef.current.onerror = (e: any) =>
+            console.error("Speech error:", e.error);
+        recognitionRef.current.onend = () => setListening(false);
+    }, []);
+
+    const toggleMic = () => {
+        const rec = recognitionRef.current;
+        if (!rec) return;
+        if (listening) rec.stop();
+        else {
+            try {
+                rec.start();
+            } catch {
+            }
+        }
+    };
+
+    function play() {
+        new Audio(beep).play();
+    }
+
+    /* UI */
     return (
         <div className="min-h-screen bg-white flex flex-col items-center py-8">
             <div className="w-full max-w-6xl h-[80vh] rounded-xl shadow-md border border-gray-200 overflow-hidden flex">
-                {/* Left column */}
+                {/* LEFT column */}
                 <div className="w-4/12 h-full border-r border-gray-200 flex flex-col p-5 bg-white">
                     {/* hospital buttons */}
                     <div className="flex gap-3 mb-4">
                         <Button
-                            className={`flex-1 px-4 py-2 text-base ${
+                            className={`flex-1 ${
                                 hospital === 0 ? "bg-blue-900 text-white" : "bg-gray-200"
                             }`}
                             onClick={() => {
                                 setHospital(0);
-                                setQuery(""); // clear search when switching between the two hospitals
+                                setQuery("");
                             }}
                         >
                             Chestnut Hill
                         </Button>
                         <Button
-                            className={`flex-1 px-4 py-2 text-base ${
+                            className={`flex-1 ${
                                 hospital === 1 ? "bg-blue-900 text-white" : "bg-gray-200"
                             }`}
                             onClick={() => {
@@ -237,15 +284,34 @@ const HospitalDirectory: React.FC = () => {
                         </Button>
                     </div>
 
-                    {/* search bar */}
-                    <Input
-                        placeholder="Search services or specialties…"
-                        value={query}
-                        onChange={(e) => setQuery(e.target.value)}
-                        className="mb-4"
-                    />
+                    {/* search bar + mic */}
+                    <div className="relative mb-4 flex items-center">
+                        <Input
+                            placeholder="Search services or specialties…"
+                            value={query}
+                            onChange={(e) => setQuery(e.target.value)}
+                            className="pr-14"
+                        />
 
-                    {/* scrollable directory list */}
+                        {/* mic button */}
+                        <button
+                            onClick={() => {
+                            toggleMic();
+                            play();
+                        }}
+                            aria-label="voice search"
+                            className={`absolute right-3 w-8 h-8 flex items-center justify-center rounded-full border transition-colors
+                        ${
+                                listening
+                                    ? "bg-blue-900 text-white border-blue-900"
+                                    : "bg-white text-blue-900 border-blue-900"
+                            }`}
+                        >
+                            {listening ? <MicOff size={18} /> : <Mic size={18} />}
+                        </button>
+                    </div>
+
+                    {/* list */}
                     <div className="flex-1 overflow-y-auto pr-1">
                         <ul className="space-y-1">
                             {filtered.map((item) => (
@@ -255,7 +321,7 @@ const HospitalDirectory: React.FC = () => {
                                         className={`w-full justify-start rounded-md px-3 py-2 text-left ${
                                             selected.service === item.service
                                                 ? "bg-blue-50 font-semibold text-blue-900"
-                                                : "bg-white text-black hover:bg-gray-100 hover:text-black"
+                                                : "bg-white text-black hover:bg-gray-100"
                                         }`}
                                         onClick={() => setSelected(item)}
                                     >
@@ -267,7 +333,7 @@ const HospitalDirectory: React.FC = () => {
                     </div>
                 </div>
 
-                {/* Right column */}
+                {/* RIGHT column */}
                 <div className="w-8/12 p-10 overflow-y-auto">
                     <h1 className="text-3xl font-bold text-blue-900 mb-6">
                         {selected.service}
@@ -284,7 +350,9 @@ const HospitalDirectory: React.FC = () => {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
                         <div>
-                            <h2 className="text-xl font-semibold mb-1">Floor&amp;Suite</h2>
+                            <h2 className="text-xl font-semibold mb-1">
+                                Floor&nbsp;&amp;&nbsp;Suite
+                            </h2>
                             <p>{selected.floorSuite}</p>
                         </div>
 
@@ -308,4 +376,6 @@ const HospitalDirectory: React.FC = () => {
     );
 };
 
-export default HospitalDirectory;
+// this works
+
+export default VoiceDirectory;

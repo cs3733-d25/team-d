@@ -19,7 +19,6 @@ const ServiceRequestCard: React.FC<ServiceRequestCardProps> = ({ title, image, p
                 />
 
                 {/* Overlay Text Box */}
-                <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-[250px] bg-white rounded-md bg-opacity-90 p-4">
                     <DialogTrigger asChild>
                         <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-[250px] bg-white rounded-md bg-opacity-90 p-4 hover:bg-[#012D5A] hover:text-white transition-colors duration-200 active:scale-95">
                             <h2 className="text-3xl font-semibold text-center font-nunito mb-2 cursor-pointer">
@@ -27,8 +26,8 @@ const ServiceRequestCard: React.FC<ServiceRequestCardProps> = ({ title, image, p
                             </h2>
                         </div>
                     </DialogTrigger>
-                </div>
             </div>
+
 
             {/* Popup Content */}
             <DialogContent className="place-content-center animate-in fade-in zoom-in duration-500 h-auto bg-white">

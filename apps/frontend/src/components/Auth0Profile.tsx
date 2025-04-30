@@ -81,7 +81,7 @@ const Profile = () => {
             <>
                 <div  className="w-full border-4 border-white rounded-b-lg text-center bg-black text-white
                     animate-in fade-in zoom-in duration-500 p-4 font-nunito">
-                    You are logged in as an Admin.
+                    You are logged in as an {employeeData?.userType}.
                 </div>
                 <div className="flex flex-col items-center bg-gray-50 px-4 py-15">
                     <img
@@ -102,7 +102,7 @@ const Profile = () => {
 
                     <div className="col-start-1 bg-gray-50 p-10">
                         <button onClick={() => redirectToMyRequest()}
-                                className="col-start-2 text-3xl w-100 h-100 border-4 border-black rounded text-center bg-blue-900 hover:bg-blue-900 text-white
+                                className="col-start-2 text-3xl w-100 h-100 border-4 border-[#DFE3F0] shadow-md rounded text-center bg-blue-900 hover:bg-blue-900 text-white
                                             animate-in fade-in zoom-in duration-500 p-4 font-nunito hover:scale-110 cursor-pointer flex flex-col items-center justify-center space-y-2">
                                 {/*Service Icon*/}
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 25 24" strokeWidth={1.3} stroke="currentColor" className="size-35">
@@ -115,7 +115,7 @@ const Profile = () => {
 
                     <div className="items-start justify-items-start bg-gray-50 p-10">
                         <button onClick={() => redirectToMyRequest()}
-                                className="text-3xl w-100 h-100 border-4 border-black rounded text-center bg-blue-900 hover:bg-blue-900 text-white
+                                className="text-3xl w-100 h-100 border-4 border-[#DFE3F0] shadow-md rounded text-center bg-blue-900 hover:bg-blue-900 text-white
                                     animate-in fade-in zoom-in duration-500 p-4 font-nunito hover:scale-110 cursor-pointer flex flex-col items-center justify-center space-y-2">
                                 {/*Calendar Icon*/}
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-35">
@@ -128,7 +128,7 @@ const Profile = () => {
 
                     <div className="items-start justify-items-start bg-gray-50 p-10">
                         <button onClick={() => redirectToEmployeePage()}
-                                className="text-3xl w-100 h-100 border-4 border-black rounded text-center bg-blue-900 hover:bg-blue-900 text-white
+                                className="text-3xl w-100 h-100 border-4 border-[#DFE3F0] shadow-md rounded text-center bg-blue-900 hover:bg-blue-900 text-white
                                     animate-in fade-in zoom-in duration-500 p-4 font-nunito hover:scale-110 cursor-pointer flex flex-col items-center justify-center space-y-2">
                             {/*Employee Icon*/}
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-35">
@@ -141,7 +141,7 @@ const Profile = () => {
 
                     <div className="col-start-1 bg-gray-50 p-10">
                         <button onClick={() => redirectToSettings()}
-                                className="col-start-2 text-3xl w-100 h-100 border-4 border-black rounded text-center bg-blue-900 hover:bg-blue-900 text-white
+                                className="col-start-2 text-3xl w-100 h-100 border-4 border-[#DFE3F0] shadow-md rounded text-center bg-blue-900 hover:bg-blue-900 text-white
                                         animate-in fade-in zoom-in duration-500 p-4 font-nunito hover:scale-110 cursor-pointer flex flex-col items-center justify-center space-y-2">
 
                                 {/*Settings Icon*/}
@@ -156,7 +156,7 @@ const Profile = () => {
 
                     <div className="items-start justify-items-start bg-gray-50 p-10">
                         <button onClick={() => window.open("https://www.mychart.org")}
-                                className="text-3xl w-100 h-100 border-4 border-black rounded text-center bg-blue-900 hover:bg-blue-900 text-white
+                                className="text-3xl w-100 h-100 border-4 border-[#DFE3F0] shadow-md rounded text-center bg-blue-900 hover:bg-blue-900 text-white
                                         animate-in fade-in zoom-in duration-500 p-4 font-nunito hover:scale-110 cursor-pointer flex flex-col items-center justify-center space-y-2">
                                 {/*Appointment Icon?*/}
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-35">
@@ -169,7 +169,7 @@ const Profile = () => {
 
                     <div className="items-start justify-items-start bg-gray-50 p-10">
                         <button onClick={() => redirectAdminDatabase()}
-                                className="text-3xl w-100 h-100 border-4 border-black rounded text-center bg-blue-900 hover:bg-blue-900 text-white
+                                className="text-3xl w-100 h-100 border-4 border-[#DFE3F0] shadow-md rounded text-center bg-blue-900 hover:bg-blue-900 text-white
                                         animate-in fade-in zoom-in duration-500 p-4 font-nunito hover:scale-110 cursor-pointer flex flex-col items-center justify-center space-y-2">
                                 {/*Management Icon*/}
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-35">

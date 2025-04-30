@@ -1,4 +1,6 @@
 import express, { Router, Request, Response } from 'express';
+import fs from 'fs';
+
 const router: Router = express.Router();
 
 import PrismaClient from '../bin/prisma-client';
@@ -34,12 +36,17 @@ router.put('/', async (req: Request, res: Response) => {
     const newNodes: EditorNode[] = [];
     const newEdges: EditorEdges[] = [];
 
+    let nodesMessage = '';
+    let edgesMessage = '';
+
     data.forEach((graph) => {
         graph.Nodes.forEach((node) => {
             newNodes.push(node);
+            nodesMessage += `{\n\tnodeId: ${node.nodeId},\n\tname: '${node.name}',\n\tlat: ${node.lat},\n\tlng: ${node.lng},\n\ttype: '${node.type}',\n\tgraphId: ${node.graphId},${node.connectedNodeId ? `\n\tconnectedNodeId: ${node.connectedNodeId},` : ''}\n},\n`;
         });
         graph.Edges.forEach((edge) => {
             newEdges.push(edge);
+            edgesMessage += `{\n\tedgeId: ${edge.edgeId},\n\tname: '${edge.name}',\n\tstartNodeId: ${edge.startNodeId},\n\tendNodeId: ${edge.endNodeId},\n\tgraphId: ${edge.graphId},\n},\n`;
         });
     });
 
@@ -50,6 +57,11 @@ router.put('/', async (req: Request, res: Response) => {
         await PrismaClient.edge.createMany({
             data: newEdges,
         });
+        // console.log(nodesMessage);
+        // console.log(edgesMessage);
+
+        fs.writeFile('nodes.txt', nodesMessage, (err) => {});
+        fs.writeFile('edges.txt', edgesMessage, (err) => {});
         res.sendStatus(200);
     } catch (err) {
         console.error(err);

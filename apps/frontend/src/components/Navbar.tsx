@@ -77,7 +77,7 @@ export default function Navbar() {
 
                             <NavigationMenuItem>
                                 <NavigationMenuLink className={'text-base hover:bg-[rgba(0,31,63,0.8)] hover:text-white'}>
-                                    <Link to={`/hospital-directory`}>Departments</Link>
+                                    <Link to={`/voice-directory`}>Departments</Link>
                                 </NavigationMenuLink>
                             </NavigationMenuItem>
 

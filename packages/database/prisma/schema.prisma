@@ -198,6 +198,7 @@ model FloorGraph {
   imageBoundsSouth Float
   imageBoundsEast  Float
   imageBoundsWest  Float
+  imageRotation Float
 
   buildingId Int
   Building   Building @relation(fields: [buildingId], references: [buildingId])
