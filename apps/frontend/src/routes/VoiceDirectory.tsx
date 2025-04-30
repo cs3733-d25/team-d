@@ -255,14 +255,14 @@ const VoiceDirectory: React.FC = () => {
     /* UI */
     return (
         <div className="min-h-screen bg-white flex flex-col items-center py-8">
-            <div className="w-full max-w-6xl h-[80vh] rounded-xl shadow-md border border-gray-200 overflow-hidden flex">
+            <div className="w-full max-w-6xl h-[80vh] rounded-xl overflow-hidden flex flex-1 grow border-4 border-[#012D5A] rounded-md shadow-md bg-[#F1F1F1]">
                 {/* LEFT column */}
                 <div className="w-4/12 h-full border-r border-gray-200 flex flex-col p-5 bg-white">
                     {/* hospital buttons */}
                     <div className="flex gap-3 mb-4">
                         <Button
                             className={`flex-1 ${
-                                hospital === 0 ? "bg-blue-900 text-white" : "bg-gray-200"
+                                hospital === 0 ? "bg-blue-900 text-white  mb-1 mb-2 border-2 border-amber-600 rounded-md inline-block px-2 py-1" : "bg-gray-200"
                             }`}
                             onClick={() => {
                                 setHospital(0);
@@ -273,7 +273,7 @@ const VoiceDirectory: React.FC = () => {
                         </Button>
                         <Button
                             className={`flex-1 ${
-                                hospital === 1 ? "bg-blue-900 text-white" : "bg-gray-200"
+                                hospital === 1 ? "bg-blue-900 text-white mb-1 mb-2 border-2 border-amber-600 rounded-md inline-block px-2 py-1" : "bg-gray-200"
                             }`}
                             onClick={() => {
                                 setHospital(1);
@@ -290,7 +290,7 @@ const VoiceDirectory: React.FC = () => {
                             placeholder="Search services or specialties…"
                             value={query}
                             onChange={(e) => setQuery(e.target.value)}
-                            className="pr-14"
+                            className="flex-1 grow border-2 border-[#012D5A] rounded-md shadow-md bg-[#F1F1F1]"
                         />
 
                         {/* mic button */}
@@ -300,7 +300,7 @@ const VoiceDirectory: React.FC = () => {
                             play();
                         }}
                             aria-label="voice search"
-                            className={`absolute right-3 w-8 h-8 flex items-center justify-center rounded-full border transition-colors
+                            className={`absolute top-0.5 right-3 w-8 h-8 flex items-center justify-center rounded-full border transition-colors
                         ${
                                 listening
                                     ? "bg-blue-900 text-white border-blue-900"
@@ -334,7 +334,7 @@ const VoiceDirectory: React.FC = () => {
                 </div>
 
                 {/* RIGHT column */}
-                <div className="w-8/12 p-10 overflow-y-auto">
+                <div className="w-8/12 p-10 overflow-y-auto flex-1 grow border-l-4 border-[#012D5A] shadow-md bg-[#F1F1F1]">
                     <h1 className="text-3xl font-bold text-blue-900 mb-6">
                         {selected.service}
                     </h1>
