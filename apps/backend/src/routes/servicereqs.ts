@@ -198,6 +198,82 @@ router.get('/typeBreakdown', async function (req: Request, res: Response) {
     res.json(typeBreakdown);
 });
 
+//Priority breakdown
+router.get('/priorityBreakdown', async function (req: Request, res: Response) {
+    //count num of translator requests
+    const requests = await PrismaClient.serviceRequest.groupBy({
+        by: ['priority'],
+        _count: {
+            requestId: true,
+        },
+    });
+
+    const typeBreakdown = [];
+    for (const request of requests) {
+        typeBreakdown.push({ Priority: request.priority, count: request._count.requestId });
+    }
+
+    res.json(typeBreakdown);
+});
+
+// GET NUM OF SERVICE REQ PAST 7 DAYS
+router.get('/past7days', async function (req: Request, res: Response) {
+    const now = new Date();
+    const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+    try {
+        const newReqs = await PrismaClient.serviceRequest.groupBy({
+            by: ['createdAt'],
+            where: {
+                createdAt: {
+                    gte: sevenDaysAgo,
+                },
+            },
+            _count: {
+                _all: true,
+            },
+        });
+
+        const completedReqs = await PrismaClient.serviceRequest.groupBy({
+            by: ['updatedAt'],
+            where: {
+                updatedAt: {
+                    gte: sevenDaysAgo,
+                },
+                requestStatus: 'Done',
+            },
+            _count: {
+                _all: true,
+            },
+        });
+
+        const formatDate = (date: Date) => date.toISOString().split('T')[0];
+        const newByDay: Record<string, number> = {};
+        for (const entry of newReqs) {
+            const date = formatDate(entry.createdAt);
+            newByDay[date] = (newByDay[date] || 0) + entry._count._all;
+        }
+
+        const completedByDay: Record<string, number> = {};
+        for (const entry of completedReqs) {
+            const date = formatDate(entry.updatedAt);
+            completedByDay[date] = (completedByDay[date] || 0) + entry._count._all;
+        }
+
+        const allDates = new Set([...Object.keys(newByDay), ...Object.keys(completedByDay)]);
+        const result = Array.from(allDates)
+            .map((date) => ({
+                date,
+                numOfNewReq: newByDay[date] || 0,
+                numOfCompletedReq: completedByDay[date] || 0,
+            }))
+            .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+        res.json(result);
+    } catch (error) {
+        console.error(error);
+        res.json(error);
+    }
+});
+
 // POST TRANSLATOR REQUESTS TO DATABASE
 router.post('/translator', async function (req: Request, res: Response) {
     const {
@@ -531,38 +607,16 @@ router.delete('/:id', async function (req: Request, res: Response) {
     // success: delete specified service request
     else {
         try {
-            const [
-                // deleteTranslatorRequest,
-                // deleteEquipmentRequest,
-                deleteServiceRequest,
-                // deleteSecurityRequest,
-                // deleteSanitationRequest,
-            ] = await PrismaClient.$transaction([
-                // PrismaClient.translatorRequest.delete({
-                //     where: { serviceRequestId: requestId },
-                // }),
-                // PrismaClient.equipmentRequest.delete({
-                //     where: { serviceRequestId: requestId },
-                // }),
+            const [deleteServiceRequest] = await PrismaClient.$transaction([
                 PrismaClient.serviceRequest.delete({
                     where: { requestId: requestId },
                 }),
-                // PrismaClient.securityRequest.delete({
-                //     where: { serviceRequestId: requestId },
-                // }),
-                // PrismaClient.sanitationRequest.delete({
-                //     where: { serviceRequestId: requestId },
-                // }),
             ]);
 
             // send 200 if success
             res.status(200).json({
                 message: 'Successfully deleted service request',
                 deleteServiceRequest,
-                // deleteTranslatorRequest,
-                // deleteEquipmentRequest,
-                // deleteSecurityRequest,
-                // deleteSanitationRequest,
             });
             // send 400 and error message if request cannot be updated
         } catch (error) {
