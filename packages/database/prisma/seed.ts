@@ -7973,6 +7973,13 @@ async function main() {
 
     // Seed service requests
     console.log('Seeding service requests...');
+
+    await prisma.translatorRequest.deleteMany({});
+    await prisma.sanitationRequest.deleteMany({});
+    await prisma.securityRequest.deleteMany({});
+    await prisma.equipmentRequest.deleteMany({});
+    await prisma.serviceRequest.deleteMany({});
+
     const serviceRequests = [
         await prisma.serviceRequest.upsert({
             where: { requestId: 1},
