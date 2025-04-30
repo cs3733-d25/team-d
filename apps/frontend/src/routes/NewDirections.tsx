@@ -1,7 +1,7 @@
 import {useEffect, useRef, useState} from "react";
 import {DirectionsStep, PathfindingMap, PathfindingResults} from "@/GMap/GoogleMap.ts";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {faCar, faWalking, faBus, faBicycle, faArrowLeft, faArrowRight, faArrowUp} from "@fortawesome/free-solid-svg-icons";
+import {faCar, faWalking, faBus, faBicycle, faArrowLeft, faArrowRight, faArrowUp, faCrosshairs} from "@fortawesome/free-solid-svg-icons";
 import {Switch} from '@/components/ui/switch.tsx';
 import {
     API_ROUTES,
@@ -156,11 +156,50 @@ export default function NewDirections() {
 
     }
 
+    const handleRecenter = () => {
+        if (map && pathfindingResults) {
+            map?.setCurrentStepIdx(currentStep, false);
+        }
+    };
+
     return (
         <div className="flex flex-row flex-1 h-screen overflow-y-hidden border-2 border-[#012D5A] rounded-md shadow-md bg-[#F1F1F1]">
             <div className="flex-1 p-4 overflow-y-scroll">
-                <h2 className="text-3xl font-bold">Get Directions</h2>
-                <Separator className="mt-4 mb-4 border-[#012D5A]" />
+                {/* Header + inline help button */}
+                <div className="flex items-center justify-between">
+                    <h2 className="text-3xl font-bold">Get Directions</h2>
+
+                    {/* help button + bubble tooltip */}
+                    <div className="relative group">
+                        <button
+                            type="button"
+                            className="w-7 h-7 flex items-center justify-center rounded-full
+                 border border-gray-400 bg-white text-gray-600
+                 hover:bg-gray-200 focus:outline-none"
+                        >
+                            ?
+                        </button>
+
+                        <div
+                            className="absolute right-0 mt-2 w-64 z-10 p-4 text-sm text-white
+                 bg-gray-800 rounded-lg shadow-lg
+                 opacity-0 pointer-events-none
+                 transition-opacity duration-200
+                 group-hover:opacity-100 group-focus-within:opacity-100"
+                        >
+                            <p className="font-semibold mb-2">Steps for navigation:</p>
+                            <ol className="list-decimal ml-4 space-y-1">
+                                <li>Enter your current address</li>
+                                <li>Choose transportation mode</li>
+                                <li>Choose destination hospital</li>
+                                <li>Once at the hospital, pick a department</li>
+                                <li>You can enable text-to-speech for voice directions!</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+
+                <Separator className="mt-4 mb-4" />
 
                 <div className="flex flex-row">
                     <Card className="flex-1 grow border-4 border-[#012D5A] rounded-md shadow-md bg-[#F1F1F1]">
@@ -256,10 +295,19 @@ export default function NewDirections() {
                         <div className="flex flex-row">
                             <Card className="flex-1 grow">
                                 <CardHeader>
-                                    <Label className="">
-                                        Text-to-speech
-                                        <Switch className="data-[state=checked]:bg-blue-900" onCheckedChange={setTts} />
-                                    </Label>
+                                    <div className="flex items-center justify-between">
+                                        <Label className="flex items-center gap-2">
+                                            Text-to-speech
+                                            <Switch className="data-[state=checked]:bg-blue-900" onCheckedChange={setTts} />
+                                        </Label>
+                                        <Button
+                                            onClick={handleRecenter}
+                                            className="flex-1 grow m-2 bg-blue-900"
+                                        >
+                                            <FontAwesomeIcon icon={faCrosshairs} />
+                                            Re-center
+                                        </Button>
+                                    </div>
                                     <div className="flex flex-row">
                                         <Button className="flex-1 grow m-2 bg-blue-900 active:scale-95 active:shadow-inner transition-transform" onClick={handlePrevStep} disabled={currentStep < 1}>Previous</Button>
                                         <Separator className="mt-4 mb-4" orientation="vertical" />
@@ -291,49 +339,8 @@ export default function NewDirections() {
                                     </div>
                                 </CardContent>
                             </Card>
-                            {/*<Separator className="mt-4 mb-4" />*/}
-
-                            {/*<Label className="mb-4">*/}
-                            {/*    Text-to-speech*/}
-                            {/*    <Switch className="data-[state=checked]:bg-blue-900" onCheckedChange={setTts} />*/}
-                            {/*</Label>*/}
-                            {/*<div className="flex flex-row">*/}
-                            {/*    <Button className="flex-1 grow m-2 bg-blue-900" onClick={handlePrevStep} disabled={currentStep < 1}>Previous</Button>*/}
-                            {/*    <Separator className="mt-4 mb-4" orientation="vertical" />*/}
-                            {/*    <Button className="flex-1 grow m-2 bg-blue-900" onClick={handleNextStep} disabled={currentStep >= pathfindingResults.directions.length - 1}>Next</Button>*/}
-                            {/*</div>*/}
-                            {/*<div className="h-[400px] overflow-y-scroll">*/}
-                            {/*    {pathfindingResults.directions.map((step, i) => (*/}
-                            {/*        <div className= {`relative group px-2 ${currentStep === i ? 'bg-gray-200 rounded-md' : 'bg-white'}`}*/}
-                            {/*             onClick={() => {*/}
-                            {/*                 map?.setCurrentStepIdx(i, tts);*/}
-                            {/*                 setCurrentStep(i);*/}
-                            {/*                 console.log(i);*/}
-                            {/*             }}> {step.icon}*/}
-                            {/*            <span className="text-blue-500">{step.instructions}</span>*/}
-                            {/*            <br/>*/}
-                            {/*            <span className="text-gray-500">{step.time} ({step.distance})</span>*/}
-                            {/*            <span className="absolute bottom-0 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-black ml-30">*/}
-                            {/*            Click to view*/}
-                            {/*        </span>*/}
-                            {/*            <br/><br/>*/}
-                            {/*        </div>*/}
-                            {/*    ))}*/}
-                            {/*</div>*/}
-
-
-                            {/*<div className="mb-5">*/}
-                            {/*    <div id="inner-step-instruction">Loading directions...</div>*/}
-                            {/*    <button*/}
-                            {/*        id="inner-next-step-btn"*/}
-                            {/*        className="mt-2 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"*/}
-                            {/*    >*/}
-                            {/*        Next Step*/}
-                            {/*    </button>*/}
-                            {/*</div>*/}
                         </div>
                     </>
-
                 }
             </div>
             <div ref={mapRef} className="flex-3">

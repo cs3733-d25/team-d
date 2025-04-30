@@ -12,6 +12,7 @@ import {EditorEncapsulator} from "@/routes/MapEditor.tsx";
 
 import chf1 from '@/public/floormaps/new/chf1.png';
 import ff1 from '@/public/floormaps/new/ff1.png';
+import mcf2 from '@/public/floormaps/new/mcf2.png';
 import pp20f1 from '@/public/floormaps/new/pp20f1.png';
 import pp22f1 from '@/public/floormaps/new/pp22f1.png';
 import pp22f3 from '@/public/floormaps/new/pp22f3.png';
@@ -75,6 +76,8 @@ abstract class GoogleMap {
                 return pp22f3;
             case 'pp22f4.png':
                 return pp22f4;
+            case 'mcf2.png':
+                return mcf2;
             default:
                 return '';
         }
@@ -374,7 +377,7 @@ class PathfindingGraph {
     //         // Highlight the corresponding step on map
     //         this.highlightStep(this.innerStepIndex);
     //
-    //         // Optional: pan the map to the current step’s marker/center
+    //         // Optional: pan the map to the current step's marker/center
     //         const currentNode = this.nodes[this.innerStepIndex];
     //         if (currentNode) {
     //             this.map.panTo(currentNode.getPosition()!);
@@ -483,6 +486,9 @@ class PathfindingGraph {
 export type PathfindingResults = {
     floors: number[];
     directions: DirectionsStep[];
+    startLocation?: google.maps.LatLngLiteral;
+    endLocation?: google.maps.LatLngLiteral;
+    path?: google.maps.LatLngLiteral[];
 }
 
 export type DirectionsStep = {
@@ -920,6 +926,9 @@ export class PathfindingMap extends GoogleMap {
         this.updater({
             floors: this.currentPathfindingResponse.floorPaths.map(floor => floor.floorNum),
             directions: this.currentSteps.map(step => step.step),
+            startLocation: this.currentPathfindingResponse.parkingLotPath.path[0],
+            endLocation: this.endLocation,
+            path: this.currentPathfindingResponse.parkingLotPath.path,
         });
     }
 
@@ -1566,6 +1575,22 @@ export class EditorMap extends GoogleMap {
 
         console.log('editor map constructosdfsdfsdr');
         this.graphs = new Map();
+
+        // new google.maps.GroundOverlay(mcf2, {
+        //     north: 42.33694,
+        //     south: 42.33450,
+        //     east: -71.10385,
+        //     west: -71.10915,
+        // }, {
+        //     map: this.map,
+        // });
+        //
+        this.map.addListener('click', (e: google.maps.MapMouseEvent) => {
+            console.log(e.latLng?.toJSON());
+        });
+
+        this.map.setZoom(20);
+        this.map.panTo({lat: 42.33694, lng: -71.10895});
     }
 
     changeGraph(graphId: number) {

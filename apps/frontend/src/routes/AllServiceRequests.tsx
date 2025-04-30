@@ -16,20 +16,19 @@ import {
     FilterFn,
     Row, Column, RowData,
 } from "@tanstack/react-table"
-import {ArrowUpDown, ArrowUp, ArrowDown, ChevronDown, Funnel, MoreHorizontal} from "lucide-react"
+import {ArrowUpDown, ChevronDown, Funnel, MoreHorizontal, SquarePen, Trash, UserPen} from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
     DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import {Collapsible, CollapsibleContent, CollapsibleTrigger} from "@radix-ui/react-collapsible";
 import RequestCollapsible from "@/components/RequestCollapsible.tsx"
+import RequestSheet from "@/components/RequestSheet.tsx"
+import AssignEmployeeDialog from "@/components/AssignEmployeeDialog.tsx"
 import {API_ROUTES} from "common/src/constants.ts";
 
 declare module '@tanstack/react-table' {
@@ -68,7 +67,7 @@ export type ServiceRequest = {
     requestId: number;
     createdAt: number;
     updatedAt: number;
-    assignedEmployeeId: number;
+    assignedEmployeeId: number | null;
     translatorRequest: TranslatorRequest;
     equipmentRequest: EquipmentRequest;
     securityRequest: SecurityRequest;
@@ -125,136 +124,148 @@ export const getEmployeesPlusNothing = (): string[] => {
 };
 
 await loadEmployees();
-export const columns: ColumnDef<ServiceRequest>[] = [
-    {
-        id: "expand",
-        enableHiding: false,
-        cell: ({ row }) => {
-            const expand = row.original
-            return (
-                <ChevronDown className="text-blue-950 pl-2"/>
-            )
+export default function ShowAllRequests() {
+    const [data, setData] = useState<ServiceRequest[]>([]);
+
+    const fetchData = async () => {
+        try {
+            const dataResponse = await axios.get('/api/servicereqs');
+            setData(dataResponse.data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
         }
-    },
-    {
-        accessorKey: "requestType",
-        header: ({ column }) => {
-        },
-        meta: {
-            filterVariant: 'select',
-            filterOptions: ["Translator", "Sanitation", "Equipment", "Security"],
-        },
-        filterFn: (row, columnId, filterValue: string[]) => {
-            return filterValue.includes(getRequestType(row.original as ServiceRequest))
-        },
-        cell: ({ row }) => {
-            const request = row.original as ServiceRequest;
-            return getRequestType(request);
-        },
-    },
-    {
-        accessorKey: "requestId",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Request ID
-                    <ArrowUpDown />
-                </Button>
-            )
-        },
-        meta: {
-            filterVariant: 'none',
-        },
-    },
-    {
-        accessorKey: "employeeRequestedById",
-        header: ({ column }) => {},
-        meta: {
-            filterVariant: "select",
-            filterOptions: getEmployees(),
-        },
-        filterFn: (row, columnId, filterValue: string[]) => {
-            return filterValue.includes(`${(row.original as ServiceRequest).employeeRequestedBy.firstName} ${(row.original as ServiceRequest).employeeRequestedBy.lastName}`)
-        },
-        cell: ({ row }) => {
-            const request = row.original as ServiceRequest;
-            return `${request.employeeRequestedBy.firstName} ${request.employeeRequestedBy.lastName}`;
-        }
-    },
-    {
-        accessorKey: "assignedEmployeeId",
-        header: ({ column }) => {},
-        meta: {
-            filterVariant: "select",
-            filterOptions: getEmployeesPlusNothing(),
-        },
-        filterFn: (row, columnId, filterValue: string[]) => {
-            const assignedEmployee = (row.original as ServiceRequest).assignedEmployee;
-            const name = assignedEmployee
-                ? `${assignedEmployee.firstName} ${assignedEmployee.lastName}`
-                : ""; // Ensure empty string if assignedEmployee is null or undefined
-            return filterValue.includes(name);
-        },
-        cell: ({ row }) => {
-            const request = row.original as ServiceRequest;
-            if (request.assignedEmployee === null) {
-                return "";
+    };
+
+    const columns: ColumnDef<ServiceRequest>[] = [
+        {
+            id: "expand",
+            enableHiding: false,
+            cell: ({ row }) => {
+                const expand = row.original
+                return (
+                    <ChevronDown className="text-blue-950 pl-2"/>
+                )
             }
-            return `${request.assignedEmployee.firstName} ${request.assignedEmployee.lastName}`;
-        }
-    },
-    {
-        accessorKey: "departmentUnderId",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Department
-                    <ArrowUpDown />
-                </Button>
-            )
         },
-        meta: {
-            filterVariant: 'none',
+        {
+            accessorKey: "requestType",
+            header: ({ column }) => {
+            },
+            meta: {
+                filterVariant: 'select',
+                filterOptions: ["Translator", "Sanitation", "Equipment", "Security"],
+            },
+            filterFn: (row, columnId, filterValue: string[]) => {
+                return filterValue.includes(getRequestType(row.original as ServiceRequest))
+            },
+            cell: ({ row }) => {
+                const request = row.original as ServiceRequest;
+                return getRequestType(request);
+            },
         },
-    },
-    {
-        accessorKey: "roomNum",
-        header: ({ column }) => {
-            return (
-                <Button variant="ghost">Room</Button>
-            )
+        {
+            accessorKey: "requestId",
+            header: ({ column }) => {
+                return (
+                    <Button
+                        variant="ghost"
+                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    >
+                        Request ID
+                        <ArrowUpDown />
+                    </Button>
+                )
+            },
+            meta: {
+                filterVariant: 'none',
+            },
         },
-        meta: {
-            filterVariant: 'none',
+        {
+            accessorKey: "employeeRequestedById",
+            header: ({ column }) => {},
+            meta: {
+                filterVariant: "select",
+                filterOptions: getEmployees(),
+            },
+            filterFn: (row, columnId, filterValue: string[]) => {
+                return filterValue.includes(`${(row.original as ServiceRequest).employeeRequestedBy.firstName} ${(row.original as ServiceRequest).employeeRequestedBy.lastName}`)
+            },
+            cell: ({ row }) => {
+                const request = row.original as ServiceRequest;
+                return `${request.employeeRequestedBy.firstName} ${request.employeeRequestedBy.lastName}`;
+            }
         },
-    },
-    {
-        accessorKey: "priority",
-        header: ({ column }) => {},
-        meta: {
-            filterVariant: "select",
-            filterOptions: ["Low", "Medium", "High", "Emergency"],
+        {
+            accessorKey: "assignedEmployeeId",
+            header: ({ column }) => {},
+            meta: {
+                filterVariant: "select",
+                filterOptions: getEmployeesPlusNothing(),
+            },
+            filterFn: (row, columnId, filterValue: string[]) => {
+                const assignedEmployee = (row.original as ServiceRequest).assignedEmployee;
+                const name = assignedEmployee
+                    ? `${assignedEmployee.firstName} ${assignedEmployee.lastName}`
+                    : ""; // Ensure empty string if assignedEmployee is null or undefined
+                return filterValue.includes(name);
+            },
+            cell: ({ row }) => {
+                const request = row.original as ServiceRequest;
+                if (request.assignedEmployee === null) {
+                    return "";
+                }
+                return `${request.assignedEmployee.firstName} ${request.assignedEmployee.lastName}`;
+            }
         },
-        filterFn: (row, columnId, filterValue: string[]) =>
-            filterValue.includes(row.getValue(columnId)),
-        cell: ({ getValue }) => {
-            const value = getValue<string>();
-            const styles =
-                value === "Low"
-                    ? "bg-yellow-200 text-yellow-800"
-                    : value === "Medium"
-                        ? "bg-orange-300 text-orange-900"
-                        : value === "High"
-                            ? "bg-orange-500 text-white"
-                            : "bg-red-600 text-white";
-            return (
-                <span className={`px-2 py-1 rounded font-semibold ${styles}`}>
+        {
+            accessorKey: "departmentUnderId",
+            header: ({ column }) => {
+                return (
+                    <Button
+                        variant="ghost"
+                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    >
+                        Department
+                        <ArrowUpDown />
+                    </Button>
+                )
+            },
+            meta: {
+                filterVariant: 'none',
+            },
+        },
+        {
+            accessorKey: "roomNum",
+            header: ({ column }) => {
+                return (
+                    <Button variant="ghost">Room</Button>
+                )
+            },
+            meta: {
+                filterVariant: 'none',
+            },
+        },
+        {
+            accessorKey: "priority",
+            header: ({ column }) => {},
+            meta: {
+                filterVariant: "select",
+                filterOptions: ["Low", "Medium", "High", "Emergency"],
+            },
+            filterFn: (row, columnId, filterValue: string[]) =>
+                filterValue.includes(row.getValue(columnId)),
+            cell: ({ getValue }) => {
+                const value = getValue<string>();
+                const styles =
+                    value === "Low"
+                        ? "bg-yellow-200 text-yellow-800"
+                        : value === "Medium"
+                            ? "bg-orange-300 text-orange-900"
+                            : value === "High"
+                                ? "bg-orange-500 text-white"
+                                : "bg-red-600 text-white";
+                return (
+                    <span className={`px-2 py-1 rounded font-semibold ${styles}`}>
         {value}
       </span>
             );
@@ -316,48 +327,55 @@ export const columns: ColumnDef<ServiceRequest>[] = [
             return date.toLocaleDateString("en-US", {})+ "\n" + date.toLocaleTimeString("en-US", {})
         }
     },
-    {
-        id: "actions",
-        enableHiding: false,
-        cell: ({ row }) => {
-            const request = row.original
+        {
+            id: "assignEmployee",
+            enableHiding: false,
+            cell: ({ row }) => {
+                const request = row.original
 
-            return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger onClick={(e) => e.stopPropagation()}>
-                        <Button variant="secondary" className="h-8 w-8 p-0">
-                            <span className="sr-only">Open Menu</span>
-                            <MoreHorizontal className="text-blue-950"/>
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" onClick={(e) => e.stopPropagation()}>
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem>Assign Employee</DropdownMenuItem>
-                        <DropdownMenuItem>Edit Request</DropdownMenuItem>
-                        <DropdownMenuItem onClick={async()=> {
-                            const request = row.original as ServiceRequest;
-                            await axios.delete('/api/servicereqs/'+Number(request.requestId));
-                        }}>Delete Request</DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            )
-        }
-    },
-]
+                return (
+                    <AssignEmployeeDialog ID={row.original.requestId}
+                                          requestType={getRequestType(row.original)}
+                                          onUpdate={fetchData}
+                                          trigger={<div className="pl-4 w-full text-left"><UserPen className="text-gray-500"/></div>}
+                    />
+                )
+            }
+        },
+        {
+            id: "editRequest",
+            enableHiding: false,
+            cell: ({ row }) => {
+                const request = row.original
 
+                return (
+                    <RequestSheet ID={row.original.requestId}
+                                  requestType={getRequestType(row.original)}
+                                  onUpdate={fetchData}
+                                  trigger={<div className="pl-4 w-full text-left"><SquarePen className="text-gray-500"/></div>}
+                    />
+                )
+            }
+        },
+        {
+            id: "deleteRequest",
+            enableHiding: false,
+            cell: ({ row }) => {
+                const request = row.original
 
-
-export default function ShowAllRequests() {
-    const [data, setData] = useState<ServiceRequest[]>([]);
-
-    const fetchData = async () => {
-        try {
-            const dataResponse = await axios.get('/api/servicereqs');
-            setData(dataResponse.data);
-        } catch (error) {
-            console.error('Error fetching data:', error);
-        }
-    };
+                return (
+                    <button className="pl-4 w-full text-left"
+                            onClick={async()=> {
+                                const request = row.original as ServiceRequest;
+                                await axios.delete('/api/servicereqs/'+Number(request.requestId));
+                                await fetchData();
+                            }}>
+                        <Trash className="text-gray-500"/>
+                    </button>
+                )
+            }
+        },
+    ]
 
     const [sorting, setSorting] = React.useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -365,7 +383,6 @@ export default function ShowAllRequests() {
     )
 
     useEffect(() => {
-        console.log(getEmployees());
         fetchData();
     }, []);
 
