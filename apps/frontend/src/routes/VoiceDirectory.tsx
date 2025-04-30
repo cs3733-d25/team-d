@@ -321,7 +321,7 @@ const VoiceDirectory: React.FC = () => {
                                         className={`w-full justify-start rounded-md px-3 py-2 text-left ${
                                             selected.service === item.service
                                                 ? "bg-blue-50 font-semibold text-blue-900"
-                                                : "bg-white text-black hover:bg-gray-100"
+                                                : "bg-white text-black hover:bg-blue-900 hover:text-white" // hover
                                         }`}
                                         onClick={() => setSelected(item)}
                                     >
