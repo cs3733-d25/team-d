@@ -32,7 +32,7 @@ export default function Home() {
                     {/* Background Layer */}
                     <div className="absolute inset-0 bg-[url(../public/Hospital.jpg)] bg-cover bg-center bg-no-repeat h-screen filter saturate-200 flex flex-col items-center justify-center overflow-hidden">
                         <div className="absolute inset-0 bg-yellow-600/10 mix-blend-multiply pointer-events-none"></div>
-                        <div className="absolute inset-0 bg-zinc-900/50 pointer-events-none"></div>
+                        <div className="absolute inset-0 bg-zinc-900/70 pointer-events-none"></div>
                         {/* Hero Text */}
                         <div className="relative z-10 pb-10 items-center gap-6 text-center top-[-35vh]">
                             <HeroTextBox/>
