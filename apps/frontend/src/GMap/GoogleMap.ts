@@ -139,7 +139,37 @@ class PathfindingGraph {
             path: path,
             strokeColor: '#00c',
             strokeWeight: 3,
+            map: this.map,
         });
+        const polyline = new google.maps.Polyline({
+            path: path,
+            strokeColor: "#00c",
+            strokeWeight: 3,
+            map: this.map,
+        });
+
+
+        polyline.setOptions({ strokeColor: "#e60000" });
+        let offsetPercentage = 0;
+        function animateDashedLine() {
+            offsetPercentage = (offsetPercentage + 4) % 100; // Increment and loop
+            polyline.setOptions({
+                icons: [{
+                    icon: {
+                        path: google.maps.SymbolPath.CIRCLE,
+                        scale: 4,
+                        strokeColor: "#00c",
+                    },
+                    offset: `${offsetPercentage}%`,
+                    repeat: "20px"
+                }]
+            });
+
+            requestAnimationFrame(animateDashedLine); // Smooth animation
+        }
+
+        // Start the animation
+        animateDashedLine();
 
         this.nodes = path.map(position =>
             new google.maps.Marker({
@@ -180,9 +210,25 @@ class PathfindingGraph {
         console.log(this.rotation);
 
         this.visibility = false;
+        this.animatePath(path);
+
     }
 
+    private animatePath(path: google.maps.LatLngLiteral[]) {
+        let index = 0;
 
+        const step = () => {
+            if (index < path.length) {
+                const newPath = this.path.getPath();
+                newPath.push(new google.maps.LatLng(path[index].lat, path[index].lng));
+                this.path.setPath(newPath);
+                index++;
+                setTimeout(step, 100); // Adjust speed by changing timeout
+            }
+        };
+
+        step();
+    }
     // private color: string;
 
 
@@ -901,7 +947,7 @@ export class PathfindingMap extends GoogleMap {
                 map: this.map,
                 path: path,
                 strokeWeight: 10,
-                strokeColor: '#f04',
+                strokeColor: '#D47F00',
                 zIndex: 50,
             });
             path.forEach(point => {
@@ -929,7 +975,7 @@ export class PathfindingMap extends GoogleMap {
                 map: this.map,
                 path: step.pathFindingData.points,
                 strokeWeight: 10,
-                strokeColor: '#f04',
+                strokeColor: '#D47F00',
                 zIndex: 50,
             });
 
