@@ -261,9 +261,9 @@ export default function NewDirections() {
                                         <Switch className="data-[state=checked]:bg-blue-900" onCheckedChange={setTts} />
                                     </Label>
                                     <div className="flex flex-row">
-                                        <Button className="flex-1 grow m-2 bg-blue-900" onClick={handlePrevStep} disabled={currentStep < 1}>Previous</Button>
+                                        <Button className="flex-1 grow m-2 bg-blue-900 active:scale-95 active:shadow-inner transition-transform" onClick={handlePrevStep} disabled={currentStep < 1}>Previous</Button>
                                         <Separator className="mt-4 mb-4" orientation="vertical" />
-                                        <Button className="flex-1 grow m-2 bg-blue-900" onClick={handleNextStep} disabled={currentStep >= pathfindingResults.directions.length - 1}>Next</Button>
+                                        <Button className="flex-1 grow m-2 bg-blue-900 active:scale-95 active:shadow-inner transition-transform" onClick={handleNextStep} disabled={currentStep >= pathfindingResults.directions.length - 1}>Next</Button>
                                     </div>
                                 </CardHeader>
                                 <CardContent>
@@ -275,13 +275,13 @@ export default function NewDirections() {
                                                      setCurrentStep(i);
                                                      console.log(i);
                                                  }}>
-                                                {step.icon === "right" ? <FontAwesomeIcon icon={faArrowRight}/>
-                                                    : step.icon === "left" ? <FontAwesomeIcon icon={faArrowLeft}/>
-                                                        : <FontAwesomeIcon icon={faArrowUp}/>}
+                                                {step.icon === "right" ? <FontAwesomeIcon icon={faArrowRight} className="text-amber-600"/>
+                                                    : step.icon === "left" ? <FontAwesomeIcon icon={faArrowLeft} className="text-amber-600"/>
+                                                        : <FontAwesomeIcon icon={faArrowUp} className="text-amber-600"/>}
                                                 <span> </span>
-                                                <span className="text-blue-500">{step.instructions}</span>
+                                                <span className="text-blue-900">{step.instructions}</span>
                                                 <br/>
-                                                <span className="text-gray-500">{step.time} ({step.distance})</span>
+                                                <span className="text-black">{step.time} ({step.distance})</span>
                                                 <span className="absolute bottom-0 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-black ml-30">
                                         Click to view
                                     </span>
