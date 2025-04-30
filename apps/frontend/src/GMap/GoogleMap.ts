@@ -142,16 +142,45 @@ class PathfindingGraph {
             path: path,
             strokeColor: '#00c',
             strokeWeight: 3,
+            map: this.map,
         });
+
+        let offsetPixels = 0;
+        function animateDashedLine(this: PathfindingGraph) {
+            offsetPixels = (offsetPixels + 1) % 1000;
+            this.path.setOptions({
+                strokeOpacity: 1,
+                strokeWeight: 3,
+                icons: [{
+                    icon: {
+                        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                        scale: 2,
+                        strokeColor: '#666666',
+                        strokeWeight: 2,
+                        fillColor: '#666666',
+                        fillOpacity: 1
+                    },
+                    offset: `${offsetPixels}px`,
+                    repeat: "20px"
+                }]
+            });
+
+            setTimeout(() => {
+                requestAnimationFrame(() => animateDashedLine.call(this));
+            }, 50);
+        }
+
+        // Start the animation
+        animateDashedLine.call(this);
 
         this.nodes = path.map(position =>
             new google.maps.Marker({
                 icon: {
-                    path: google.maps.SymbolPath.CIRCLE,
+                    path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
                     scale: 2,
                     fillOpacity: 1,
-                    strokeColor: '#00c',
-                    fillColor: '#ddd',
+                    strokeColor: '#666666',
+                    fillColor: '#666666',
                     strokeWeight: 2
                 },
                 position: position,
@@ -1143,7 +1172,7 @@ class EditorMapGraph {
                 lng: node.lng,
             },
             icon: {
-                path: google.maps.SymbolPath.CIRCLE,
+                path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
                 scale: 5,
                 fillOpacity: 1,
                 fillColor: this.getNodeColor(node.type),
