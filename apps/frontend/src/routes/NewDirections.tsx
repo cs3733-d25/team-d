@@ -186,7 +186,8 @@ export default function NewDirections() {
                                 <li>Enter your current address</li>
                                 <li>Choose transportation mode</li>
                                 <li>Choose destination hospital</li>
-                                <li>Once at the hospital, pick the department</li>
+                                <li>Once at the hospital, pick a department</li>
+                                <li>You can enable text-to-speech for voice directions!</li>
                             </ol>
                         </div>
                     </div>
