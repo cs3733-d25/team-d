@@ -305,7 +305,7 @@ async function main() {
                 imageBoundsSouth: 42.300859574636796,
                 imageBoundsEast: -71.12680971364097,
                 imageBoundsWest: -71.12961427703588,
-                imageRotation: 0,
+                imageRotation: -124.380344724,
                 buildingId: 3,
             },
             {
@@ -316,7 +316,7 @@ async function main() {
                 imageBoundsSouth: 42.33450,
                 imageBoundsEast: -71.10385,
                 imageBoundsWest: -71.10915,
-                imageRotation: 0,
+                imageRotation: -40,
                 buildingId: 4,
             },
         ],
@@ -7973,6 +7973,13 @@ async function main() {
 
     // Seed service requests
     console.log('Seeding service requests...');
+
+    await prisma.translatorRequest.deleteMany({});
+    await prisma.sanitationRequest.deleteMany({});
+    await prisma.securityRequest.deleteMany({});
+    await prisma.equipmentRequest.deleteMany({});
+    await prisma.serviceRequest.deleteMany({});
+
     const serviceRequests = [
         await prisma.serviceRequest.upsert({
             where: { requestId: 1},
