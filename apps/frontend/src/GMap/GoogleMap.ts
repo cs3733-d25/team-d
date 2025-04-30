@@ -146,9 +146,9 @@ class PathfindingGraph {
                 icon: {
                     path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
                     scale: 2,
-                    strokeColor: '#666666',
+                    strokeColor: '#ccc',
                     strokeWeight: 2,
-                    fillColor: '#666666',
+                    fillColor: '#ccc',
                     fillOpacity: 1
                 },
                 repeat: "20px"
