@@ -188,7 +188,7 @@ export default function SecurityServiceRequest() {
                                 <option value="Low">Low</option>
                                 <option value="Medium">Medium</option>
                                 <option value="High">High</option>
-                                <option value="High">Emergency</option>
+                                <option value="Emergency">Emergency</option>
                             </select>
                         </div>
                         <div>
