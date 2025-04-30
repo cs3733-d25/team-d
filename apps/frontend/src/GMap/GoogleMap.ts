@@ -331,7 +331,7 @@ class PathfindingGraph {
     //         // Highlight the corresponding step on map
     //         this.highlightStep(this.innerStepIndex);
     //
-    //         // Optional: pan the map to the current step’s marker/center
+    //         // Optional: pan the map to the current step's marker/center
     //         const currentNode = this.nodes[this.innerStepIndex];
     //         if (currentNode) {
     //             this.map.panTo(currentNode.getPosition()!);
@@ -440,6 +440,9 @@ class PathfindingGraph {
 export type PathfindingResults = {
     floors: number[];
     directions: DirectionsStep[];
+    startLocation?: google.maps.LatLngLiteral;
+    endLocation?: google.maps.LatLngLiteral;
+    path?: google.maps.LatLngLiteral[];
 }
 
 export type DirectionsStep = {
@@ -877,6 +880,9 @@ export class PathfindingMap extends GoogleMap {
         this.updater({
             floors: this.currentPathfindingResponse.floorPaths.map(floor => floor.floorNum),
             directions: this.currentSteps.map(step => step.step),
+            startLocation: this.currentPathfindingResponse.parkingLotPath.path[0],
+            endLocation: this.endLocation,
+            path: this.currentPathfindingResponse.parkingLotPath.path,
         });
     }
 
