@@ -1,6 +1,5 @@
 "use client"
 
-import { TrendingUp } from "lucide-react"
 import {Bar, BarChart, CartesianGrid, Cell, Rectangle, XAxis} from "recharts"
 
 import {
@@ -88,7 +87,7 @@ export function priorityBreakdown() {
                             content={<ChartTooltipContent hideLabel />}
                         />
                         <Bar dataKey={"count"}>
-                            {data.map((entry, index) => (
+                            {data.map((entry) => (
                                 <Cell
                                      radius={8}
                                      fill={chartConfig[entry.Priority]?.color}/>
