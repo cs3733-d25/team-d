@@ -280,7 +280,7 @@ export default function TranslatorServiceRequest() {
                             />
 
                             <div className="flex flex-row justify-center items-center">
-                                <Button type="submit" className="mt-6 w-full">
+                                <Button type="submit" className="mt-6 w-full bg-blue-900">
                                     Submit
                                 </Button>
                             </div>

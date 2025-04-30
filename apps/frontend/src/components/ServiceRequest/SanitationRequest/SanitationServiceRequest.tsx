@@ -72,7 +72,7 @@ export default function SanitationServiceRequest() {
                         <h2 className="text-4xl font-bold text-center text-white">Request Sanitation</h2>
                     </div>
                     <h6 className="pb-3 font-light">Stuvat Dash & Brandon Small</h6>
-                    <form onSubmit={onSubmit} className="flex flex-col">
+                    <form onSubmit={onSubmit} >
                         <div>
                             <Label className="pt-4 pb-2" htmlFor="employeeName">
                                 Employee Name
@@ -229,7 +229,7 @@ export default function SanitationServiceRequest() {
                         </div>
 
 
-                        <Button type="submit" className="mt-6 w-full rounded-2xl border">
+                        <Button type="submit" className="mt-6 w-full bg-blue-900">
                             Submit
                         </Button>
                     </form>

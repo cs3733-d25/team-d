@@ -73,7 +73,7 @@ export default function SecurityServiceRequest() {
                         <h2 className="text-4xl font-bold text-white text-center">Request Security Presence</h2>
                     </div>
                     <h6 className="pb-3 font-light">Maggie Hosie & Delia Jasper</h6>
-                    <form onSubmit={onSubmit}>
+                    <form onSubmit={onSubmit} className="flex flex-col items-center">
                         <div>
                             <Label className="pt-4 pb-2" htmlFor="employeeName">
                                 Employee Name
@@ -222,7 +222,7 @@ export default function SecurityServiceRequest() {
                         />
 
 
-                        <Button type="submit" className="mt-6 w-full">
+                        <Button type="submit" className="mt-6 w-full bg-blue-900">
                             Submit
                         </Button>
                     </form>
