@@ -3355,19 +3355,21 @@ async function main() {
     console.log('Seeding service requests...');
     const serviceRequests = [
         await prisma.serviceRequest.upsert({
-            where: { requestId: 1},
+            where: { requestId: 1 },
             update: {},
             create: {
                 assignedEmployeeId: null,
                 employeeRequestedById: 1,
                 departmentUnderId: 3,
                 priority: 'Low',
-                requestStatus: 'Unassigned',
+                requestStatus: 'Done',
                 roomNum: '111',
+                createdAt: new Date('2025-04-21T09:15:00Z'),
+                updatedAt: new Date('2025-04-28T09:15:00Z'),
             },
         }),
         await prisma.serviceRequest.upsert({
-            where: { requestId: 2},
+            where: { requestId: 2 },
             update: {},
             create: {
                 assignedEmployeeId: 1,
@@ -3376,10 +3378,12 @@ async function main() {
                 priority: 'Medium',
                 requestStatus: 'Working',
                 roomNum: '121',
+                createdAt: new Date('2025-04-22T13:45:00Z'),
+                updatedAt: new Date('2025-04-22T13:45:00Z'),
             },
         }),
         await prisma.serviceRequest.upsert({
-            where: { requestId: 3},
+            where: { requestId: 3 },
             update: {},
             create: {
                 assignedEmployeeId: 2,
@@ -3388,10 +3392,12 @@ async function main() {
                 priority: 'High',
                 requestStatus: 'Assigned',
                 roomNum: '232',
+                createdAt: new Date('2025-04-22T16:30:00Z'),
+                updatedAt: new Date('2025-04-22T16:30:00Z'),
             },
         }),
         await prisma.serviceRequest.upsert({
-            where: { requestId: 4},
+            where: { requestId: 4 },
             update: {},
             create: {
                 assignedEmployeeId: null,
@@ -3400,10 +3406,12 @@ async function main() {
                 priority: 'Medium',
                 requestStatus: 'Unassigned',
                 roomNum: '301',
+                createdAt: new Date('2025-04-23T08:20:00Z'),
+                updatedAt: new Date('2025-04-23T08:20:00Z'),
             },
         }),
         await prisma.serviceRequest.upsert({
-            where: { requestId: 5},
+            where: { requestId: 5 },
             update: {},
             create: {
                 assignedEmployeeId: 3,
@@ -3412,10 +3420,12 @@ async function main() {
                 priority: 'High',
                 requestStatus: 'Done',
                 roomNum: '130',
+                createdAt: new Date('2025-04-23T10:45:00Z'),
+                updatedAt: new Date('2025-04-27T10:45:00Z'),
             },
         }),
         await prisma.serviceRequest.upsert({
-            where: { requestId: 6},
+            where: { requestId: 6 },
             update: {},
             create: {
                 assignedEmployeeId: null,
@@ -3424,10 +3434,12 @@ async function main() {
                 priority: 'Emergency',
                 requestStatus: 'Unassigned',
                 roomNum: '211',
+                createdAt: new Date('2025-04-24T14:10:00Z'),
+                updatedAt: new Date('2025-04-24T14:10:00Z'),
             },
         }),
         await prisma.serviceRequest.upsert({
-            where: { requestId: 7},
+            where: { requestId: 7 },
             update: {},
             create: {
                 assignedEmployeeId: 4,
@@ -3436,10 +3448,12 @@ async function main() {
                 priority: 'Low',
                 requestStatus: 'Done',
                 roomNum: '123',
+                createdAt: new Date('2025-04-24T15:30:00Z'),
+                updatedAt: new Date('2025-04-26T15:30:00Z'),
             },
         }),
         await prisma.serviceRequest.upsert({
-            where: { requestId: 8},
+            where: { requestId: 8 },
             update: {},
             create: {
                 assignedEmployeeId: 3,
@@ -3448,10 +3462,12 @@ async function main() {
                 priority: 'Medium',
                 requestStatus: 'Working',
                 roomNum: '312',
+                createdAt: new Date('2025-04-25T09:00:00Z'),
+                updatedAt: new Date('2025-04-25T09:00:00Z'),
             },
         }),
         await prisma.serviceRequest.upsert({
-            where: { requestId: 9},
+            where: { requestId: 9 },
             update: {},
             create: {
                 assignedEmployeeId: null,
@@ -3460,22 +3476,26 @@ async function main() {
                 priority: 'Low',
                 requestStatus: 'Unassigned',
                 roomNum: '133',
+                createdAt: new Date('2025-04-25T10:15:00Z'),
+                updatedAt: new Date('2025-04-25T10:15:00Z'),
             },
         }),
         await prisma.serviceRequest.upsert({
-            where: { requestId: 10},
+            where: { requestId: 10 },
             update: {},
             create: {
                 assignedEmployeeId: null,
                 employeeRequestedById: 1,
                 departmentUnderId: 3,
                 priority: 'Low',
-                requestStatus: 'Unassigned',
+                requestStatus: 'Done',
                 roomNum: '112',
+                createdAt: new Date('2025-04-26T08:05:00Z'),
+                updatedAt: new Date('2025-04-28T08:05:00Z'),
             },
         }),
         await prisma.serviceRequest.upsert({
-            where: { requestId: 11},
+            where: { requestId: 11 },
             update: {},
             create: {
                 assignedEmployeeId: null,
@@ -3484,10 +3504,12 @@ async function main() {
                 priority: 'Emergency',
                 requestStatus: 'Unassigned',
                 roomNum: '113',
+                createdAt: new Date('2025-04-26T08:45:00Z'),
+                updatedAt: new Date('2025-04-26T08:45:00Z'),
             },
         }),
         await prisma.serviceRequest.upsert({
-            where: { requestId: 12},
+            where: { requestId: 12 },
             update: {},
             create: {
                 assignedEmployeeId: 3,
@@ -3497,10 +3519,12 @@ async function main() {
                 requestStatus: 'Assigned',
                 roomNum: '201',
                 comments: 'Please calibrate prior to appointment.',
+                createdAt: new Date('2025-04-27T12:00:00Z'),
+                updatedAt: new Date('2025-04-27T12:00:00Z'),
             },
         }),
         await prisma.serviceRequest.upsert({
-            where: { requestId: 13},
+            where: { requestId: 13 },
             update: {},
             create: {
                 assignedEmployeeId: null,
@@ -3510,10 +3534,12 @@ async function main() {
                 requestStatus: 'Unassigned',
                 roomNum: '204',
                 comments: 'Please set up system.',
+                createdAt: new Date('2025-04-27T13:30:00Z'),
+                updatedAt: new Date('2025-04-27T13:30:00Z'),
             },
         }),
         await prisma.serviceRequest.upsert({
-            where: { requestId: 14},
+            where: { requestId: 14 },
             update: {},
             create: {
                 assignedEmployeeId: null,
@@ -3522,11 +3548,13 @@ async function main() {
                 priority: 'Emergency',
                 requestStatus: 'Unassigned',
                 roomNum: '318',
-                comments: "Send help!",
+                comments: 'Send help!',
+                createdAt: new Date('2025-04-28T07:15:00Z'),
+                updatedAt: new Date('2025-04-28T07:15:00Z'),
             },
         }),
         await prisma.serviceRequest.upsert({
-            where: { requestId: 15},
+            where: { requestId: 15 },
             update: {},
             create: {
                 assignedEmployeeId: 2,
@@ -3535,11 +3563,13 @@ async function main() {
                 priority: 'Low',
                 requestStatus: 'Unassigned',
                 roomNum: '241',
-                comments: "They ran out the west door.",
+                comments: 'They ran out the west door.',
+                createdAt: new Date('2025-04-28T09:40:00Z'),
+                updatedAt: new Date('2025-04-28T09:40:00Z'),
             },
         }),
         await prisma.serviceRequest.upsert({
-            where: { requestId: 16},
+            where: { requestId: 16 },
             update: {},
             create: {
                 assignedEmployeeId: null,
@@ -3548,6 +3578,8 @@ async function main() {
                 priority: 'Medium',
                 requestStatus: 'Working',
                 roomNum: '118',
+                createdAt: new Date('2025-04-28T11:25:00Z'),
+                updatedAt: new Date('2025-04-28T11:25:00Z'),
             },
         }),
     ];
