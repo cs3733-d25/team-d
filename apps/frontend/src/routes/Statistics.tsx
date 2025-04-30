@@ -5,7 +5,9 @@ import PastWeekReqs from "@/components/stats/PastWeekReqs.tsx";
 export function Statistics() {
     return (
         <div className="flex flex-col items-center gap-4 m-4">
-
+            <div className="relative text-5xl z-10 mb-10 pb-4 flex top-x items-center justify-center justify-top mt-5 h-20  text-5xl font-bold font-nunito">
+                Service Request Statistics
+            </div>
             <div className="grid grid-cols-2 gap-4">
                 <div className="inline-flex">
                     <ReqBreakdown/>
