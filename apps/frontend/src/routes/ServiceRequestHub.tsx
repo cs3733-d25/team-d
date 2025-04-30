@@ -8,6 +8,7 @@ import translatorImage from "../public/translation.jpg"
 import sanitationImage from "../public/sanitation_pic.webp"
 import equipmentImage from "../public/equipment.jpg"
 import securityImage from "../public/security2.jpg"
+import serviceRequestBg from "../public/service_request_bg.jpg";
 // import TranslatorRequestPopup from "@/components/ServiceRequest/TranslatorRequest/TranslatorRequestPopup.tsx";
 // import SanitationPopup  from "@/components/ServiceRequest/SanitationRequest/SanitationPopup.tsx";
 // import EquipmentRequestPopup from "@/components/ServiceRequest/EquipmentRequest/EquipmentRequestPopup.tsx";
@@ -22,7 +23,11 @@ import ServiceHubBackground from "../public/ServiceHubBackground.png";
 
 const ServiceRequestHub = () => {
     return (
-        <div className="min-h-screen flex flex-col bg-[#F1F1F1] bg-cover bg-center bg-no-repeat">
+        <div
+            className="min-h-screen flex flex-col bg-cover bg-center bg-no-repeat"
+            style={{ backgroundImage: `url(${serviceRequestBg})` }}
+        >
+
 
             <main className="relative flex flex-col items-center justify-center z-10 flex-grow">
                 <div className="absolute inset-0 bg-yellow-600/10 mix-blend-multiply pointer-events-none"></div>

@@ -113,8 +113,8 @@ const RequestSheet: React.FC<RequestSheetProps> = ({ID, requestType, trigger, on
             setRequestedById(request.employeeRequestedById.toString());
             setRequestedByFirstName(request.employeeRequestedBy.firstName);
             setRequestedByLastName(request.employeeRequestedBy.lastName);
-            setDepartmentName(request.departmentUnder.name);
-            setDepartment(request.departmentUnderId.toString());
+            setDepartmentName(request.departmentUnder?.name);
+            setDepartment(request.departmentUnderId?.toString());
             setRoomNum(request.roomNum);
             setPriority(request.priority);
             setStatus(request.requestStatus)

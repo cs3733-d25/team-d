@@ -83,6 +83,7 @@ export type ServiceRequest = {
     roomNum: string;
     employeeRequestedBy: Employee;
     assignedEmployee: Employee;
+    departmentUnder: Department;
 }
 
 export type Employee = {
