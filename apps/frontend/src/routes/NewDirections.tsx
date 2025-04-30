@@ -292,7 +292,7 @@ export default function NewDirections() {
                 {pathfindingResults &&
                     <>
                         <Separator className="mt-4 mb-4" />
-                        <div className="flex flex-row">
+                        <div className="flex flex-row border-4 border-[#012D5A] rounded-md">
                             <Card className="flex-1 grow">
                                 <CardHeader>
                                     <div className="flex items-center justify-between">
@@ -302,16 +302,16 @@ export default function NewDirections() {
                                         </Label>
                                         <Button
                                             onClick={handleRecenter}
-                                            className="flex-1 grow m-2 bg-blue-900"
+                                            className=" border-2 border-amber-600 flex-1 grow m-2 bg-blue-900 active:scale-95 active:shadow-inner transition-transform"
                                         >
                                             <FontAwesomeIcon icon={faCrosshairs} />
                                             Re-center
                                         </Button>
                                     </div>
                                     <div className="flex flex-row">
-                                        <Button className="flex-1 grow m-2 bg-blue-900 active:scale-95 active:shadow-inner transition-transform" onClick={handlePrevStep} disabled={currentStep < 1}>Previous</Button>
+                                        <Button className="border-2 border-amber-600 flex-1 grow m-2 bg-blue-900 active:scale-95 active:shadow-inner transition-transform" onClick={handlePrevStep} disabled={currentStep < 1}>Previous</Button>
                                         <Separator className="mt-4 mb-4" orientation="vertical" />
-                                        <Button className="flex-1 grow m-2 bg-blue-900 active:scale-95 active:shadow-inner transition-transform" onClick={handleNextStep} disabled={currentStep >= pathfindingResults.directions.length - 1}>Next</Button>
+                                        <Button className="border-2 border-amber-600 flex-1 grow m-2 bg-blue-900 active:scale-95 active:shadow-inner transition-transform" onClick={handleNextStep} disabled={currentStep >= pathfindingResults.directions.length - 1}>Next</Button>
                                     </div>
                                 </CardHeader>
                                 <CardContent>
