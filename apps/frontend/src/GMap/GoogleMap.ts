@@ -176,7 +176,7 @@ class PathfindingGraph {
         this.nodes = path.map(position =>
             new google.maps.Marker({
                 icon: {
-                    path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                    path: google.maps.SymbolPath.CIRCLE,
                     scale: 2,
                     fillOpacity: 1,
                     strokeColor: '#666666',
