@@ -262,7 +262,7 @@ const VoiceDirectory: React.FC = () => {
                     <div className="flex gap-3 mb-4">
                         <Button
                             className={`flex-1 ${
-                                hospital === 0 ? "bg-blue-900 text-white  mb-1 mb-2 border-2 border-amber-600 rounded-md inline-block px-2 py-1" : "bg-gray-200"
+                                hospital === 0 ? "bg-blue-900 text-white  mb-1 mb-2 border-2 border-amber-600 rounded-md inline-block px-2 py-1" : "border-2 border-amber-600/0 px-2 py-1 bg-gray-200"
                             }`}
                             onClick={() => {
                                 setHospital(0);
@@ -273,7 +273,7 @@ const VoiceDirectory: React.FC = () => {
                         </Button>
                         <Button
                             className={`flex-1 ${
-                                hospital === 1 ? "bg-blue-900 text-white mb-1 mb-2 border-2 border-amber-600 rounded-md inline-block px-2 py-1" : "bg-gray-200"
+                                hospital === 1 ? "bg-blue-900 text-white mb-1 mb-2 border-2 border-amber-600 rounded-md inline-block px-2 py-1" : "border-2 border-amber-600/0 px-2 py-1 bg-gray-200"
                             }`}
                             onClick={() => {
                                 setHospital(1);
