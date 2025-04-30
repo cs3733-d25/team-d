@@ -30,6 +30,7 @@ import RequestCollapsible from "@/components/RequestCollapsible.tsx"
 import RequestSheet from "@/components/RequestSheet.tsx"
 import AssignEmployeeDialog from "@/components/AssignEmployeeDialog.tsx"
 import {API_ROUTES} from "common/src/constants.ts";
+import {Department} from "@/routes/Directions.tsx";
 
 declare module '@tanstack/react-table' {
     interface ColumnMeta<TData extends RowData, TValue> {
@@ -80,6 +81,7 @@ export type ServiceRequest = {
     roomNum: string;
     employeeRequestedBy: Employee;
     assignedEmployee: Employee;
+    departmentUnder: Department;
 }
 
 export type Employee = {
@@ -435,8 +437,7 @@ export default function ShowAllRequests() {
                                                             header.getContext()
                                                         )}
                                                         {{
-                                                            // asc: <ArrowUp />,
-                                                            // desc: <ArrowDown />
+
                                                         }[header.column.getIsSorted() as string] ?? null}
                                                     </div>
                                                     {header.column.getCanFilter() ? (
