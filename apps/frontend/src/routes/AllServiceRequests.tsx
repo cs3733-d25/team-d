@@ -30,6 +30,9 @@ import RequestCollapsible from "@/components/RequestCollapsible.tsx"
 import RequestSheet from "@/components/RequestSheet.tsx"
 import AssignEmployeeDialog from "@/components/AssignEmployeeDialog.tsx"
 import {API_ROUTES} from "common/src/constants.ts";
+import {faArrowsSpin} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {Department} from "@/routes/Directions.tsx";
 
 declare module '@tanstack/react-table' {
     interface ColumnMeta<TData extends RowData, TValue> {
@@ -416,8 +419,15 @@ export default function ShowAllRequests() {
 
     return (
         <div className="min-h-screen w-full p-10 bg-white">
-            <div className="flex items-center gap-4 mb-6">
+            <div className="flex items-center justify-between mb-2">
                 <h2 className="text-2xl font-bold">Service Request Database</h2>
+                <button className="bg-blue-900 text-white rounded-md p-2 hover:bg-blue-950 space-x-2"
+                    onClick={()=> {
+                        setColumnFilters([]);
+                    }}>
+                    <span>Reset Filters</span>
+                    <FontAwesomeIcon icon={faArrowsSpin} />
+                </button>
             </div>
             <div className="border rounded-md">
                 <Table className="rounded-md">
@@ -435,8 +445,7 @@ export default function ShowAllRequests() {
                                                             header.getContext()
                                                         )}
                                                         {{
-                                                            // asc: <ArrowUp />,
-                                                            // desc: <ArrowDown />
+
                                                         }[header.column.getIsSorted() as string] ?? null}
                                                     </div>
                                                     {header.column.getCanFilter() ? (
@@ -447,6 +456,7 @@ export default function ShowAllRequests() {
                                                 </>
                                             )}
                                         </th>
+
                                     )
                                 })}
                             </TableRow>
