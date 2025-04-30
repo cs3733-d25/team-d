@@ -142,37 +142,74 @@ class PathfindingGraph {
             path: path,
             strokeColor: '#00c',
             strokeWeight: 3,
-            map: this.map,
+            icons: [{
+                icon: {
+                    path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                    scale: 2,
+                    strokeColor: '#666666',
+                    strokeWeight: 2,
+                    fillColor: '#666666',
+                    fillOpacity: 1
+                },
+                repeat: "20px"
+            }]
         });
-        const polyline = new google.maps.Polyline({
-            path: path,
-            strokeColor: "#00c",
-            strokeWeight: 3,
-            map: this.map,
-        });
 
+        // function animateCircle(line: google.maps.Polyline) {
+        let offsetPixels = 0;
 
-        polyline.setOptions({ strokeColor: "#e60000" });
-        let offsetPercentage = 0;
-        function animateDashedLine() {
-            offsetPercentage = (offsetPercentage + 4) % 100; // Increment and loop
-            polyline.setOptions({
-                icons: [{
-                    icon: {
-                        path: google.maps.SymbolPath.CIRCLE,
-                        scale: 4,
-                        strokeColor: "#00c",
-                    },
-                    offset: `${offsetPercentage}%`,
-                    repeat: "20px"
-                }]
-            });
+        window.setInterval(() => {
+            offsetPixels = (offsetPixels + 1) % 1000;
 
-            requestAnimationFrame(animateDashedLine); // Smooth animation
-        }
+            // this.path.setOptions({
+            //     icons: [
+            //         {
+            //             offset: offsetPixels + 'px',
+            //         },
+            //     ],
+            // });
 
-        // Start the animation
-        animateDashedLine();
+            const icons = this.path.get("icons");
+            //
+            icons[0].offset = offsetPixels + "px";
+            this.path.set("icons", icons);
+
+            // this.path.setOptions({
+            //     icons: [
+            //         {
+            //             icon: icon,
+            //         }
+            //     ]
+            // })
+        }, 50);
+
+        // let offsetPixels = 0;
+        // function animateDashedLine(this: PathfindingGraph) {
+        //     offsetPixels = (offsetPixels + 1) % 1000;
+        //     this.path.setOptions({
+        //         strokeOpacity: 1,
+        //         strokeWeight: 3,
+        //         icons: [{
+        //             icon: {
+        //                 path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+        //                 scale: 2,
+        //                 strokeColor: '#666666',
+        //                 strokeWeight: 2,
+        //                 fillColor: '#666666',
+        //                 fillOpacity: 1
+        //             },
+        //             offset: `${offsetPixels}px`,
+        //             repeat: "20px"
+        //         }]
+        //     });
+        //
+        //     setTimeout(() => {
+        //         requestAnimationFrame(() => animateDashedLine.call(this));
+        //     }, 50);
+        // }
+        //
+        // // Start the animation
+        // animateDashedLine.call(this);
 
         this.nodes = path.map(position =>
             new google.maps.Marker({
@@ -180,8 +217,8 @@ class PathfindingGraph {
                     path: google.maps.SymbolPath.CIRCLE,
                     scale: 2,
                     fillOpacity: 1,
-                    strokeColor: '#00c',
-                    fillColor: '#ddd',
+                    strokeColor: '#666666',
+                    fillColor: '#666666',
                     strokeWeight: 2
                 },
                 position: position,
@@ -213,25 +250,9 @@ class PathfindingGraph {
         console.log(this.rotation);
 
         this.visibility = false;
-        this.animatePath(path);
-
     }
 
-    private animatePath(path: google.maps.LatLngLiteral[]) {
-        let index = 0;
 
-        const step = () => {
-            if (index < path.length) {
-                const newPath = this.path.getPath();
-                newPath.push(new google.maps.LatLng(path[index].lat, path[index].lng));
-                this.path.setPath(newPath);
-                index++;
-                setTimeout(step, 100); // Adjust speed by changing timeout
-            }
-        };
-
-        step();
-    }
     // private color: string;
 
 
@@ -562,8 +583,111 @@ export class PathfindingMap extends GoogleMap {
             polylineOptions: {
                 strokeColor: '#00c',
                 strokeWeight: 3,
+                strokeOpacity: 1,
+                // icons: [{
+                //     icon: {
+                //         path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                //         scale: 2,
+                //         strokeColor: '#666666',
+                //         strokeWeight: 2,
+                //         fillColor: '#666666',
+                //         fillOpacity: 1
+                //     },
+                //     offset: '0px',
+                //     repeat: '20px'
+                // }]
             }
         });
+        // let offsetPixels = 0;
+        // // Add animation for the directions polyline
+        // function animateDirectionsLine(this: PathfindingMap) {
+        //     offsetPixels = (offsetPixels + 1) % 1000;
+        //     this.directionsRenderer.setOptions({
+        //         polylineOptions: {
+        //             strokeColor: '#00c',
+        //             strokeWeight: 3,
+        //             strokeOpacity: 1,
+        //             icons: [{
+        //                 icon: {
+        //                     path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+        //                     scale: 2,
+        //                     strokeColor: '#666666',
+        //                     strokeWeight: 2,
+        //                     fillColor: '#666666',
+        //                     fillOpacity: 1
+        //                 },
+        //                 offset: `${offsetPixels}px`,
+        //                 repeat: '20px'
+        //             }]
+        //         }
+        //     });
+        //
+        //     setTimeout(() => {
+        //         requestAnimationFrame(() => animateDirectionsLine.call(this));
+        //     }, 50);
+        // }
+
+        // let offsetPixels = 0;
+        //
+        // let count = 0;
+        //
+        // window.setInterval(() => {
+        //     offsetPixels = (offsetPixels + 1) % 1000;
+        //     count++;
+        //
+        //     const icon = this.directionsRenderer.get("polylineOptions").get("icons")[0];
+        //
+        //     icon.offset = offsetPixels + 'px';
+        //
+        //     const plo: google.maps.PolylineOptions = this.directionsRenderer.get("polylineOptions");
+        //
+        //     plo.set
+        //
+        //     this.directionsRenderer.set
+        //
+        //     // const icons = this.directionsRenderer.get("polylineOptions").get("icons");
+        //
+        //     // icons[0].offset = offsetPixels + "px";
+        //     // this.directionsRenderer.setOptions({
+        //     //     polylineOptions: {
+        //     //         icons: [{
+        //     //             offset: `${offsetPixels}px`,
+        //     //         }]
+        //     //     }
+        //     // });
+        //     // const icons = this.directionsRenderer.get("polylineOptions").get("icons");
+        //     //
+        //     // icons[0].offset = offsetPixels + "px";
+        //
+        //     // this.directionsRenderer
+        //
+        //     // const plo: google.maps.PolylineOptions = this.directionsRenderer.get("polylineOptions");
+        //     // if (count === 100) console.log('1 ', plo);
+        //     //
+        //     // const icos: google.maps.IconSequence[] = plo.icons || [];
+        //     // if (count === 100) console.log('2 ', icos);
+        //     //
+        //     // icos[0].offset = offsetPixels + "px";
+        //     // if (count === 100) console.log('3 ', icos);
+        //     //
+        //     //
+        //     //
+        //     //
+        //     //
+        //     // // const icons = this.path.get("icons");
+        //     // //
+        //     // // icons[0].offset = offsetPixels + "px";
+        //     // plo.icons = icos;
+        //     // if (count === 100) console.log('4 ', plo);
+        //     //
+        //     // this.directionsRenderer.set("polylineOptions", plo);
+        //     //
+        //     // if (count === 100) console.log('5 ', this.directionsRenderer.get("polylineOptions"));
+        //
+        // }, 100);
+
+        // Start the animation
+        // animateDirectionsLine.call(this);
 
         this.autocomplete = new google.maps.places.Autocomplete(autocompleteInput, {
             fields: ['place_id'],
@@ -956,7 +1080,8 @@ export class PathfindingMap extends GoogleMap {
                 map: this.map,
                 path: path,
                 strokeWeight: 10,
-                strokeColor: '#D47F00',
+                strokeColor: '#f04',
+                strokeOpacity: 0.5,
                 zIndex: 50,
             });
             path.forEach(point => {
@@ -984,7 +1109,8 @@ export class PathfindingMap extends GoogleMap {
                 map: this.map,
                 path: step.pathFindingData.points,
                 strokeWeight: 10,
-                strokeColor: '#D47F00',
+                strokeColor: '#f04',
+                strokeOpacity: 0.5,
                 zIndex: 50,
             });
 
@@ -1189,7 +1315,7 @@ class EditorMapGraph {
                 lng: node.lng,
             },
             icon: {
-                path: google.maps.SymbolPath.CIRCLE,
+                path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
                 scale: 5,
                 fillOpacity: 1,
                 fillColor: this.getNodeColor(node.type),
