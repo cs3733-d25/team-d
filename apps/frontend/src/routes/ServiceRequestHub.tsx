@@ -22,10 +22,8 @@ import ServiceHubBackground from "../public/ServiceHubBackground.png";
 
 const ServiceRequestHub = () => {
     return (
-        <div className="min-h-screen flex flex-col bg-[url(../public/service_request_bg.jpg)] bg-cover bg-center bg-no-repeat">
-            {/* Overlay for blending */}
+        <div className="min-h-screen flex flex-col bg-[#F1F1F1] bg-cover bg-center bg-no-repeat">
 
-            {/* Main Content */}
             <main className="relative flex flex-col items-center justify-center z-10 flex-grow">
                 <div className="absolute inset-0 bg-yellow-600/10 mix-blend-multiply pointer-events-none"></div>
                 <div className="absolute inset-0 bg-zinc-900/50 pointer-events-none"></div>
