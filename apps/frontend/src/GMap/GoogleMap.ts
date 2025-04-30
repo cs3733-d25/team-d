@@ -142,7 +142,7 @@ class PathfindingGraph {
             path: path,
             strokeColor: '#00c',
             strokeWeight: 3,
-            map: this.map,
+            // map: this.map,
         });
 
         let offsetPixels = 0;
@@ -940,6 +940,7 @@ export class PathfindingMap extends GoogleMap {
                 path: path,
                 strokeWeight: 10,
                 strokeColor: '#f04',
+                strokeOpacity: 0.5,
                 zIndex: 50,
             });
             path.forEach(point => {
@@ -968,6 +969,7 @@ export class PathfindingMap extends GoogleMap {
                 path: step.pathFindingData.points,
                 strokeWeight: 10,
                 strokeColor: '#f04',
+                strokeOpacity: 0.5,
                 zIndex: 50,
             });
 
