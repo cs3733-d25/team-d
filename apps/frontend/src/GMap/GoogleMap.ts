@@ -957,7 +957,7 @@ export class PathfindingMap extends GoogleMap {
                 if (j == 0){
                     this.currentSteps?.push({
                         step: {
-                            instructions: 'FLOOR ' + i +' INSTRUCTIONS: ' + direction,
+                            instructions: 'FLOOR ' + this.currentPathfindingResponse.floorPaths[i].floorNum +' INSTRUCTIONS: ' + direction,
                             distance: distance.toFixed(2).toString() + ' m',
                             time: time.toFixed(2).toString() + ' sec',
                             icon: direction.includes('right') ? 'right' : direction.includes('left') ? 'left' : 'straight',
