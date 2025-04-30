@@ -29,7 +29,7 @@ const ServiceRequestHub = () => {
         >
 
 
-        <main className="relative flex flex-col items-center justify-center z-10 flex-grow">
+            <main className="relative flex flex-col items-center justify-center z-10 flex-grow">
                 <div className="absolute inset-0 bg-yellow-600/10 mix-blend-multiply pointer-events-none"></div>
                 <div className="absolute inset-0 bg-zinc-900/50 pointer-events-none"></div>
                 <div className="relative text-5xl z-10 mb-10 pb-4 flex top-x items-center justify-center justify-top mt-5 h-20 w-110 text-5xl font-bold font-nunito">
