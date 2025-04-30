@@ -26,7 +26,7 @@ class BFSStrategy implements PathFindingStrategy {
         while (queue.length > 0) {
             const { node, path } = queue.shift()!;
 
-            if (this.isGoalNode(startNodeType, node)) { 
+            if (node.data.type === startNodeType) {
 
                 return path.map((node) => node.data).reverse();
             }
@@ -39,27 +39,6 @@ class BFSStrategy implements PathFindingStrategy {
         }
         return [];
     }
-
-
-    
-    private isGoalNode( startNodeType: NodePathResponseType, node: GraphNode): boolean {
-        if (startNodeType === 'PARKING') {
-
-            return node.data.type === 'DOOR';
-
-        } else if ( startNodeType === 'DOOR') {
-
-            return node.data.type === 'CHECKIN' || node.data.type === 'ELEVATOR';
-
-        }else if (startNodeType === 'ELEVATOR') {
-
-            return node.data.type === 'CHECKIN';
-        } else {
-
-            return node.data.type === startNodeType;
-        }
-    }
-    
 
 }
 
@@ -206,7 +185,37 @@ class Graph {
     generateDirectionStepsFromNodes(path: NodePathResponse[]): string[] {
         if (path.length < 2) return ['Not enough points for directions'];
 
-        const steps: string[] = [`Start at ${path[0].name ?? this.formatCoord(path[0])}`];
+        
+        const startNode = path[0];
+        let startLabel = 'start';
+        switch(startNode.type) {
+
+            case 'PARKING':
+                startLabel = 'Start at the parking lot';
+                break;
+
+            case 'DOOR':
+                startLabel = 'Enter the building';
+                break;
+
+            case 'ELEVATOR':
+                startLabel = 'Start at the elevator';
+                break;
+
+            case 'CHECKIN':
+                startLabel = 'Start at the check-in area';
+                break;
+
+            default:
+                startLabel = `Start at ${startNode.name ?? this.formatCoord(startNode)}`;
+
+
+
+        }
+        const steps: string[] = [startLabel];
+
+
+        
 
         for (let i = 1; i < path.length - 1; i++) {
             const prev = path[i - 1];
@@ -238,9 +247,36 @@ class Graph {
             steps.push(`${direction} at ${label}`);
         }
 
-        steps.push(
-            `Arrive at ${path[path.length - 1].name ?? this.formatCoord(path[path.length - 1])}`
-        );
+        
+        
+
+        const endNode = path[path.length-1];
+        let endLabel= 'your destination';
+
+        switch(endNode.type){
+
+            case 'DOOR':
+            endLabel = 'the building entrance';
+                break;
+
+            case 'CHECKIN':
+                endLabel = 'the check-in area';
+                break;
+
+            case 'ELEVATOR':
+                endLabel = 'the elevator';
+                break;
+
+            case 'PARKING':
+                endLabel = 'the parking lot';
+                break;
+
+            default:
+                endLabel = endNode.name ?? this.formatCoord(endNode);
+
+        }
+        steps.push(`Arrive at ${endLabel}`);
+
         return steps;
     }
 
