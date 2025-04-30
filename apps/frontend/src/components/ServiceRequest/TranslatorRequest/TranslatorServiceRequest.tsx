@@ -88,7 +88,7 @@ export default function TranslatorServiceRequest() {
                                 </Label>
                                 <select
                                     required
-                                    id="department"
+                                    id="employeeName"
                                     className="w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                     onChange={(e) =>{
                                             const selectedEmployee = employees.find(emp => emp.employeeId === Number(e.target.value));
