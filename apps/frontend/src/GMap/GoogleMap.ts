@@ -1533,9 +1533,9 @@ export class EditorMap extends GoogleMap {
         //     map: this.map,
         // });
         //
-        // this.map.addListener('click', (e: google.maps.MapMouseEvent) => {
-        //     console.log(e.latLng?.toJSON());
-        // });
+        this.map.addListener('click', (e: google.maps.MapMouseEvent) => {
+            console.log(e.latLng?.toJSON());
+        });
 
         this.map.setZoom(20);
         this.map.panTo({lat: 42.33694, lng: -71.10895});
