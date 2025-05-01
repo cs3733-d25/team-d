@@ -290,7 +290,7 @@ const VoiceDirectory: React.FC = () => {
                             placeholder="Search services or specialties…"
                             value={query}
                             onChange={(e) => setQuery(e.target.value)}
-                            className="flex-1 grow border-2 border-[#012D5A] rounded-md shadow-md bg-[#F1F1F1]"
+                            className="flex-1 h-12 pt-2 pb-2 grow border-2 border-[#012D5A] rounded-md shadow-md bg-[#F1F1F1]"
                         />
 
                         {/* mic button */}
@@ -300,11 +300,11 @@ const VoiceDirectory: React.FC = () => {
                                 play();
                             }}
                             aria-label="voice search"
-                            className={`absolute top-0.5 right-3 w-8 h-8 flex items-center justify-center rounded-full border transition-colors
+                            className={`absolute top-2 right-3 w-8 h-8 flex items-center justify-center rounded-full border transition-colors
                         ${
                                 listening
-                                    ? "bg-blue-900 text-white border-blue-900"
-                                    : "bg-white text-blue-900 border-blue-900"
+                                    ? "p -2 bg-blue-900 text-white border-blue-900"
+                                    : "p-2 bg-white text-blue-900 border-blue-900"
                             }`}
                         >
                             {listening ? <MicOff size={18} /> : <Mic size={18} />}
@@ -321,7 +321,7 @@ const VoiceDirectory: React.FC = () => {
                                         className={`w-full justify-start rounded-md px-3 py-2 text-left ${
                                             selected.service === item.service
                                                 ? "bg-blue-50 font-semibold text-blue-900"
-                                                : "bg-white text-black hover:bg-blue-900 hover:text-white" // hover
+                                                : "bg-white text-black hover:bg-blue-900 hover:border-amber-600 hover:text-white" // hover
                                         }`}
                                         onClick={() => setSelected(item)}
                                     >
