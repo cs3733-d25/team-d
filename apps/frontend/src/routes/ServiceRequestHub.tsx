@@ -8,6 +8,7 @@ import translatorImage from "../public/translation.jpg"
 import sanitationImage from "../public/sanitation_pic.webp"
 import equipmentImage from "../public/equipment.jpg"
 import securityImage from "../public/security2.jpg"
+import serviceRequestBg from "../public/service_request_bg.jpg";
 // import TranslatorRequestPopup from "@/components/ServiceRequest/TranslatorRequest/TranslatorRequestPopup.tsx";
 // import SanitationPopup  from "@/components/ServiceRequest/SanitationRequest/SanitationPopup.tsx";
 // import EquipmentRequestPopup from "@/components/ServiceRequest/EquipmentRequest/EquipmentRequestPopup.tsx";
@@ -22,15 +23,19 @@ import ServiceHubBackground from "../public/ServiceHubBackground.png";
 
 const ServiceRequestHub = () => {
     return (
-        <div className="min-h-screen flex flex-col bg-[url(../public/service_request_bg.jpg)] bg-cover bg-center bg-no-repeat">
-            {/* Overlay for blending */}
+        <div
+            className="min-h-screen flex flex-col bg-cover bg-center bg-no-repeat"
+            style={{ backgroundImage: `url(${serviceRequestBg})` }}
+        >
 
-            {/* Main Content */}
+
             <main className="relative flex flex-col items-center justify-center z-10 flex-grow">
                 <div className="absolute inset-0 bg-yellow-600/10 mix-blend-multiply pointer-events-none"></div>
                 <div className="absolute inset-0 bg-zinc-900/50 pointer-events-none"></div>
                 <div className="relative text-5xl z-10 mb-10 pb-4 flex top-x items-center justify-center justify-top mt-5 h-20 w-110 text-5xl font-bold font-nunito">
+                    <div className="flex items-center justify-center bg-gray-300/50 p-3 rounded-md">
                     Service Requests
+                    </div>
                 </div>
                 <div className="relative flex items-center justify-center h-auto w-full overflow-hidden p-8">
                     <div className="flex justify-between items-center w-full px-8">

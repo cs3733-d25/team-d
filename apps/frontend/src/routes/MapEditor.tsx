@@ -141,16 +141,16 @@ export default function MapEditor() {
 
     return (
         <div className="flex flex-row flex-1 h-screen overflow-y-hidden">
-            <div className="flex-1 p-4 overflow-y-scroll">
+            <div className="flex-1 p-4 overflow-y-scroll ">
 
                 <h2 className="text-3xl font-bold">Map Editor</h2>
                 <Separator className="mt-4 mb-4" />
                 <div className="flex flex-row">
-                    <Card className="flex-1 grow">
+                    <Card className="flex-1 grow flex-1 border-4 border-[#012D5A] rounded-md shadow-md bg-[#F1F1F1]">
                         <CardContent>
-                            <Label className="mb-1">Graph</Label>
+                            <Label className="mb-1 mb-2 border-2 border-amber-600 rounded-md inline-block px-2 py-1">Graph</Label>
                             <Select onValueChange={handleGraphChange}>
-                                <SelectTrigger className="w-full mb-4">
+                                <SelectTrigger className="w-full mb-4 placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 flex h-9 w-full min-w-0 rounded-md border-2 border-[#012D5A] bg-transparent px-3 py-1 text-base shadow-sm transition-[color,box-shadow] outline-none focus:border-[#D47F00] focus:ring-[#D47F00]/50 focus:ring-[3px]">
                                     <SelectValue placeholder="Choose a graph..." />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -167,11 +167,11 @@ export default function MapEditor() {
                             <Separator className="mt-4 mb-4" />
 
                             <div className="flex flex-row">
-                                <Button className="flex-1 grow m-2 bg-blue-900" onClick={handleZoom}>
+                                <Button className="flex-1 grow m-2 bg-blue-900 border-2 border-amber-600" onClick={handleZoom}>
                                     Zoom
                                 </Button>
                                 <Separator className="mr-4 ml-4" orientation="vertical" />
-                                <Button className="flex-1 grow m-2 bg-blue-900" onClick={handleSave}>
+                                <Button className="flex-1 grow m-2 bg-blue-900 border-2 border-amber-600" onClick={handleSave}>
                                     Save
                                 </Button>
                             </div>
@@ -262,12 +262,12 @@ export default function MapEditor() {
 
                 <Separator className="mt-4 mb-4" />
                 <div className="flex flex-row">
-                    <Card className="flex-1 grow">
+                    <Card className="flex-1 grow border-4 border-[#012D5A] rounded-md shadow-md bg-[#F1F1F1]">
                         {/*<CardHeader>*/}
                         {/*    */}
                         {/*</CardHeader>*/}
                         <CardContent>
-                            <h2 className="text-xl font-bold mb-4">Instructions</h2>
+                            <h2 className="text-xl font-bold mb-4 mb-1 mb-2 border-2 border-amber-600 rounded-md inline-block px-2 py-1">Instructions</h2>
                             <ul className="list-disc ml-4">
                                 <li>Left-click a node or edge to view or change its information on the sidebar</li>
                                 <li>Click and drag a node to change its location</li>

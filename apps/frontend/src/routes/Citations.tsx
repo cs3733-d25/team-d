@@ -145,6 +145,13 @@ const technologiesUsed: Tech[] = [
         documentationLink: 'https://www.prisma.io/',
     },
     {
+        name: 'Axios',
+        logoSrc: 'https://user-images.githubusercontent.com/8939680/57233884-20344080-6fe5-11e9-8df3-0df1282e1574.png',
+        projectUsage: 'Used to simplify the process of sending asynchronous HTTP requests to REST endpoints and handling responses.',
+        generalPurpose: 'A popular open-source JavaScript library used to make HTTP requests from web browsers or Node.js environments.',
+        documentationLink: 'https://www.postgresql.org/docs/',
+    },
+    {
         name: 'Docker',
         logoSrc: 'https://www.docker.com/wp-content/uploads/2022/03/vertical-logo-monochromatic.png',
         projectUsage: 'Used for containerizing the application to ensure consistent environments across development and production.',
@@ -222,7 +229,7 @@ const TechCitationPage: React.FC<TechCitationPageProps> = ({ technologies }) => 
             <div className="mt-8">
                 <h3 className="text-xl font-semibold text-[#012D5A] mb-2">Backend Technologies</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                    {technologies.filter(tech => ['Google Maps API', 'Auth0', 'Prisma', 'Docker', 'Traefik', 'AWS'].includes(tech.name)).map((tech) => (
+                    {technologies.filter(tech => ['Google Maps API', 'Auth0', 'Prisma','Axios', 'Docker', 'Traefik', 'AWS'].includes(tech.name)).map((tech) => (
                         <TechCitationCard key={tech.name} tech={tech} />
                     ))}
                 </div>

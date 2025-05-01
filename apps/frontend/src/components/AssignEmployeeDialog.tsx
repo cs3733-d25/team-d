@@ -9,8 +9,7 @@ import {
 } from '@/components/ui/dialog';
 
 import {Label} from "@radix-ui/react-label";
-
-import { ServiceRequest, TranslatorRequest, EquipmentRequest, SecurityRequest, SanitationRequest } from "@/routes/AllServiceRequests.tsx";
+import { ServiceRequest, TranslatorRequest, EquipmentRequest, SecurityRequest, SanitationRequest, Employee } from "@/routes/AllServiceRequests.tsx";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import {API_ROUTES} from "common/src/constants.ts";
@@ -33,6 +32,10 @@ const AssignEmployeeDialog: React.FC<AssignEmployeeDialogProps> = ({ID, requestT
     const [sanitation, setSanitation] = useState<SanitationRequest | null>(null);
     const [open, setOpen] = React.useState(false);
     const [assignedEmployee, setAssignedEmployee] = useState("");
+    const [assignedEmployeeId, setAssignedEmployeeId] = useState("");
+    const [assignedEmployeeFirstName, setAssignedEmployeeFirstName] = useState("");
+    const [assignedEmployeeLastName, setAssignedEmployeeLastName] = useState("");
+    const [employees, setEmployees] = useState<Employee[]>([]);
 
     const fetchData = async () => {
         try {
@@ -64,12 +67,19 @@ const AssignEmployeeDialog: React.FC<AssignEmployeeDialogProps> = ({ID, requestT
 
     useEffect(() => {
         fetchData();
+        axios.get(API_ROUTES.EMPLOYEE + "/names").then((response) => {
+            setEmployees(response.data)
+        });
     }, []);
 
     useEffect(() => {
         if (request?.assignedEmployeeId) {
-            setAssignedEmployee(request.assignedEmployeeId.toString());
+            setAssignedEmployee(request.assignedEmployee.toString());
+            setAssignedEmployeeId(request.assignedEmployeeId.toString());
+            setAssignedEmployeeFirstName(request.assignedEmployee.firstName);
+            setAssignedEmployeeLastName(request.assignedEmployee.lastName);
         }
+
     }, [request]);
 
     return (
@@ -86,16 +96,24 @@ const AssignEmployeeDialog: React.FC<AssignEmployeeDialogProps> = ({ID, requestT
                         Service Request {request?.requestId}
                     </DialogDescription>
                 </DialogHeader>
-                <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="assignedEmployeeId" className="text-left">
+                <div>
+                    <Label className="pt-4 pb-2" htmlFor="assignedEmployeeId">
                         Assigned To
                     </Label>
-                    <Input id="assignedEmployeeId"
-                           value={assignedEmployee}
-                           className="col-span-3"
-                           onChange={(e) =>
-                               setAssignedEmployee(e.target.value)}
-                    />
+                    <select
+                        required
+                        id="assignedEmployeeId"
+                        className="w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
+                        onChange={(e) =>
+                            setAssignedEmployeeId(e.target.value)}
+                    >
+                        <option value={assignedEmployeeId}>{assignedEmployeeFirstName} {assignedEmployeeLastName}</option>
+                        {employees.map((e: Employee) => (
+                            <option key={e.employeeId} value={e.employeeId}>
+                                {e.firstName} {e.lastName}
+                            </option>
+                        ))}
+                    </select>
                 </div>
                 <DialogFooter>
                     <Button type="submit"
@@ -103,7 +121,7 @@ const AssignEmployeeDialog: React.FC<AssignEmployeeDialogProps> = ({ID, requestT
                                 try {
                                     const updatedRequest = {
                                         ...request!,
-                                        assignedEmployeeId: Number(assignedEmployee),
+                                        assignedEmployeeId: Number(assignedEmployeeId),
                                     };
                                     await axios.put(`/api/servicereqs/${ID}`, updatedRequest);
                                     console.log('Assigned employee successfully.');

@@ -1,5 +1,6 @@
 import express, { Router, Request, Response } from 'express';
 import PrismaClient from '../bin/prisma-client';
+import { Prisma, ServiceRequest } from 'database';
 import { transcode } from 'node:buffer';
 const router: Router = express.Router();
 
@@ -18,6 +19,9 @@ router.get('/', async function (req: Request, res: Response) {
             },
             assignedEmployee: {
                 select: { firstName: true, lastName: true },
+            },
+            departmentUnder: {
+                select: { name: true },
             },
         },
     });
@@ -44,6 +48,9 @@ router.get('/translator', async function (req: Request, res: Response) {
         },
         include: {
             translatorRequest: true,
+            employeeRequestedBy: true,
+            assignedEmployee: true,
+            departmentUnder: true,
         },
     });
 
@@ -70,6 +77,9 @@ router.get('/security', async function (req: Request, res: Response) {
         },
         include: {
             securityRequest: true,
+            employeeRequestedBy: true,
+            assignedEmployee: true,
+            departmentUnder: true,
         },
     });
 
@@ -96,6 +106,9 @@ router.get('/equipment', async function (req: Request, res: Response) {
         },
         include: {
             equipmentRequest: true,
+            employeeRequestedBy: true,
+            assignedEmployee: true,
+            departmentUnder: true,
         },
     });
 
@@ -122,6 +135,9 @@ router.get('/sanitation', async function (req: Request, res: Response) {
         },
         include: {
             sanitationRequest: true,
+            employeeRequestedBy: true,
+            assignedEmployee: true,
+            departmentUnder: true,
         },
     });
 
