@@ -17,7 +17,7 @@ export const TechPopup: React.FC<TechPopupProps> = ({ tech, onClose }) => {
     return (
         <div
             className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-50"
-            onClick={onClose} // Close when clicking outside the popup
+            onClick={onClose}
         >
             <div
                 className="bg-[#F1F1F1] rounded-md shadow-lg p-6 relative"
