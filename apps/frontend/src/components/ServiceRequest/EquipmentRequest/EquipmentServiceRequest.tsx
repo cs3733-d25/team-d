@@ -10,6 +10,7 @@ import ReturnEquipmentRequest from "@/components/ServiceRequest/EquipmentRequest
 import SubmissionReqPopup from "@/components/SubmissionReqPopup.tsx";
 import {Department} from "@/routes/Directions.tsx";
 import ReturnSanitationRequest from "@/components/ServiceRequest/SanitationRequest/ReturnSanitationRequest.tsx";
+import {Employee} from "@/routes/AllServiceRequests.tsx";
 
 
 type equipmentRequestForm = {
@@ -46,10 +47,14 @@ export default function EquipmentServiceRequest() {
 
     const [submitted, setSubmitted] = useState(false);
     const [departments, setDepartments] = useState<Department[]>([]);
+    const [employees, setEmployees] = useState<Employee[]>([]);
 
     useEffect(() => {
         axios.get(API_ROUTES.DEPARTMENT + "/all").then((response) => {
             setDepartments(response.data)
+        });
+        axios.get(API_ROUTES.EMPLOYEE + "/names").then((response) => {
+            setEmployees(response.data)
         });
     }, []);
 
@@ -78,35 +83,32 @@ export default function EquipmentServiceRequest() {
                     <h6 className="pb-3 font-light">Christine Ngo & Keethu Jayamoorthy</h6>
                     <form onSubmit={onSubmit}>
                         <div>
-                            <Label className="pt-4 pb-2" htmlFor="employeeId">Employee ID</Label>
-                            <Input
+                            <Label className="pt-4 pb-2" htmlFor="employeeName">
+                                Employee Name
+                            </Label>
+                            <select
                                 required
-                                type="number"
-                                id="employeeId"
-                                className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
-                                onChange={(e) =>
+                                id="department"
+                                className="w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
+                                onChange={(e) => {
+                                    const selectedEmployee = employees.find(emp => emp.employeeId === Number(e.target.value));
                                     setForm({
                                         ...form,
                                         employeeRequestedById: Number(e.target.value),
+                                        employeeName: selectedEmployee
+                                            ? `${selectedEmployee.firstName} ${selectedEmployee.lastName}`
+                                            : ''
                                     })
                                 }
-                            />
-                        </div>
-
-                        <div>
-                            <Label className="pt-4 pb-2" htmlFor="employeeName">Employee Name</Label>
-                            <Input
-                                required
-                                type="text"
-                                id="employeeName"
-                                className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
-                                onChange={(e) =>
-                                    setForm({
-                                        ...form,
-                                        employeeName: e.target.value,
-                                    })
                                 }
-                            />
+                            >
+                                <option value="">-- Select Employee --</option>
+                                {employees.map((e: Employee) => (
+                                    <option key={e.employeeId} value={e.employeeId}>
+                                        {e.firstName} {e.lastName}
+                                    </option>
+                                ))}
+                            </select>
                         </div>
 
                         <div>
@@ -114,7 +116,7 @@ export default function EquipmentServiceRequest() {
                             <select
                                 required
                                 id="department"
-                                className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
+                                className="w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                 onChange={(e) =>
                                     setForm({
                                         ...form,
@@ -134,7 +136,7 @@ export default function EquipmentServiceRequest() {
                             <Label className="pt-4 pb-2" htmlFor="roomNumber">Room Number</Label>
                             <Input
                                 required
-                                className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
+                                className="w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                 type="text"
                                 id="roomNumber"
                                 onChange={(e) =>
@@ -150,7 +152,7 @@ export default function EquipmentServiceRequest() {
                             <Label className="pt-4 pb-2" htmlFor="medicalDevice">Medical Device</Label>
                             <Input
                                 required
-                                className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
+                                className="w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                 type="text"
                                 id="medicalDevice"
                                 onChange={(e) =>
@@ -166,7 +168,7 @@ export default function EquipmentServiceRequest() {
                             <Label className="pt-4 pb-2" htmlFor="quantity">Quantity</Label>
                             <Input
                                 required
-                                className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
+                                className="w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                 type="number"
                                 id="quantity"
                                 onChange={(e) =>
@@ -182,7 +184,7 @@ export default function EquipmentServiceRequest() {
                             <Label className="pt-4 pb-2" htmlFor="startDateTime">Start Date and Time</Label>
                             <Input
                                 required
-                                className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
+                                className="w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                 type="datetime-local"
                                 id="startDateTime"
                                 onChange={(e) =>
@@ -200,7 +202,7 @@ export default function EquipmentServiceRequest() {
                                 required
                                 type="datetime-local"
                                 id="languageFrom"
-                                className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
+                                className="w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                 onChange={(e) =>
                                     setForm({
                                         ...form,
@@ -214,7 +216,7 @@ export default function EquipmentServiceRequest() {
                             <Label className="pt-4 pb-2" htmlFor="signature">Signature</Label>
                             <Input
                                 required
-                                className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
+                                className="w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                 type="text"
                                 id="signature"
                                 onChange={(e) =>
@@ -231,7 +233,7 @@ export default function EquipmentServiceRequest() {
                             <select
                                 required
                                 id="priority"
-                                className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
+                                className="w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                 onChange={(e) =>
                                     setForm({
                                         ...form,
@@ -242,7 +244,7 @@ export default function EquipmentServiceRequest() {
                                 <option value="Low">Low</option>
                                 <option value="Medium">Medium</option>
                                 <option value="High">High</option>
-                                <option value="High">Emergency</option>
+                                <option value="Emergency">Emergency</option>
                             </select>
                         </div>
                         <div>
@@ -250,7 +252,7 @@ export default function EquipmentServiceRequest() {
                             <select
                                 required
                                 id="requestStatus"
-                                className = "w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
+                                className="w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                 onChange={(e) =>
                                     setForm({
                                         ...form,
@@ -269,15 +271,15 @@ export default function EquipmentServiceRequest() {
                             <Label className="pt-4 pb-2" htmlFor="comments">Comments</Label>
                             <textarea
                                 id="comments"
-                                className = "w-80 h-8 rounded-md border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
+                                className="w-80 h-8 rounded-md border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                 onChange={(e) =>
-                                    setForm({ ...form, comments: e.target.value })
+                                    setForm({...form, comments: e.target.value})
                                 }
                             />
                         </div>
 
                         <div className="flex flex-row justify-center items-center">
-                            <Button type="submit" className="mt-6 w-full">
+                            <Button type="submit" className="mt-6 w-full bg-blue-900">
                                 Submit
                             </Button>
                         </div>

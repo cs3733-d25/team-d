@@ -19,6 +19,25 @@ router.get('/', async function (req: Request, res: Response) {
     }
 });
 
+// Returns all employee naems, if any
+router.get('/names', async function (req: Request, res: Response) {
+    // Query db, store response
+    const employees = await PrismaClient.employee.findMany({
+        select: { employeeId: true, firstName: true, lastName: true },
+        orderBy: { employeeId: 'asc' },
+    });
+    // If no employees are found, send 204 and log it
+    if (employees == null) {
+        console.error('No employees found in database!');
+        res.sendStatus(204);
+    }
+    // Otherwise send 200 and the data
+    else {
+        console.log(employees);
+        res.json(employees);
+    }
+});
+
 // post request to add employees to the database
 router.post('/', async function (req: Request, res: Response) {
     const employeeDataAttempt: Prisma.EmployeeCreateInput = req.body;
@@ -32,6 +51,30 @@ router.post('/', async function (req: Request, res: Response) {
     }
 
     res.sendStatus(200);
+});
+
+// get employee with specific email
+router.get('/user/:email', async function (req: Request, res: Response) {
+    // parse email into variable
+    const userEmail: string = encodeURI(req.params.email);
+
+    console.log(userEmail);
+    // find profile with email
+    const employee = await PrismaClient.employee.findUnique({
+        where: {
+            email: userEmail,
+        },
+    });
+    // If no profiles are found, send 204 and log it
+    // if (employee == null) {
+    //     console.error(`No employee found in database with email ${userEmail}!`);
+    //     res.sendStatus(204);
+    // }
+    // Otherwise send 200 and the data
+    {
+        console.log(employee);
+        res.json(employee);
+    }
 });
 
 // Return an employee with specified id

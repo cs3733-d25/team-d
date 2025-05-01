@@ -1,5 +1,6 @@
 import React from "react";
 import {useNavigate} from "react-router-dom";
+import AnimatedService from "@/components/ui/animatedService.tsx";
 
 const serviceRequest: React.FC = () => {
     const navigate = useNavigate();
@@ -9,15 +10,21 @@ const serviceRequest: React.FC = () => {
     };
 //
     return (
-        <div className="">
-            <button onClick={() => redirectToServiceRequest() }
-                    className="text-2xl w-80 border-4 border-white rounded-full text-center bg-black/30 hover:bg-black/60 text-white
-                    animate-in fade-in zoom-in duration-500 p-4 font-nunito hover:scale-110 cursor-pointer"
+        <div>
+            <button onClick={() => redirectToServiceRequest()}
+                    className="flex flex-col items-center border-4 w-65 rounded-lg border-white text-center bg-black/30 hover:bg-black/60 text-white animate-in fade-in zoom-in duration-500 font-nunito hover:scale-110 cursor-pointer"
             >
-                REQUEST SERVICE
+                <div className="bg-white border-white w-full">
+                    <AnimatedService/>
+                </div>
+
+                <div className="p-4 w-full">
+                    REQUEST SERVICE
+                </div>
             </button>
         </div>
     )
 };
+
 
 export default serviceRequest;

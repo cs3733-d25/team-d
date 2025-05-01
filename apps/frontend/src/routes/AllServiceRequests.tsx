@@ -16,20 +16,23 @@ import {
     FilterFn,
     Row, Column, RowData,
 } from "@tanstack/react-table"
-import { ArrowUpDown, ArrowUp, ArrowDown, ChevronDown, Funnel } from "lucide-react"
+import {ArrowUpDown, ChevronDown, Funnel, MoreHorizontal, SquarePen, Trash, UserPen} from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
     DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import {Collapsible, CollapsibleContent, CollapsibleTrigger} from "@radix-ui/react-collapsible";
 import RequestCollapsible from "@/components/RequestCollapsible.tsx"
+import RequestSheet from "@/components/RequestSheet.tsx"
+import AssignEmployeeDialog from "@/components/AssignEmployeeDialog.tsx"
+import {API_ROUTES} from "common/src/constants.ts";
+import {faArrowsSpin} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {Department} from "@/routes/Directions.tsx";
 
 declare module '@tanstack/react-table' {
     interface ColumnMeta<TData extends RowData, TValue> {
@@ -67,7 +70,7 @@ export type ServiceRequest = {
     requestId: number;
     createdAt: number;
     updatedAt: number;
-    assignedEmployeeId: number;
+    assignedEmployeeId: number | null;
     translatorRequest: TranslatorRequest;
     equipmentRequest: EquipmentRequest;
     securityRequest: SecurityRequest;
@@ -78,16 +81,15 @@ export type ServiceRequest = {
     departmentUnderId: number;
     comments: string;
     roomNum: string;
-    // employeeName: string; // For later use
+    employeeRequestedBy: Employee;
+    assignedEmployee: Employee;
+    departmentUnder: Department;
 }
 
-export const exactFilter: FilterFn<any> = (row, columnId, filterValue) => {
-    const cellValue = row.getValue(columnId);
-    if(!Array.isArray(filterValue)) {
-        return true;
-    } else {
-        return filterValue.length === 0 || filterValue.includes(cellValue);
-    }
+export type Employee = {
+    employeeId: number;
+    firstName: string;
+    lastName: string;
 }
 
 export const getRequestType = (request: ServiceRequest): string => {
@@ -103,137 +105,171 @@ export const getRequestType = (request: ServiceRequest): string => {
     if (request.sanitationRequest) {
         return "Sanitation";
     }
-    return "Unknown"; // Fallback in case nothing matches
+    return "Unknown";
 };
 
-export const columns: ColumnDef<ServiceRequest>[] = [
-    {
-        accessorKey: "requestType",
-        header: ({ column }) => {
+let cachedEmployees: string[] = [];
+
+export const loadEmployees = async () => {
+    const employees = (await axios.get(API_ROUTES.EMPLOYEE)).data;
+    cachedEmployees = employees.map((e: Employee) => `${e.firstName} ${e.lastName}`);
+};
+
+export const getEmployees = (): string[] => {
+    return cachedEmployees;
+};
+
+let employeesPlusNothing: string[] = [];
+
+export const getEmployeesPlusNothing = (): string[] => {
+    employeesPlusNothing = cachedEmployees.slice();
+    employeesPlusNothing.push("")
+    return employeesPlusNothing;
+};
+
+await loadEmployees();
+export default function ShowAllRequests() {
+    const [data, setData] = useState<ServiceRequest[]>([]);
+
+    const fetchData = async () => {
+        try {
+            const dataResponse = await axios.get('/api/servicereqs');
+            setData(dataResponse.data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
+    const columns: ColumnDef<ServiceRequest>[] = [
+        {
+            id: "expand",
+            enableHiding: false,
+            cell: ({ row }) => {
+                const expand = row.original
+                return (
+                    <ChevronDown className="text-blue-950 pl-2"/>
+                )
+            }
         },
-        meta: {
-            filterVariant: 'select',
-            filterOptions: ["Translator", "Sanitation", "Equipment", "Security"],
+        {
+            accessorKey: "requestType",
+            header: ({ column }) => {
+            },
+            meta: {
+                filterVariant: 'select',
+                filterOptions: ["Translator", "Sanitation", "Equipment", "Security"],
+            },
+            filterFn: (row, columnId, filterValue: string[]) => {
+                return filterValue.includes(getRequestType(row.original as ServiceRequest))
+            },
+            cell: ({ row }) => {
+                const request = row.original as ServiceRequest;
+                return getRequestType(request);
+            },
         },
-        filterFn: (row, columnId, filterValue: string[]) => {
-            return filterValue.includes(getRequestType(row.original as ServiceRequest))
+        {
+            accessorKey: "requestId",
+            header: ({ column }) => {
+                return (
+                    <Button
+                        variant="ghost"
+                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    >
+                        Request ID
+                        <ArrowUpDown />
+                    </Button>
+                )
+            },
+            meta: {
+                filterVariant: 'none',
+            },
         },
-        cell: ({ row }) => {
-            const request = row.original as ServiceRequest;
-            return getRequestType(request);
+        {
+            accessorKey: "employeeRequestedById",
+            header: ({ column }) => {},
+            meta: {
+                filterVariant: "select",
+                filterOptions: getEmployees(),
+            },
+            filterFn: (row, columnId, filterValue: string[]) => {
+                return filterValue.includes(`${(row.original as ServiceRequest).employeeRequestedBy.firstName} ${(row.original as ServiceRequest).employeeRequestedBy.lastName}`)
+            },
+            cell: ({ row }) => {
+                const request = row.original as ServiceRequest;
+                return `${request.employeeRequestedBy.firstName} ${request.employeeRequestedBy.lastName}`;
+            }
         },
-    },
-    {
-        accessorKey: "requestId",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Request ID
-                    <ArrowUpDown />
-                </Button>
-            )
+        {
+            accessorKey: "assignedEmployeeId",
+            header: ({ column }) => {},
+            meta: {
+                filterVariant: "select",
+                filterOptions: getEmployeesPlusNothing(),
+            },
+            filterFn: (row, columnId, filterValue: string[]) => {
+                const assignedEmployee = (row.original as ServiceRequest).assignedEmployee;
+                const name = assignedEmployee
+                    ? `${assignedEmployee.firstName} ${assignedEmployee.lastName}`
+                    : ""; // Ensure empty string if assignedEmployee is null or undefined
+                return filterValue.includes(name);
+            },
+            cell: ({ row }) => {
+                const request = row.original as ServiceRequest;
+                if (request.assignedEmployee === null) {
+                    return "";
+                }
+                return `${request.assignedEmployee.firstName} ${request.assignedEmployee.lastName}`;
+            }
         },
-        meta: {
-            filterVariant: 'none',
+        {
+            accessorKey: "departmentUnderId",
+            header: ({ column }) => {
+                return (
+                    <Button
+                        variant="ghost"
+                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    >
+                        Department
+                        <ArrowUpDown />
+                    </Button>
+                )
+            },
+            meta: {
+                filterVariant: 'none',
+            },
         },
-    },
-    {
-        accessorKey: "employeeRequestedById",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Requested By
-                    <ArrowUpDown />
-                </Button>
-            )
+        {
+            accessorKey: "roomNum",
+            header: ({ column }) => {
+                return (
+                    <Button variant="ghost">Room</Button>
+                )
+            },
+            meta: {
+                filterVariant: 'none',
+            },
         },
-        meta: {
-            filterVariant: 'none',
-        },
-    },
-    {
-        accessorKey: "assignedEmployeeId",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Assigned Employee
-                    <ArrowUpDown />
-                </Button>
-            )
-        },
-        meta: {
-            filterVariant: 'none',
-        },
-    },
-    {
-        accessorKey: "departmentUnderId",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Department
-                    <ArrowUpDown />
-                </Button>
-            )
-        },
-        meta: {
-            filterVariant: 'none',
-        },
-    },
-    {
-        accessorKey: "roomNum",
-        header: ({ column }) => {
-            return (
-                <Button variant="ghost">Room Number</Button>
-            )
-        },
-        meta: {
-            filterVariant: 'none',
-        },
-    },
-    {
-        accessorKey: "comments",
-        header: ({ column }) => {
-            return (
-                <Button variant="ghost">Comments</Button>
-            )
-        },
-        meta: {
-            filterVariant: 'none',
-        },
-    },
-    {
-        accessorKey: "priority",
-        header: ({ column }) => {},
-        meta: {
-            filterVariant: "select",
-            filterOptions: ["Low", "Medium", "High", "Emergency"],
-        },
-        filterFn: (row, columnId, filterValue: string[]) =>
-            filterValue.includes(row.getValue(columnId)),
-        cell: ({ getValue }) => {
-            const value = getValue<string>();
-            const styles =
-                value === "Low"
-                    ? "bg-yellow-200 text-yellow-800"
-                    : value === "Medium"
-                        ? "bg-orange-300 text-orange-900"
-                        : value === "High"
-                            ? "bg-orange-500 text-white"
-                            : "bg-red-600 text-white";
-            return (
-                <span className={`px-2 py-1 rounded font-semibold ${styles}`}>
+        {
+            accessorKey: "priority",
+            header: ({ column }) => {},
+            meta: {
+                filterVariant: "select",
+                filterOptions: ["Low", "Medium", "High", "Emergency"],
+            },
+            filterFn: (row, columnId, filterValue: string[]) =>
+                filterValue.includes(row.getValue(columnId)),
+            cell: ({ getValue }) => {
+                const value = getValue<string>();
+                const styles =
+                    value === "Low"
+                        ? "bg-yellow-200 text-yellow-800"
+                        : value === "Medium"
+                            ? "bg-orange-300 text-orange-900"
+                            : value === "High"
+                                ? "bg-orange-500 text-white"
+                                : "bg-red-600 text-white";
+                return (
+                    <span className={`px-2 py-1 rounded font-semibold ${styles}`}>
         {value}
       </span>
             );
@@ -267,6 +303,11 @@ export const columns: ColumnDef<ServiceRequest>[] = [
         meta: {
             filterVariant: 'none',
         },
+        cell: ({ row }) => {
+            const request = row.original as ServiceRequest;
+            const date = new Date(request.createdAt);
+            return date.toLocaleDateString("en-US", {})+ "\n" + date.toLocaleTimeString("en-US", {})
+        }
     },
     {
         accessorKey: "updatedAt",
@@ -284,38 +325,61 @@ export const columns: ColumnDef<ServiceRequest>[] = [
         meta: {
             filterVariant: 'none',
         },
-    },
-]
-
-
-
-export default function ShowAllRequests() {
-    const [dataTranslator, setDataTranslator] = useState<ServiceRequest[]>([]);
-    const [dataEquipment, setDataEquipment] = useState<ServiceRequest[]>([]);
-    const [dataSecurity, setDataSecurity] = useState<ServiceRequest[]>([]);
-    const [dataSanitation, setDataSanitation] = useState<ServiceRequest[]>([]);
-    const [data, setData] = useState<ServiceRequest[]>([]);
-
-    const fetchData = async () => {
-        try {
-            const translatorResponse = await axios.get('/api/servicereqs/translator');
-            setDataTranslator(translatorResponse.data);
-
-            const equipmentResponse = await axios.get('/api/servicereqs/equipment');
-            setDataEquipment(equipmentResponse.data);
-
-            const securityResponse = await axios.get('/api/servicereqs/security');
-            setDataSecurity(securityResponse.data);
-
-            const sanitationResponse = await axios.get('/api/servicereqs/sanitation');
-            setDataSanitation(sanitationResponse.data);
-
-            const dataResponse = await axios.get('/api/servicereqs');
-            setData(dataResponse.data);
-        } catch (error) {
-            console.error('Error fetching data:', error);
+        cell: ({ row }) => {
+            const request = row.original as ServiceRequest;
+            const date = new Date(request.updatedAt);
+            return date.toLocaleDateString("en-US", {})+ "\n" + date.toLocaleTimeString("en-US", {})
         }
-    };
+    },
+        {
+            id: "assignEmployee",
+            enableHiding: false,
+            cell: ({ row }) => {
+                const request = row.original
+
+                return (
+                    <AssignEmployeeDialog ID={row.original.requestId}
+                                          requestType={getRequestType(row.original)}
+                                          onUpdate={fetchData}
+                                          trigger={<div className="pl-4 w-full text-left"><UserPen className="text-gray-500"/></div>}
+                    />
+                )
+            }
+        },
+        {
+            id: "editRequest",
+            enableHiding: false,
+            cell: ({ row }) => {
+                const request = row.original
+
+                return (
+                    <RequestSheet ID={row.original.requestId}
+                                  requestType={getRequestType(row.original)}
+                                  onUpdate={fetchData}
+                                  trigger={<div className="pl-4 w-full text-left"><SquarePen className="text-gray-500"/></div>}
+                    />
+                )
+            }
+        },
+        {
+            id: "deleteRequest",
+            enableHiding: false,
+            cell: ({ row }) => {
+                const request = row.original
+
+                return (
+                    <button className="pl-4 w-full text-left"
+                            onClick={async()=> {
+                                const request = row.original as ServiceRequest;
+                                await axios.delete('/api/servicereqs/'+Number(request.requestId));
+                                await fetchData();
+                            }}>
+                        <Trash className="text-gray-500"/>
+                    </button>
+                )
+            }
+        },
+    ]
 
     const [sorting, setSorting] = React.useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -356,11 +420,18 @@ export default function ShowAllRequests() {
 
     return (
         <div className="min-h-screen w-full p-10 bg-white">
-            <div className="flex items-center gap-4 mb-6">
+            <div className="flex items-center justify-between mb-2">
                 <h2 className="text-2xl font-bold">Service Request Database</h2>
+                <button className="bg-blue-900 text-white rounded-md p-2 hover:bg-blue-950 space-x-2"
+                    onClick={()=> {
+                        setColumnFilters([]);
+                    }}>
+                    <span>Reset Filters</span>
+                    <FontAwesomeIcon icon={faArrowsSpin} />
+                </button>
             </div>
             <div className="border rounded-md">
-                <Table className="rounded-md table-fixed">
+                <Table className="rounded-md">
                     <TableHeader className="bg-blue-900 rounded-md">
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
@@ -375,8 +446,7 @@ export default function ShowAllRequests() {
                                                             header.getContext()
                                                         )}
                                                         {{
-                                                            // asc: <ArrowUp />,
-                                                            // desc: <ArrowDown />
+
                                                         }[header.column.getIsSorted() as string] ?? null}
                                                     </div>
                                                     {header.column.getCanFilter() ? (
@@ -387,6 +457,7 @@ export default function ShowAllRequests() {
                                                 </>
                                             )}
                                         </th>
+
                                     )
                                 })}
                             </TableRow>
@@ -405,7 +476,7 @@ export default function ShowAllRequests() {
                                                 data-state={row.getIsSelected() && "selected"}
                                             >
                                                 {row.getVisibleCells().map((cell) => (
-                                                    <TableCell key={cell.id} className="text-center border-b">
+                                                    <TableCell key={cell.id} className="text-wrap text-center border-b table-cell">
                                                         {flexRender(
                                                             cell.column.columnDef.cell,
                                                             cell.getContext()
@@ -446,7 +517,7 @@ export default function ShowAllRequests() {
     )
 }
 
-function Filter({ column }: { column: Column<any, unknown> }) {
+function Filter({ column }: { column: Column<ServiceRequest, unknown> }) {
     const columnFilterValue = column.getFilterValue() as string[] ?? [];
     const meta = column.columnDef.meta;
 
@@ -461,77 +532,34 @@ function Filter({ column }: { column: Column<any, unknown> }) {
 
             column.setFilterValue(newValue.length ? newValue : undefined);
         }
-        if(column.id === "requestType") {
-            return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger className="bg-blue-900 hover:bg-blue-950 inline">
-                        <Button
-                            variant="ghost" className="ml-auto bg-blue-900 hover:bg-blue-950"
-                        >
-                            Service Type
-                            <Funnel/>
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                        {options.map((value) => (
-                            <DropdownMenuCheckboxItem
-                                key={value} className="items-center space-x-2"
-                                checked={columnFilterValue.includes(value)}
-                                onCheckedChange={() => toggleOption(value)}>
-                                {value}
-                            </DropdownMenuCheckboxItem>
-                        ))}
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            );
-        }
-        if(column.id === "priority") {
-            return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger className="bg-blue-900 hover:bg-blue-950 inline">
-                        <Button
-                            variant="ghost" className="ml-auto bg-blue-900 hover:bg-blue-950"
-                        >
-                            Priority
-                            <Funnel/>
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                        {options.map((value) => (
-                            <DropdownMenuCheckboxItem
-                                key={value} className="items-center space-x-2"
-                                checked={columnFilterValue.includes(value)}
-                                onCheckedChange={() => toggleOption(value)}>
-                                {value}
-                            </DropdownMenuCheckboxItem>
-                        ))}
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            );
-        }
-        if(column.id === "requestStatus") {
-            return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger className="bg-blue-900 hover:bg-blue-950 inline">
-                        <Button
-                            variant="ghost" className="ml-auto bg-blue-900 hover:bg-blue-950"
-                        >
-                            Status
-                            <Funnel/>
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                        {options.map((value) => (
-                            <DropdownMenuCheckboxItem
-                                key={value} className="items-center space-x-2"
-                                checked={columnFilterValue.includes(value)}
-                                onCheckedChange={() => toggleOption(value)}>
-                                {value}
-                            </DropdownMenuCheckboxItem>
-                        ))}
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            );
-        }
+        const columnHeaders = {
+            requestType: "Service Type",
+            priority: "Priority",
+            requestStatus: "Status",
+            employeeRequestedById: "Requested By",
+            assignedEmployeeId: "Assigned To"
+        };
+        return (
+            <DropdownMenu>
+                <DropdownMenuTrigger className="bg-blue-900 hover:bg-blue-950 inline rounded-md">
+                    <Button
+                        variant="ghost" className="ml-auto bg-blue-900 hover:bg-blue-950"
+                    >
+                        {columnHeaders[column.id as keyof typeof columnHeaders]}
+                        <Funnel/>
+                    </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                    {options.map((value) => (
+                        <DropdownMenuCheckboxItem
+                            key={value} className="items-center space-x-2"
+                            checked={columnFilterValue.includes(value)}
+                            onCheckedChange={() => toggleOption(value)}>
+                            {value === "" ? "Unassigned" : value}
+                        </DropdownMenuCheckboxItem>
+                    ))}
+                </DropdownMenuContent>
+            </DropdownMenu>
+        );
     }
 }

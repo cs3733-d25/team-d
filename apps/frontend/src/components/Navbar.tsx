@@ -11,13 +11,39 @@ import {
 import Banner from "@/components/Banner";
 import Auth0LogoutButton from "@/components/Auth0LogoutButton.tsx";
 import AccessDropMenu from "@/components/Accessibility.tsx";
-
+import {useEffect} from "react";
 //
 
 export default function Navbar() {
     const { isAuthenticated, isLoading } = useAuth0();
 
     if (isLoading) return <div>Loading...</div>;
+    const { getAccessTokenSilently, loginWithRedirect } = useAuth0();
+
+    useEffect((): void => {
+        const fun = async (): Promise<void> => {
+            try {
+                await getAccessTokenSilently();
+            } catch (error) {
+                await loginWithRedirect({
+                    appState: {
+                        returnTo: location.pathname,
+                    },
+                });
+            }
+        };
+
+        if (!isLoading && isAuthenticated) {
+            fun();
+        }
+    }, [
+        getAccessTokenSilently,
+        isAuthenticated,
+        isLoading,
+        location.pathname,
+        loginWithRedirect,
+    ]);
+
 
     return (
         <>
@@ -51,7 +77,7 @@ export default function Navbar() {
 
                             <NavigationMenuItem>
                                 <NavigationMenuLink className={'text-base hover:bg-[rgba(0,31,63,0.8)] hover:text-white'}>
-                                    <Link to={`/hospital-directory`}>Departments</Link>
+                                    <Link to={`/voice-directory`}>Departments</Link>
                                 </NavigationMenuLink>
                             </NavigationMenuItem>
 

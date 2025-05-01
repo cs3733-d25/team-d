@@ -11,7 +11,7 @@ import pathfindRouter from './routes/pathfind.ts';
 import editorRouter from './routes/editor.ts';
 // import pathfindingRouter from './routes/pathfinding.ts';
 
-// const { auth, requiresAuth } = require('express-openid-connect');
+import { auth } from 'express-oauth2-jwt-bearer';
 
 import { API_ROUTES } from 'common/src/constants';
 
@@ -30,36 +30,37 @@ app.use(express.json()); // This processes requests as JSON
 app.use(express.urlencoded({ extended: false })); // URL parser
 app.use(cookieParser()); // Cookie parser
 
-// Setup routers. ALL ROUTERS MUST use /api as a start point, or they
-// won't be reached by the default proxy and prod setup
-app.use(API_ROUTES.HEALTHCHECK, healthcheckRouter);
-app.use(API_ROUTES.EMPLOYEE, employeeRouter);
-app.use(API_ROUTES.SERVICEREQS, servicereqsRouter);
-app.use(API_ROUTES.ASSIGNED, assignedRouter);
-app.use(API_ROUTES.DEPARTMENT, directoryRouter);
+/**
+ * All routers here should be accessible for both logIned and non-logedIn users
+ */
 app.use(API_ROUTES.PATHFIND, pathfindRouter);
+app.use(API_ROUTES.DEPARTMENT, directoryRouter);
+app.use(API_ROUTES.SERVICEREQS, servicereqsRouter);
+app.use(API_ROUTES.EMPLOYEE, employeeRouter);
+app.use(API_ROUTES.HEALTHCHECK, healthcheckRouter);
+app.use(API_ROUTES.ASSIGNED, assignedRouter);
 app.use(API_ROUTES.EDITOR, editorRouter);
-// app.use(API_ROUTES.PATHFINDING, pathfindingRouter);
+
+// If we're not in test mode, enable the auth0 enforcement
+if (!process.env['VITETEST']) {
+    // JWT checker to ensure that routes are authorized
+    // Enforce on all endpoints
+    app.use(
+        auth({
+            audience: '/api',
+            issuerBaseURL: 'https://dev-b5d68fi8od5s513y.us.auth0.com/',
+            tokenSigningAlg: 'RS256',
+        })
+    );
+}
 
 /**
- * Auth0
+ * All routers here should be accessible for both ONLY (!!!) logIned users
  */
-// const config = {
-//     authRequired: false,
-//     auth0Logout: true,
-//     secret: 'yada',
-//     baseURL: 'http://localhost:3000',
-//     clientID: 'oTdQpRiO6NMqpsVbTLhp6Kk5egdnFmEs',
-//     issuerBaseURL: 'https://dev-b5d68fi8od5s513y.us.auth0.com',
-// };
-//
-// // auth router attaches /login, /logout, and /callback routes to the baseURL
-// app.use(auth(config));
+// Setup routers. ALL ROUTERS MUST use /api as a start point, or they
+// won't be reached by the default proxy and prod setup
 
-// req.isAuthenticated is provided from the auth router
-// app.get('/', (req, res) => {
-//     res.send(req.oidc.sisAuthenticated() ? 'Logged in' : 'Logged out');
-// });
+// app.use(API_ROUTES.PATHFINDING, pathfindingRouter);
 
 /**
  * Catch all 404 errors, and forward them to the error handler

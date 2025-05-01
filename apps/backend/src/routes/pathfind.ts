@@ -4,7 +4,7 @@ const router: Router = express.Router();
 import { Graph } from 'backend/src/pathfinding/src/bfs.ts';
 import PrismaClient from '../bin/prisma-client';
 
-import { euclideanDistance } from '../pathfinding/src/distance.ts';
+import { euclideanDistance, haversineDistance } from '../pathfinding/src/distance.ts';
 import {
     FloorPathResponse,
     HospitalOptions,
@@ -14,7 +14,12 @@ import {
 } from 'common/src/constants.ts';
 import prismaClient from '../bin/prisma-client';
 
-import { BFSStrategy, DFSStrategy, PathFindingStrategy } from '../pathfinding/src/bfs.ts';
+import {
+    BFSStrategy,
+    DFSStrategy,
+    DijkstraStrategy,
+    PathFindingStrategy,
+} from '../pathfinding/src/bfs.ts';
 
 function getStrategyByName(name: string): PathFindingStrategy {
     switch (name) {
@@ -22,6 +27,8 @@ function getStrategyByName(name: string): PathFindingStrategy {
             return new BFSStrategy();
         case 'DFS':
             return new DFSStrategy();
+        case 'Dijkstra':
+            return new DijkstraStrategy();
         default:
             throw new Error(`Unknown algorithm strategy: ${name}`);
     }
@@ -80,6 +87,10 @@ router.get('/options', async (req: Request, res: Response) => {
                 });
             });
         });
+    });
+
+    response.hospitals.forEach((hospital) => {
+        hospital.departments.sort((a, b) => a.name.localeCompare(b.name));
     });
 
     res.json(response);
@@ -213,16 +224,17 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
     }
 
     const checkInNodeId = checkInCandidates.reduce((closest, node) => {
-        if (
-            euclideanDistance(
-                { lat: node.lat, lng: node.lng },
-                { lat: department.lat, lng: department.lng }
-            ) <
-            euclideanDistance(
-                { lat: closest.lat, lng: closest.lng },
-                { lat: department.lat, lng: department.lng }
-            )
-        ) {
+        const nodeDistance = haversineDistance(
+            { lat: node.lat, lng: node.lng },
+            { lat: department.lat, lng: department.lng }
+        );
+
+        const closestDistance = haversineDistance(
+            { lat: closest.lat, lng: closest.lng },
+            { lat: department.lat, lng: department.lng }
+        );
+
+        if (nodeDistance < closestDistance) {
             return node;
         } else {
             return closest;
@@ -240,7 +252,7 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
 
     let insideDoorNode;
 
-    if (topFloorGraph.floorNum !== 1) {
+    if (topFloorGraph.floorNum > 2) {
         // Return the bottom floor of that building
         const bottomFloorGraph = await PrismaClient.floorGraph.findFirst({
             where: {
@@ -293,6 +305,7 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
             imageBoundsSouth: topFloorGraph.imageBoundsSouth,
             imageBoundsEast: topFloorGraph.imageBoundsEast,
             imageBoundsWest: topFloorGraph.imageBoundsWest,
+            imageRotation: topFloorGraph.imageRotation,
             path: topFloorPath,
             direction: topFloorDirection,
         } as FloorPathResponse);
@@ -347,6 +360,7 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
             imageBoundsSouth: bottomFloorGraph.imageBoundsSouth,
             imageBoundsEast: bottomFloorGraph.imageBoundsEast,
             imageBoundsWest: bottomFloorGraph.imageBoundsWest,
+            imageRotation: bottomFloorGraph.imageRotation,
             path: bottomFloorPath,
             direction: bottomFloorDirection,
         });
@@ -379,6 +393,7 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
             imageBoundsSouth: topFloorGraph.imageBoundsSouth,
             imageBoundsEast: topFloorGraph.imageBoundsEast,
             imageBoundsWest: topFloorGraph.imageBoundsWest,
+            imageRotation: topFloorGraph.imageRotation,
             path: topFloorPath,
             direction: topFloorDiretion,
         });

@@ -12,7 +12,9 @@ const DisclaimerBar = () => {
         <div className="flex items-center justify-between py-1 bg-red-300 text-red-700">
             <div className="pl-5">
                 <FontAwesomeIcon icon={faCircleExclamation} />
-                 DISCLAIMER: This web application is strictly a CS3733-D25 Software Engineering class project for Prof. Wilson Wong at WPI
+                 DISCLAIMER: This website is a term project exercise for WPI CS 3733
+                Software Engineering (Prof. Wong) and is not to be confused with the actual Brigham &
+                Women’s Hospital website.
             </div>
             <div className="flex justify-center px-5 hover:text-red-200">
                 <button onClick={() => setOpen(false)}>

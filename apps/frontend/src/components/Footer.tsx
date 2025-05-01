@@ -1,6 +1,8 @@
 import React from 'react';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faFacebook, faInstagram, faLinkedin, faSquareXTwitter, faYoutube} from "@fortawesome/free-brands-svg-icons";
+import {NavigationMenuItem, NavigationMenuLink} from "@/components/ui/navigation-menu.tsx";
+import {Link} from "react-router-dom";
 
 //
 // Use for comments
@@ -21,19 +23,14 @@ export default function Footer() {
                             <ul className="list-none py-1 space-y-1">
                                 <li>
                                     <a
-                                        href="#"
+                                        href="/about"
                                         className=" hover:text-gray-400 transition-all duration-500 ease-in-out"
                                     >
                                         About us{' '}
                                     </a>
                                 </li>
                                 <li>
-                                    <a
-                                        href="#"
-                                        className=" hover:text-gray-400 transition-all duration-500 ease-in-out"
-                                    >
-                                        Services{' '}
-                                    </a>
+                                    <Link to="/citations">Citations</Link>
                                 </li>
                                 <li>
                                     <a

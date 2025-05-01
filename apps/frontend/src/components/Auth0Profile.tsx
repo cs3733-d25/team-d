@@ -1,14 +1,25 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { useAuth0 } from "@auth0/auth0-react";
+import axios from "axios";
 
 import {useNavigate} from "react-router-dom";
 import Directions from "@/routes/Directions.tsx";
 import AdminDatabase from "@/routes/AdminDatabase.tsx";
 
-//
+export type Employee = {
+    employeeId: number;
+    email: string;
+    firstName: string;
+    middleInitial: string;
+    lastName: string;
+    occupation: string;
+    userType: string;
+}
 
 const Profile = () => {
-    const { user, isAuthenticated, isLoading } = useAuth0();
+    const { user, isAuthenticated, isLoading, getAccessTokenSilently } = useAuth0();
+
+    const [employeeData, setEmployeeData] = useState<Employee | null>(null);
 
     const navigate = useNavigate();
 
@@ -23,19 +34,55 @@ const Profile = () => {
     const redirectToSettings = () => {
         navigate("/admin-settings");
     }
+    const redirectToEmployeePage = () => {
+        navigate("/employee-page");
+    }
 
-    if (isLoading) {
+    if (isLoading || !isAuthenticated || !user) {
         return (
             <div className="flex justify-center items-center h-screen">
                 <div className="text-lg font-semibold">Loading...</div>
             </div>
-        );//
+        );
+    }
+
+    const fetchData = async () => {
+        if(!user?.email) {
+            return (
+                <div className="flex justify-center items-center h-screen">
+                    <div className="text-lg font-semibold">Loading...</div>
+                </div>
+            );
+        }
+
+        try {
+            const employeeDataResponse = await axios.get(`/api/employee/user/${user?.email}`)
+            setEmployeeData(employeeDataResponse.data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    if(!employeeData) {
+        return (
+            <div className="flex justify-center items-center h-screen">
+                <div className="text-lg font-semibold">Loading...</div>
+            </div>
+        );
     }
 
     {/*Only if the user is logged in can they see this profile page with their email and profile pic*/}
     return (
         isAuthenticated && (
             <>
+                <div  className="w-full border-4 border-white rounded-b-lg text-center bg-black text-white
+                    animate-in fade-in zoom-in duration-500 p-4 font-nunito">
+                    You are logged in as an {employeeData?.userType}.
+                </div>
                 <div className="flex flex-col items-center bg-gray-50 px-4 py-15">
                     <img
                         src={user?.picture}
@@ -44,6 +91,10 @@ const Profile = () => {
                     />
                     <h2 className="mt-4 text-2xl font-bold text-gray-800">{user?.name}</h2>
                     <p className="mt-1 text-md text-gray-600">{user?.email}</p>
+                    <p className="mt-1 text-md text-gray-600"> {
+                        employeeData?.userType
+                    }
+                    </p>
                 </div>
 
                 {/*All the buttons for the profile page*/}
@@ -51,7 +102,7 @@ const Profile = () => {
 
                     <div className="col-start-1 bg-gray-50 p-10">
                         <button onClick={() => redirectToMyRequest()}
-                                className="col-start-2 text-3xl w-100 h-100 border-4 border-black rounded text-center bg-blue-900 hover:bg-blue-900 text-white
+                                className="col-start-2 text-3xl w-100 h-100 border-4 border-[#DFE3F0] shadow-md rounded text-center bg-blue-900 hover:bg-blue-900 text-white
                                             animate-in fade-in zoom-in duration-500 p-4 font-nunito hover:scale-110 cursor-pointer flex flex-col items-center justify-center space-y-2">
                                 {/*Service Icon*/}
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 25 24" strokeWidth={1.3} stroke="currentColor" className="size-35">
@@ -64,7 +115,7 @@ const Profile = () => {
 
                     <div className="items-start justify-items-start bg-gray-50 p-10">
                         <button onClick={() => redirectToMyRequest()}
-                                className="text-3xl w-100 h-100 border-4 border-black rounded text-center bg-blue-900 hover:bg-blue-900 text-white
+                                className="text-3xl w-100 h-100 border-4 border-[#DFE3F0] shadow-md rounded text-center bg-blue-900 hover:bg-blue-900 text-white
                                     animate-in fade-in zoom-in duration-500 p-4 font-nunito hover:scale-110 cursor-pointer flex flex-col items-center justify-center space-y-2">
                                 {/*Calendar Icon*/}
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-35">
@@ -75,9 +126,22 @@ const Profile = () => {
                         </button>
                     </div>
 
+                    <div className="items-start justify-items-start bg-gray-50 p-10">
+                        <button onClick={() => redirectToEmployeePage()}
+                                className="text-3xl w-100 h-100 border-4 border-[#DFE3F0] shadow-md rounded text-center bg-blue-900 hover:bg-blue-900 text-white
+                                    animate-in fade-in zoom-in duration-500 p-4 font-nunito hover:scale-110 cursor-pointer flex flex-col items-center justify-center space-y-2">
+                            {/*Employee Icon*/}
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-35">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                            </svg>
+
+                            Employee Directory
+                        </button>
+                    </div>
+
                     <div className="col-start-1 bg-gray-50 p-10">
                         <button onClick={() => redirectToSettings()}
-                                className="col-start-2 text-3xl w-100 h-100 border-4 border-black rounded text-center bg-blue-900 hover:bg-blue-900 text-white
+                                className="col-start-2 text-3xl w-100 h-100 border-4 border-[#DFE3F0] shadow-md rounded text-center bg-blue-900 hover:bg-blue-900 text-white
                                         animate-in fade-in zoom-in duration-500 p-4 font-nunito hover:scale-110 cursor-pointer flex flex-col items-center justify-center space-y-2">
 
                                 {/*Settings Icon*/}
@@ -92,7 +156,7 @@ const Profile = () => {
 
                     <div className="items-start justify-items-start bg-gray-50 p-10">
                         <button onClick={() => window.open("https://www.mychart.org")}
-                                className="text-3xl w-100 h-100 border-4 border-black rounded text-center bg-blue-900 hover:bg-blue-900 text-white
+                                className="text-3xl w-100 h-100 border-4 border-[#DFE3F0] shadow-md rounded text-center bg-blue-900 hover:bg-blue-900 text-white
                                         animate-in fade-in zoom-in duration-500 p-4 font-nunito hover:scale-110 cursor-pointer flex flex-col items-center justify-center space-y-2">
                                 {/*Appointment Icon?*/}
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-35">
@@ -105,7 +169,7 @@ const Profile = () => {
 
                     <div className="items-start justify-items-start bg-gray-50 p-10">
                         <button onClick={() => redirectAdminDatabase()}
-                                className="text-3xl w-100 h-100 border-4 border-black rounded text-center bg-blue-900 hover:bg-blue-900 text-white
+                                className="text-3xl w-100 h-100 border-4 border-[#DFE3F0] shadow-md rounded text-center bg-blue-900 hover:bg-blue-900 text-white
                                         animate-in fade-in zoom-in duration-500 p-4 font-nunito hover:scale-110 cursor-pointer flex flex-col items-center justify-center space-y-2">
                                 {/*Management Icon*/}
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-35">

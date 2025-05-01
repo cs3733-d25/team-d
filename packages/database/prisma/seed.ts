@@ -1,9 +1,7 @@
 import {PrismaClient} from '../.prisma/client';
 const prisma = new PrismaClient();
 
-
 async function main() {
-
     // Seed algorithm mode
     console.log('Seeding algorithm...');
 
@@ -13,6 +11,7 @@ async function main() {
         data: [
             { algorithmId: 0, name: 'BFS', isActive: true }, // default active
             { algorithmId: 1, name: 'DFS', isActive: false },
+            {algorithmId: 2, name: 'Dijkstra', isActive: false },
         ],
     });
     console.log('Algorithms seeded!');
@@ -25,36 +24,36 @@ async function main() {
             where: {employeeId: 1},
             update: {},
             create: {
-                email: 'jlsmith@gmail.com',
-                password: 'rhe0324!',
+                email: 'admind25d@gmail.com',
                 firstName: 'Jen',
                 middleInitial: 'L',
                 lastName: 'Smith',
-                occupation: 'Nurse'
+                occupation: 'Administrator',
+                userType: 'Admin'
             }
         }),
         await prisma.employee.upsert({
             where: {employeeId: 2},
             update: {},
             create: {
-                email: 'mkhaven@gmail.com',
-                password: 'ehw2153!',
+                email: 'softengd25d@gmail.com',
                 firstName: 'Matthew',
                 middleInitial: 'K',
                 lastName: 'Haven',
-                occupation: 'Doctor'
+                occupation: 'Administrator',
+                userType: 'Admin'
             }
         }),
         await prisma.employee.upsert({
             where: {employeeId: 3},
             update: {},
             create: {
-                email: 'palong@gmail.com',
-                password: 'jye4832!',
+                email: 'staffd25d@gmail.com',
                 firstName: 'Piper',
                 middleInitial: 'A',
                 lastName: 'Long',
-                occupation: 'Nurse'
+                occupation: 'Nurse',
+                userType: 'Staff'
             }
         }),
         await prisma.employee.upsert({
@@ -62,11 +61,11 @@ async function main() {
             update: {},
             create: {
                 email: 'nrlee@gmail.com',
-                password: 'gsl9472!',
                 firstName: 'Nicole',
                 middleInitial: 'R',
                 lastName: 'Lee',
-                occupation: 'Administrator'
+                occupation: 'Administrator',
+                userType: 'Staff'
             }
         }),
         await prisma.employee.upsert({
@@ -74,237 +73,16 @@ async function main() {
             update: {},
             create: {
                 email: 'kkramos@gmail.com',
-                password: 'dhs9572!',
                 firstName: 'Karina',
                 middleInitial: 'K',
                 lastName: 'Ramos',
-                occupation: 'Doctor'
+                occupation: 'Doctor',
+                userType: 'Staff'
             }
         })
     ];
     console.log('Employees seeded!');
-
     console.log(employees);
-
-    // Seed translator requests
-    // console.log('Seeding translator requests...');
-    // const serviceRequests = [
-    //     await prisma.serviceRequest.upsert({
-    //         where: { requestId: 1},
-    //         update: {},
-    //         create: {
-    //             assignedEmployeeId: null,
-    //         },
-    //     }),
-    //     await prisma.serviceRequest.upsert({
-    //         where: { requestId: 2},
-    //         update: {},
-    //         create: {
-    //             assignedEmployeeId: 1,
-    //         },
-    //     }),
-    //     await prisma.serviceRequest.upsert({
-    //         where: { requestId: 3},
-    //         update: {},
-    //         create: {
-    //             assignedEmployeeId: 2,
-    //         },
-    //     }),
-    //     await prisma.serviceRequest.upsert({
-    //         where: { requestId: 4},
-    //         update: {},
-    //         create: {
-    //             assignedEmployeeId: null,
-    //         },
-    //     }),
-    //     await prisma.serviceRequest.upsert({
-    //         where: { requestId: 5},
-    //         update: {},
-    //         create: {
-    //             assignedEmployeeId: 3,
-    //         },
-    //     }),
-    //     await prisma.serviceRequest.upsert({
-    //         where: { requestId: 6},
-    //         update: {},
-    //         create: {
-    //             assignedEmployeeId: null,
-    //         },
-    //     }),
-    //     await prisma.serviceRequest.upsert({
-    //         where: { requestId: 7},
-    //         update: {},
-    //         create: {
-    //             assignedEmployeeId: 4,
-    //         },
-    //     }),
-    //     await prisma.serviceRequest.upsert({
-    //         where: { requestId: 8},
-    //         update: {},
-    //         create: {
-    //             assignedEmployeeId: 3,
-    //         },
-    //     }),
-    //     await prisma.serviceRequest.upsert({
-    //         where: { requestId: 9},
-    //         update: {},
-    //         create: {
-    //             assignedEmployeeId: null,
-    //         },
-    //     }),
-    //     await prisma.serviceRequest.upsert({
-    //         where: { requestId: 10},
-    //         update: {},
-    //         create: {
-    //             assignedEmployeeId: null,
-    //         },
-    //     }),
-    //     await prisma.serviceRequest.upsert({
-    //         where: { requestId: 11},
-    //         update: {},
-    //         create: {
-    //             assignedEmployeeId: null,
-    //         },
-    //     }),
-    // ];
-    // const translatorRequests = [
-    //     await prisma.translatorRequest.upsert({
-    //         where: {serviceRequestId: serviceRequests[0].requestId},
-    //         update: {},
-    //         create: {
-    //             serviceRequestId: serviceRequests[0].requestId,
-    //             languageFrom: 'Vietnamese',
-    //             languageTo: 'English',
-    //             roomNum: '302',
-    //             startDateTime: new Date('2025-04-01T22:07:00.639Z'),
-    //             endDateTime: new Date('2025-04-01T22:07:45.639Z'),
-    //         }
-    //     }),
-    //     await prisma.translatorRequest.upsert({
-    //         where: {serviceRequestId: serviceRequests[1].requestId},
-    //         update: {},
-    //         create: {
-    //             serviceRequestId: serviceRequests[1].requestId,
-    //             languageFrom: 'Spanish',
-    //             languageTo: 'English',
-    //             roomNum: '207',
-    //             startDateTime: new Date('2025-04-11T22:04:30.639Z'),
-    //             endDateTime: new Date('2025-04-11T22:05:00.639Z'),
-    //         },
-    //     }),
-    //     await prisma.translatorRequest.upsert({
-    //         where: {serviceRequestId: serviceRequests[2].requestId},
-    //         update: {},
-    //         create: {
-    //             serviceRequestId: serviceRequests[2].requestId,
-    //             languageFrom: 'English',
-    //             languageTo: 'Portuguese',
-    //             roomNum: '119',
-    //             startDateTime: new Date('2025-04-18T22:05:00.639Z'),
-    //             endDateTime: new Date('2025-04-18T22:05:40.639Z'),
-    //         },
-    //     }),
-    //     await prisma.translatorRequest.upsert({
-    //         where: {serviceRequestId: serviceRequests[3].requestId},
-    //         update: {},
-    //         create: {
-    //             serviceRequestId: serviceRequests[3].requestId,
-    //             languageFrom: 'Chinese',
-    //             languageTo: 'English',
-    //             roomNum: '222',
-    //             startDateTime: new Date('2025-04-02T22:01:15.639Z'),
-    //             endDateTime: new Date('2025-04-02T22:02:00.639Z'),
-    //         },
-    //     }),
-    //     await prisma.translatorRequest.upsert({
-    //         where: {serviceRequestId: serviceRequests[4].requestId},
-    //         update: {},
-    //         create: {
-    //             serviceRequestId: serviceRequests[4].requestId,
-    //             languageFrom: 'English',
-    //             languageTo: 'Vietnamese',
-    //             roomNum: '129',
-    //             startDateTime: new Date('2025-05-27T22:09:00.639Z'),
-    //             endDateTime: new Date('2025-05-27T22:09:45.639Z'),
-    //         },
-    //     }),
-    //     await prisma.translatorRequest.upsert({
-    //         where: {serviceRequestId: serviceRequests[5].requestId},
-    //         update: {},
-    //         create: {
-    //             serviceRequestId: serviceRequests[5].requestId,
-    //             languageFrom: 'German',
-    //             languageTo: 'Spanish',
-    //             roomNum: '311',
-    //             startDateTime: new Date('2025-04-15T22:09:20.639Z'),
-    //             endDateTime: new Date('2025-04-15T22:08:45.639Z'),
-    //         },
-    //     }),
-    //     await prisma.translatorRequest.upsert({
-    //         where: {serviceRequestId: serviceRequests[6].requestId},
-    //         update: {},
-    //         create: {
-    //             serviceRequestId: serviceRequests[6].requestId,
-    //             languageFrom: 'Korean',
-    //             languageTo: 'English',
-    //             roomNum: '104',
-    //             startDateTime: new Date('2025-06-01T22:02:30.639Z'),
-    //             endDateTime: new Date('2025-06-01T22:03:30.639Z'),
-    //         },
-    //     }),
-    //     await prisma.translatorRequest.upsert({
-    //         where: {serviceRequestId: serviceRequests[7].requestId},
-    //         update: {},
-    //         create: {
-    //             serviceRequestId: serviceRequests[7].requestId,
-    //             languageFrom: 'English',
-    //             languageTo: 'Russian',
-    //             roomNum: '333',
-    //             startDateTime: new Date('2025-05-11T22:04:00.639Z'),
-    //             endDateTime: new Date('2025-05-11T22:04:45.639Z'),
-    //         },
-    //     }),
-    //     await prisma.translatorRequest.upsert({
-    //         where: {serviceRequestId: serviceRequests[8].requestId},
-    //         update: {},
-    //         create: {
-    //             serviceRequestId: serviceRequests[8].requestId,
-    //             languageFrom: 'French',
-    //             languageTo: 'English',
-    //             roomNum: '234',
-    //             startDateTime: new Date('2025-04-28T22:07:00.639Z'),
-    //             endDateTime: new Date('2025-04-28T22:07:45.639Z'),
-    //         },
-    //     }),
-    //     await prisma.translatorRequest.upsert({
-    //         where: {serviceRequestId: serviceRequests[9].requestId},
-    //         update: {},
-    //         create: {
-    //             serviceRequestId: serviceRequests[9].requestId,
-    //             languageFrom: 'English',
-    //             languageTo: 'Chinese',
-    //             roomNum: '232',
-    //             startDateTime: new Date('2025-05-29T22:09:00.639Z'),
-    //             endDateTime: new Date('2025-05-29T22:10:30.639Z'),
-    //         },
-    //     }),
-    //     await prisma.translatorRequest.upsert({
-    //         where: {serviceRequestId: serviceRequests[10].requestId},
-    //         update: {},
-    //         create: {
-    //             serviceRequestId: serviceRequests[10].requestId,
-    //             languageFrom: 'Spanish',
-    //             languageTo: 'French',
-    //             roomNum: '119',
-    //             startDateTime: new Date('2025-06-20T22:10:30.639Z'),
-    //             endDateTime: new Date('2025-06-20T22:11:15.639Z'),
-    //         },
-    //     }),
-    // ];
-    // console.log('Translator requests seeded!')
-    //
-    // console.log(translatorRequests);
-
 
     await prisma.edge.deleteMany({});
     await prisma.node.deleteMany({});
@@ -315,9 +93,7 @@ async function main() {
     await prisma.building.deleteMany({});
     await prisma.hospital.deleteMany({});
 
-
     console.log('Seeding hospitals...');
-
     const hospitals = await prisma.hospital.createMany({
         data: [
             {
@@ -332,16 +108,16 @@ async function main() {
                 hospitalId: 2,
                 name: 'Faulkner',
             },
+            {
+                hospitalId: 3,
+                name: 'Main Campus'
+            },
         ],
     });
     console.log('Hospitals seeded!');
     console.log(hospitals);
 
-
-
-
     console.log('Seeding buildings...');
-
     const buildings = await prisma.building.createMany({
         data: [
             {
@@ -368,17 +144,18 @@ async function main() {
                 address: '1153 Centre St, Jamaica Plain, MA 02130',
                 hospitalId: 2,
             },
+            {
+                buildingId: 4,
+                name: 'Main Campus',
+                address: '75 Francis St, Boston, MA 02115',
+                hospitalId: 3,
+            },
         ],
     });
-
     console.log('Buildings seeded!');
     console.log(buildings);
 
-
-
-
     console.log('Seeding graphs...');
-
     const graphs = await prisma.graph.createMany({
         data: [
             {
@@ -426,18 +203,22 @@ async function main() {
                 graphType: 'FLOORGRAPH',
                 graphName: 'Faulkner Floor 1',
             },
-
+            {
+                graphId: 400,
+                graphType: 'PARKINGGRAPH',
+                graphName: 'Main Campus Parking',
+            },
+            {
+                graphId: 402,
+                graphType: 'FLOORGRAPH',
+                graphName: 'Main Campus Floor 2',
+            },
         ],
     });
-
     console.log('Graphs seeded!');
     console.log(graphs);
 
-
-
-
     console.log('Seeding floor graphs...');
-
     const floorGraphs = await prisma.floorGraph.createMany({
         data: [
             {
@@ -449,6 +230,7 @@ async function main() {
                 imageBoundsSouth: 42.32569,
                 imageBoundsEast: -71.14921,
                 imageBoundsWest: -71.15013,
+                imageRotation: 4.444581493,
                 buildingId: 0,
             },
             {
@@ -464,6 +246,7 @@ async function main() {
                 imageBoundsSouth: 42.09245,
                 imageBoundsEast: -71.26550,
                 imageBoundsWest: -71.26658,
+                imageRotation: 19.27248604,
                 buildingId: 1,
             },
             {
@@ -479,6 +262,7 @@ async function main() {
                 imageBoundsSouth: 42.09222,
                 imageBoundsEast: -71.26655,
                 imageBoundsWest: -71.26746,
+                imageRotation: 54.1826623,
                 buildingId: 2,
             },
             {
@@ -494,6 +278,7 @@ async function main() {
                 imageBoundsSouth: 42.09222,
                 imageBoundsEast: -71.26630,
                 imageBoundsWest: -71.26744,
+                imageRotation: 54.1826623,
                 buildingId: 2,
             },
             {
@@ -509,30 +294,37 @@ async function main() {
                 imageBoundsSouth: 42.092215,
                 imageBoundsEast: -71.26650,
                 imageBoundsWest: -71.267445,
+                imageRotation: 54.1826623,
                 buildingId: 2,
             },
             {
                 graphId: 301,
                 floorNum: 1,
-                // image: '/src/public/floormaps/fern1.png',
                 image: 'ff1.png',
                 imageBoundsNorth: 42.30290860489564,
                 imageBoundsSouth: 42.300859574636796,
                 imageBoundsEast: -71.12680971364097,
                 imageBoundsWest: -71.12961427703588,
+                imageRotation: -124.380344724,
                 buildingId: 3,
+            },
+            {
+                graphId: 402,
+                floorNum: 2,
+                image: 'mcf2.png',
+                imageBoundsNorth: 42.33694,
+                imageBoundsSouth: 42.33450,
+                imageBoundsEast: -71.10385,
+                imageBoundsWest: -71.10915,
+                imageRotation: -40,
+                buildingId: 4,
             },
         ],
     });
-
     console.log('Floor graphs seeded!');
     console.log(floorGraphs);
 
-
-
-
     console.log('Seeding parking graphs...');
-
     const parkingGraphs = await prisma.parkingGraph.createMany({
         data: [
             {
@@ -546,18 +338,17 @@ async function main() {
             {
                 graphId: 300,
                 hospitalId: 2,
+            },
+            {
+                graphId: 400,
+                hospitalId: 3,
             }
         ],
     });
-
     console.log('Parking graphs seeded!');
     console.log(parkingGraphs);
 
-
-
-
     console.log('Seeding departments...');
-
     const departments = await prisma.department.createMany({
         data: [
             {
@@ -1803,22 +1594,906 @@ async function main() {
                 buildingId: 3,
                 floorGraphId: 301,
             },
+            {
+                departmentId: 113,
+                name: 'Emergency (75 Francis)',
+                floorNum: 1,
+                room: '',
+                lat: 42.3360430282556,
+                lng: -71.10647933813243,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 114,
+                name: 'Obstetrics Admitting (75 Francis)',
+                floorNum: 1,
+                room: '',
+                lat: 42.336057518198665,
+                lng: -71.10701694507586,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 115,
+                name: 'Sharf Admitting Center (75 Francis)',
+                floorNum: 1,
+                room: '',
+                lat: 42.336057518198665,
+                lng: -71.10701694507586,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 116,
+                name: 'Connors Center',
+                floorNum: 5,
+                room: '',
+                lat: 42.336121345221315,
+                lng: -71.10661344858318,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 117,
+                name: 'Dana-Farber Cancer Inpatient Hospital',
+                floorNum: 6,
+                room: '',
+                lat: 42.33642233555418,
+                lng: -71.10710277576433,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 118,
+                name: 'Shapiro Cardiovascular',
+                floorNum: 6,
+                room: '',
+                lat: 42.335752554190286,
+                lng: -71.1078611425272,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 119,
+                name: 'Braunwald Tower Building',
+                floorNum: 3,
+                room: '',
+                lat: 42.33642233555418,
+                lng: -71.10710277576433,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 120,
+                name: 'Ambulatory Radiology (X-ray & CT scan)',
+                floorNum: 2,
+                room: '',
+                lat: 42.33529291136217,
+                lng: -71.1048777541832,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 121,
+                name: 'Breast Imaging, Lee Bell Center',
+                floorNum: 2,
+                room: '',
+                lat: 42.3360430282556,
+                lng: -71.10647933813243,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 122,
+                name: 'Cardiovascular Imaging Center',
+                floorNum: -2,
+                room: '',
+                lat: 42.335603850135605,
+                lng: -71.10801536954556,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 123,
+                name: 'Cross-Sectional Interventional Radiology',
+                floorNum: -1,
+                room: '',
+                lat: 42.33587885031081,
+                lng: -71.10625022839282,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 124,
+                name: 'Day Surgery Check-in / Pre-Op',
+                floorNum: -1,
+                room: '',
+                lat: 42.33642233555418,
+                lng: -71.10710277576433,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 125,
+                name: 'Dialysis',
+                floorNum: 3,
+                room: '',
+                lat: 42.33642233555418,
+                lng: -71.10710277576433,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 126,
+                name: 'Endoscopy',
+                floorNum: 2,
+                room: '',
+                lat: 42.336057518198665,
+                lng: -71.10701694507586,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 127,
+                name: 'High Risk Obstetric Ultrasound',
+                floorNum: 3,
+                room: '',
+                lat: 42.3360430282556,
+                lng: -71.10647933813243,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 128,
+                name: 'Infusion',
+                floorNum: 0,
+                room: '',
+                lat: 42.33521611116059,
+                lng: -71.10849660789083,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 129,
+                name: 'Mammography',
+                floorNum: 2,
+                room: '',
+                lat: 42.3360430282556,
+                lng: -71.10647933813243,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 130,
+                name: 'Nuclear Medicine & Molecular Imaging',
+                floorNum: -1,
+                room: '',
+                lat: 42.336057518198665,
+                lng: -71.10701694507586,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 131,
+                name: 'Outpatient X-ray',
+                floorNum: -1,
+                room: '',
+                lat: 42.336057518198665,
+                lng: -71.10701694507586,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 132,
+                name: 'PACU',
+                floorNum: -1,
+                room: '',
+                lat: 42.33642233555418,
+                lng: -71.10710277576433,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 133,
+                name: 'Phlebotomy, Outpatient',
+                floorNum: 2,
+                room: '',
+                lat: 42.33587885031081,
+                lng: -71.10625022839282,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 134,
+                name: 'Radiation Oncology',
+                floorNum: -2,
+                room: '',
+                lat: 42.3360430282556,
+                lng: -71.10647933813243,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 135,
+                name: 'Radiology (MRI and CSIR)',
+                floorNum: -1,
+                room: '',
+                lat: 42.33587885031081,
+                lng: -71.10625022839282,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 136,
+                name: 'Radiology (MRI and CT Scan)',
+                floorNum: -2,
+                room: '',
+                lat: 42.33521611116059,
+                lng: -71.10849660789083,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 137,
+                name: 'Reproductive Endocrinology Lab',
+                floorNum: 3,
+                room: '',
+                lat: 42.336057518198665,
+                lng: -71.10701694507586,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 138,
+                name: 'Shapiro Procedural Check-in',
+                floorNum: 2,
+                room: '',
+                lat: 42.335752554190286,
+                lng: -71.1078611425272,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 139,
+                name: 'Ultrasound',
+                floorNum: -1,
+                room: '',
+                lat: 42.336057518198665,
+                lng: -71.10701694507586,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 140,
+                name: 'Vascular Diagnostic Labratory',
+                floorNum: 3,
+                room: '',
+                lat: 42.33587885031081,
+                lng: -71.10625022839282,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 141,
+                name: 'Bridge Clinic, Dushku-Palandjian',
+                floorNum: 1,
+                room: '',
+                lat: 42.33642233555418,
+                lng: -71.10710277576433,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 142,
+                name: 'Brigham Circle Medical Associates (BCMA)',
+                floorNum: 2,
+                room: '',
+                lat: 42.33521611116059,
+                lng: -71.10849660789083,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 143,
+                name: 'Brigham Medical Specialties / Schuster Transplant',
+                floorNum: 2,
+                room: '',
+                lat: 42.33587885031081,
+                lng: -71.10625022839282,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 144,
+                name: 'Center for Weight Management & Metabolic Surgery',
+                floorNum: 2,
+                room: '',
+                lat: 42.33587885031081,
+                lng: -71.10625022839282,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 145,
+                name: 'Endocrine – Diabetes',
+                floorNum: 2,
+                room: '',
+                lat: 42.33587885031081,
+                lng: -71.10625022839282,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 146,
+                name: 'Gastroenterology & Hepatology',
+                floorNum: 2,
+                room: '',
+                lat: 42.33587885031081,
+                lng: -71.10625022839282,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 147,
+                name: 'Genetics & Genomics Medicine',
+                floorNum: 2,
+                room: '',
+                lat: 42.33587885031081,
+                lng: -71.10625022839282,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 148,
+                name: 'Infectious Disease',
+                floorNum: 4,
+                room: '',
+                lat: 42.33529291136217,
+                lng: -71.1048777541832,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 149,
+                name: 'Kidney / Pancreas Transplant',
+                floorNum: 2,
+                room: '',
+                lat: 42.33587885031081,
+                lng: -71.10625022839282,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 150,
+                name: 'Kidney Medicine',
+                floorNum: 2,
+                room: '',
+                lat: 42.33587885031081,
+                lng: -71.10625022839282,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 151,
+                name: 'Nutrition',
+                floorNum: 2,
+                room: '',
+                lat: 42.33587885031081,
+                lng: -71.10625022839282,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 152,
+                name: 'Center for Fetal Medicine & Reproductive Genetics',
+                floorNum: 3,
+                room: '',
+                lat:  42.336057518198665,
+                lng: -71.10701694507586,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 153,
+                name: 'Center for Infertility & Reproductive Surgery',
+                floorNum: 3,
+                room: '',
+                lat:  42.336057518198665,
+                lng: -71.10701694507586,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 154,
+                name: 'Chest Diseases, Center for',
+                floorNum: 2,
+                room: '',
+                lat:  42.33514906663544,
+                lng: -71.10448784893264,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 155,
+                name: 'Comprehensive Breast Health Center',
+                floorNum: 2,
+                room: '',
+                lat:  42.336121345221315,
+                lng: -71.10661344858318,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 156,
+                name: 'Connors Center for Women’s Health',
+                floorNum: 3,
+                room: '',
+                lat: 42.3360430282556,
+                lng: -71.10647933813243,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 157,
+                name: 'Dental Group / Oral Medicine',
+                floorNum: 2,
+                room: '',
+                lat: 42.336121345221315,
+                lng: -71.10661344858318,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 158,
+                name: 'Ear, Nose and Throat (ENT)',
+                floorNum: 2,
+                room: '',
+                lat:  42.33587885031081,
+                lng: -71.10625022839282,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 159,
+                name: 'Echocardiography Lab (ECHO)',
+                floorNum: 2,
+                room: '',
+                lat:  42.335752554190286,
+                lng: -71.1078611425272,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 160,
+                name: 'Electrophysiology',
+                floorNum: 2,
+                room: '',
+                lat:  42.335603850135605,
+                lng: -71.10801536954556,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 161,
+                name: 'Gynecologic Oncology',
+                floorNum: 3,
+                room: '',
+                lat:  42.336057518198665,
+                lng: -71.10701694507586,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 162,
+                name: 'Infertility & Reproductive Surgery',
+                floorNum: 3,
+                room: '',
+                lat:  42.336057518198665,
+                lng: -71.10701694507586,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 163,
+                name: 'International Patient Center / Executive Health',
+                floorNum: 2,
+                room: '',
+                lat:  42.33529291136217,
+                lng:  -71.1048777541832,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 164,
+                name: 'Jen Center for Primary Care ',
+                floorNum: 2,
+                room: '',
+                lat:  42.3360430282556,
+                lng:  -71.10647933813243,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 165,
+                name: 'Lung Center',
+                floorNum: 2,
+                room: '',
+                lat:  42.335031093648794,
+                lng:  -71.10414720838774,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 166,
+                name: 'Maternal Fetal Medicine',
+                floorNum: 3,
+                room: '',
+                lat:  42.3360430282556,
+                lng:  -71.10647933813243,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 167,
+                name: 'Minimally Invasive Gynecologic Surgery',
+                floorNum: 3,
+                room: '',
+                lat:  42.336057518198665,
+                lng: -71.10701694507586,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 168,
+                name: 'Neurology',
+                floorNum: 1,
+                room: '',
+                lat:  42.33521611116059,
+                lng:  -71.10849660789083,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 169,
+                name: 'Neurosurgery',
+                floorNum: 1,
+                room: '',
+                lat:  42.33521611116059,
+                lng:  -71.10849660789083,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 170,
+                name: 'Orthopedics',
+                floorNum: 2,
+                room: '',
+                lat:  42.33521611116059,
+                lng:  -71.10849660789083,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 171,
+                name: 'Plastic & Reconstructive Surgery ',
+                floorNum: 2,
+                room: '',
+                lat:  42.33587885031081,
+                lng: -71.10625022839282,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 172,
+                name: 'Podiatry',
+                floorNum: 2,
+                room: '',
+                lat:  42.33521611116059,
+                lng:  -71.10849660789083,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 173,
+                name: 'Rehabilitation Services PT / OT',
+                floorNum: 1,
+                room: '',
+                lat: 42.335752554190286,
+                lng: -71.1078611425272,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 174,
+                name: 'Rheumatology',
+                floorNum: 2,
+                room: '',
+                lat:  42.33521611116059,
+                lng:  -71.10849660789083,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 175,
+                name: 'Thoracic Surgery Clinic',
+                floorNum: 2,
+                room: '',
+                lat:  42.33514906663544,
+                lng: -71.10448784893264,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 176,
+                name: 'Urology',
+                floorNum: 3,
+                room: '',
+                lat:  42.33587885031081,
+                lng: -71.10625022839282,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 177,
+                name: 'Watkins Cardiovascular Clinic',
+                floorNum: 2,
+                room: '',
+                lat:  42.335603850135605,
+                lng: -71.10801536954556,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 178,
+                name: 'Weiner Center for Pre-Op Evaluation',
+                floorNum: 2,
+                room: '',
+                lat:   42.33552648705987,
+                lng: -71.1055223704828,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 179,
+                name: 'Wound Care Center',
+                floorNum: 1,
+                room: '',
+                lat:   42.33552648705987,
+                lng: -71.1055223704828,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 180,
+                name: 'Bornstein Amphitheater',
+                floorNum: 2,
+                room: '',
+                lat:   42.335762430953224,
+                lng: -71.10607220029922,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 181,
+                name: 'Boston Children\'s Hospital, Bridge to',
+                floorNum: 2,
+                room: '',
+                lat:   42.3360430282556,
+                lng: -71.10647933813243,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 182,
+                name: 'Bretholtz Family Center',
+                floorNum: 1,
+                room: '',
+                lat:  42.336057518198665,
+                lng: -71.10701694507586,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 183,
+                name: 'Cafeteria',
+                floorNum: 2,
+                room: '',
+                lat:  42.33642233555418,
+                lng: -71.10710277576433,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 184,
+                name: 'Carrie Hall Conference Room',
+                floorNum: 2,
+                room: '',
+                lat:  42.335031093648794,
+                lng: -71.10414720838774,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 185,
+                name: 'Chapel, Multi-Faith',
+                floorNum: 1,
+                room: '',
+                lat:  42.33642233555418,
+                lng: -71.10710277576433,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 186,
+                name: 'Dana-Farber Cancer Institute, Bridge to',
+                floorNum: 3,
+                room: '',
+                lat: 42.336057518198665,
+                lng: -71.10701694507586,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 187,
+                name: 'Dana-Farber Cancer Instit. Inpatient Hospital',
+                floorNum: 6,
+                room: '',
+                lat: 42.336121345221315,
+                lng: -71.10661344858318,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 188,
+                name: 'Kraft Blood Donor Center',
+                floorNum: 3,
+                room: '',
+                lat: 42.336057518198665,
+                lng: -71.10701694507586,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 189,
+                name: 'Medical Records / Film Library',
+                floorNum: -1,
+                room: '',
+                lat: 42.336121345221315,
+                lng: -71.10661344858318,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 190,
+                name: 'Patient Financial Registration',
+                floorNum: 2,
+                room: '',
+                lat: 42.33587885031081,
+                lng: -71.10625022839282,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 191,
+                name: 'Pharmacy',
+                floorNum: 2,
+                room: '',
+                lat: 42.335589934244254,
+                lng: -71.1057020784868,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 192,
+                name: 'Radiation Procedural Check-in',
+                floorNum: 2,
+                room: '',
+                lat: 42.335752554190286,
+                lng: -71.1078611425272,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
+            {
+                departmentId: 193,
+                name: 'Shapiro Family Center',
+                floorNum: 2,
+                room: '',
+                lat: 42.335752554190286,
+                lng: -71.1078611425272,
+                hospitalId: 3,
+                buildingId: 4,
+                floorGraphId: 402,
+            },
 
         ],
     });
-
     console.log('Departments seeded!');
     console.log(departments);
 
-
-
-
     console.log('Seeding nodes...');
-
     const nodes = await prisma.node.createMany({
         data: [
-            // CH Parking
-
             {
                 nodeId: 1,
                 name: '[Entrance1]',
@@ -1827,145 +2502,27 @@ async function main() {
                 type: 'DOOR',
                 graphId: 0,
             },
-            // CH FL1
-            {
-                nodeId: 2,
-                name: '[Door1]',
-                lat: 42.32626804631388,
-                lng: -71.14951213358698,
-                type: 'DOOR',
-                connectedNodeId: 1,
-                graphId: 1,
-            },
-            {
-                nodeId: 3,
-                name: 'Hallway',
-                lat: 42.32620458972566,
-                lng: -71.14950945137797,
-                type: 'NORMAL',
-                graphId: 1,
-            },
-            {
-                nodeId: 4,
-                name: 'Hallway 2',
-                lat: 42.32619566613782,
-                lng: -71.14958187102137,
-                type: 'NORMAL',
-                graphId: 1,
-            },
-            {
-                nodeId: 5,
-                name: 'Enter room 1',
-                lat: 42.32616889536665,
-                lng: -71.14958321212588,
-                type: 'NORMAL',
-                graphId: 1,
-            },
-            {
-                nodeId: 6,
-                name: 'Enter room 2',
-                lat: 42.32616269842727,
-                lng: -71.14965529649315,
-                type: 'NORMAL',
-                graphId: 1,
-            },
-            {
-                nodeId: 7,
-                name: '[Checkpoint1]',
-                lat: 42.326107173823104,
-                lng: -71.14964456765709,
-                type: 'CHECKIN',
-                graphId: 1,
-            },
-            //  To [Entrance2] from node 3
-            {
-                nodeId: 8,
-                name: 'to ENT2 - 1',
-                lat: 42.326175614030284,
-                lng: -71.14949461511249,
-                type: 'NORMAL',
-                graphId: 1,
-            },
-            {
-                nodeId: 9,
-                name: 'to ENT2 - 2',
-                lat: 42.326126038503375,
-                lng: -71.14948656848544,
-                type: 'NORMAL',
-                graphId: 1,
-            },
-            {
-                nodeId: 10,
-                name: 'to ENT2 - 3',
-                lat: 42.32609331863421,
-                lng: -71.14948925069446,
-                type: 'NORMAL',
-                graphId: 1,
-            },
-            {
-                nodeId: 11,
-                name: 'to ENT2 - 4',
-                lat: 42.32602986186977,
-                lng: -71.1494885801422,
-                type: 'NORMAL',
-                graphId: 1,
-            },
-            {
-                nodeId: 12,
-                name: 'to ENT2 - 5',
-                lat: 42.3259783032015,
-                lng: -71.14948656848544,
-                type: 'NORMAL',
-                graphId: 1,
-            },
-            {
-                nodeId: 13,
-                name: 'to ENT2 - 6',
-                lat: 42.32598524379393,
-                lng: -71.14936721018428,
-                type: 'NORMAL',
-                graphId: 1,
-            },
-            {
-                nodeId: 14,
-                name: 'to ENT2 - 7',
-                lat: 42.325992184385576,
-                lng: -71.14927534452552,
-                type: 'NORMAL',
-                graphId: 1,
-            },
-            {
-                nodeId: 15,
-                name: '[Entrance2]',
-                lat: 42.32599565468113,
-                lng: -71.14921700647945,
-                connectedNodeId: 29,
-                type: 'DOOR',
-                graphId: 1,
-            },
-
-            //  CH Parking Lot 1 → Entrance 1
             {
                 nodeId: 16,
                 name: '[CH Parking Lot 1]',
-                lat: 42.32643565992152,
-                lng: -71.14985730692341,
+                lat: 42.32631172154332,
+                lng: -71.14984791919186,
                 type: 'PARKING',
                 graphId: 0,
             },
             {
                 nodeId: 17,
                 name: 'CHP1→ENT1-1',
-                lat: 42.32643565992152,
-                lng: -71.14959713264896,
+                lat: 42.32628990836349,
+                lng: -71.14971380874111,
                 type: 'NORMAL',
                 graphId: 0,
             },
             {
                 nodeId: 18,
                 name: 'CHP1→ENT1-2',
-                lat: 42.32629288288845,
-                lng: -71.14958103939487,
+                lat: 42.32629089987184,
+                lng: -71.14960652038052,
                 type: 'NORMAL',
                 graphId: 0,
             },
@@ -1977,8 +2534,6 @@ async function main() {
                 type: 'NORMAL',
                 graphId: 0,
             },
-
-            //  CH Parking Lot 2 → Entrance 2
             {
                 nodeId: 20,
                 name: '[CH Parking Lot 2]',
@@ -1995,8 +2550,6 @@ async function main() {
                 type: 'NORMAL',
                 graphId: 0,
             },
-
-            //  CH Parking Lot 3 → Entrance 2
             {
                 nodeId: 22,
                 name: '[CH Parking Lot 3]',
@@ -2040,16 +2593,8 @@ async function main() {
             {
                 nodeId: 27,
                 name: 'CHP3→ENT2-5',
-                lat: 42.325941392214446,
+                lat: 42.32594139221445,
                 lng: -71.14912640496685,
-                type: 'NORMAL',
-                graphId: 0,
-            },
-            {
-                nodeId: 28,
-                name: 'CHP3→ENT2-6',
-                lat: 42.32599295091294,
-                lng: -71.14913713380291,
                 type: 'NORMAL',
                 graphId: 0,
             },
@@ -2061,164 +2606,1352 @@ async function main() {
                 type: 'DOOR',
                 graphId: 0,
             },
-
-            // connections
             {
-                nodeId: 30,
-                name: 'PL2 path extension',
-                lat: 42.32631519182124,
-                lng: -71.14905373756312,
+                nodeId: 0,
+                name: '',
+                lat: 42.32630536451615,
+                lng: -71.14939749240875,
                 type: 'NORMAL',
                 graphId: 0,
             },
-
-
-
-
-            // PP20 Parking
-            // {
-            //     nodeId: 100,
-            //     name: '[Parking1]',
-            //     lat: 42.091061004913655,
-            //     lng: -71.26682002463103,
-            //     type: 'PARKING',
-            //     graphId:100
-            // },
-            // {
-            //     nodeId: 101,
-            //     name: 'turn on p lot',
-            //     lat: 42.0915152410756,
-            //     lng: -71.26701719023977,
-            //     type: 'NORMAL',
-            //     graphId:100
-            // },
-            // {
-            //     nodeId: 102,
-            //     name: 'about to cross (curve)',
-            //     lat: 42.09189470537623,
-            //     lng: -71.26680925726185,
-            //     type: 'NORMAL',
-            //     graphId: 100,
-            // },
-            //
-            // {
-            //     nodeId: 103,
-            //     name: '(curve)',
-            //     lat: 42.09194818721159,
-            //     lng: -71.26686021923314,
-            //     type: 'NORMAL',
-            //     graphId: 100,
-            // },
-            // {
-            //     nodeId: 104,
-            //     name: 'crossed',
-            //     lat: 42.092056558160856,
-            //     lng: -71.26707613705884,
-            //     type: 'NORMAL',
-            //     graphId: 100,
-            // },
-            // {
-            //     nodeId: 105,
-            //     name: 'passed sidewalk',
-            //     lat: 42.09218604009119,
-            //     lng: -71.26695141433964,
-            //     type: 'NORMAL',
-            //     graphId: 100,
-            // },
-            // {
-            //     nodeId: 106,
-            //     name: 'combo parking 2',
-            //     lat: 42.092198706787585,
-            //     lng: -71.26685485481511,
-            //     type: 'NORMAL',
-            //     graphId: 100,
-            // },
-            // {
-            //     nodeId: 107,
-            //     name: 'in front of door',
-            //     lat: 42.092595635665134,
-            //     lng: -71.26652762531529,
-            //     type: 'NORMAL',
-            //     graphId: 100,
-            // },
-            // {
-            //     nodeId: 108,
-            //     name: 'cross street',
-            //     lat: 42.092547267477045,
-            //     lng: -71.26642082207172,
-            //     type: 'NORMAL',
-            //     graphId: 100,
-            // },
-
+            {
+                nodeId: 30,
+                name: '',
+                lat: 42.32630727101729,
+                lng: -71.14927758213904,
+                type: 'NORMAL',
+                graphId: 0,
+            },
+            {
+                nodeId: 31,
+                name: '',
+                lat: 42.32631230507248,
+                lng: -71.14913731813431,
+                type: 'NORMAL',
+                graphId: 0,
+            },
+            {
+                nodeId: 32,
+                name: '',
+                lat: 42.32631037509569,
+                lng: -71.14906161454243,
+                type: 'NORMAL',
+                graphId: 0,
+            },
+            {
+                nodeId: 33,
+                name: '',
+                lat: 42.32624190796558,
+                lng: -71.14906221628189,
+                type: 'NORMAL',
+                graphId: 0,
+            },
+            {
+                nodeId: 34,
+                name: '',
+                lat: 42.32618093012622,
+                lng: -71.14906087517738,
+                type: 'NORMAL',
+                graphId: 0,
+            },
+            {
+                nodeId: 35,
+                name: '',
+                lat: 42.32611995222775,
+                lng: -71.14906020462513,
+                type: 'NORMAL',
+                graphId: 0,
+            },
+            {
+                nodeId: 36,
+                name: '',
+                lat: 42.32605847851419,
+                lng: -71.14906422793865,
+                type: 'NORMAL',
+                graphId: 0,
+            },
+            {
+                nodeId: 28,
+                name: '',
+                lat: 42.3259498543493,
+                lng: -71.14901549145584,
+                type: 'NORMAL',
+                graphId: 0,
+            },
+            {
+                nodeId: 37,
+                name: '',
+                lat: 42.32585497576282,
+                lng: -71.148828046975,
+                type: 'NORMAL',
+                graphId: 0,
+            },
+            {
+                nodeId: 38,
+                name: '',
+                lat: 42.32576722660632,
+                lng: -71.14882335310922,
+                type: 'NORMAL',
+                graphId: 0,
+            },
+            {
+                nodeId: 39,
+                name: '',
+                lat: 42.32569298422722,
+                lng: -71.14882380254454,
+                type: 'NORMAL',
+                graphId: 0,
+            },
+            {
+                nodeId: 40,
+                name: '',
+                lat: 42.32562567676477,
+                lng: -71.14893867753376,
+                type: 'NORMAL',
+                graphId: 0,
+            },
+            {
+                nodeId: 41,
+                name: '',
+                lat: 42.32562022341106,
+                lng: -71.14903255484928,
+                type: 'NORMAL',
+                graphId: 0,
+            },
+            {
+                nodeId: 42,
+                name: '',
+                lat: 42.32561972765162,
+                lng: -71.14912911437382,
+                type: 'NORMAL',
+                graphId: 0,
+            },
+            {
+                nodeId: 43,
+                name: '',
+                lat: 42.32561576157585,
+                lng: -71.14921097866008,
+                type: 'NORMAL',
+                graphId: 0,
+            },
+            {
+                nodeId: 44,
+                name: '',
+                lat: 42.32561477005687,
+                lng: -71.14929680934856,
+                type: 'NORMAL',
+                graphId: 0,
+            },
+            {
+                nodeId: 45,
+                name: '',
+                lat: 42.32560733366402,
+                lng: -71.14940409770915,
+                type: 'NORMAL',
+                graphId: 0,
+            },
+            {
+                nodeId: 46,
+                name: '',
+                lat: 42.3256028718279,
+                lng: -71.14949452487043,
+                type: 'NORMAL',
+                graphId: 0,
+            },
+            {
+                nodeId: 47,
+                name: '',
+                lat: 42.32559905111219,
+                lng: -71.14962553925274,
+                type: 'NORMAL',
+                graphId: 0,
+            },
+            {
+                nodeId: 2,
+                name: '[Door1]',
+                lat: 42.32626804631388,
+                lng: -71.14951213358698,
+                type: 'DOOR',
+                graphId: 1,
+                connectedNodeId: 1,
+            },
+            {
+                nodeId: 3,
+                name: 'Hallway',
+                lat: 42.32620458972566,
+                lng: -71.14950945137797,
+                type: 'NORMAL',
+                graphId: 1,
+            },
+            {
+                nodeId: 4,
+                name: 'Hallway 2',
+                lat: 42.32619566613782,
+                lng: -71.14958187102137,
+                type: 'NORMAL',
+                graphId: 1,
+            },
+            {
+                nodeId: 5,
+                name: 'Enter room 1',
+                lat: 42.32616889536665,
+                lng: -71.14958321212588,
+                type: 'NORMAL',
+                graphId: 1,
+            },
+            {
+                nodeId: 6,
+                name: 'Enter room 2',
+                lat: 42.32616269842727,
+                lng: -71.14965529649315,
+                type: 'NORMAL',
+                graphId: 1,
+            },
+            {
+                nodeId: 7,
+                name: '[Checkpoint1]',
+                lat: 42.3261071738231,
+                lng: -71.14964456765709,
+                type: 'CHECKIN',
+                graphId: 1,
+            },
+            {
+                nodeId: 8,
+                name: 'to ENT2 - 1',
+                lat: 42.32617561403028,
+                lng: -71.14949461511249,
+                type: 'NORMAL',
+                graphId: 1,
+            },
+            {
+                nodeId: 9,
+                name: 'to ENT2 - 2',
+                lat: 42.32612603850338,
+                lng: -71.14948656848544,
+                type: 'NORMAL',
+                graphId: 1,
+            },
+            {
+                nodeId: 10,
+                name: 'to ENT2 - 3',
+                lat: 42.32609331863421,
+                lng: -71.14948925069446,
+                type: 'NORMAL',
+                graphId: 1,
+            },
+            {
+                nodeId: 11,
+                name: 'to ENT2 - 4',
+                lat: 42.32602986186977,
+                lng: -71.1494885801422,
+                type: 'NORMAL',
+                graphId: 1,
+            },
+            {
+                nodeId: 12,
+                name: 'to ENT2 - 5',
+                lat: 42.3259783032015,
+                lng: -71.14948656848544,
+                type: 'NORMAL',
+                graphId: 1,
+            },
+            {
+                nodeId: 13,
+                name: 'to ENT2 - 6',
+                lat: 42.32598524379393,
+                lng: -71.14936721018428,
+                type: 'NORMAL',
+                graphId: 1,
+            },
+            {
+                nodeId: 14,
+                name: 'to ENT2 - 7',
+                lat: 42.32599218438558,
+                lng: -71.14927534452552,
+                type: 'NORMAL',
+                graphId: 1,
+            },
+            {
+                nodeId: 15,
+                name: '[Entrance2]',
+                lat: 42.32599565468113,
+                lng: -71.14921700647945,
+                type: 'DOOR',
+                graphId: 1,
+                connectedNodeId: 29,
+            },
+            {
+                nodeId: 109,
+                name: '[Entrance1]',
+                lat: 42.09251297944832,
+                lng: -71.26632207406375,
+                type: 'DOOR',
+                graphId: 100,
+            },
+            {
+                nodeId: 200,
+                name: '[Parking1]',
+                lat: 42.09106100491366,
+                lng: -71.26682002463103,
+                type: 'PARKING',
+                graphId: 100,
+            },
+            {
+                nodeId: 202,
+                name: 'about to cross (curve)',
+                lat: 42.09185987356522,
+                lng: -71.26679316400777,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 203,
+                name: '(curve)',
+                lat: 42.09196411030541,
+                lng: -71.26682535051594,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 204,
+                name: 'crossed',
+                lat: 42.09204561105027,
+                lng: -71.26696750759373,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 205,
+                name: 'passed sidewalk',
+                lat: 42.09215618439152,
+                lng: -71.26687899469624,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 206,
+                name: 'combo parking 2',
+                lat: 42.09221861057559,
+                lng: -71.26681059836636,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 207,
+                name: 'in front of door',
+                lat: 42.0925757319954,
+                lng: -71.26652762531529,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 208,
+                name: '[Entrance1]',
+                lat: 42.09263672447995,
+                lng: -71.26662781033974,
+                type: 'DOOR',
+                graphId: 100,
+            },
+            {
+                nodeId: 209,
+                name: '[Parking2]',
+                lat: 42.09222374784051,
+                lng: -71.26653684625518,
+                type: 'PARKING',
+                graphId: 100,
+            },
+            {
+                nodeId: 300,
+                name: '[ParkingADA]',
+                lat: 42.09380403530373,
+                lng: -71.26325324177742,
+                type: 'PARKING',
+                graphId: 100,
+            },
+            {
+                nodeId: 301,
+                name: 'ADA1',
+                lat: 42.09377309064887,
+                lng: -71.26422002733666,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 302,
+                name: 'ADA2',
+                lat: 42.09373726470402,
+                lng: -71.26429647029359,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 303,
+                name: 'ADA3',
+                lat: 42.0936918282146,
+                lng: -71.26436200851916,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 306,
+                name: 'ADA6',
+                lat: 42.09298106238091,
+                lng: -71.2647124630376,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 308,
+                name: 'ADA7',
+                lat: 42.09289488725753,
+                lng: -71.26528443211022,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 309,
+                name: 'ADA7',
+                lat: 42.09280225756009,
+                lng: -71.26535619320117,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 310,
+                name: '',
+                lat: 42.09280476624093,
+                lng: -71.26562592284523,
+                type: 'DOOR',
+                graphId: 100,
+            },
+            {
+                nodeId: 312,
+                name: 'ADA8',
+                lat: 42.09251149379951,
+                lng: -71.2663856404792,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 313,
+                name: 'ADA9',
+                lat: 42.09254774479008,
+                lng: -71.26642587361441,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 400,
+                name: '[ParkingGillette]',
+                lat: 42.09588787525814,
+                lng: -71.26492828130722,
+                type: 'PARKING',
+                graphId: 100,
+            },
+            {
+                nodeId: 403,
+                name: 'ADA3',
+                lat: 42.09452499289429,
+                lng: -71.26514563868655,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 404,
+                name: 'ADA3',
+                lat: 42.09480727481835,
+                lng: -71.26487659152224,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 405,
+                name: 'ADA3',
+                lat: 42.09452499289429,
+                lng: -71.26514563868655,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 406,
+                name: 'ADA3',
+                lat: 42.09425592439862,
+                lng: -71.26540098971428,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 48,
+                name: '',
+                lat: 42.09229932892924,
+                lng: -71.26713573932648,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 49,
+                name: '',
+                lat: 42.09237668302319,
+                lng: -71.26727740098823,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 50,
+                name: '',
+                lat: 42.09245823960907,
+                lng: -71.26740079541473,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 51,
+                name: '',
+                lat: 42.09253021211998,
+                lng: -71.26753002405167,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 52,
+                name: '',
+                lat: 42.09260584608592,
+                lng: -71.26767486333847,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 53,
+                name: '',
+                lat: 42.09267922264612,
+                lng: -71.26781116013603,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 54,
+                name: '',
+                lat: 42.09276308483171,
+                lng: -71.267951130867,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 55,
+                name: '',
+                lat: 42.09281186538171,
+                lng: -71.26796699833307,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 56,
+                name: '',
+                lat: 42.09287253773924,
+                lng: -71.26814368089521,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 57,
+                name: '',
+                lat: 42.09284667995558,
+                lng: -71.2682193517685,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 58,
+                name: '',
+                lat: 42.09294418909768,
+                lng: -71.26846070489444,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 59,
+                name: '',
+                lat: 42.09304438993764,
+                lng: -71.26839986538727,
+                type: 'PARKING',
+                graphId: 100,
+            },
+            {
+                nodeId: 60,
+                name: '',
+                lat: 42.0924569645189,
+                lng: -71.26627257659173,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 61,
+                name: '',
+                lat: 42.09243568519464,
+                lng: -71.26647053399847,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 62,
+                name: '',
+                lat: 42.09240282839453,
+                lng: -71.26639142632484,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 63,
+                name: '',
+                lat: 42.09233280465442,
+                lng: -71.26644592038963,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 64,
+                name: '',
+                lat: 42.09228241073135,
+                lng: -71.26648262143135,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 65,
+                name: '',
+                lat: 42.09226739054187,
+                lng: -71.2667689618204,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 66,
+                name: '',
+                lat: 42.09232312107225,
+                lng: -71.26672470537166,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 67,
+                name: '',
+                lat: 42.09236790449866,
+                lng: -71.26672202316264,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 68,
+                name: '',
+                lat: 42.0924216445686,
+                lng: -71.2666791078184,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 69,
+                name: '',
+                lat: 42.09247936533376,
+                lng: -71.26663351026515,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 70,
+                name: '',
+                lat: 42.09251718235833,
+                lng: -71.26659461823444,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 71,
+                name: '',
+                lat: 42.09254703788809,
+                lng: -71.26654365626315,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 72,
+                name: '',
+                lat: 42.09223304694832,
+                lng: -71.26701580252306,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 73,
+                name: '',
+                lat: 42.09247646638908,
+                lng: -71.26614201848656,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 74,
+                name: '',
+                lat: 42.09250617776989,
+                lng: -71.26603656564966,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 75,
+                name: '',
+                lat: 42.09253417223405,
+                lng: -71.26592882467469,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 76,
+                name: '',
+                lat: 42.09256501802389,
+                lng: -71.26582154572522,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 77,
+                name: '',
+                lat: 42.09259519123406,
+                lng: -71.26571792395855,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 78,
+                name: '',
+                lat: 42.09262958152887,
+                lng: -71.2655953407285,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 79,
+                name: '',
+                lat: 42.09266634769072,
+                lng: -71.2654854477,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 80,
+                name: '',
+                lat: 42.09274218603352,
+                lng: -71.2655183672905,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 81,
+                name: '',
+                lat: 42.09278379415727,
+                lng: -71.26555574800076,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 82,
+                name: '',
+                lat: 42.09276045146866,
+                lng: -71.26543489210638,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 83,
+                name: '',
+                lat: 42.09296809172499,
+                lng: -71.26534536480904,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 84,
+                name: '',
+                lat: 42.09303874928708,
+                lng: -71.26537084579468,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 85,
+                name: '',
+                lat: 42.09310426358843,
+                lng: -71.26532604321542,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 86,
+                name: '',
+                lat: 42.09306860457136,
+                lng: -71.2652139365673,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 87,
+                name: '',
+                lat: 42.09304073963981,
+                lng: -71.26509457826614,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 88,
+                name: '',
+                lat: 42.09301386987278,
+                lng: -71.26499265432358,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 89,
+                name: '',
+                lat: 42.09298600491719,
+                lng: -71.26488536596298,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 90,
+                name: '',
+                lat: 42.09297207243481,
+                lng: -71.26479685306549,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 91,
+                name: '',
+                lat: 42.09303277822853,
+                lng: -71.26463457942009,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 92,
+                name: '',
+                lat: 42.09309945501701,
+                lng: -71.2646171450615,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 93,
+                name: '',
+                lat: 42.09316314621217,
+                lng: -71.264528632164,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 94,
+                name: '',
+                lat: 42.09322550313722,
+                lng: -71.26459799248818,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 95,
+                name: '',
+                lat: 42.0932710374849,
+                lng: -71.26469105207394,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 96,
+                name: '',
+                lat: 42.09332248774364,
+                lng: -71.26470673014693,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 97,
+                name: '',
+                lat: 42.09339655853957,
+                lng: -71.26463501287692,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 98,
+                name: '',
+                lat: 42.09347516167225,
+                lng: -71.26456259137372,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 99,
+                name: '',
+                lat: 42.09354728237685,
+                lng: -71.26448571681976,
+                type: 'NORMAL',
+                graphId: 100,
+            },
             {
                 nodeId: 100,
-                name: 'Alternate way',
-                lat: 42.09184405404626,
-                lng: -71.26662485501322,
+                name: '',
+                lat: 42.09361733429895,
+                lng: -71.2644169540543,
                 type: 'NORMAL',
                 graphId: 100,
             },
             {
                 nodeId: 101,
-                name: 'Alternate way2',
-                lat: 42.091939758427834,
-                lng: -71.26648940345797,
+                name: '',
+                lat: 42.09378628924016,
+                lng: -71.26413105761772,
                 type: 'NORMAL',
                 graphId: 100,
             },
-
-
             {
-                nodeId: 109,
-                name: '[Entrance1]',
-                lat: 42.092512979448315,
-                lng: -71.26632207406375,
-                type: 'DOOR',
+                nodeId: 102,
+                name: '',
+                lat: 42.09378612234256,
+                lng: -71.26404047012329,
+                type: 'NORMAL',
                 graphId: 100,
             },
-
-            //PP22 FL1
             {
-                nodeId: 214,
-                name: 'floor 1 entrance',
-                lat: 42.092636724479945,
-                lng: -71.26662781033974,
-                type: 'DOOR',
-                graphId: 201,
-                connectedNodeId: 208,
-            },
-            {
-                nodeId: 215,
-                name: 'beside elevator',
-                lat: 42.09264120280188,
-                lng: -71.26670425329667,
+                nodeId: 103,
+                name: '',
+                lat: 42.0937745759974,
+                lng: -71.26392506610291,
                 type: 'NORMAL',
-                graphId: 201,
+                graphId: 100,
             },
             {
-                nodeId: 216,
-                name: 'floor 1 elevator',
-                lat: 42.09261532804863,
-                lng: -71.26674180422287,
-                type: 'ELEVATOR',
-                graphId: 201,
+                nodeId: 104,
+                name: '',
+                lat: 42.09376024805638,
+                lng: -71.2637910246849,
+                type: 'NORMAL',
+                graphId: 100,
             },
-
-
-
-
-
-
-
-            // PP20 FL1
+            {
+                nodeId: 105,
+                name: '',
+                lat: 42.09375440674171,
+                lng: -71.26369656220709,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 106,
+                name: '',
+                lat: 42.09375669391049,
+                lng: -71.26359183807526,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 107,
+                name: '',
+                lat: 42.09376422871649,
+                lng: -71.26348122954369,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 108,
+                name: '',
+                lat: 42.09378114651911,
+                lng: -71.26336187124252,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 123,
+                name: '',
+                lat: 42.0938253771195,
+                lng: -71.26430728307865,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 124,
+                name: '',
+                lat: 42.09385643753681,
+                lng: -71.26442012151817,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 125,
+                name: '',
+                lat: 42.09386075964742,
+                lng: -71.26453801989555,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 126,
+                name: '',
+                lat: 42.09384620457116,
+                lng: -71.26465102559403,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 127,
+                name: '',
+                lat: 42.09389704068799,
+                lng: -71.26473808738659,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 128,
+                name: '',
+                lat: 42.09393781467018,
+                lng: -71.26482118652022,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 129,
+                name: '',
+                lat: 42.09397993525741,
+                lng: -71.26488498538733,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 130,
+                name: '',
+                lat: 42.09403122089625,
+                lng: -71.26495679669563,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 131,
+                name: '',
+                lat: 42.09407114240101,
+                lng: -71.26503310082732,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 132,
+                name: '',
+                lat: 42.09408818769228,
+                lng: -71.26512019149084,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 133,
+                name: '',
+                lat: 42.09412348226167,
+                lng: -71.26520186662674,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 134,
+                name: '',
+                lat: 42.09416212427727,
+                lng: -71.26529132875055,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 135,
+                name: '',
+                lat: 42.09420209980212,
+                lng: -71.26537621021271,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 136,
+                name: '',
+                lat: 42.09431753803932,
+                lng: -71.26534268260002,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 137,
+                name: '',
+                lat: 42.09437127645741,
+                lng: -71.26529037952423,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 138,
+                name: '',
+                lat: 42.09442401967531,
+                lng: -71.26523941755295,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 139,
+                name: '',
+                lat: 42.09447827904413,
+                lng: -71.26519277087677,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 140,
+                name: '',
+                lat: 42.09458294072353,
+                lng: -71.26508550248417,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 141,
+                name: '',
+                lat: 42.0946379775622,
+                lng: -71.2650328874588,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 142,
+                name: '',
+                lat: 42.09470032612841,
+                lng: -71.2649755409511,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 143,
+                name: '',
+                lat: 42.09474708064113,
+                lng: -71.26493396880079,
+                type: 'PARKING',
+                graphId: 100,
+            },
+            {
+                nodeId: 144,
+                name: '',
+                lat: 42.09487399616358,
+                lng: -71.26480578469706,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 145,
+                name: '',
+                lat: 42.09495196964114,
+                lng: -71.26473558896504,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 146,
+                name: '',
+                lat: 42.09502997523706,
+                lng: -71.26467086447694,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 147,
+                name: '',
+                lat: 42.09511166780431,
+                lng: -71.26459032297134,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 148,
+                name: '',
+                lat: 42.09520094945448,
+                lng: -71.26450927360943,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 149,
+                name: '',
+                lat: 42.09530792049909,
+                lng: -71.26440528889722,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 150,
+                name: '',
+                lat: 42.09540646472319,
+                lng: -71.26445531363855,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 151,
+                name: '',
+                lat: 42.095513883328,
+                lng: -71.26451182655475,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 152,
+                name: '',
+                lat: 42.09561719886586,
+                lng: -71.2646010518074,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 153,
+                name: '',
+                lat: 42.09571273184212,
+                lng: -71.26471370458603,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 154,
+                name: '',
+                lat: 42.09581060943646,
+                lng: -71.2648218674924,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 155,
+                name: '',
+                lat: 42.09204135620595,
+                lng: -71.26678731022719,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 156,
+                name: '',
+                lat: 42.09211567493008,
+                lng: -71.26674446981069,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 157,
+                name: '',
+                lat: 42.09219084420861,
+                lng: -71.26667977157156,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 158,
+                name: '',
+                lat: 42.09227096987641,
+                lng: -71.26661978376708,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 159,
+                name: '',
+                lat: 42.09233714606113,
+                lng: -71.2665644288063,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 160,
+                name: '',
+                lat: 42.09239339669386,
+                lng: -71.26651921261099,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 161,
+                name: '',
+                lat: 42.09114589557499,
+                lng: -71.26685410737991,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 162,
+                name: '',
+                lat: 42.09124537520158,
+                lng: -71.26689331224097,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 163,
+                name: '',
+                lat: 42.09134692688369,
+                lng: -71.26693859696388,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 164,
+                name: '',
+                lat: 42.09144195707992,
+                lng: -71.26697194587872,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 165,
+                name: '',
+                lat: 42.09154895275501,
+                lng: -71.2669587135315,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 166,
+                name: '',
+                lat: 42.09162856868519,
+                lng: -71.26691311597824,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 167,
+                name: '',
+                lat: 42.09170767092166,
+                lng: -71.26687580728947,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 168,
+                name: '',
+                lat: 42.091802904494,
+                lng: -71.26683434348139,
+                type: 'NORMAL',
+                graphId: 100,
+            },
+            {
+                nodeId: 169,
+                name: '',
+                lat: 42.09193110830845,
+                lng: -71.2667629122734,
+                type: 'NORMAL',
+                graphId: 100,
+            },
             {
                 nodeId: 110,
                 name: '[Door1]',
-                lat: 42.092512979448315,
+                lat: 42.09251297944832,
                 lng: -71.26632207406375,
                 type: 'DOOR',
-                connectedNodeId: 109,
                 graphId: 101,
+                connectedNodeId: 109,
             },
             {
                 nodeId: 111,
@@ -2239,7 +3972,7 @@ async function main() {
             {
                 nodeId: 113,
                 name: '[Checkpoint1]',
-                lat: 42.092677251176724,
+                lat: 42.09267725117672,
                 lng: -71.26635266724202,
                 type: 'CHECKIN',
                 graphId: 101,
@@ -2274,15 +4007,15 @@ async function main() {
                 lat: 42.09266659448601,
                 lng: -71.26586226214057,
                 type: 'CHECKIN',
-                graphId:101
+                graphId: 101,
             },
             {
                 nodeId: 118,
                 name: 'hallway',
-                lat: 42.092669421610005,
+                lat: 42.09266942161,
                 lng: -71.2656856710187,
                 type: 'NORMAL',
-                graphId:101
+                graphId: 101,
             },
             {
                 nodeId: 119,
@@ -2290,7 +4023,7 @@ async function main() {
                 lat: 42.09274704577187,
                 lng: -71.26571785752688,
                 type: 'NORMAL',
-                graphId:101
+                graphId: 101,
             },
             {
                 nodeId: 120,
@@ -2298,7 +4031,7 @@ async function main() {
                 lat: 42.09278884335815,
                 lng: -71.2656843299142,
                 type: 'NORMAL',
-                graphId:101
+                graphId: 101,
             },
             {
                 nodeId: 121,
@@ -2306,98 +4039,8 @@ async function main() {
                 lat: 42.09276495902648,
                 lng: -71.26565482561503,
                 type: 'NORMAL',
-                graphId:101
+                graphId: 101,
             },
-
-
-
-
-            //PP22 parking
-            {
-                nodeId: 200,
-                name: '[Parking1]',
-                lat: 42.091061004913655,
-                lng: -71.26682002463103,
-                type: 'PARKING',
-                graphId:100
-            },
-            {
-                nodeId: 201,
-                name: 'turn on p lot',
-                lat: 42.0915152410756,
-                lng: -71.26701719023977,
-                type: 'NORMAL',
-                graphId:100
-            },
-
-
-            {
-                nodeId: 202,
-                name: 'about to cross (curve)',
-                lat: 42.09189470537623,
-                lng: -71.26680925726185,
-                type: 'NORMAL',
-                graphId: 100,
-            },
-
-            {
-                nodeId: 203,
-                name: '(curve)',
-                lat: 42.09194818721159,
-                lng: -71.26686021923314,
-                type: 'NORMAL',
-                graphId: 100,
-            },
-            {
-                nodeId: 204,
-                name: 'crossed',
-                lat: 42.092056558160856,
-                lng: -71.26707613705884,
-                type: 'NORMAL',
-                graphId: 100,
-            },
-            {
-                nodeId: 205,
-                name: 'passed sidewalk',
-                lat: 42.09218604009119,
-                lng: -71.26695141433964,
-                type: 'NORMAL',
-                graphId: 100,
-            },
-            {
-                nodeId: 206,
-                name: 'combo parking 2',
-                lat: 42.092198706787585,
-                lng: -71.26685485481511,
-                type: 'NORMAL',
-                graphId: 100,
-            },
-            {
-                nodeId: 207,
-                name: 'in front of door',
-                lat: 42.092595635665134,
-                lng: -71.26652762531529,
-                type: 'NORMAL',
-                graphId: 100,
-            },
-            {
-                nodeId: 208,
-                name: '[Entrance1]',
-                lat: 42.092636724479945,
-                lng: -71.26662781033974,
-                type: 'DOOR',
-                graphId: 100,
-            },
-            {
-                nodeId: 209,
-                name: '[Parking2]',
-                lat: 42.09222374784051,
-                lng: -71.26653684625518,
-                type: 'PARKING',
-                graphId: 100,
-            },
-
-
             {
                 nodeId: 122,
                 name: 'hallway 4',
@@ -2407,22 +4050,79 @@ async function main() {
                 graphId: 101,
                 connectedNodeId: 310,
             },
-
-
-
-
-
-            //PP22 FL3
             {
-                nodeId: 211,
-                name: 'floor 3 elevators',
-                lat: 42.09260446532201,
-                lng: -71.26674977131117,
-                connectedNodeId: 216,
+                nodeId: 170,
+                name: '',
+                lat: 42.09253033179048,
+                lng: -71.26624362709522,
                 type: 'NORMAL',
-                graphId: 203,
+                graphId: 101,
             },
-
+            {
+                nodeId: 171,
+                name: '',
+                lat: 42.09254924029038,
+                lng: -71.26616316082477,
+                type: 'NORMAL',
+                graphId: 101,
+            },
+            {
+                nodeId: 172,
+                name: '',
+                lat: 42.09256615841711,
+                lng: -71.26608537676334,
+                type: 'NORMAL',
+                graphId: 101,
+            },
+            {
+                nodeId: 173,
+                name: '',
+                lat: 42.09260546816469,
+                lng: -71.26591840925217,
+                type: 'NORMAL',
+                graphId: 101,
+            },
+            {
+                nodeId: 174,
+                name: '',
+                lat: 42.0926495050049,
+                lng: -71.26575580033064,
+                type: 'NORMAL',
+                graphId: 101,
+            },
+            {
+                nodeId: 214,
+                name: 'floor 1 entrance',
+                lat: 42.09263672447995,
+                lng: -71.26662781033974,
+                type: 'DOOR',
+                graphId: 201,
+                connectedNodeId: 208,
+            },
+            {
+                nodeId: 215,
+                name: 'beside elevator',
+                lat: 42.09264120280188,
+                lng: -71.26670425329667,
+                type: 'NORMAL',
+                graphId: 201,
+            },
+            {
+                nodeId: 216,
+                name: 'floor 1 elevator',
+                lat: 42.0926292606094,
+                lng: -71.26675387416344,
+                type: 'ELEVATOR',
+                graphId: 201,
+            },
+            {
+                nodeId: 175,
+                name: '',
+                lat: 42.09262060297537,
+                lng: -71.26673461477192,
+                type: 'NORMAL',
+                graphId: 201,
+            },
             {
                 nodeId: 212,
                 name: 'before checkpoint',
@@ -2439,225 +4139,60 @@ async function main() {
                 type: 'CHECKIN',
                 graphId: 203,
             },
-
-
-
-
-            //ParkingADA
             {
-                nodeId: 300,
-                name: '[ParkingADA]',
-                lat: 42.09375626739604,
-                lng: -71.26385271549225,
-                type: 'PARKING',
-                graphId: 100,
-            },
-            {
-                nodeId: 301,
-                name: 'ADA1',
-                lat: 42.0937949842719,
-                lng: -71.26405238927323,
-                type: 'NORMAL',
-                graphId: 100,
-            },
-            {
-                nodeId: 302,
-                name: 'ADA2',
-                lat: 42.0936715837525,
-                lng: -71.26416504205186,
-                type: 'NORMAL',
-                graphId: 100,
-            },
-            {
-                nodeId: 303,
-                name: 'ADA3',
-                lat: 42.0936918282146,
-                lng: -71.26436200851916,
-                type: 'NORMAL',
-                graphId: 100,
-            },
-            {
-                nodeId: 304,
-                name: 'ADA4',
-                lat: 42.093377013800094,
-                lng: -71.26469075501878,
-                type: 'NORMAL',
-                graphId: 100,
-            },
-            {
-                nodeId: 305,
-                name: 'ADA5',
-                lat: 42.0931381722938,
-                lng: -71.26434743226487,
-                type: 'NORMAL',
-                graphId: 100,
-            },
-            {
-                nodeId: 306,
-                name: 'ADA6',
-                lat: 42.092981062380915,
-                lng: -71.2647124630376,
-                type: 'NORMAL',
-                graphId: 100,
-            },
-            {
-                nodeId: 307,
-                name: 'ADA7',
-                lat: 42.09316687240134,
-                lng: -71.26531059564792,
-                type: 'NORMAL',
-                graphId: 100,
-            },
-            {
-                nodeId: 308,
-                name: 'ADA7',
-                lat: 42.092985448448545,
-                lng: -71.26534478181306,
-                type: 'NORMAL',
-                graphId: 100,
-            },
-            {
-                nodeId: 309,
-                name: 'ADA7',
-                lat: 42.09281220936017,
-                lng: -71.26532668890201,
-                type: 'NORMAL',
-                graphId: 100,
-            },
-            {
-                nodeId: 310,
+                nodeId: 176,
                 name: '',
-                lat: 42.09280476624093,
-                lng: -71.26562592284523,
-                type:'DOOR',
-                graphId: 100,
-            },
-
-
-
-
-
-
-
-            {
-                nodeId: 311,
-                name: 'ADA7',
-                lat: 42.09239834955323,
-                lng: -71.26621899560585,
+                lat: 42.09256098304337,
+                lng: -71.26678300843976,
                 type: 'NORMAL',
-                graphId: 100,
+                graphId: 203,
             },
             {
-                nodeId: 312,
-                name: 'ADA8',
-                lat: 42.092505522691326,
-                lng: -71.26636418280707,
+                nodeId: 177,
+                name: '',
+                lat: 42.09257862755771,
+                lng: -71.26676735987475,
                 type: 'NORMAL',
-                graphId: 100,
+                graphId: 203,
             },
-
             {
-                nodeId: 313,
-                name: 'ADA9',
-                lat: 42.09254774479008,
-                lng: -71.26642587361441,
+                nodeId: 178,
+                name: '',
+                lat: 42.09259912413422,
+                lng: -71.26674849950908,
                 type: 'NORMAL',
-                graphId: 100,
+                graphId: 203,
             },
             {
-                nodeId: 314,
-                name: 'ADA9',
-                lat: 42.092689030373094,
-                lng: -71.26496580095876,
+                nodeId: 179,
+                name: '',
+                lat: 42.09261802907839,
+                lng: -71.26673173856956,
                 type: 'NORMAL',
-                graphId: 100,
+                graphId: 203,
             },
             {
-                nodeId: 315,
-                name: 'ADA9',
-                lat: 42.092524692370354,
-                lng: -71.26599532618323,
-                type: 'NORMAL',
-                graphId: 100,
+                nodeId: 180,
+                name: '',
+                lat: 42.09262996775663,
+                lng: -71.26675383847842,
+                type: 'ELEVATOR',
+                graphId: 203,
+                connectedNodeId: 216,
             },
-
-
-
-
-
-            //ParkingGillette
-            {
-                nodeId: 400,
-                name: '[ParkingGillette]',
-                lat: 42.095887875258136,
-                lng: -71.26492828130722,
-                type: 'PARKING',
-                graphId: 100,
-            },
-            {
-                nodeId: 401,
-                name: 'GIL1',
-                lat: 42.09537199482366,
-                lng: -71.26540501019646,
-                type: 'NORMAL',
-                graphId: 100,
-            },
-            {
-                nodeId: 402,
-                name: 'ADA3',
-                lat: 42.093864866104056,
-                lng: -71.26468453799531,
-                type: 'NORMAL',
-                graphId: 100,
-            },
-            {
-                nodeId: 403,
-                name: 'ADA3',
-                lat: 42.09452499289429,
-                lng: -71.26514563868655,
-                type: 'NORMAL',
-                graphId: 100,
-            },
-            {
-                nodeId: 404,
-                name: 'ADA3',
-                lat: 42.09478936214051,
-                lng: -71.26489134367182,
-                type: 'NORMAL',
-                graphId: 100,
-            },
-            {
-                nodeId: 405,
-                name: 'ADA3',
-                lat: 42.09452499289429,
-                lng: -71.26514563868655,
-                type: 'NORMAL',
-                graphId: 100,
-            },
-            {
-                nodeId: 406,
-                name: 'ADA3',
-                lat: 42.09425592439862,
-                lng: -71.26540098971428,
-                type: 'NORMAL',
-                graphId: 100,
-            },
-
-
-
             {
                 nodeId: 600,
                 name: '',
-                lat: 42.09262154614298,
-                lng: -71.26673112332217,
-                connectedNodeId: 216,
+                lat: 42.09262950760586,
+                lng: -71.26674822240464,
                 type: 'ELEVATOR',
                 graphId: 204,
+                connectedNodeId: 216,
             },
             {
                 nodeId: 601,
                 name: '',
-                lat: 42.092684242636125,// CONNECT TO 600
+                lat: 42.09268424263612,
                 lng: -71.26664596318595,
                 type: 'CHECKIN',
                 graphId: 204,
@@ -2665,8 +4200,8 @@ async function main() {
             {
                 nodeId: 602,
                 name: '',
-                lat: 42.092571289385475,
-                lng: -71.2667539220988,
+                lat: 42.09256432309913,
+                lng: -71.26673380553119,
                 type: 'NORMAL',
                 graphId: 204,
             },
@@ -2678,9 +4213,78 @@ async function main() {
                 type: 'CHECKIN',
                 graphId: 204,
             },
-
-            //Faulkner hospital parking
-
+            {
+                nodeId: 181,
+                name: '',
+                lat: 42.09261828587431,
+                lng: -71.2667253613472,
+                type: 'NORMAL',
+                graphId: 204,
+            },
+            {
+                nodeId: 182,
+                name: '',
+                lat: 42.09260046342964,
+                lng: -71.26674336960203,
+                type: 'NORMAL',
+                graphId: 204,
+            },
+            {
+                nodeId: 183,
+                name: '',
+                lat: 42.092582027045,
+                lng: -71.26676119185362,
+                type: 'NORMAL',
+                graphId: 204,
+            },
+            {
+                nodeId: 184,
+                name: '',
+                lat: 42.0926297303246,
+                lng: -71.26671362683949,
+                type: 'NORMAL',
+                graphId: 204,
+            },
+            {
+                nodeId: 185,
+                name: '',
+                lat: 42.09264205661516,
+                lng: -71.2667000059437,
+                type: 'NORMAL',
+                graphId: 204,
+            },
+            {
+                nodeId: 186,
+                name: '',
+                lat: 42.09265436124686,
+                lng: -71.26668579876423,
+                type: 'NORMAL',
+                graphId: 204,
+            },
+            {
+                nodeId: 187,
+                name: '',
+                lat: 42.09266704982129,
+                lng: -71.26667272299528,
+                type: 'NORMAL',
+                graphId: 204,
+            },
+            {
+                nodeId: 188,
+                name: '',
+                lat: 42.0926772163623,
+                lng: -71.26666021393375,
+                type: 'NORMAL',
+                graphId: 204,
+            },
+            {
+                nodeId: 189,
+                name: '',
+                lat: 42.09257416554469,
+                lng: -71.2667488157489,
+                type: 'NORMAL',
+                graphId: 204,
+            },
             {
                 nodeId: 700,
                 name: 'front parking',
@@ -2692,7 +4296,7 @@ async function main() {
             {
                 nodeId: 701,
                 name: '',
-                lat: 42.301115684559434,
+                lat: 42.30111568455943,
                 lng: -71.12757716570214,
                 type: 'NORMAL',
                 graphId: 300,
@@ -2708,7 +4312,7 @@ async function main() {
             {
                 nodeId: 703,
                 name: '',
-                lat: 42.301105865199936,
+                lat: 42.30110586519994,
                 lng: -71.12766970191315,
                 type: 'NORMAL',
                 graphId: 300,
@@ -2729,8 +4333,6 @@ async function main() {
                 type: 'DOOR',
                 graphId: 300,
             },
-
-
             {
                 nodeId: 706,
                 name: 'back parking',
@@ -2755,7 +4357,6 @@ async function main() {
                 type: 'NORMAL',
                 graphId: 300,
             },
-
             {
                 nodeId: 709,
                 name: '',
@@ -2780,8 +4381,6 @@ async function main() {
                 type: 'DOOR',
                 graphId: 300,
             },
-
-            //parking 1975
             {
                 nodeId: 712,
                 name: '',
@@ -2793,7 +4392,7 @@ async function main() {
             {
                 nodeId: 713,
                 name: '',
-                lat: 42.302214772691904,
+                lat: 42.3022147726919,
                 lng: -71.1287330657487,
                 type: 'NORMAL',
                 graphId: 300,
@@ -2814,9 +4413,6 @@ async function main() {
                 type: 'NORMAL',
                 graphId: 300,
             },
-
-            //parking 2004
-
             {
                 nodeId: 716,
                 name: '',
@@ -2828,7 +4424,7 @@ async function main() {
             {
                 nodeId: 717,
                 name: '',
-                lat: 42.301755891379486,
+                lat: 42.30175589137949,
                 lng: -71.12744340453766,
                 type: 'NORMAL',
                 graphId: 300,
@@ -2836,7 +4432,7 @@ async function main() {
             {
                 nodeId: 718,
                 name: '',
-                lat: 42.301691364788056,
+                lat: 42.30169136478806,
                 lng: -71.12747559104584,
                 type: 'NORMAL',
                 graphId: 300,
@@ -2844,7 +4440,7 @@ async function main() {
             {
                 nodeId: 719,
                 name: '',
-                lat: 42.301657698714095,
+                lat: 42.3016576987141,
                 lng: -71.12754264627121,
                 type: 'NORMAL',
                 graphId: 300,
@@ -2860,7 +4456,7 @@ async function main() {
             {
                 nodeId: 721,
                 name: '',
-                lat: 42.301509518258534,
+                lat: 42.30150951825853,
                 lng: -71.12768949721477,
                 type: 'NORMAL',
                 graphId: 300,
@@ -2868,7 +4464,7 @@ async function main() {
             {
                 nodeId: 722,
                 name: '',
-                lat: 42.301446411314124,
+                lat: 42.30144641131412,
                 lng: -71.12777249997218,
                 type: 'NORMAL',
                 graphId: 300,
@@ -2876,24 +4472,20 @@ async function main() {
             {
                 nodeId: 723,
                 name: '',
-                lat: 42.301321368055056,
+                lat: 42.30132136805506,
                 lng: -71.1278124153614,
                 type: 'NORMAL',
                 graphId: 300,
             },
-
-
-            //inside faulkner
             {
                 nodeId: 724,
                 name: '',
                 lat: 42.3012840643785,
                 lng: -71.12791723846682,
-                connectedNodeId: 705,
                 type: 'DOOR',
                 graphId: 301,
+                connectedNodeId: 705,
             },
-
             {
                 nodeId: 725,
                 name: '',
@@ -2918,17 +4510,14 @@ async function main() {
                 type: 'CHECKIN',
                 graphId: 301,
             },
-
-            //backdoor faulkner
-
             {
                 nodeId: 728,
                 name: '',
                 lat: 42.30177546251098,
                 lng: -71.12895495767688,
-                connectedNodeId: 711,
                 type: 'NORMAL',
                 graphId: 301,
+                connectedNodeId: 711,
             },
             {
                 nodeId: 729,
@@ -2938,23 +4527,1169 @@ async function main() {
                 type: 'NORMAL',
                 graphId: 301,
             },
-
+            {
+                nodeId: 190,
+                name: '',
+                lat: 42.33653152852031,
+                lng: -71.10873823037969,
+                type: 'NORMAL',
+                graphId: 400,
+            },
+            {
+                nodeId: 191,
+                name: '',
+                lat: 42.33627972590037,
+                lng: -71.10834931007253,
+                type: 'NORMAL',
+                graphId: 400,
+            },
+            {
+                nodeId: 192,
+                name: '',
+                lat: 42.33634191415599,
+                lng: -71.10843273507055,
+                type: 'NORMAL',
+                graphId: 400,
+            },
+            {
+                nodeId: 193,
+                name: '',
+                lat: 42.33639859671903,
+                lng: -71.10852519741066,
+                type: 'NORMAL',
+                graphId: 400,
+            },
+            {
+                nodeId: 194,
+                name: '',
+                lat: 42.33645384863113,
+                lng: -71.10861238724002,
+                type: 'NORMAL',
+                graphId: 400,
+            },
+            {
+                nodeId: 195,
+                name: '',
+                lat: 42.3364957794237,
+                lng: -71.10868344478698,
+                type: 'NORMAL',
+                graphId: 400,
+            },
+            {
+                nodeId: 196,
+                name: '',
+                lat: 42.33651269292614,
+                lng: -71.10875298252927,
+                type: 'PARKING',
+                graphId: 400,
+            },
+            {
+                nodeId: 197,
+                name: '',
+                lat: 42.33633238776681,
+                lng: -71.10827307916334,
+                type: 'NORMAL',
+                graphId: 400,
+            },
+            {
+                nodeId: 198,
+                name: '',
+                lat: 42.33638889469441,
+                lng: -71.10819529510191,
+                type: 'NORMAL',
+                graphId: 400,
+            },
+            {
+                nodeId: 199,
+                name: '',
+                lat: 42.33636269138631,
+                lng: -71.10816127592939,
+                type: 'NORMAL',
+                graphId: 400,
+            },
+            {
+                nodeId: 201,
+                name: '',
+                lat: 42.33631483388148,
+                lng: -71.10808879137039,
+                type: 'NORMAL',
+                graphId: 400,
+            },
+            {
+                nodeId: 210,
+                name: '',
+                lat: 42.33627319715389,
+                lng: -71.108019053936,
+                type: 'NORMAL',
+                graphId: 400,
+            },
+            {
+                nodeId: 211,
+                name: '',
+                lat: 42.33622164688155,
+                lng: -71.10794261097908,
+                type: 'NORMAL',
+                graphId: 400,
+            },
+            {
+                nodeId: 217,
+                name: '',
+                lat: 42.33617207927213,
+                lng: -71.10786080360413,
+                type: 'NORMAL',
+                graphId: 400,
+            },
+            {
+                nodeId: 218,
+                name: '',
+                lat: 42.33612052891689,
+                lng: -71.10777899622917,
+                type: 'NORMAL',
+                graphId: 400,
+            },
+            {
+                nodeId: 219,
+                name: '',
+                lat: 42.33607096122777,
+                lng: -71.1076931655407,
+                type: 'NORMAL',
+                graphId: 400,
+            },
+            {
+                nodeId: 220,
+                name: '',
+                lat: 42.33601742807962,
+                lng: -71.10761001706123,
+                type: 'NORMAL',
+                graphId: 400,
+            },
+            {
+                nodeId: 221,
+                name: '',
+                lat: 42.33598074793331,
+                lng: -71.10754296183586,
+                type: 'NORMAL',
+                graphId: 400,
+            },
+            {
+                nodeId: 222,
+                name: '',
+                lat: 42.33602011153076,
+                lng: -71.10749353754017,
+                type: 'DOOR',
+                graphId: 400,
+            },
+            {
+                nodeId: 277,
+                name: '',
+                lat: 42.33593543642184,
+                lng: -71.1077962216483,
+                type: 'DOOR',
+                graphId: 400,
+            },
+            {
+                nodeId: 278,
+                name: '',
+                lat: 42.33599111898248,
+                lng: -71.1078775117305,
+                type: 'NORMAL',
+                graphId: 400,
+            },
+            {
+                nodeId: 279,
+                name: '',
+                lat: 42.33603672092921,
+                lng: -71.10794255596547,
+                type: 'NORMAL',
+                graphId: 400,
+            },
+            {
+                nodeId: 280,
+                name: '',
+                lat: 42.33608331660974,
+                lng: -71.10801698407147,
+                type: 'NORMAL',
+                graphId: 400,
+            },
+            {
+                nodeId: 281,
+                name: '',
+                lat: 42.33611782670952,
+                lng: -71.10807034041468,
+                type: 'NORMAL',
+                graphId: 400,
+            },
+            {
+                nodeId: 282,
+                name: '',
+                lat: 42.33615621762887,
+                lng: -71.10813371837139,
+                type: 'NORMAL',
+                graphId: 400,
+            },
+            {
+                nodeId: 283,
+                name: '',
+                lat: 42.33618595820672,
+                lng: -71.10817328095436,
+                type: 'NORMAL',
+                graphId: 400,
+            },
+            {
+                nodeId: 284,
+                name: '',
+                lat: 42.33621137783314,
+                lng: -71.10821473956592,
+                type: 'NORMAL',
+                graphId: 400,
+            },
+            {
+                nodeId: 285,
+                name: '',
+                lat: 42.33623849985987,
+                lng: -71.10827453434467,
+                type: 'NORMAL',
+                graphId: 400,
+            },
+            {
+                nodeId: 286,
+                name: '',
+                lat: 42.33625230870599,
+                lng: -71.10815592861037,
+                type: 'NORMAL',
+                graphId: 400,
+            },
+            {
+                nodeId: 287,
+                name: '',
+                lat: 42.33548845869129,
+                lng: -71.10834901268137,
+                type: 'DOOR',
+                graphId: 400,
+            },
+            {
+                nodeId: 288,
+                name: '',
+                lat: 42.33552918383847,
+                lng: -71.10841803252697,
+                type: 'NORMAL',
+                graphId: 400,
+            },
+            {
+                nodeId: 289,
+                name: '',
+                lat: 42.33557077774887,
+                lng: -71.10848434814874,
+                type: 'NORMAL',
+                graphId: 400,
+            },
+            {
+                nodeId: 290,
+                name: '',
+                lat: 42.33561369854517,
+                lng: -71.10855442383358,
+                type: 'NORMAL',
+                graphId: 400,
+            },
+            {
+                nodeId: 291,
+                name: '',
+                lat: 42.335660277682,
+                lng: -71.10862416735006,
+                type: 'NORMAL',
+                graphId: 400,
+            },
+            {
+                nodeId: 292,
+                name: '',
+                lat: 42.33569995479326,
+                lng: -71.10869121390127,
+                type: 'NORMAL',
+                graphId: 400,
+            },
+            {
+                nodeId: 293,
+                name: '',
+                lat: 42.33574451729277,
+                lng: -71.1087595689671,
+                type: 'NORMAL',
+                graphId: 400,
+            },
+            {
+                nodeId: 294,
+                name: '',
+                lat: 42.33579185663015,
+                lng: -71.10869502171457,
+                type: 'NORMAL',
+                graphId: 400,
+            },
+            {
+                nodeId: 295,
+                name: '',
+                lat: 42.33583944680244,
+                lng: -71.10862729248842,
+                type: 'NORMAL',
+                graphId: 400,
+            },
+            {
+                nodeId: 296,
+                name: '',
+                lat: 42.33589103018794,
+                lng: -71.10857024788857,
+                type: 'NORMAL',
+                graphId: 400,
+            },
+            {
+                nodeId: 297,
+                name: '',
+                lat: 42.335941093697,
+                lng: -71.10851392149925,
+                type: 'NORMAL',
+                graphId: 400,
+            },
+            {
+                nodeId: 298,
+                name: '',
+                lat: 42.33598620038886,
+                lng: -71.108468323946,
+                type: 'NORMAL',
+                graphId: 400,
+            },
+            {
+                nodeId: 299,
+                name: '',
+                lat: 42.336027837306446,
+                lng: -71.10842809081078,
+                type: 'NORMAL',
+                graphId: 400,
+            },
+            {
+                nodeId: 304,
+                name: '',
+                lat: 42.33607443096728,
+                lng: -71.10837444663048,
+                type: 'NORMAL',
+                graphId: 400,
+            },
+            {
+                nodeId: 305,
+                name: '',
+                lat: 42.33611705917992,
+                lng: -71.10832750797272,
+                type: 'NORMAL',
+                graphId: 400,
+            },
+            {
+                nodeId: 307,
+                name: '',
+                lat: 42.33616662683272,
+                lng: -71.10827051103115,
+                type: 'NORMAL',
+                graphId: 400,
+            },
+            {
+                nodeId: 311,
+                name: '',
+                lat: 42.33534442147573,
+                lng: -71.10922808134481,
+                type: 'NORMAL',
+                graphId: 400,
+            },
+            {
+                nodeId: 314,
+                name: '',
+                lat: 42.33536412173003,
+                lng: -71.1092059314251,
+                type: 'PARKING',
+                graphId: 400,
+            },
+            {
+                nodeId: 315,
+                name: '',
+                lat: 42.33529373475324,
+                lng: -71.10914960503578,
+                type: 'NORMAL',
+                graphId: 400,
+            },
+            {
+                nodeId: 316,
+                name: '',
+                lat: 42.33523524410696,
+                lng: -71.10905572772026,
+                type: 'NORMAL',
+                graphId: 400,
+            },
+            {
+                nodeId: 317,
+                name: '',
+                lat: 42.33517278793307,
+                lng: -71.10895112156868,
+                type: 'NORMAL',
+                graphId: 400,
+            },
+            {
+                nodeId: 318,
+                name: '',
+                lat: 42.335111323066464,
+                lng: -71.10885590314865,
+                type: 'NORMAL',
+                graphId: 400,
+            },
+            {
+                nodeId: 319,
+                name: '',
+                lat: 42.33503399621348,
+                lng: -71.10874325037003,
+                type: 'NORMAL',
+                graphId: 400,
+            },
+            {
+                nodeId: 320,
+                name: '',
+                lat: 42.334967574353584,
+                lng: -71.10862657427788,
+                type: 'NORMAL',
+                graphId: 400,
+            },
+            {
+                nodeId: 321,
+                name: '',
+                lat: 42.33503003073129,
+                lng: -71.10852733254433,
+                type: 'NORMAL',
+                graphId: 400,
+            },
+            {
+                nodeId: 322,
+                name: '',
+                lat: 42.33510335476504,
+                lng: -71.10844154555024,
+                type: 'NORMAL',
+                graphId: 400,
+            },
+            {
+                nodeId: 323,
+                name: '',
+                lat: 42.33515791740634,
+                lng: -71.10837042331696,
+                type: 'NORMAL',
+                graphId: 400,
+            },
+            {
+                nodeId: 324,
+                name: '',
+                lat: 42.33522282133774,
+                lng: -71.10829460340415,
+                type: 'NORMAL',
+                graphId: 400,
+            },
+            {
+                nodeId: 325,
+                name: '',
+                lat: 42.33529571748605,
+                lng: -71.10821887850761,
+                type: 'NORMAL',
+                graphId: 400,
+            },
+            {
+                nodeId: 326,
+                name: '',
+                lat: 42.33535154384994,
+                lng: -71.10816058156416,
+                type: 'NORMAL',
+                graphId: 400,
+            },
+            {
+                nodeId: 327,
+                name: '',
+                lat: 42.33539859451572,
+                lng: -71.1082226064086,
+                type: 'NORMAL',
+                graphId: 400,
+            },
+            {
+                nodeId: 328,
+                name: '',
+                lat: 42.33545262919309,
+                lng: -71.10829569484986,
+                type: 'NORMAL',
+                graphId: 400,
+            },
+            {
+                nodeId: 223,
+                name: '',
+                lat: 42.33599603024251,
+                lng: -71.10747074667421,
+                type: 'DOOR',
+                graphId: 402,
+                connectedNodeId: 222,
+            },
+            {
+                nodeId: 224,
+                name: '',
+                lat: 42.33606451742528,
+                lng: -71.10740080475807,
+                type: 'NORMAL',
+                graphId: 402,
+            },
+            {
+                nodeId: 225,
+                name: '',
+                lat: 42.33611388696822,
+                lng: -71.1073463334319,
+                type: 'NORMAL',
+                graphId: 402,
+            },
+            {
+                nodeId: 226,
+                name: '',
+                lat: 42.33615919168729,
+                lng: -71.10730156302452,
+                type: 'NORMAL',
+                graphId: 402,
+            },
+            {
+                nodeId: 227,
+                name: '',
+                lat: 42.33616910521431,
+                lng: -71.10723584890366,
+                type: 'NORMAL',
+                graphId: 402,
+            },
+            {
+                nodeId: 228,
+                name: '',
+                lat: 42.33614134733469,
+                lng: -71.107162758708,
+                type: 'NORMAL',
+                graphId: 402,
+            },
+            {
+                nodeId: 229,
+                name: '',
+                lat: 42.33610070184594,
+                lng: -71.1070816218853,
+                type: 'NORMAL',
+                graphId: 402,
+            },
+            {
+                nodeId: 230,
+                name: '',
+                lat: 42.33607492268067,
+                lng: -71.10700121995936,
+                type: 'NORMAL',
+                graphId: 402,
+            },
+            {
+                nodeId: 231,
+                name: '',
+                lat: 42.33611396444539,
+                lng: -71.10693077190963,
+                type: 'NORMAL',
+                graphId: 402,
+            },
+            {
+                nodeId: 232,
+                name: '',
+                lat: 42.33616953953558,
+                lng: -71.10685572877708,
+                type: 'NORMAL',
+                graphId: 402,
+            },
+            {
+                nodeId: 233,
+                name: '',
+                lat: 42.33620546704007,
+                lng: -71.1067812362588,
+                type: 'NORMAL',
+                graphId: 402,
+            },
+            {
+                nodeId: 234,
+                name: '',
+                lat: 42.33614828680573,
+                lng: -71.10669001936913,
+                type: 'NORMAL',
+                graphId: 402,
+            },
+            {
+                nodeId: 235,
+                name: '',
+                lat: 42.33610367590698,
+                lng: -71.10659882426262,
+                type: 'NORMAL',
+                graphId: 402,
+            },
+            {
+                nodeId: 236,
+                name: '',
+                lat: 42.33604122059555,
+                lng: -71.10649555921555,
+                type: 'NORMAL',
+                graphId: 402,
+            },
+            {
+                nodeId: 237,
+                name: '',
+                lat: 42.33598173928889,
+                lng: -71.10639095306396,
+                type: 'NORMAL',
+                graphId: 402,
+            },
+            {
+                nodeId: 238,
+                name: '',
+                lat: 42.3361919063206,
+                lng: -71.10721036791801,
+                type: 'CHECKIN',
+                graphId: 402,
+            },
+            {
+                nodeId: 239,
+                name: '',
+                lat: 42.33589537389775,
+                lng: -71.10625611559495,
+                type: 'NORMAL',
+                graphId: 402,
+            },
+            {
+                nodeId: 240,
+                name: '',
+                lat: 42.33582411355419,
+                lng: -71.10613614320755,
+                type: 'NORMAL',
+                graphId: 402,
+            },
+            {
+                nodeId: 241,
+                name: '',
+                lat: 42.33577058019596,
+                lng: -71.10605031251907,
+                type: 'NORMAL',
+                graphId: 402,
+            },
+            {
+                nodeId: 242,
+                name: '',
+                lat: 42.33571605543236,
+                lng: -71.10596716403961,
+                type: 'NORMAL',
+                graphId: 402,
+            },
+            {
+                nodeId: 243,
+                name: '',
+                lat: 42.33566450470329,
+                lng: -71.10603421926498,
+                type: 'NORMAL',
+                graphId: 402,
+            },
+            {
+                nodeId: 244,
+                name: '',
+                lat: 42.33563674660092,
+                lng: -71.10607042908669,
+                type: 'NORMAL',
+                graphId: 402,
+            },
+            {
+                nodeId: 245,
+                name: '',
+                lat: 42.33560204895571,
+                lng: -71.1060194671154,
+                type: 'NORMAL',
+                graphId: 402,
+            },
+            {
+                nodeId: 246,
+                name: '',
+                lat: 42.33557131673969,
+                lng: -71.10596314072609,
+                type: 'CHECKIN',
+                graphId: 402,
+            },
+            {
+                nodeId: 247,
+                name: '',
+                lat: 42.33567045286647,
+                lng: -71.10588133335114,
+                type: 'NORMAL',
+                graphId: 402,
+            },
+            {
+                nodeId: 248,
+                name: '',
+                lat: 42.33562286754513,
+                lng: -71.10574319958687,
+                type: 'NORMAL',
+                graphId: 402,
+            },
+            {
+                nodeId: 249,
+                name: '',
+                lat: 42.33557627354974,
+                lng: -71.1056225001812,
+                type: 'NORMAL',
+                graphId: 402,
+            },
+            {
+                nodeId: 250,
+                name: '',
+                lat: 42.33553364497052,
+                lng: -71.10550448298454,
+                type: 'NORMAL',
+                graphId: 402,
+            },
+            {
+                nodeId: 251,
+                name: '',
+                lat: 42.33548011136499,
+                lng: -71.10536769032478,
+                type: 'NORMAL',
+                graphId: 402,
+            },
+            {
+                nodeId: 252,
+                name: '',
+                lat: 42.33543847408477,
+                lng: -71.10526040196419,
+                type: 'NORMAL',
+                graphId: 402,
+            },
+            {
+                nodeId: 253,
+                name: '',
+                lat: 42.33539586730168,
+                lng: -71.1051307004118,
+                type: 'NORMAL',
+                graphId: 402,
+            },
+            {
+                nodeId: 254,
+                name: '',
+                lat: 42.33534528578623,
+                lng: -71.10499083995819,
+                type: 'NORMAL',
+                graphId: 402,
+            },
+            {
+                nodeId: 255,
+                name: '',
+                lat: 42.33530166568415,
+                lng: -71.104866117239,
+                type: 'NORMAL',
+                graphId: 402,
+            },
+            {
+                nodeId: 256,
+                name: '',
+                lat: 42.33525606281782,
+                lng: -71.10474675893784,
+                type: 'NORMAL',
+                graphId: 402,
+            },
+            {
+                nodeId: 257,
+                name: '',
+                lat: 42.33521045991839,
+                lng: -71.10463410615921,
+                type: 'NORMAL',
+                graphId: 402,
+            },
+            {
+                nodeId: 258,
+                name: '',
+                lat: 42.33516882245962,
+                lng: -71.1045241355896,
+                type: 'NORMAL',
+                graphId: 402,
+            },
+            {
+                nodeId: 259,
+                name: '',
+                lat: 42.33510232725489,
+                lng: -71.10454126957323,
+                type: 'CHECKIN',
+                graphId: 402,
+            },
+            {
+                nodeId: 260,
+                name: '',
+                lat: 42.33598775864549,
+                lng: -71.10759106734645,
+                type: 'NORMAL',
+                graphId: 402,
+            },
+            {
+                nodeId: 261,
+                name: '',
+                lat: 42.33593018877762,
+                lng: -71.10766634345055,
+                type: 'NORMAL',
+                graphId: 402,
+            },
+            {
+                nodeId: 262,
+                name: '',
+                lat: 42.33586979738673,
+                lng: -71.10773330843988,
+                type: 'NORMAL',
+                graphId: 402,
+            },
+            {
+                nodeId: 263,
+                name: '',
+                lat: 42.33582221416535,
+                lng: -71.10779363711791,
+                type: 'NORMAL',
+                graphId: 402,
+            },
+            {
+                nodeId: 264,
+                name: '',
+                lat: 42.33585533801796,
+                lng: -71.10784649200465,
+                type: 'CHECKIN',
+                graphId: 402,
+            },
+            {
+                nodeId: 265,
+                name: '',
+                lat: 42.33572010308146,
+                lng: -71.10790362290047,
+                type: 'NORMAL',
+                graphId: 402,
+            },
+            {
+                nodeId: 266,
+                name: '',
+                lat: 42.33566260442866,
+                lng: -71.10797201720611,
+                type: 'NORMAL',
+                graphId: 402,
+            },
+            {
+                nodeId: 267,
+                name: '',
+                lat: 42.33560906975667,
+                lng: -71.10803103429434,
+                type: 'NORMAL',
+                graphId: 402,
+            },
+            {
+                nodeId: 268,
+                name: '',
+                lat: 42.33555751650679,
+                lng: -71.1080820079111,
+                type: 'NORMAL',
+                graphId: 402,
+            },
+            {
+                nodeId: 269,
+                name: '',
+                lat: 42.33549301430214,
+                lng: -71.10815046603022,
+                type: 'NORMAL',
+                graphId: 402,
+            },
+            {
+                nodeId: 270,
+                name: '',
+                lat: 42.33541270904358,
+                lng: -71.10824032527493,
+                type: 'NORMAL',
+                graphId: 402,
+            },
+            {
+                nodeId: 271,
+                name: '',
+                lat: 42.33536427219823,
+                lng: -71.10829672955788,
+                type: 'CHECKIN',
+                graphId: 402,
+            },
+            {
+                nodeId: 272,
+                name: '',
+                lat: 42.33603354797194,
+                lng: -71.10753531585807,
+                type: 'NORMAL',
+                graphId: 402,
+            },
+            {
+                nodeId: 273,
+                name: '',
+                lat: 42.33577206723427,
+                lng: -71.10785074532032,
+                type: 'NORMAL',
+                graphId: 402,
+            },
+            {
+                nodeId: 274,
+                name: '',
+                lat: 42.33591432707335,
+                lng: -71.10778503119946,
+                type: 'DOOR',
+                graphId: 402,
+                connectedNodeId: 277,
+            },
+            {
+                nodeId: 275,
+                name: '',
+                lat: 42.33545830136449,
+                lng: -71.10830470919609,
+                type: 'NORMAL',
+                graphId: 402,
+            },
+            {
+                nodeId: 276,
+                name: '',
+                lat: 42.33547181508741,
+                lng: -71.10828642799993,
+                type: 'DOOR',
+                graphId: 402,
+                connectedNodeId: 287,
+            },
 
         ],
     });
-
     console.log('Nodes seeded!');
     console.log(nodes);
 
-
-
-
     console.log('Seeding edges:');
-
     const edges = await prisma.edge.createMany({
         data: [
-
-            // CH FL1
+            {
+                edgeId: 14,
+                name: '',
+                startNodeId: 16,
+                endNodeId: 17,
+                graphId: 0,
+            },
+            {
+                edgeId: 15,
+                name: '',
+                startNodeId: 17,
+                endNodeId: 18,
+                graphId: 0,
+            },
+            {
+                edgeId: 16,
+                name: '',
+                startNodeId: 18,
+                endNodeId: 19,
+                graphId: 0,
+            },
+            {
+                edgeId: 17,
+                name: '',
+                startNodeId: 19,
+                endNodeId: 1,
+                graphId: 0,
+            },
+            {
+                edgeId: 18,
+                name: '',
+                startNodeId: 20,
+                endNodeId: 21,
+                graphId: 0,
+            },
+            {
+                edgeId: 19,
+                name: '',
+                startNodeId: 21,
+                endNodeId: 29,
+                graphId: 0,
+            },
+            {
+                edgeId: 22,
+                name: '',
+                startNodeId: 24,
+                endNodeId: 25,
+                graphId: 0,
+            },
+            {
+                edgeId: 23,
+                name: '',
+                startNodeId: 25,
+                endNodeId: 26,
+                graphId: 0,
+            },
+            {
+                edgeId: 0,
+                name: '',
+                startNodeId: 19,
+                endNodeId: 0,
+                graphId: 0,
+            },
+            {
+                edgeId: 27,
+                name: '',
+                startNodeId: 0,
+                endNodeId: 30,
+                graphId: 0,
+            },
+            {
+                edgeId: 28,
+                name: '',
+                startNodeId: 30,
+                endNodeId: 31,
+                graphId: 0,
+            },
+            {
+                edgeId: 29,
+                name: '',
+                startNodeId: 31,
+                endNodeId: 32,
+                graphId: 0,
+            },
+            {
+                edgeId: 30,
+                name: '',
+                startNodeId: 32,
+                endNodeId: 33,
+                graphId: 0,
+            },
+            {
+                edgeId: 31,
+                name: '',
+                startNodeId: 33,
+                endNodeId: 34,
+                graphId: 0,
+            },
+            {
+                edgeId: 32,
+                name: '',
+                startNodeId: 34,
+                endNodeId: 35,
+                graphId: 0,
+            },
+            {
+                edgeId: 33,
+                name: '',
+                startNodeId: 35,
+                endNodeId: 36,
+                graphId: 0,
+            },
+            {
+                edgeId: 34,
+                name: '',
+                startNodeId: 36,
+                endNodeId: 20,
+                graphId: 0,
+            },
+            {
+                edgeId: 25,
+                name: '',
+                startNodeId: 27,
+                endNodeId: 21,
+                graphId: 0,
+            },
+            {
+                edgeId: 20,
+                name: '',
+                startNodeId: 46,
+                endNodeId: 45,
+                graphId: 0,
+            },
+            {
+                edgeId: 21,
+                name: '',
+                startNodeId: 45,
+                endNodeId: 44,
+                graphId: 0,
+            },
+            {
+                edgeId: 24,
+                name: '',
+                startNodeId: 44,
+                endNodeId: 43,
+                graphId: 0,
+            },
+            {
+                edgeId: 26,
+                name: '',
+                startNodeId: 43,
+                endNodeId: 42,
+                graphId: 0,
+            },
+            {
+                edgeId: 35,
+                name: '',
+                startNodeId: 42,
+                endNodeId: 41,
+                graphId: 0,
+            },
+            {
+                edgeId: 36,
+                name: '',
+                startNodeId: 41,
+                endNodeId: 40,
+                graphId: 0,
+            },
+            {
+                edgeId: 37,
+                name: '',
+                startNodeId: 40,
+                endNodeId: 23,
+                graphId: 0,
+            },
+            {
+                edgeId: 38,
+                name: '',
+                startNodeId: 23,
+                endNodeId: 39,
+                graphId: 0,
+            },
+            {
+                edgeId: 39,
+                name: '',
+                startNodeId: 39,
+                endNodeId: 38,
+                graphId: 0,
+            },
+            {
+                edgeId: 40,
+                name: '',
+                startNodeId: 38,
+                endNodeId: 37,
+                graphId: 0,
+            },
+            {
+                edgeId: 41,
+                name: '',
+                startNodeId: 37,
+                endNodeId: 24,
+                graphId: 0,
+            },
+            {
+                edgeId: 42,
+                name: '',
+                startNodeId: 26,
+                endNodeId: 28,
+                graphId: 0,
+            },
+            {
+                edgeId: 43,
+                name: '',
+                startNodeId: 28,
+                endNodeId: 27,
+                graphId: 0,
+            },
+            {
+                edgeId: 44,
+                name: '',
+                startNodeId: 46,
+                endNodeId: 47,
+                graphId: 0,
+            },
+            {
+                edgeId: 45,
+                name: '',
+                startNodeId: 47,
+                endNodeId: 22,
+                graphId: 0,
+            },
             {
                 edgeId: 1,
                 name: '',
@@ -2990,7 +5725,6 @@ async function main() {
                 endNodeId: 7,
                 graphId: 1,
             },
-            // Path to [Entrance2]
             {
                 edgeId: 6,
                 name: '',
@@ -3047,216 +5781,930 @@ async function main() {
                 endNodeId: 15,
                 graphId: 1,
             },
-
-            // CH Parking Lot 1 → Entrance 1
             {
-                edgeId: 14,
+                edgeId: 203,
                 name: '',
-                startNodeId: 16,
-                endNodeId: 17,
-                graphId: 0,
+                startNodeId: 203,
+                endNodeId: 204,
+                graphId: 100,
             },
             {
-                edgeId: 15,
+                edgeId: 204,
                 name: '',
-                startNodeId: 17,
-                endNodeId: 18,
-                graphId: 0,
+                startNodeId: 204,
+                endNodeId: 205,
+                graphId: 100,
             },
             {
-                edgeId: 16,
+                edgeId: 205,
                 name: '',
-                startNodeId: 18,
-                endNodeId: 19,
-                graphId: 0,
+                startNodeId: 205,
+                endNodeId: 206,
+                graphId: 100,
             },
             {
-                edgeId: 17,
+                edgeId: 207,
                 name: '',
-                startNodeId: 19,
-                endNodeId: 1,
-                graphId: 0,
-            },
-
-            // CH Parking Lot 2 → Entrance 2
-            {
-                edgeId: 18,
-                name: '',
-                startNodeId: 20,
-                endNodeId: 21,
-                graphId: 0,
+                startNodeId: 207,
+                endNodeId: 208,
+                graphId: 100,
             },
             {
-                edgeId: 19,
+                edgeId: 301,
                 name: '',
-                startNodeId: 21,
-                endNodeId: 29,
-                graphId: 0,
-            },
-
-            // CH Parking Lot 3 → Entrance 2
-            {
-                edgeId: 20,
-                name: '',
-                startNodeId: 22,
-                endNodeId: 23,
-                graphId: 0,
+                startNodeId: 301,
+                endNodeId: 302,
+                graphId: 100,
             },
             {
-                edgeId: 21,
+                edgeId: 302,
                 name: '',
-                startNodeId: 23,
-                endNodeId: 24,
-                graphId: 0,
+                startNodeId: 302,
+                endNodeId: 303,
+                graphId: 100,
             },
             {
-                edgeId: 22,
+                edgeId: 309,
                 name: '',
-                startNodeId: 24,
-                endNodeId: 25,
-                graphId: 0,
+                startNodeId: 308,
+                endNodeId: 309,
+                graphId: 100,
             },
             {
-                edgeId: 23,
+                edgeId: 310,
                 name: '',
-                startNodeId: 25,
-                endNodeId: 26,
-                graphId: 0,
+                startNodeId: 313,
+                endNodeId: 207,
+                graphId: 100,
             },
             {
-                edgeId: 24,
+                edgeId: 312,
                 name: '',
-                startNodeId: 26,
-                endNodeId: 27,
-                graphId: 0,
+                startNodeId: 312,
+                endNodeId: 109,
+                graphId: 100,
             },
             {
-                edgeId: 25,
+                edgeId: 313,
                 name: '',
-                startNodeId: 27,
-                endNodeId: 28,
-                graphId: 0,
+                startNodeId: 312,
+                endNodeId: 313,
+                graphId: 100,
             },
             {
-                edgeId: 26,
+                edgeId: 47,
                 name: '',
-                startNodeId: 28,
-                endNodeId: 29,
-                graphId: 0,
-            },
-
-            // connections
-            {
-                edgeId: 27,
-                name: '',
-                startNodeId: 19,
-                endNodeId: 30,
-                graphId: 0,
+                startNodeId: 48,
+                endNodeId: 49,
+                graphId: 100,
             },
             {
-                edgeId: 28,
+                edgeId: 48,
                 name: '',
-                startNodeId: 30,
-                endNodeId: 20, //CH Lot 2
-                graphId: 0,
+                startNodeId: 49,
+                endNodeId: 50,
+                graphId: 100,
             },
-
-
-
-
-
+            {
+                edgeId: 49,
+                name: '',
+                startNodeId: 50,
+                endNodeId: 51,
+                graphId: 100,
+            },
+            {
+                edgeId: 50,
+                name: '',
+                startNodeId: 51,
+                endNodeId: 52,
+                graphId: 100,
+            },
+            {
+                edgeId: 51,
+                name: '',
+                startNodeId: 52,
+                endNodeId: 53,
+                graphId: 100,
+            },
+            {
+                edgeId: 52,
+                name: '',
+                startNodeId: 53,
+                endNodeId: 54,
+                graphId: 100,
+            },
+            {
+                edgeId: 53,
+                name: '',
+                startNodeId: 54,
+                endNodeId: 55,
+                graphId: 100,
+            },
+            {
+                edgeId: 54,
+                name: '',
+                startNodeId: 55,
+                endNodeId: 56,
+                graphId: 100,
+            },
+            {
+                edgeId: 55,
+                name: '',
+                startNodeId: 56,
+                endNodeId: 57,
+                graphId: 100,
+            },
+            {
+                edgeId: 56,
+                name: '',
+                startNodeId: 57,
+                endNodeId: 58,
+                graphId: 100,
+            },
+            {
+                edgeId: 57,
+                name: '',
+                startNodeId: 58,
+                endNodeId: 59,
+                graphId: 100,
+            },
+            {
+                edgeId: 58,
+                name: '',
+                startNodeId: 312,
+                endNodeId: 60,
+                graphId: 100,
+            },
+            {
+                edgeId: 59,
+                name: '',
+                startNodeId: 312,
+                endNodeId: 61,
+                graphId: 100,
+            },
+            {
+                edgeId: 60,
+                name: '',
+                startNodeId: 61,
+                endNodeId: 62,
+                graphId: 100,
+            },
+            {
+                edgeId: 61,
+                name: '',
+                startNodeId: 62,
+                endNodeId: 63,
+                graphId: 100,
+            },
+            {
+                edgeId: 62,
+                name: '',
+                startNodeId: 63,
+                endNodeId: 64,
+                graphId: 100,
+            },
+            {
+                edgeId: 63,
+                name: '',
+                startNodeId: 64,
+                endNodeId: 209,
+                graphId: 100,
+            },
+            {
+                edgeId: 64,
+                name: '',
+                startNodeId: 207,
+                endNodeId: 71,
+                graphId: 100,
+            },
+            {
+                edgeId: 65,
+                name: '',
+                startNodeId: 71,
+                endNodeId: 70,
+                graphId: 100,
+            },
+            {
+                edgeId: 66,
+                name: '',
+                startNodeId: 70,
+                endNodeId: 69,
+                graphId: 100,
+            },
+            {
+                edgeId: 67,
+                name: '',
+                startNodeId: 69,
+                endNodeId: 68,
+                graphId: 100,
+            },
+            {
+                edgeId: 68,
+                name: '',
+                startNodeId: 68,
+                endNodeId: 67,
+                graphId: 100,
+            },
+            {
+                edgeId: 69,
+                name: '',
+                startNodeId: 67,
+                endNodeId: 66,
+                graphId: 100,
+            },
+            {
+                edgeId: 70,
+                name: '',
+                startNodeId: 66,
+                endNodeId: 65,
+                graphId: 100,
+            },
+            {
+                edgeId: 71,
+                name: '',
+                startNodeId: 65,
+                endNodeId: 206,
+                graphId: 100,
+            },
+            {
+                edgeId: 46,
+                name: '',
+                startNodeId: 205,
+                endNodeId: 72,
+                graphId: 100,
+            },
+            {
+                edgeId: 72,
+                name: '',
+                startNodeId: 72,
+                endNodeId: 48,
+                graphId: 100,
+            },
+            {
+                edgeId: 73,
+                name: '',
+                startNodeId: 60,
+                endNodeId: 73,
+                graphId: 100,
+            },
+            {
+                edgeId: 74,
+                name: '',
+                startNodeId: 73,
+                endNodeId: 74,
+                graphId: 100,
+            },
+            {
+                edgeId: 75,
+                name: '',
+                startNodeId: 74,
+                endNodeId: 75,
+                graphId: 100,
+            },
+            {
+                edgeId: 76,
+                name: '',
+                startNodeId: 75,
+                endNodeId: 76,
+                graphId: 100,
+            },
+            {
+                edgeId: 77,
+                name: '',
+                startNodeId: 76,
+                endNodeId: 77,
+                graphId: 100,
+            },
+            {
+                edgeId: 78,
+                name: '',
+                startNodeId: 77,
+                endNodeId: 78,
+                graphId: 100,
+            },
+            {
+                edgeId: 79,
+                name: '',
+                startNodeId: 78,
+                endNodeId: 79,
+                graphId: 100,
+            },
+            {
+                edgeId: 80,
+                name: '',
+                startNodeId: 79,
+                endNodeId: 80,
+                graphId: 100,
+            },
+            {
+                edgeId: 81,
+                name: '',
+                startNodeId: 80,
+                endNodeId: 81,
+                graphId: 100,
+            },
+            {
+                edgeId: 82,
+                name: '',
+                startNodeId: 81,
+                endNodeId: 310,
+                graphId: 100,
+            },
+            {
+                edgeId: 83,
+                name: '',
+                startNodeId: 80,
+                endNodeId: 82,
+                graphId: 100,
+            },
+            {
+                edgeId: 84,
+                name: '',
+                startNodeId: 82,
+                endNodeId: 309,
+                graphId: 100,
+            },
+            {
+                edgeId: 85,
+                name: '',
+                startNodeId: 308,
+                endNodeId: 83,
+                graphId: 100,
+            },
+            {
+                edgeId: 86,
+                name: '',
+                startNodeId: 83,
+                endNodeId: 84,
+                graphId: 100,
+            },
+            {
+                edgeId: 87,
+                name: '',
+                startNodeId: 84,
+                endNodeId: 85,
+                graphId: 100,
+            },
+            {
+                edgeId: 88,
+                name: '',
+                startNodeId: 85,
+                endNodeId: 86,
+                graphId: 100,
+            },
+            {
+                edgeId: 89,
+                name: '',
+                startNodeId: 86,
+                endNodeId: 87,
+                graphId: 100,
+            },
+            {
+                edgeId: 90,
+                name: '',
+                startNodeId: 87,
+                endNodeId: 88,
+                graphId: 100,
+            },
+            {
+                edgeId: 91,
+                name: '',
+                startNodeId: 88,
+                endNodeId: 89,
+                graphId: 100,
+            },
+            {
+                edgeId: 92,
+                name: '',
+                startNodeId: 89,
+                endNodeId: 90,
+                graphId: 100,
+            },
+            {
+                edgeId: 93,
+                name: '',
+                startNodeId: 90,
+                endNodeId: 306,
+                graphId: 100,
+            },
+            {
+                edgeId: 94,
+                name: '',
+                startNodeId: 306,
+                endNodeId: 91,
+                graphId: 100,
+            },
+            {
+                edgeId: 95,
+                name: '',
+                startNodeId: 91,
+                endNodeId: 92,
+                graphId: 100,
+            },
+            {
+                edgeId: 96,
+                name: '',
+                startNodeId: 92,
+                endNodeId: 93,
+                graphId: 100,
+            },
+            {
+                edgeId: 97,
+                name: '',
+                startNodeId: 93,
+                endNodeId: 94,
+                graphId: 100,
+            },
+            {
+                edgeId: 98,
+                name: '',
+                startNodeId: 94,
+                endNodeId: 95,
+                graphId: 100,
+            },
+            {
+                edgeId: 99,
+                name: '',
+                startNodeId: 95,
+                endNodeId: 96,
+                graphId: 100,
+            },
             {
                 edgeId: 100,
                 name: '',
-                startNodeId: 202,
-                endNodeId: 100,
+                startNodeId: 96,
+                endNodeId: 97,
                 graphId: 100,
             },
             {
                 edgeId: 101,
                 name: '',
-                startNodeId: 100,
-                endNodeId: 101,
+                startNodeId: 97,
+                endNodeId: 98,
                 graphId: 100,
             },
             {
                 edgeId: 102,
                 name: '',
-                startNodeId: 101,
-                endNodeId: 311,
+                startNodeId: 98,
+                endNodeId: 99,
                 graphId: 100,
             },
-
-
-            //PP20 Parking
-            // {
-            //     edgeId: 100,
-            //     name: '',
-            //     startNodeId: 100,
-            //     endNodeId: 101,
-            //     graphId: 100,
-            // },
-            // {
-            //     edgeId: 101,
-            //     name: '',
-            //     startNodeId: 101,
-            //     endNodeId: 102,
-            //     graphId: 100,
-            // },
-            // {
-            //     edgeId: 102,
-            //     name: '',
-            //     startNodeId: 102,
-            //     endNodeId: 103,
-            //     graphId: 100,
-            // },
-            // {
-            //     edgeId: 103,
-            //     name: '',
-            //     startNodeId: 103,
-            //     endNodeId: 104,
-            //     graphId: 100,
-            // },
-            // {
-            //     edgeId: 104,
-            //     name: '',
-            //     startNodeId: 104,
-            //     endNodeId: 105,
-            //     graphId: 100,
-            // },
-            // {
-            //     edgeId: 105,
-            //     name: '',
-            //     startNodeId: 105,
-            //     endNodeId: 106,
-            //     graphId: 100,
-            // },
-            // {
-            //     edgeId: 106,
-            //     name: '',
-            //     startNodeId: 106,
-            //     endNodeId: 107,
-            //     graphId: 100,
-            // },
-            // {
-            //     edgeId: 107,
-            //     name: '',
-            //     startNodeId: 207,
-            //     endNodeId: 108,
-            //     graphId: 100,
-            // },
-            // {
-            //     edgeId: 108,
-            //     name: '',
-            //     startNodeId: 108,
-            //     endNodeId: 109,
-            //     graphId: 100,
-            // },
-
-
-
-            // PP20 FL1
-
+            {
+                edgeId: 103,
+                name: '',
+                startNodeId: 99,
+                endNodeId: 100,
+                graphId: 100,
+            },
+            {
+                edgeId: 104,
+                name: '',
+                startNodeId: 100,
+                endNodeId: 303,
+                graphId: 100,
+            },
+            {
+                edgeId: 105,
+                name: '',
+                startNodeId: 301,
+                endNodeId: 101,
+                graphId: 100,
+            },
+            {
+                edgeId: 106,
+                name: '',
+                startNodeId: 101,
+                endNodeId: 102,
+                graphId: 100,
+            },
+            {
+                edgeId: 107,
+                name: '',
+                startNodeId: 102,
+                endNodeId: 103,
+                graphId: 100,
+            },
+            {
+                edgeId: 108,
+                name: '',
+                startNodeId: 103,
+                endNodeId: 104,
+                graphId: 100,
+            },
+            {
+                edgeId: 109,
+                name: '',
+                startNodeId: 104,
+                endNodeId: 105,
+                graphId: 100,
+            },
+            {
+                edgeId: 110,
+                name: '',
+                startNodeId: 105,
+                endNodeId: 106,
+                graphId: 100,
+            },
+            {
+                edgeId: 118,
+                name: '',
+                startNodeId: 106,
+                endNodeId: 107,
+                graphId: 100,
+            },
+            {
+                edgeId: 124,
+                name: '',
+                startNodeId: 107,
+                endNodeId: 108,
+                graphId: 100,
+            },
+            {
+                edgeId: 125,
+                name: '',
+                startNodeId: 108,
+                endNodeId: 300,
+                graphId: 100,
+            },
+            {
+                edgeId: 126,
+                name: '',
+                startNodeId: 302,
+                endNodeId: 123,
+                graphId: 100,
+            },
+            {
+                edgeId: 127,
+                name: '',
+                startNodeId: 123,
+                endNodeId: 124,
+                graphId: 100,
+            },
+            {
+                edgeId: 128,
+                name: '',
+                startNodeId: 124,
+                endNodeId: 125,
+                graphId: 100,
+            },
+            {
+                edgeId: 129,
+                name: '',
+                startNodeId: 125,
+                endNodeId: 126,
+                graphId: 100,
+            },
+            {
+                edgeId: 130,
+                name: '',
+                startNodeId: 126,
+                endNodeId: 127,
+                graphId: 100,
+            },
+            {
+                edgeId: 131,
+                name: '',
+                startNodeId: 127,
+                endNodeId: 128,
+                graphId: 100,
+            },
+            {
+                edgeId: 132,
+                name: '',
+                startNodeId: 128,
+                endNodeId: 129,
+                graphId: 100,
+            },
+            {
+                edgeId: 133,
+                name: '',
+                startNodeId: 129,
+                endNodeId: 130,
+                graphId: 100,
+            },
+            {
+                edgeId: 134,
+                name: '',
+                startNodeId: 130,
+                endNodeId: 131,
+                graphId: 100,
+            },
+            {
+                edgeId: 135,
+                name: '',
+                startNodeId: 131,
+                endNodeId: 132,
+                graphId: 100,
+            },
+            {
+                edgeId: 136,
+                name: '',
+                startNodeId: 132,
+                endNodeId: 133,
+                graphId: 100,
+            },
+            {
+                edgeId: 137,
+                name: '',
+                startNodeId: 133,
+                endNodeId: 134,
+                graphId: 100,
+            },
+            {
+                edgeId: 138,
+                name: '',
+                startNodeId: 134,
+                endNodeId: 135,
+                graphId: 100,
+            },
+            {
+                edgeId: 139,
+                name: '',
+                startNodeId: 135,
+                endNodeId: 406,
+                graphId: 100,
+            },
+            {
+                edgeId: 140,
+                name: '',
+                startNodeId: 406,
+                endNodeId: 136,
+                graphId: 100,
+            },
+            {
+                edgeId: 141,
+                name: '',
+                startNodeId: 136,
+                endNodeId: 137,
+                graphId: 100,
+            },
+            {
+                edgeId: 142,
+                name: '',
+                startNodeId: 137,
+                endNodeId: 138,
+                graphId: 100,
+            },
+            {
+                edgeId: 143,
+                name: '',
+                startNodeId: 138,
+                endNodeId: 139,
+                graphId: 100,
+            },
+            {
+                edgeId: 144,
+                name: '',
+                startNodeId: 139,
+                endNodeId: 405,
+                graphId: 100,
+            },
+            {
+                edgeId: 145,
+                name: '',
+                startNodeId: 405,
+                endNodeId: 140,
+                graphId: 100,
+            },
+            {
+                edgeId: 146,
+                name: '',
+                startNodeId: 140,
+                endNodeId: 141,
+                graphId: 100,
+            },
+            {
+                edgeId: 147,
+                name: '',
+                startNodeId: 141,
+                endNodeId: 142,
+                graphId: 100,
+            },
+            {
+                edgeId: 148,
+                name: '',
+                startNodeId: 142,
+                endNodeId: 143,
+                graphId: 100,
+            },
+            {
+                edgeId: 149,
+                name: '',
+                startNodeId: 143,
+                endNodeId: 404,
+                graphId: 100,
+            },
+            {
+                edgeId: 150,
+                name: '',
+                startNodeId: 404,
+                endNodeId: 144,
+                graphId: 100,
+            },
+            {
+                edgeId: 151,
+                name: '',
+                startNodeId: 144,
+                endNodeId: 145,
+                graphId: 100,
+            },
+            {
+                edgeId: 152,
+                name: '',
+                startNodeId: 145,
+                endNodeId: 146,
+                graphId: 100,
+            },
+            {
+                edgeId: 153,
+                name: '',
+                startNodeId: 146,
+                endNodeId: 147,
+                graphId: 100,
+            },
+            {
+                edgeId: 154,
+                name: '',
+                startNodeId: 147,
+                endNodeId: 148,
+                graphId: 100,
+            },
+            {
+                edgeId: 155,
+                name: '',
+                startNodeId: 148,
+                endNodeId: 149,
+                graphId: 100,
+            },
+            {
+                edgeId: 156,
+                name: '',
+                startNodeId: 149,
+                endNodeId: 150,
+                graphId: 100,
+            },
+            {
+                edgeId: 157,
+                name: '',
+                startNodeId: 150,
+                endNodeId: 151,
+                graphId: 100,
+            },
+            {
+                edgeId: 158,
+                name: '',
+                startNodeId: 151,
+                endNodeId: 152,
+                graphId: 100,
+            },
+            {
+                edgeId: 159,
+                name: '',
+                startNodeId: 152,
+                endNodeId: 153,
+                graphId: 100,
+            },
+            {
+                edgeId: 160,
+                name: '',
+                startNodeId: 153,
+                endNodeId: 154,
+                graphId: 100,
+            },
+            {
+                edgeId: 161,
+                name: '',
+                startNodeId: 154,
+                endNodeId: 400,
+                graphId: 100,
+            },
+            {
+                edgeId: 162,
+                name: '',
+                startNodeId: 203,
+                endNodeId: 155,
+                graphId: 100,
+            },
+            {
+                edgeId: 163,
+                name: '',
+                startNodeId: 155,
+                endNodeId: 156,
+                graphId: 100,
+            },
+            {
+                edgeId: 164,
+                name: '',
+                startNodeId: 156,
+                endNodeId: 157,
+                graphId: 100,
+            },
+            {
+                edgeId: 165,
+                name: '',
+                startNodeId: 157,
+                endNodeId: 158,
+                graphId: 100,
+            },
+            {
+                edgeId: 166,
+                name: '',
+                startNodeId: 158,
+                endNodeId: 159,
+                graphId: 100,
+            },
+            {
+                edgeId: 167,
+                name: '',
+                startNodeId: 159,
+                endNodeId: 160,
+                graphId: 100,
+            },
+            {
+                edgeId: 168,
+                name: '',
+                startNodeId: 160,
+                endNodeId: 61,
+                graphId: 100,
+            },
+            {
+                edgeId: 169,
+                name: '',
+                startNodeId: 200,
+                endNodeId: 161,
+                graphId: 100,
+            },
+            {
+                edgeId: 170,
+                name: '',
+                startNodeId: 161,
+                endNodeId: 162,
+                graphId: 100,
+            },
+            {
+                edgeId: 171,
+                name: '',
+                startNodeId: 162,
+                endNodeId: 163,
+                graphId: 100,
+            },
+            {
+                edgeId: 172,
+                name: '',
+                startNodeId: 163,
+                endNodeId: 164,
+                graphId: 100,
+            },
+            {
+                edgeId: 173,
+                name: '',
+                startNodeId: 164,
+                endNodeId: 165,
+                graphId: 100,
+            },
+            {
+                edgeId: 174,
+                name: '',
+                startNodeId: 165,
+                endNodeId: 166,
+                graphId: 100,
+            },
+            {
+                edgeId: 175,
+                name: '',
+                startNodeId: 166,
+                endNodeId: 167,
+                graphId: 100,
+            },
+            {
+                edgeId: 176,
+                name: '',
+                startNodeId: 167,
+                endNodeId: 168,
+                graphId: 100,
+            },
+            {
+                edgeId: 177,
+                name: '',
+                startNodeId: 168,
+                endNodeId: 202,
+                graphId: 100,
+            },
+            {
+                edgeId: 178,
+                name: '',
+                startNodeId: 202,
+                endNodeId: 169,
+                graphId: 100,
+            },
+            {
+                edgeId: 179,
+                name: '',
+                startNodeId: 169,
+                endNodeId: 203,
+                graphId: 100,
+            },
             {
                 edgeId: 111,
                 name: '',
@@ -3279,33 +6727,10 @@ async function main() {
                 graphId: 101,
             },
             {
-                edgeId: 114,
-                name: '',
-                startNodeId: 110,
-                endNodeId: 114,
-                graphId: 101,
-            },
-            {
                 edgeId: 115,
                 name: '',
                 startNodeId: 114,
                 endNodeId: 115,
-                graphId: 101,
-            },
-            {
-                edgeId: 116,
-                name: '',
-                startNodeId: 114,
-                endNodeId: 116,
-                graphId: 101,
-            },
-
-
-            {
-                edgeId: 117,
-                name: '',
-                startNodeId: 116,
-                endNodeId: 118,
                 graphId: 101,
             },
             {
@@ -3343,8 +6768,62 @@ async function main() {
                 endNodeId: 117,
                 graphId: 101,
             },
-
-
+            {
+                edgeId: 114,
+                name: '',
+                startNodeId: 118,
+                endNodeId: 174,
+                graphId: 101,
+            },
+            {
+                edgeId: 116,
+                name: '',
+                startNodeId: 174,
+                endNodeId: 116,
+                graphId: 101,
+            },
+            {
+                edgeId: 117,
+                name: '',
+                startNodeId: 116,
+                endNodeId: 173,
+                graphId: 101,
+            },
+            {
+                edgeId: 180,
+                name: '',
+                startNodeId: 173,
+                endNodeId: 114,
+                graphId: 101,
+            },
+            {
+                edgeId: 181,
+                name: '',
+                startNodeId: 114,
+                endNodeId: 172,
+                graphId: 101,
+            },
+            {
+                edgeId: 182,
+                name: '',
+                startNodeId: 172,
+                endNodeId: 171,
+                graphId: 101,
+            },
+            {
+                edgeId: 183,
+                name: '',
+                startNodeId: 171,
+                endNodeId: 170,
+                graphId: 101,
+            },
+            {
+                edgeId: 184,
+                name: '',
+                startNodeId: 170,
+                endNodeId: 110,
+                graphId: 101,
+            },
             {
                 edgeId: 500,
                 name: '',
@@ -3353,89 +6832,18 @@ async function main() {
                 graphId: 201,
             },
             {
-                edgeId: 501,
+                edgeId: 185,
                 name: '',
                 startNodeId: 215,
-                endNodeId: 216,
+                endNodeId: 175,
                 graphId: 201,
             },
-
-
-            //PP20 parking 2
             {
-                edgeId: 118,
+                edgeId: 186,
                 name: '',
-                startNodeId: 209,
-                endNodeId: 312,
-                graphId: 100,
-            },
-
-
-            //PP22 parking
-            {
-                edgeId: 200,
-                name: '',
-                startNodeId: 200,
-                endNodeId: 201,
-                graphId: 100,
-            },
-            {
-                edgeId: 201,
-                name: '',
-                startNodeId: 201,
-                endNodeId: 202,
-                graphId: 100,
-            },
-            {
-                edgeId: 202,
-                name: '',
-                startNodeId: 202,
-                endNodeId: 203,
-                graphId: 100,
-            },
-            {
-                edgeId: 203,
-                name: '',
-                startNodeId: 203,
-                endNodeId: 204,
-                graphId: 100,
-            },
-            {
-                edgeId: 204,
-                name: '',
-                startNodeId: 204,
-                endNodeId: 205,
-                graphId: 100,
-            },
-            {
-                edgeId: 205,
-                name: '',
-                startNodeId: 205,
-                endNodeId: 206,
-                graphId: 100,
-            },
-            {
-                edgeId: 206,
-                name: '',
-                startNodeId: 206,
-                endNodeId: 207,
-                graphId: 100,
-            },
-            {
-                edgeId: 207,
-                name: '',
-                startNodeId: 207,
-                endNodeId: 208,
-                graphId: 100,
-            },
-
-            // floor 3 22
-            {
-                edgeId: 208,
-                name: '',
-                startNodeId: 211,
-                endNodeId: 212,
-                graphId: 203,
+                startNodeId: 175,
+                endNodeId: 216,
+                graphId: 201,
             },
             {
                 edgeId: 209,
@@ -3444,209 +6852,40 @@ async function main() {
                 endNodeId: 213,
                 graphId: 203,
             },
-
-
-
-
-
-
-
-
-
-
-            // ParkingADA
             {
-                edgeId: 300,
+                edgeId: 187,
                 name: '',
-                startNodeId: 300,
-                endNodeId: 301,
-                graphId: 100,
+                startNodeId: 212,
+                endNodeId: 176,
+                graphId: 203,
             },
             {
-                edgeId: 301,
+                edgeId: 188,
                 name: '',
-                startNodeId: 301,
-                endNodeId: 302,
-                graphId: 100,
+                startNodeId: 176,
+                endNodeId: 177,
+                graphId: 203,
             },
             {
-                edgeId: 302,
+                edgeId: 189,
                 name: '',
-                startNodeId: 302,
-                endNodeId: 303,
-                graphId: 100,
+                startNodeId: 177,
+                endNodeId: 178,
+                graphId: 203,
             },
             {
-                edgeId: 303,
+                edgeId: 190,
                 name: '',
-                startNodeId: 303,
-                endNodeId: 304,
-                graphId: 100,
+                startNodeId: 178,
+                endNodeId: 179,
+                graphId: 203,
             },
             {
-                edgeId: 304,
+                edgeId: 191,
                 name: '',
-                startNodeId: 304,
-                endNodeId: 305,
-                graphId: 100,
-            },
-
-
-
-
-
-
-
-            {
-                edgeId: 309,
-                name: '',
-                startNodeId: 308,
-                endNodeId: 309,
-                graphId: 100,
-            },
-            {
-                edgeId: 310,
-                name: '',
-                startNodeId: 313,
-                endNodeId: 207,
-                graphId: 100,
-            },
-            {
-                edgeId: 311,
-                name: '',
-                startNodeId: 311,
-                endNodeId: 312,
-                graphId: 100,
-            },
-            {
-                edgeId: 312,
-                name: '',
-                startNodeId: 312,
-                endNodeId: 109,
-                graphId: 100,
-            },
-            {
-                edgeId: 313,
-                name: '',
-                startNodeId: 312,
-                endNodeId: 313,
-                graphId: 100,
-            },
-            {
-                edgeId: 314,
-                name: '',
-                startNodeId: 309,
-                endNodeId: 310,
-                graphId: 100,
-            },
-
-            {
-                edgeId: 315,
-                name: '',
-                startNodeId: 305,
-                endNodeId: 306,
-                graphId: 100,
-            },
-            {
-                edgeId: 316,
-                name: '',
-                startNodeId: 306,
-                endNodeId: 307,
-                graphId: 100,
-            },
-            {
-                edgeId: 317,
-                name: '',
-                startNodeId: 307,
-                endNodeId: 308,
-                graphId: 100,
-            },
-            {
-                edgeId: 318,
-                name: '',
-                startNodeId: 306,
-                endNodeId: 314,
-                graphId: 100,
-            },
-            {
-                edgeId: 319,
-                name: '',
-                startNodeId: 314,
-                endNodeId: 315,
-                graphId: 100,
-            },
-            {
-                edgeId: 320,
-                name: '',
-                startNodeId: 315,
-                endNodeId: 311,
-                graphId: 100,
-            },
-
-
-
-
-
-            //ParkingGillette
-            {
-                edgeId: 400,
-                name: '',
-                startNodeId: 400,
-                endNodeId: 401,
-                graphId: 100,
-            },
-            {
-                edgeId: 401,
-                name: '',
-                startNodeId: 401,
-                endNodeId: 404,
-                graphId: 100,
-            },
-            {
-                edgeId: 402,
-                name: '',
-                startNodeId: 404,
-                endNodeId: 405,
-                graphId: 100,
-            },
-            {
-                edgeId: 403,
-                name: '',
-                startNodeId: 405,
-                endNodeId: 406,
-                graphId: 100,
-            },
-            {
-                edgeId: 404,
-                name: '',
-                startNodeId: 406,
-                endNodeId: 402,
-                graphId: 100,
-            },
-            {
-                edgeId: 405,
-                name: '',
-                startNodeId: 402,
-                endNodeId: 303,
-                graphId: 100,
-            },
-
-
-
-            //PP floor 4
-            {
-                edgeId: 600,
-                name: '',
-                startNodeId: 600,
-                endNodeId: 601,
-                graphId: 204,
-            },
-            {
-                edgeId: 601,
-                name: '',
-                startNodeId: 600,
-                endNodeId: 602,
-                graphId: 204,
+                startNodeId: 179,
+                endNodeId: 180,
+                graphId: 203,
             },
             {
                 edgeId: 602,
@@ -3655,7 +6894,83 @@ async function main() {
                 endNodeId: 603,
                 graphId: 204,
             },
-
+            {
+                edgeId: 192,
+                name: '',
+                startNodeId: 600,
+                endNodeId: 181,
+                graphId: 204,
+            },
+            {
+                edgeId: 193,
+                name: '',
+                startNodeId: 181,
+                endNodeId: 182,
+                graphId: 204,
+            },
+            {
+                edgeId: 194,
+                name: '',
+                startNodeId: 182,
+                endNodeId: 183,
+                graphId: 204,
+            },
+            {
+                edgeId: 196,
+                name: '',
+                startNodeId: 181,
+                endNodeId: 184,
+                graphId: 204,
+            },
+            {
+                edgeId: 197,
+                name: '',
+                startNodeId: 184,
+                endNodeId: 185,
+                graphId: 204,
+            },
+            {
+                edgeId: 198,
+                name: '',
+                startNodeId: 185,
+                endNodeId: 186,
+                graphId: 204,
+            },
+            {
+                edgeId: 199,
+                name: '',
+                startNodeId: 186,
+                endNodeId: 187,
+                graphId: 204,
+            },
+            {
+                edgeId: 200,
+                name: '',
+                startNodeId: 187,
+                endNodeId: 188,
+                graphId: 204,
+            },
+            {
+                edgeId: 201,
+                name: '',
+                startNodeId: 188,
+                endNodeId: 601,
+                graphId: 204,
+            },
+            {
+                edgeId: 195,
+                name: '',
+                startNodeId: 183,
+                endNodeId: 189,
+                graphId: 204,
+            },
+            {
+                edgeId: 202,
+                name: '',
+                startNodeId: 189,
+                endNodeId: 602,
+                graphId: 204,
+            },
             {
                 edgeId: 700,
                 name: '',
@@ -3691,7 +7006,6 @@ async function main() {
                 endNodeId: 705,
                 graphId: 300,
             },
-
             {
                 edgeId: 705,
                 name: '',
@@ -3811,9 +7125,6 @@ async function main() {
                 endNodeId: 705,
                 graphId: 300,
             },
-
-            //faulkner inside
-
             {
                 edgeId: 722,
                 name: '',
@@ -3849,4724 +7160,826 @@ async function main() {
                 endNodeId: 725,
                 graphId: 301,
             },
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            {
+                edgeId: 206,
+                name: '',
+                startNodeId: 191,
+                endNodeId: 192,
+                graphId: 400,
+            },
+            {
+                edgeId: 208,
+                name: '',
+                startNodeId: 192,
+                endNodeId: 193,
+                graphId: 400,
+            },
+            {
+                edgeId: 210,
+                name: '',
+                startNodeId: 193,
+                endNodeId: 194,
+                graphId: 400,
+            },
+            {
+                edgeId: 211,
+                name: '',
+                startNodeId: 194,
+                endNodeId: 195,
+                graphId: 400,
+            },
+            {
+                edgeId: 212,
+                name: '',
+                startNodeId: 195,
+                endNodeId: 190,
+                graphId: 400,
+            },
+            {
+                edgeId: 213,
+                name: '',
+                startNodeId: 190,
+                endNodeId: 196,
+                graphId: 400,
+            },
+            {
+                edgeId: 214,
+                name: '',
+                startNodeId: 191,
+                endNodeId: 197,
+                graphId: 400,
+            },
+            {
+                edgeId: 215,
+                name: '',
+                startNodeId: 197,
+                endNodeId: 198,
+                graphId: 400,
+            },
+            {
+                edgeId: 216,
+                name: '',
+                startNodeId: 198,
+                endNodeId: 199,
+                graphId: 400,
+            },
+            {
+                edgeId: 217,
+                name: '',
+                startNodeId: 199,
+                endNodeId: 201,
+                graphId: 400,
+            },
+            {
+                edgeId: 218,
+                name: '',
+                startNodeId: 201,
+                endNodeId: 210,
+                graphId: 400,
+            },
+            {
+                edgeId: 219,
+                name: '',
+                startNodeId: 210,
+                endNodeId: 211,
+                graphId: 400,
+            },
+            {
+                edgeId: 220,
+                name: '',
+                startNodeId: 211,
+                endNodeId: 217,
+                graphId: 400,
+            },
+            {
+                edgeId: 221,
+                name: '',
+                startNodeId: 217,
+                endNodeId: 218,
+                graphId: 400,
+            },
+            {
+                edgeId: 222,
+                name: '',
+                startNodeId: 218,
+                endNodeId: 219,
+                graphId: 400,
+            },
+            {
+                edgeId: 223,
+                name: '',
+                startNodeId: 219,
+                endNodeId: 220,
+                graphId: 400,
+            },
+            {
+                edgeId: 224,
+                name: '',
+                startNodeId: 220,
+                endNodeId: 221,
+                graphId: 400,
+            },
+            {
+                edgeId: 225,
+                name: '',
+                startNodeId: 221,
+                endNodeId: 222,
+                graphId: 400,
+            },
+            {
+                edgeId: 280,
+                name: '',
+                startNodeId: 277,
+                endNodeId: 278,
+                graphId: 400,
+            },
+            {
+                edgeId: 281,
+                name: '',
+                startNodeId: 278,
+                endNodeId: 279,
+                graphId: 400,
+            },
+            {
+                edgeId: 282,
+                name: '',
+                startNodeId: 279,
+                endNodeId: 280,
+                graphId: 400,
+            },
+            {
+                edgeId: 283,
+                name: '',
+                startNodeId: 280,
+                endNodeId: 281,
+                graphId: 400,
+            },
+            {
+                edgeId: 284,
+                name: '',
+                startNodeId: 281,
+                endNodeId: 282,
+                graphId: 400,
+            },
+            {
+                edgeId: 285,
+                name: '',
+                startNodeId: 282,
+                endNodeId: 283,
+                graphId: 400,
+            },
+            {
+                edgeId: 286,
+                name: '',
+                startNodeId: 283,
+                endNodeId: 284,
+                graphId: 400,
+            },
+            {
+                edgeId: 287,
+                name: '',
+                startNodeId: 284,
+                endNodeId: 285,
+                graphId: 400,
+            },
+            {
+                edgeId: 288,
+                name: '',
+                startNodeId: 285,
+                endNodeId: 191,
+                graphId: 400,
+            },
+            {
+                edgeId: 289,
+                name: '',
+                startNodeId: 284,
+                endNodeId: 286,
+                graphId: 400,
+            },
+            {
+                edgeId: 290,
+                name: '',
+                startNodeId: 286,
+                endNodeId: 201,
+                graphId: 400,
+            },
+            {
+                edgeId: 291,
+                name: '',
+                startNodeId: 287,
+                endNodeId: 288,
+                graphId: 400,
+            },
+            {
+                edgeId: 292,
+                name: '',
+                startNodeId: 288,
+                endNodeId: 289,
+                graphId: 400,
+            },
+            {
+                edgeId: 293,
+                name: '',
+                startNodeId: 289,
+                endNodeId: 290,
+                graphId: 400,
+            },
+            {
+                edgeId: 294,
+                name: '',
+                startNodeId: 290,
+                endNodeId: 291,
+                graphId: 400,
+            },
+            {
+                edgeId: 295,
+                name: '',
+                startNodeId: 291,
+                endNodeId: 292,
+                graphId: 400,
+            },
+            {
+                edgeId: 296,
+                name: '',
+                startNodeId: 292,
+                endNodeId: 293,
+                graphId: 400,
+            },
+            {
+                edgeId: 297,
+                name: '',
+                startNodeId: 293,
+                endNodeId: 294,
+                graphId: 400,
+            },
+            {
+                edgeId: 298,
+                name: '',
+                startNodeId: 294,
+                endNodeId: 295,
+                graphId: 400,
+            },
+            {
+                edgeId: 299,
+                name: '',
+                startNodeId: 295,
+                endNodeId: 296,
+                graphId: 400,
+            },
+            {
+                edgeId: 300,
+                name: '',
+                startNodeId: 296,
+                endNodeId: 297,
+                graphId: 400,
+            },
+            {
+                edgeId: 303,
+                name: '',
+                startNodeId: 297,
+                endNodeId: 298,
+                graphId: 400,
+            },
+            {
+                edgeId: 304,
+                name: '',
+                startNodeId: 298,
+                endNodeId: 299,
+                graphId: 400,
+            },
+            {
+                edgeId: 305,
+                name: '',
+                startNodeId: 299,
+                endNodeId: 304,
+                graphId: 400,
+            },
+            {
+                edgeId: 306,
+                name: '',
+                startNodeId: 304,
+                endNodeId: 305,
+                graphId: 400,
+            },
+            {
+                edgeId: 307,
+                name: '',
+                startNodeId: 305,
+                endNodeId: 307,
+                graphId: 400,
+            },
+            {
+                edgeId: 308,
+                name: '',
+                startNodeId: 307,
+                endNodeId: 284,
+                graphId: 400,
+            },
+            {
+                edgeId: 311,
+                name: '',
+                startNodeId: 311,
+                endNodeId: 314,
+                graphId: 400,
+            },
+            {
+                edgeId: 314,
+                name: '',
+                startNodeId: 311,
+                endNodeId: 315,
+                graphId: 400,
+            },
+            {
+                edgeId: 315,
+                name: '',
+                startNodeId: 315,
+                endNodeId: 316,
+                graphId: 400,
+            },
+            {
+                edgeId: 316,
+                name: '',
+                startNodeId: 316,
+                endNodeId: 317,
+                graphId: 400,
+            },
+            {
+                edgeId: 317,
+                name: '',
+                startNodeId: 317,
+                endNodeId: 318,
+                graphId: 400,
+            },
+            {
+                edgeId: 318,
+                name: '',
+                startNodeId: 318,
+                endNodeId: 319,
+                graphId: 400,
+            },
+            {
+                edgeId: 319,
+                name: '',
+                startNodeId: 319,
+                endNodeId: 320,
+                graphId: 400,
+            },
+            {
+                edgeId: 320,
+                name: '',
+                startNodeId: 320,
+                endNodeId: 321,
+                graphId: 400,
+            },
+            {
+                edgeId: 321,
+                name: '',
+                startNodeId: 321,
+                endNodeId: 322,
+                graphId: 400,
+            },
+            {
+                edgeId: 322,
+                name: '',
+                startNodeId: 322,
+                endNodeId: 323,
+                graphId: 400,
+            },
+            {
+                edgeId: 323,
+                name: '',
+                startNodeId: 323,
+                endNodeId: 324,
+                graphId: 400,
+            },
+            {
+                edgeId: 324,
+                name: '',
+                startNodeId: 324,
+                endNodeId: 325,
+                graphId: 400,
+            },
+            {
+                edgeId: 325,
+                name: '',
+                startNodeId: 325,
+                endNodeId: 326,
+                graphId: 400,
+            },
+            {
+                edgeId: 326,
+                name: '',
+                startNodeId: 326,
+                endNodeId: 327,
+                graphId: 400,
+            },
+            {
+                edgeId: 327,
+                name: '',
+                startNodeId: 327,
+                endNodeId: 328,
+                graphId: 400,
+            },
+            {
+                edgeId: 328,
+                name: '',
+                startNodeId: 328,
+                endNodeId: 287,
+                graphId: 400,
+            },
+            {
+                edgeId: 226,
+                name: '',
+                startNodeId: 223,
+                endNodeId: 224,
+                graphId: 402,
+            },
+            {
+                edgeId: 227,
+                name: '',
+                startNodeId: 224,
+                endNodeId: 225,
+                graphId: 402,
+            },
+            {
+                edgeId: 228,
+                name: '',
+                startNodeId: 225,
+                endNodeId: 226,
+                graphId: 402,
+            },
+            {
+                edgeId: 229,
+                name: '',
+                startNodeId: 226,
+                endNodeId: 227,
+                graphId: 402,
+            },
+            {
+                edgeId: 230,
+                name: '',
+                startNodeId: 227,
+                endNodeId: 227,
+                graphId: 402,
+            },
+            {
+                edgeId: 231,
+                name: '',
+                startNodeId: 227,
+                endNodeId: 228,
+                graphId: 402,
+            },
+            {
+                edgeId: 232,
+                name: '',
+                startNodeId: 228,
+                endNodeId: 229,
+                graphId: 402,
+            },
+            {
+                edgeId: 233,
+                name: '',
+                startNodeId: 229,
+                endNodeId: 230,
+                graphId: 402,
+            },
+            {
+                edgeId: 234,
+                name: '',
+                startNodeId: 230,
+                endNodeId: 231,
+                graphId: 402,
+            },
+            {
+                edgeId: 235,
+                name: '',
+                startNodeId: 231,
+                endNodeId: 232,
+                graphId: 402,
+            },
+            {
+                edgeId: 236,
+                name: '',
+                startNodeId: 232,
+                endNodeId: 233,
+                graphId: 402,
+            },
+            {
+                edgeId: 237,
+                name: '',
+                startNodeId: 233,
+                endNodeId: 234,
+                graphId: 402,
+            },
+            {
+                edgeId: 238,
+                name: '',
+                startNodeId: 234,
+                endNodeId: 235,
+                graphId: 402,
+            },
+            {
+                edgeId: 239,
+                name: '',
+                startNodeId: 235,
+                endNodeId: 236,
+                graphId: 402,
+            },
+            {
+                edgeId: 240,
+                name: '',
+                startNodeId: 236,
+                endNodeId: 237,
+                graphId: 402,
+            },
+            {
+                edgeId: 241,
+                name: '',
+                startNodeId: 227,
+                endNodeId: 238,
+                graphId: 402,
+            },
+            {
+                edgeId: 242,
+                name: '',
+                startNodeId: 237,
+                endNodeId: 239,
+                graphId: 402,
+            },
+            {
+                edgeId: 243,
+                name: '',
+                startNodeId: 239,
+                endNodeId: 240,
+                graphId: 402,
+            },
+            {
+                edgeId: 244,
+                name: '',
+                startNodeId: 240,
+                endNodeId: 241,
+                graphId: 402,
+            },
+            {
+                edgeId: 245,
+                name: '',
+                startNodeId: 241,
+                endNodeId: 242,
+                graphId: 402,
+            },
+            {
+                edgeId: 246,
+                name: '',
+                startNodeId: 242,
+                endNodeId: 243,
+                graphId: 402,
+            },
+            {
+                edgeId: 247,
+                name: '',
+                startNodeId: 243,
+                endNodeId: 244,
+                graphId: 402,
+            },
+            {
+                edgeId: 248,
+                name: '',
+                startNodeId: 244,
+                endNodeId: 245,
+                graphId: 402,
+            },
+            {
+                edgeId: 249,
+                name: '',
+                startNodeId: 245,
+                endNodeId: 246,
+                graphId: 402,
+            },
+            {
+                edgeId: 250,
+                name: '',
+                startNodeId: 242,
+                endNodeId: 247,
+                graphId: 402,
+            },
+            {
+                edgeId: 251,
+                name: '',
+                startNodeId: 247,
+                endNodeId: 248,
+                graphId: 402,
+            },
+            {
+                edgeId: 252,
+                name: '',
+                startNodeId: 248,
+                endNodeId: 249,
+                graphId: 402,
+            },
+            {
+                edgeId: 253,
+                name: '',
+                startNodeId: 249,
+                endNodeId: 250,
+                graphId: 402,
+            },
+            {
+                edgeId: 254,
+                name: '',
+                startNodeId: 250,
+                endNodeId: 251,
+                graphId: 402,
+            },
+            {
+                edgeId: 255,
+                name: '',
+                startNodeId: 251,
+                endNodeId: 252,
+                graphId: 402,
+            },
+            {
+                edgeId: 256,
+                name: '',
+                startNodeId: 252,
+                endNodeId: 253,
+                graphId: 402,
+            },
+            {
+                edgeId: 257,
+                name: '',
+                startNodeId: 253,
+                endNodeId: 254,
+                graphId: 402,
+            },
+            {
+                edgeId: 258,
+                name: '',
+                startNodeId: 254,
+                endNodeId: 255,
+                graphId: 402,
+            },
+            {
+                edgeId: 259,
+                name: '',
+                startNodeId: 255,
+                endNodeId: 256,
+                graphId: 402,
+            },
+            {
+                edgeId: 260,
+                name: '',
+                startNodeId: 256,
+                endNodeId: 257,
+                graphId: 402,
+            },
+            {
+                edgeId: 261,
+                name: '',
+                startNodeId: 257,
+                endNodeId: 258,
+                graphId: 402,
+            },
+            {
+                edgeId: 262,
+                name: '',
+                startNodeId: 258,
+                endNodeId: 259,
+                graphId: 402,
+            },
+            {
+                edgeId: 264,
+                name: '',
+                startNodeId: 260,
+                endNodeId: 261,
+                graphId: 402,
+            },
+            {
+                edgeId: 265,
+                name: '',
+                startNodeId: 261,
+                endNodeId: 262,
+                graphId: 402,
+            },
+            {
+                edgeId: 266,
+                name: '',
+                startNodeId: 262,
+                endNodeId: 263,
+                graphId: 402,
+            },
+            {
+                edgeId: 267,
+                name: '',
+                startNodeId: 263,
+                endNodeId: 264,
+                graphId: 402,
+            },
+            {
+                edgeId: 269,
+                name: '',
+                startNodeId: 265,
+                endNodeId: 266,
+                graphId: 402,
+            },
+            {
+                edgeId: 270,
+                name: '',
+                startNodeId: 266,
+                endNodeId: 267,
+                graphId: 402,
+            },
+            {
+                edgeId: 271,
+                name: '',
+                startNodeId: 267,
+                endNodeId: 268,
+                graphId: 402,
+            },
+            {
+                edgeId: 272,
+                name: '',
+                startNodeId: 268,
+                endNodeId: 269,
+                graphId: 402,
+            },
+            {
+                edgeId: 273,
+                name: '',
+                startNodeId: 269,
+                endNodeId: 270,
+                graphId: 402,
+            },
+            {
+                edgeId: 274,
+                name: '',
+                startNodeId: 270,
+                endNodeId: 271,
+                graphId: 402,
+            },
+            {
+                edgeId: 263,
+                name: '',
+                startNodeId: 223,
+                endNodeId: 272,
+                graphId: 402,
+            },
+            {
+                edgeId: 275,
+                name: '',
+                startNodeId: 272,
+                endNodeId: 260,
+                graphId: 402,
+            },
+            {
+                edgeId: 268,
+                name: '',
+                startNodeId: 265,
+                endNodeId: 273,
+                graphId: 402,
+            },
+            {
+                edgeId: 276,
+                name: '',
+                startNodeId: 273,
+                endNodeId: 263,
+                graphId: 402,
+            },
+            {
+                edgeId: 277,
+                name: '',
+                startNodeId: 264,
+                endNodeId: 274,
+                graphId: 402,
+            },
+            {
+                edgeId: 278,
+                name: '',
+                startNodeId: 270,
+                endNodeId: 275,
+                graphId: 402,
+            },
+            {
+                edgeId: 279,
+                name: '',
+                startNodeId: 275,
+                endNodeId: 276,
+                graphId: 402,
+            },
 
         ],
     });
-
     console.log('Edges seeded!');
     console.log(edges);
 
-
-    // // const hospitals = [
-    // //     await prisma.hospital.createMany([
-    // //
-    // //     ]);
-    //
-    // //     await prisma.hospital.upsert({
-    // //         where: {hospitalId: 0},
-    // //         update: {
-    // //             hospitalId: 0,
-    // //             name: 'Chestnut Hill',
-    // //             address: '850 Boylston St, Chestnut Hill, MA 02467',
-    // //             placeId: 'ChIJLwkLvP5444kRGTnWxi0zsnM',
-    // //             defaultLat: 42.325956546246374,
-    // //             defaultLng: -71.14971804046458,
-    // //             defaultZoom: 19,
-    // //         },
-    // //         create: {
-    // //             hospitalId: 0,
-    // //             name: 'Chestnut Hill',
-    // //             address: '850 Boylston St, Chestnut Hill, MA 02467',
-    // //             placeId: 'ChIJLwkLvP5444kRGTnWxi0zsnM',
-    // //             defaultLat: 42.325956546246374,
-    // //             defaultLng: -71.14971804046458,
-    // //             defaultZoom: 19,
-    // //         },
-    // //     }),
-    // //     await prisma.hospital.upsert({
-    // //         where: {hospitalId: 1},
-    // //         update: {
-    // //             hospitalId: 1,
-    // //             name: 'Patriot Place',
-    // //             address: '20/22 Patriot Pl, Foxborough, MA 02035',
-    // //             placeId: 'ChIJKQrcBrd85IkRhhpDZMarvhQ',
-    // //             defaultLat: 42.09179246168661,
-    // //             defaultLng: -71.26649009979019,
-    // //             defaultZoom: 18,
-    // //         },
-    // //         create: {
-    // //             hospitalId: 1,
-    // //             name: 'Patriot Place',
-    // //             address: '20/22 Patriot Pl, Foxborough, MA 02035',
-    // //             placeId: 'ChIJKQrcBrd85IkRhhpDZMarvhQ',
-    // //             defaultLat: 42.09179246168661,
-    // //             defaultLng: -71.26649009979019,
-    // //             defaultZoom: 18,
-    // //         },
-    // //     }),
-    // // ];
-    // //
-    // console.log('Hospitals seeded!');
-    // console.log(hospitals);
-    //
-    // console.log('Seeding graphs...');
-    // //
-    // // const graphs = [
-    // //     await prisma.graph.upsert({
-    // //         where: {graphId: 0},
-    // //         update: {
-    // //             graphId: 0,
-    // //             name: 'Chestnut Hill',
-    // //             imageURL: '/src/public/floormaps/chf1.png',
-    // //             north: 42.32629,
-    // //             south: 42.32569,
-    // //             east: -71.14921,
-    // //             west: -71.15013,
-    // //         },
-    // //         create: {
-    // //             graphId: 0,
-    // //             name: 'Chestnut Hill',
-    // //             imageURL: '/src/public/floormaps/chf1.png',
-    // //             north: 42.32629,
-    // //             south: 42.32569,
-    // //             east: -71.14921,
-    // //             west: -71.15013,
-    // //         }
-    // //     }),
-    // //     await prisma.graph.upsert({
-    // //         where: {graphId: 1},
-    // //         update: {
-    // //             graphId: 1,
-    // //             name: '20 Patriot Place',
-    // //             imageURL: '/src/public/floormaps/pp20f1.png',
-    // //             north: 42.09310,
-    // //             south: 42.09246,
-    // //             east: -71.26553,
-    // //             west: -71.26657,
-    // //         },
-    // //         create: {
-    // //             graphId: 1,
-    // //             name: '20 Patriot Place',
-    // //             imageURL: '/src/public/floormaps/pp20f1.png',
-    // //             north: 42.09310,
-    // //             south: 42.09246,
-    // //             east: -71.26553,
-    // //             west: -71.26657,
-    // //         }
-    // //     }),
-    // //     await prisma.graph.upsert({
-    // //         where: {graphId: 2},
-    // //         update: {
-    // //             graphId: 2,
-    // //             name: '22 Patriot Place - Floor 3',
-    // //             imageURL: '/src/public/floormaps/pp22f3.png',
-    // //             north: 42.09308,
-    // //             south: 42.09223,
-    // //             east: -71.26654,
-    // //             west: -71.26744,
-    // //         },
-    // //         create: {
-    // //             graphId: 2,
-    // //             name: '22 Patriot Place - Floor 3',
-    // //             imageURL: '/src/public/floormaps/pp22f3.png',
-    // //             north: 42.09308,
-    // //             south: 42.09223,
-    // //             east: -71.26654,
-    // //             west: -71.26744,
-    // //         }
-    // //     }),
-    // //     await prisma.graph.upsert({
-    // //         where: {graphId: 3},
-    // //         update: {
-    // //             graphId: 3,
-    // //             name: '22 Patriot Place - Floor 4',
-    // //             imageURL: '/src/public/floormaps/pp22f4.png',
-    // //             north: 42.09308,
-    // //             south: 42.09223,
-    // //             east: -71.26654,
-    // //             west: -71.26744,
-    // //         },
-    // //         create: {
-    // //             graphId: 3,
-    // //             name: '22 Patriot Place - Floor 4',
-    // //             imageURL: '/src/public/floormaps/pp22f4.png',
-    // //             north: 42.09308,
-    // //             south: 42.09223,
-    // //             east: -71.26654,
-    // //             west: -71.26744,
-    // //         }
-    // //     }),
-    // // ];
-    // //
-    // // console.log('Graphs seeded!');
-    // // console.log(graphs);
-    // //
-    // // console.log('Seeding departments...');
-    // //
-    // const departments = [
-    // //     await prisma.department.upsert({
-    // //         where: {departmentId: 0},
-    // //         update: {
-    // //             departmentId: 0,
-    // //             name: 'Allergy and Clinical Immunology - 3rd Floor',
-    // //             floorNum: 3,
-    // //             room: '301',
-    // //             building: '850 Boylston St',
-    // //             lat: 0,
-    // //             lng: 0,
-    // //             hospitalId: 0,
-    // //             graphId: 0,
-    // //         },
-    // //         create: {
-    // //             departmentId: 0,
-    // //             name: 'Allergy and Clinical Immunology - 3rd Floor',
-    // //             floorNum: 3,
-    // //             room: '301',
-    // //             building: '850 Boylston St',
-    // //             lat: 0,
-    // //             lng: 0,
-    // //             hospitalId: 0,
-    // //             graphId: 0,
-    // //         },
-    // //     }),
-    // //     await prisma.department.upsert({
-    // //         where: {departmentId: 1},
-    // //         update: {
-    // //             departmentId: 1,
-    // //             name: 'Allergy and Clinical Immunology - 5th Floor',
-    // //             floorNum: 5,
-    // //             room: '540',
-    // //             building: '850 Boylston St',
-    // //             lat: 0,
-    // //             lng: 0,
-    // //             hospitalId: 0,
-    // //             graphId: 0,
-    // //         },
-    // //         create: {
-    // //             departmentId: 1,
-    // //             name: 'Allergy and Clinical Immunology - 5th Floor',
-    // //             floorNum: 5,
-    // //             room: '540',
-    // //             building: '850 Boylston St',
-    // //             lat: 0,
-    // //             lng: 0,
-    // //             hospitalId: 0,
-    // //             graphId: 0,
-    // //         },
-    // //     }),
-    // //     await prisma.department.upsert({
-    // //         where: {departmentId: 2},
-    // //         update: {
-    // //             departmentId: 2,
-    // //             name: 'Backup Child Care Center',
-    // //             floorNum: 2,
-    // //             room: '210',
-    // //             building: '850 Boylston St',
-    // //             lat: 0,
-    // //             lng: 0,
-    // //             hospitalId: 0,
-    // //             graphId: 0,
-    // //         },
-    // //         create: {
-    // //             departmentId: 2,
-    // //             name: 'Backup Child Care Center',
-    // //             floorNum: 2,
-    // //             room: '210',
-    // //             building: '850 Boylston St',
-    // //             lat: 0,
-    // //             lng: 0,
-    // //             hospitalId: 0,
-    // //             graphId: 0,
-    // //         },
-    // //     }),
-    // //     await prisma.department.upsert({
-    // //         where: {departmentId: 3},
-    // //         update: {
-    // //             departmentId: 3,
-    // //             name: 'Brigham Dermatology Associates (BDA)',
-    // //             floorNum: 3,
-    // //             room: '317',
-    // //             building: '850 Boylston St',
-    // //             lat: 0,
-    // //             lng: 0,
-    // //             hospitalId: 0,
-    // //             graphId: 0,
-    // //         },
-    // //         create: {
-    // //             departmentId: 3,
-    // //             name: 'Brigham Dermatology Associates (BDA)',
-    // //             floorNum: 3,
-    // //             room: '317',
-    // //             building: '850 Boylston St',
-    // //             lat: 0,
-    // //             lng: 0,
-    // //             hospitalId: 0,
-    // //             graphId: 0,
-    // //         },
-    // //     }),
-    // //     await prisma.department.upsert({
-    // //         where: {departmentId: 4},
-    // //         update: {
-    // //             departmentId: 4,
-    // //             name: 'Brigham Obstetrics and Gynecology Group (BOGG)',
-    // //             floorNum: 5,
-    // //             room: '575',
-    // //             building: '850 Boylston St',
-    // //             lat: 0,
-    // //             lng: 0,
-    // //             hospitalId: 0,
-    // //             graphId: 0,
-    // //         },
-    // //         create: {
-    // //             departmentId: 4,
-    // //             name: 'Brigham Obstetrics and Gynecology Group (BOGG)',
-    // //             floorNum: 5,
-    // //             room: '575',
-    // //             building: '850 Boylston St',
-    // //             lat: 0,
-    // //             lng: 0,
-    // //             hospitalId: 0,
-    // //             graphId: 0,
-    // //         },
-    // //     }),
-    // //     await prisma.department.upsert({
-    // //         where: {departmentId: 5},
-    // //         update: {
-    // //             departmentId: 5,
-    // //             name: 'Brigham Physicians Group (BPG) - 4th Floor',
-    // //             floorNum: 4,
-    // //             room: '428',
-    // //             building: '850 Boylston St',
-    // //             lat: 0,
-    // //             lng: 0,
-    // //             hospitalId: 0,
-    // //             graphId: 0,
-    // //         },
-    // //         create: {
-    // //             departmentId: 5,
-    // //             name: 'Brigham Physicians Group (BPG) - 4th Floor',
-    // //             floorNum: 4,
-    // //             room: '428',
-    // //             building: '850 Boylston St',
-    // //             lat: 0,
-    // //             lng: 0,
-    // //             hospitalId: 0,
-    // //             graphId: 0,
-    // //         },
-    // //     }),
-    // //     await prisma.department.upsert({
-    // //         where: {departmentId: 6},
-    // //         update: {
-    // //             departmentId: 6,
-    // //             name: 'Brigham Physicians Group (BPG) - 5th Floor',
-    // //             floorNum: 5,
-    // //             room: '530',
-    // //             building: '850 Boylston St',
-    // //             lat: 0,
-    // //             lng: 0,
-    // //             hospitalId: 0,
-    // //             graphId: 0,
-    // //         },
-    // //         create: {
-    // //             departmentId: 6,
-    // //             name: 'Brigham Physicians Group (BPG) - 5th Floor',
-    // //             floorNum: 5,
-    // //             room: '530',
-    // //             building: '850 Boylston St',
-    // //             lat: 0,
-    // //             lng: 0,
-    // //             hospitalId: 0,
-    // //             graphId: 0,
-    // //         },
-    // //     }),
-    // //     await prisma.department.upsert({
-    // //         where: {departmentId: 7},
-    // //         update: {
-    // //             departmentId: 7,
-    // //             name: 'Brigham Psychiatric Specialties',
-    // //             floorNum: 3,
-    // //             room: '303',
-    // //             building: '850 Boylston St',
-    // //             lat: 0,
-    // //             lng: 0,
-    // //             hospitalId: 0,
-    // //             graphId: 0,
-    // //         },
-    // //         create: {
-    // //             departmentId: 7,
-    // //             name: 'Brigham Psychiatric Specialties',
-    // //             floorNum: 3,
-    // //             room: '303',
-    // //             building: '850 Boylston St',
-    // //             lat: 0,
-    // //             lng: 0,
-    // //             hospitalId: 0,
-    // //             graphId: 0,
-    // //         },
-    // //     }),
-    // //     await prisma.department.upsert({
-    // //         where: {departmentId: 8},
-    // //         update: {
-    // //             departmentId: 8,
-    // //             name: 'Center for Pain Medicine',
-    // //             floorNum: 3,
-    // //             room: '320',
-    // //             building: '850 Boylston St',
-    // //             lat: 0,
-    // //             lng: 0,
-    // //             hospitalId: 0,
-    // //             graphId: 0,
-    // //         },
-    // //         create: {
-    // //             departmentId: 8,
-    // //             name: 'Center for Pain Medicine',
-    // //             floorNum: 3,
-    // //             room: '320',
-    // //             building: '850 Boylston St',
-    // //             lat: 0,
-    // //             lng: 0,
-    // //             hospitalId: 0,
-    // //             graphId: 0,
-    // //         },
-    // //     }),
-    // //     await prisma.department.upsert({
-    // //         where: {departmentId: 9},
-    // //         update: {
-    // //             departmentId: 9,
-    // //             name: 'Crohn\'s and Colitis Center',
-    // //             floorNum: 2,
-    // //             room: '201',
-    // //             building: '850 Boylston St',
-    // //             lat: 0,
-    // //             lng: 0,
-    // //             hospitalId: 0,
-    // //             graphId: 0,
-    // //         },
-    // //         create: {
-    // //             departmentId: 9,
-    // //             name: 'Crohn\'s and Colitis Center',
-    // //             floorNum: 2,
-    // //             room: '201',
-    // //             building: '850 Boylston St',
-    // //             lat: 0,
-    // //             lng: 0,
-    // //             hospitalId: 0,
-    // //             graphId: 0,
-    // //         },
-    // //     }),
-    // //     await prisma.department.upsert({
-    // //         where: {departmentId: 10},
-    // //         update: {
-    // //             departmentId: 10,
-    // //             name: 'Endoscopy Center',
-    // //             floorNum: 2,
-    // //             room: '202',
-    // //             building: '850 Boylston St',
-    // //             lat: 0,
-    // //             lng: 0,
-    // //             hospitalId: 0,
-    // //             graphId: 0,
-    // //         },
-    // //         create: {
-    // //             departmentId: 10,
-    // //             name: 'Endoscopy Center',
-    // //             floorNum: 2,
-    // //             room: '202',
-    // //             building: '850 Boylston St',
-    // //             lat: 0,
-    // //             lng: 0,
-    // //             hospitalId: 0,
-    // //             graphId: 0,
-    // //         },
-    // //     }),
-    // //     await prisma.department.upsert({
-    // //         where: {departmentId: 11},
-    // //         update: {
-    // //             departmentId: 11,
-    // //             name: 'Gretchen S. and Edward A. Fish Center for Women\'s Health',
-    // //             floorNum: 4,
-    // //             room: '402',
-    // //             building: '850 Boylston St',
-    // //             lat: 0,
-    // //             lng: 0,
-    // //             hospitalId: 0,
-    // //             graphId: 0,
-    // //         },
-    // //         create: {
-    // //             departmentId: 11,
-    // //             name: 'Gretchen S. and Edward A. Fish Center for Women\'s Health',
-    // //             floorNum: 4,
-    // //             room: '402',
-    // //             building: '850 Boylston St',
-    // //             lat: 0,
-    // //             lng: 0,
-    // //             hospitalId: 0,
-    // //             graphId: 0,
-    // //         },
-    // //     }),
-    // //     await prisma.department.upsert({
-    // //         where: {departmentId: 12},
-    // //         update: {
-    // //             departmentId: 12,
-    // //             name: 'Laboratory',
-    // //             floorNum: 1,
-    // //             room: '100',
-    // //             building: '850 Boylston St',
-    // //             lat: 0,
-    // //             lng: 0,
-    // //             hospitalId: 0,
-    // //             graphId: 0,
-    // //         },
-    // //         create: {
-    // //             departmentId: 12,
-    // //             name: 'Laboratory',
-    // //             floorNum: 1,
-    // //             room: '100',
-    // //             building: '850 Boylston St',
-    // //             lat: 0,
-    // //             lng: 0,
-    // //             hospitalId: 0,
-    // //             graphId: 0,
-    // //         },
-    // //     }),
-    // //     await prisma.department.upsert({
-    // //         where: {departmentId: 13},
-    // //         update: {
-    // //             departmentId: 13,
-    // //             name: 'Multi-Specialty Clinic',
-    // //             floorNum: 1,
-    // //             room: '130',
-    // //             building: '850 Boylston St',
-    // //             lat: 0,
-    // //             lng: 0,
-    // //             hospitalId: 0,
-    // //             graphId: 0,
-    // //         },
-    // //         create: {
-    // //             departmentId: 13,
-    // //             name: 'Multi-Specialty Clinic',
-    // //             floorNum: 1,
-    // //             room: '130',
-    // //             building: '850 Boylston St',
-    // //             lat: 0,
-    // //             lng: 0,
-    // //             hospitalId: 0,
-    // //             graphId: 0,
-    // //         },
-    // //     }),
-    // //     await prisma.department.upsert({
-    // //         where: {departmentId: 14},
-    // //         update: {
-    // //             departmentId: 14,
-    // //             name: 'Osher Clinical Center for Integrative Health',
-    // //             floorNum: 4,
-    // //             room: '422',
-    // //             building: '850 Boylston St',
-    // //             lat: 0,
-    // //             lng: 0,
-    // //             hospitalId: 0,
-    // //             graphId: 0,
-    // //         },
-    // //         create: {
-    // //             departmentId: 14,
-    // //             name: 'Osher Clinical Center for Integrative Health',
-    // //             floorNum: 4,
-    // //             room: '422',
-    // //             building: '850 Boylston St',
-    // //             lat: 0,
-    // //             lng: 0,
-    // //             hospitalId: 0,
-    // //             graphId: 0,
-    // //         },
-    // //     }),
-    // //     await prisma.department.upsert({
-    // //         where: {departmentId: 15},
-    // //         update: {
-    // //             departmentId: 15,
-    // //             name: 'Patient Financial Center',
-    // //             floorNum: 2,
-    // //             room: '204B',
-    // //             building: '850 Boylston St',
-    // //             lat: 0,
-    // //             lng: 0,
-    // //             hospitalId: 0,
-    // //             graphId: 0,
-    // //         },
-    // //         create: {
-    // //             departmentId: 15,
-    // //             name: 'Patient Financial Center',
-    // //             floorNum: 2,
-    // //             room: '204B',
-    // //             building: '850 Boylston St',
-    // //             lat: 0,
-    // //             lng: 0,
-    // //             hospitalId: 0,
-    // //             graphId: 0,
-    // //         },
-    // //     }),
-    // //     await prisma.department.upsert({
-    // //         where: {departmentId: 16},
-    // //         update: {
-    // //             departmentId: 16,
-    // //             name: 'Pharmacy',
-    // //             floorNum: 3,
-    // //             room: '317',
-    // //             building: '850 Boylston St',
-    // //             lat: 0,
-    // //             lng: 0,
-    // //             hospitalId: 0,
-    // //             graphId: 0,
-    // //         },
-    // //         create: {
-    // //             departmentId: 16,
-    // //             name: 'Pharmacy',
-    // //             floorNum: 3,
-    // //             room: '317',
-    // //             building: '850 Boylston St',
-    // //             lat: 0,
-    // //             lng: 0,
-    // //             hospitalId: 0,
-    // //             graphId: 0,
-    // //         },
-    // //     }),
-    // //     await prisma.department.upsert({
-    // //         where: {departmentId: 17},
-    // //         update: {
-    // //             departmentId: 17,
-    // //             name: 'Radiology',
-    // //             floorNum: 5,
-    // //             room: '560',
-    // //             building: '850 Boylston St',
-    // //             lat: 0,
-    // //             lng: 0,
-    // //             hospitalId: 0,
-    // //             graphId: 0,
-    // //         },
-    // //         create: {
-    // //             departmentId: 17,
-    // //             name: 'Radiology',
-    // //             floorNum: 5,
-    // //             room: '560',
-    // //             building: '850 Boylston St',
-    // //             lat: 0,
-    // //             lng: 0,
-    // //             hospitalId: 0,
-    // //             graphId: 0,
-    // //         },
-    // //     }),
-    // //     await prisma.department.upsert({
-    // //         where: {departmentId: 18},
-    // //         update: {
-    // //             departmentId: 18,
-    // //             name: 'Radiology, MRI/CT Scan',
-    // //             floorNum: 1,
-    // //             room: '102B',
-    // //             building: '850 Boylston St',
-    // //             lat: 0,
-    // //             lng: 0,
-    // //             hospitalId: 0,
-    // //             graphId: 0,
-    // //         },
-    // //         create: {
-    // //             departmentId: 18,
-    // //             name: 'Radiology, MRI/CT Scan',
-    // //             floorNum: 1,
-    // //             room: '102B',
-    // //             building: '850 Boylston St',
-    // //             lat: 0,
-    // //             lng: 0,
-    // //             hospitalId: 0,
-    // //             graphId: 0,
-    // //         },
-    // //     }),
-    // //     await prisma.department.upsert({
-    // //         where: {departmentId: 19},
-    // //         update: {
-    // //             departmentId: 19,
-    // //             name: 'Rehabilitation Services',
-    // //             floorNum: 2,
-    // //             room: '200',
-    // //             building: '850 Boylston St',
-    // //             lat: 0,
-    // //             lng: 0,
-    // //             hospitalId: 0,
-    // //             graphId: 0,
-    // //         },
-    // //         create: {
-    // //             departmentId: 19,
-    // //             name: 'Rehabilitation Services',
-    // //             floorNum: 2,
-    // //             room: '200',
-    // //             building: '850 Boylston St',
-    // //             lat: 0,
-    // //             lng: 0,
-    // //             hospitalId: 0,
-    // //             graphId: 0,
-    // //         },
-    // //     }),
-    // //     await prisma.department.upsert({
-    // //         where: {departmentId: 20},
-    // //         update: {
-    // //             departmentId: 20,
-    // //             name: 'Blood Draw / Phlebotomy (20 Patriot Pl)',
-    // //             floorNum: 1,
-    // //             room: '',
-    // //             building: '20 Patriot Pl',
-    // //             lat: 42.09272057737288,
-    // //             lng: -71.26621774825084,
-    // //             hospitalId: 1,
-    // //             graphId: 1,
-    // //         },
-    // //         create: {
-    // //             departmentId: 20,
-    // //             name: 'Blood Draw / Phlebotomy (20 Patriot Pl)',
-    // //             floorNum: 1,
-    // //             room: '',
-    // //             building: '20 Patriot Pl',
-    // //             lat: 42.09272057737288,
-    // //             lng: -71.26621774825084,
-    // //             hospitalId: 1,
-    // //             graphId: 1,
-    // //         },
-    // //     }),
-    // //     await prisma.department.upsert({
-    // //         where: {departmentId: 21},
-    // //         update: {
-    // //             departmentId: 21,
-    // //             name: 'Pharmacy',
-    // //             floorNum: 1,
-    // //             room: '',
-    // //             building: '20 Patriot Pl',
-    // //             lat: 42.092718587010125,
-    // //             lng: -71.26626736911761,
-    // //             hospitalId: 1,
-    // //             graphId: 1,
-    // //         },
-    // //         create: {
-    // //             departmentId: 21,
-    // //             name: 'Pharmacy',
-    // //             floorNum: 1,
-    // //             room: '',
-    // //             building: '20 Patriot Pl',
-    // //             lat: 42.092718587010125,
-    // //             lng: -71.26626736911761,
-    // //             hospitalId: 1,
-    // //             graphId: 1,
-    // //         },
-    // //     }),
-    // //     await prisma.department.upsert({
-    // //         where: {departmentId: 22},
-    // //         update: {
-    // //             departmentId: 22,
-    // //             name: 'Radiology',
-    // //             floorNum: 1,
-    // //             room: '',
-    // //             building: '20 Patriot Pl',
-    // //             lat: 42.092715719114786,
-    // //             lng: -71.26639820607882,
-    // //             hospitalId: 1,
-    // //             graphId: 1,
-    // //         },
-    // //         create: {
-    // //             departmentId: 22,
-    // //             name: 'Radiology',
-    // //             floorNum: 1,
-    // //             room: '',
-    // //             building: '20 Patriot Pl',
-    // //             lat: 42.092715719114786,
-    // //             lng: -71.26639820607882,
-    // //             hospitalId: 1,
-    // //             graphId: 1,
-    // //         },
-    // //     }),
-    // //     await prisma.department.upsert({
-    // //         where: {departmentId: 23},
-    // //         update: {
-    // //             departmentId: 23,
-    // //             name: 'Cardiovascular Services',
-    // //             floorNum: 1,
-    // //             room: '',
-    // //             building: '20 Patriot Pl',
-    // //             lat: 42.09287165385485,
-    // //             lng: -71.26587926060235,
-    // //             hospitalId: 1,
-    // //             graphId: 1,
-    // //         },
-    // //         create: {
-    // //             departmentId: 23,
-    // //             name: 'Cardiovascular Services',
-    // //             floorNum: 1,
-    // //             room: '',
-    // //             building: '20 Patriot Pl',
-    // //             lat: 42.09287165385485,
-    // //             lng: -71.26587926060235,
-    // //             hospitalId: 1,
-    // //             graphId: 1,
-    // //         },
-    // //     }),
-    // //     await prisma.department.upsert({
-    // //         where: {departmentId: 24},
-    // //         update: {
-    // //             departmentId: 24,
-    // //             name: 'Urology',
-    // //             floorNum: 1,
-    // //             room: '',
-    // //             building: '20 Patriot Pl',
-    // //             lat: 42.092765025772316,
-    // //             lng: -71.26578373407568,
-    // //             hospitalId: 1,
-    // //             graphId: 1,
-    // //         },
-    // //         create: {
-    // //             departmentId: 24,
-    // //             name: 'Urology',
-    // //             floorNum: 1,
-    // //             room: '',
-    // //             building: '20 Patriot Pl',
-    // //             lat: 42.092765025772316,
-    // //             lng: -71.26578373407568,
-    // //             hospitalId: 1,
-    // //             graphId: 1,
-    // //         },
-    // //     }),
-    // //     await prisma.department.upsert({
-    // //         where: {departmentId: 25},
-    // //         update: {
-    // //             departmentId: 25,
-    // //             name: 'Urgent Care Center',
-    // //             floorNum: 1,
-    // //             room: '',
-    // //             building: '20 Patriot Pl',
-    // //             lat: 42.09272770648615,
-    // //             lng: -71.26606469546999,
-    // //             hospitalId: 1,
-    // //             graphId: 1,
-    // //         },
-    // //         create: {
-    // //             departmentId: 25,
-    // //             name: 'Urgent Care Center',
-    // //             floorNum: 1,
-    // //             room: '',
-    // //             building: '20 Patriot Pl',
-    // //             lat: 42.09272770648615,
-    // //             lng: -71.26606469546999,
-    // //             hospitalId: 1,
-    // //             graphId: 1,
-    // //         },
-    // //     }),
-    // //     await prisma.department.upsert({
-    // //         where: {departmentId: 26},
-    // //         update: {
-    // //             departmentId: 26,
-    // //             name: 'Orthopaedics',
-    // //             floorNum: 2,
-    // //             room: '',
-    // //             building: '20 Patriot Pl',
-    // //             lat: 42.09272156229708,
-    // //             lng: -71.2656441585419,
-    // //             hospitalId: 1,
-    // //             graphId: 1,
-    // //         },
-    // //         create: {
-    // //             departmentId: 26,
-    // //             name: 'Orthopaedics',
-    // //             floorNum: 2,
-    // //             room: '',
-    // //             building: '20 Patriot Pl',
-    // //             lat: 42.09272156229708,
-    // //             lng: -71.2656441585419,
-    // //             hospitalId: 1,
-    // //             graphId: 1,
-    // //         },
-    // //     }),
-    // //     await prisma.department.upsert({
-    // //         where: {departmentId: 27},
-    // //         update: {
-    // //             departmentId: 27,
-    // //             name: 'Rehabilitation Services',
-    // //             floorNum: 2,
-    // //             room: '',
-    // //             building: '20 Patriot Pl',
-    // //             lat: 42.09272156229708,
-    // //             lng: -71.2656441585419,
-    // //             hospitalId: 1,
-    // //             graphId: 1,
-    // //         },
-    // //         create: {
-    // //             departmentId: 27,
-    // //             name: 'Rehabilitation Services',
-    // //             floorNum: 2,
-    // //             room: '',
-    // //             building: '20 Patriot Pl',
-    // //             lat: 42.09272156229708,
-    // //             lng: -71.2656441585419,
-    // //             hospitalId: 1,
-    // //             graphId: 1,
-    // //         },
-    // //     }),
-    // //     await prisma.department.upsert({
-    // //         where: {departmentId: 28},
-    // //         update: {
-    // //             departmentId: 28,
-    // //             name: 'Clinical Lab',
-    // //             floorNum: 2,
-    // //             room: '',
-    // //             building: '20 Patriot Pl',
-    // //             lat: 42.09272156229708,
-    // //             lng: -71.2656441585419,
-    // //             hospitalId: 1,
-    // //             graphId: 1,
-    // //         },
-    // //         create: {
-    // //             departmentId: 28,
-    // //             name: 'Clinical Lab',
-    // //             floorNum: 2,
-    // //             room: '',
-    // //             building: '20 Patriot Pl',
-    // //             lat: 42.09272156229708,
-    // //             lng: -71.2656441585419,
-    // //             hospitalId: 1,
-    // //             graphId: 1,
-    // //         },
-    // //     }),
-    // //     await prisma.department.upsert({
-    // //         where: {departmentId: 29},
-    // //         update: {
-    // //             departmentId: 29,
-    // //             name: 'Surgi-Care',
-    // //             floorNum: 2,
-    // //             room: '',
-    // //             building: '20 Patriot Pl',
-    // //             lat: 42.09272156229708,
-    // //             lng: -71.2656441585419,
-    // //             hospitalId: 1,
-    // //             graphId: 1,
-    // //         },
-    // //         create: {
-    // //             departmentId: 29,
-    // //             name: 'Surgi-Care',
-    // //             floorNum: 2,
-    // //             room: '',
-    // //             building: '20 Patriot Pl',
-    // //             lat: 42.09272156229708,
-    // //             lng: -71.2656441585419,
-    // //             hospitalId: 1,
-    // //             graphId: 1,
-    // //         },
-    // //     }),
-    // //     await prisma.department.upsert({
-    // //         where: {departmentId: 30},
-    // //         update: {
-    // //             departmentId: 30,
-    // //             name: 'Surgical Specialties',
-    // //             floorNum: 3,
-    // //             room: '',
-    // //             building: '20 Patriot Pl',
-    // //             lat: 42.09272156229708,
-    // //             lng: -71.2656441585419,
-    // //             hospitalId: 1,
-    // //             graphId: 1,
-    // //         },
-    // //         create: {
-    // //             departmentId: 30,
-    // //             name: 'Surgical Specialties',
-    // //             floorNum: 3,
-    // //             room: '',
-    // //             building: '20 Patriot Pl',
-    // //             lat: 42.09272156229708,
-    // //             lng: -71.2656441585419,
-    // //             hospitalId: 1,
-    // //             graphId: 1,
-    // //         },
-    // //     }),
-    // //     await prisma.department.upsert({
-    // //         where: {departmentId: 31},
-    // //         update: {
-    // //             departmentId: 31,
-    // //             name: 'Sports Medicine Center',
-    // //             floorNum: 3,
-    // //             room: '',
-    // //             building: '20 Patriot Pl',
-    // //             lat: 42.09272156229708,
-    // //             lng: -71.2656441585419,
-    // //             hospitalId: 1,
-    // //             graphId: 1,
-    // //         },
-    // //         create: {
-    // //             departmentId: 31,
-    // //             name: 'Sports Medicine Center',
-    // //             floorNum: 3,
-    // //             room: '',
-    // //             building: '20 Patriot Pl',
-    // //             lat: 42.09272156229708,
-    // //             lng: -71.2656441585419,
-    // //             hospitalId: 1,
-    // //             graphId: 1,
-    // //         },
-    // //     }),
-    // //     await prisma.department.upsert({
-    // //         where: {departmentId: 32},
-    // //         update: {
-    // //             departmentId: 32,
-    // //             name: 'Electromyography',
-    // //             floorNum: 4,
-    // //             room: '',
-    // //             building: '20 Patriot Pl',
-    // //             lat: 42.09272156229708,
-    // //             lng: -71.2656441585419,
-    // //             hospitalId: 1,
-    // //             graphId: 1,
-    // //         },
-    // //         create: {
-    // //             departmentId: 32,
-    // //             name: 'Electromyography',
-    // //             floorNum: 4,
-    // //             room: '',
-    // //             building: '20 Patriot Pl',
-    // //             lat: 42.09272156229708,
-    // //             lng: -71.2656441585419,
-    // //             hospitalId: 1,
-    // //             graphId: 1,
-    // //         },
-    // //     }),
-    // //     await prisma.department.upsert({
-    // //         where: {departmentId: 33},
-    // //         update: {
-    // //             departmentId: 33,
-    // //             name: 'Nutrition',
-    // //             floorNum: 4,
-    // //             room: '',
-    // //             building: '20 Patriot Pl',
-    // //             lat: 42.09272156229708,
-    // //             lng: -71.2656441585419,
-    // //             hospitalId: 1,
-    // //             graphId: 1,
-    // //         },
-    // //         create: {
-    // //             departmentId: 33,
-    // //             name: 'Nutrition',
-    // //             floorNum: 4,
-    // //             room: '',
-    // //             building: '20 Patriot Pl',
-    // //             lat: 42.09272156229708,
-    // //             lng: -71.2656441585419,
-    // //             hospitalId: 1,
-    // //             graphId: 1,
-    // //         },
-    // //     }),
-    // //     await prisma.department.upsert({
-    // //         where: {departmentId: 34},
-    // //         update: {
-    // //             departmentId: 34,
-    // //             name: 'Pain Medicine',
-    // //             floorNum: 4,
-    // //             room: '',
-    // //             building: '20 Patriot Pl',
-    // //             lat: 42.09272156229708,
-    // //             lng: -71.2656441585419,
-    // //             hospitalId: 1,
-    // //             graphId: 1,
-    // //         },
-    // //         create: {
-    // //             departmentId: 34,
-    // //             name: 'Pain Medicine',
-    // //             floorNum: 4,
-    // //             room: '',
-    // //             building: '20 Patriot Pl',
-    // //             lat: 42.09272156229708,
-    // //             lng: -71.2656441585419,
-    // //             hospitalId: 1,
-    // //             graphId: 1,
-    // //         },
-    // //     }),
-    // //     await prisma.department.upsert({
-    // //         where: {departmentId: 35},
-    // //         update: {
-    // //             departmentId: 35,
-    // //             name: 'Physiatry',
-    // //             floorNum: 4,
-    // //             room: '',
-    // //             building: '20 Patriot Pl',
-    // //             lat: 42.09272156229708,
-    // //             lng: -71.2656441585419,
-    // //             hospitalId: 1,
-    // //             graphId: 1,
-    // //         },
-    // //         create: {
-    // //             departmentId: 35,
-    // //             name: 'Physiatry',
-    // //             floorNum: 4,
-    // //             room: '',
-    // //             building: '20 Patriot Pl',
-    // //             lat: 42.09272156229708,
-    // //             lng: -71.2656441585419,
-    // //             hospitalId: 1,
-    // //             graphId: 1,
-    // //         },
-    // //     }),
-    // //     await prisma.department.upsert({
-    // //         where: {departmentId: 36},
-    // //         update: {
-    // //             departmentId: 36,
-    // //             name: 'Pulmonary Function Testing',
-    // //             floorNum: 4,
-    // //             room: '',
-    // //             building: '20 Patriot Pl',
-    // //             lat: 42.09272156229708,
-    // //             lng: -71.2656441585419,
-    // //             hospitalId: 1,
-    // //             graphId: 1,
-    // //         },
-    // //         create: {
-    // //             departmentId: 36,
-    // //             name: 'Pulmonary Function Testing',
-    // //             floorNum: 4,
-    // //             room: '',
-    // //             building: '20 Patriot Pl',
-    // //             lat: 42.09272156229708,
-    // //             lng: -71.2656441585419,
-    // //             hospitalId: 1,
-    // //             graphId: 1,
-    // //         },
-    // //     }),
-    // //     await prisma.department.upsert({
-    // //         where: {departmentId: 37},
-    // //         update: {
-    // //             departmentId: 37,
-    // //             name: 'Day Surgery Center',
-    // //             floorNum: 4,
-    // //             room: '',
-    // //             building: '20 Patriot Pl',
-    // //             lat: 42.09272156229708,
-    // //             lng: -71.2656441585419,
-    // //             hospitalId: 1,
-    // //             graphId: 1,
-    // //         },
-    // //         create: {
-    // //             departmentId: 37,
-    // //             name: 'Day Surgery Center',
-    // //             floorNum: 4,
-    // //             room: '',
-    // //             building: '20 Patriot Pl',
-    // //             lat: 42.09272156229708,
-    // //             lng: -71.2656441585419,
-    // //             hospitalId: 1,
-    // //             graphId: 1,
-    // //         },
-    // //     }),
-    // //     await prisma.department.upsert({
-    // //         where: {departmentId: 38},
-    // //         update: {
-    // //             departmentId: 38,
-    // //             name: 'Multi Specialty Clinic',
-    // //             floorNum: 3,
-    // //             room: '',
-    // //             building: '22 Patriot Pl',
-    // //             lat: 42.092544315641184,
-    // //             lng: -71.26702954841635,
-    // //             hospitalId: 1,
-    // //             graphId: 2,
-    // //         },
-    // //         create: {
-    // //             departmentId: 38,
-    // //             name: 'Multi Specialty Clinic',
-    // //             floorNum: 3,
-    // //             room: '',
-    // //             building: '22 Patriot Pl',
-    // //             lat: 42.092544315641184,
-    // //             lng: -71.26702954841635,
-    // //             hospitalId: 1,
-    // //             graphId: 2,
-    // //         },
-    // //     }),
-    // //     await prisma.department.upsert({
-    // //         where: {departmentId: 39},
-    // //         update: {
-    // //             departmentId: 39,
-    // //             name: 'Patient Financial Services',
-    // //             floorNum: 3,
-    // //             room: '',
-    // //             building: '22 Patriot Pl',
-    // //             lat: 42.0927464654499,
-    // //             lng: -71.26679887844107,
-    // //             hospitalId: 1,
-    // //             graphId: 2,
-    // //         },
-    // //         create: {
-    // //             departmentId: 39,
-    // //             name: 'Patient Financial Services',
-    // //             floorNum: 3,
-    // //             room: '',
-    // //             building: '22 Patriot Pl',
-    // //             lat: 42.0927464654499,
-    // //             lng: -71.26679887844107,
-    // //             hospitalId: 1,
-    // //             graphId: 2,
-    // //         },
-    // //     }),
-    // //     await prisma.department.upsert({
-    // //         where: {departmentId: 40},
-    // //         update: {
-    // //             departmentId: 40,
-    // //             name: 'Blood Draw / Phlebotomy (22 Patriot Pl)',
-    // //             floorNum: 4,
-    // //             room: '',
-    // //             building: '22 Patriot Pl',
-    // //             lat: 42.092488965275486,
-    // //             lng: -71.26678771383847,
-    // //             hospitalId: 1,
-    // //             graphId: 3,
-    // //         },
-    // //         create: {
-    // //             departmentId: 40,
-    // //             name: 'Blood Draw / Phlebotomy (22 Patriot Pl)',
-    // //             floorNum: 4,
-    // //             room: '',
-    // //             building: '22 Patriot Pl',
-    // //             lat: 42.092488965275486,
-    // //             lng: -71.26678771383847,
-    // //             hospitalId: 1,
-    // //             graphId: 3,
-    // //         },
-    // //     }),
-    // //     await prisma.department.upsert({
-    // //         where: {departmentId: 41},
-    // //         update: {
-    // //             departmentId: 41,
-    // //             name: 'Community Room',
-    // //             floorNum: 4,
-    // //             room: '',
-    // //             building: '22 Patriot Pl',
-    // //             lat: 42.092474682042536,
-    // //             lng: -71.2669434808703,
-    // //             hospitalId: 1,
-    // //             graphId: 3,
-    // //         },
-    // //         create: {
-    // //             departmentId: 41,
-    // //             name: 'Community Room',
-    // //             floorNum: 4,
-    // //             room: '',
-    // //             building: '22 Patriot Pl',
-    // //             lat: 42.092474682042536,
-    // //             lng: -71.2669434808703,
-    // //             hospitalId: 1,
-    // //             graphId: 3,
-    // //         },
-    // //     }),
-    // //     await prisma.department.upsert({
-    // //         where: {departmentId: 42},
-    // //         update: {
-    // //             departmentId: 42,
-    // //             name: 'Primary Care',
-    // //             floorNum: 4,
-    // //             room: '',
-    // //             building: '22 Patriot Pl',
-    // //             lat: 42.092762158045055,
-    // //             lng: -71.26676917701195,
-    // //             hospitalId: 1,
-    // //             graphId: 3,
-    // //         },
-    // //         create: {
-    // //             departmentId: 42,
-    // //             name: 'Primary Care',
-    // //             floorNum: 4,
-    // //             room: '',
-    // //             building: '22 Patriot Pl',
-    // //             lat: 42.092762158045055,
-    // //             lng: -71.26676917701195,
-    // //             hospitalId: 1,
-    // //             graphId: 3,
-    // //         },
-    // //     }),
-    // //
-    // ];
-    //
-    // console.log('Departments seeded!');
-    // console.log(departments);
-    //
-    // console.log('Seeding nodes...');
-    //
-    // await prisma.node.deleteMany();
-    // await prisma.edge.deleteMany();
-    //
-    //
-    // const nodes = [
-    //     // await prisma.node.upsert({
-    //     //     where: {nodeId: 0},
-    //     //     create: {
-    //     //         nodeId: 0,
-    //     //         tags: '[Parking1]',
-    //     //         lat: 42.0910630370867,
-    //     //         lng: -71.2668215581872,
-    //     //         graphId: 1,
-    //     //     },
-    //     //     update: {
-    //     //         nodeId: 0,
-    //     //         tags: '[Parking1]',
-    //     //         lat: 42.0910630370867,
-    //     //         lng: -71.2668215581872,
-    //     //         graphId: 1,
-    //     //     }
-    //     // }),
-    //     // await prisma.node.upsert({
-    //     //     where: {nodeId: 1},
-    //     //     create: {
-    //     //         nodeId: 1,
-    //     //         tags: 'Garage turn point',
-    //     //         lat: 42.09154316533154,
-    //     //         lng: -71.26703074024732,
-    //     //         graphId: 1,
-    //     //     },
-    //     //     update: {
-    //     //         nodeId: 1,
-    //     //         tags: 'Garage turn point',
-    //     //         lat: 42.09154316533154,
-    //     //         lng: -71.26703074024732,
-    //     //         graphId: 1,
-    //     //     }
-    //     // }),
-    //     // await prisma.node.upsert({
-    //     //     where: {nodeId: 2},
-    //     //     create: {
-    //     //         nodeId: 2,
-    //     //         tags: 'Garage exit',
-    //     //         lat: 42.09124112146019,
-    //     //         lng: -71.26719234334047,
-    //     //         graphId: 1,
-    //     //     },
-    //     //     update: {
-    //     //         nodeId: 2,
-    //     //         tags: 'Garage exit',
-    //     //         lat: 42.09124112146019,
-    //     //         lng: -71.26719234334047,
-    //     //         graphId: 1,
-    //     //     }
-    //     // }),
-    //     // await prisma.node.upsert({
-    //     //     where: {nodeId: 3},
-    //     //     create: {
-    //     //         nodeId: 3,
-    //     //         tags: 'Path entrance',
-    //     //         lat: 42.0913013313088,
-    //     //         lng: -71.26736668692644,
-    //     //         graphId: 1,
-    //     //     },
-    //     //     update: {
-    //     //         nodeId: 3,
-    //     //         tags: 'Path entrance',
-    //     //         lat: 42.0913013313088,
-    //     //         lng: -71.26736668692644,
-    //     //         graphId: 1,
-    //     //     }
-    //     // }),
-    //     // await prisma.node.upsert({
-    //     //     where: {nodeId: 4},
-    //     //     create: {
-    //     //         nodeId: 4,
-    //     //         tags: 'Path curve 1',
-    //     //         lat: 42.09171861287582,
-    //     //         lng: -71.26715708030366,
-    //     //         graphId: 1,
-    //     //     },
-    //     //     update: {
-    //     //         nodeId: 4,
-    //     //         tags: 'Path curve 1',
-    //     //         lat: 42.09171861287582,
-    //     //         lng: -71.26715708030366,
-    //     //         graphId: 1,
-    //     //     }
-    //     // }),
-    //     // await prisma.node.upsert({
-    //     //     where: {nodeId: 5},
-    //     //     create: {
-    //     //         nodeId: 5,
-    //     //         tags: 'Path curve 2',
-    //     //         lat: 42.091838534011785,
-    //     //         lng: -71.26707996679448,
-    //     //         graphId: 1,
-    //     //     },
-    //     //     update: {
-    //     //         nodeId: 5,
-    //     //         tags: 'Path curve 2',
-    //     //         lat: 42.091838534011785,
-    //     //         lng: -71.26707996679448,
-    //     //         graphId: 1,
-    //     //     }
-    //     // }),
-    //     // await prisma.node.upsert({
-    //     //     where: {nodeId: 6},
-    //     //     create: {
-    //     //         nodeId: 6,
-    //     //         tags: 'Path 1 end point',
-    //     //         lat: 42.09207738041204,
-    //     //         lng: -71.26688483608865,
-    //     //         graphId: 1,
-    //     //     },
-    //     //     update: {
-    //     //         nodeId: 6,
-    //     //         tags: 'Path 1 end point',
-    //     //         lat: 42.09207738041204,
-    //     //         lng: -71.26688483608865,
-    //     //         graphId: 1,
-    //     //     }
-    //     // }),
-    //     // await prisma.node.upsert({
-    //     //     where: {nodeId: 7},
-    //     //     create: {
-    //     //         nodeId: 7,
-    //     //         tags: 'Point beside entrance',
-    //     //         lat: 42.09251097266492,
-    //     //         lng: -71.26650997752694,
-    //     //         graphId: 1,
-    //     //     },
-    //     //     update: {
-    //     //         nodeId: 7,
-    //     //         tags: 'Point beside entrance',
-    //     //         lat: 42.09251097266492,
-    //     //         lng: -71.26650997752694,
-    //     //         graphId: 1,
-    //     //     }
-    //     // }),
-    //     // await prisma.node.upsert({
-    //     //     where: {nodeId: 8},
-    //     //     create: {
-    //     //         nodeId: 8,
-    //     //         tags: 'Point in front of entrance',
-    //     //         lat: 42.09247813156273,
-    //     //         lng: -71.266430852361,
-    //     //         graphId: 1,
-    //     //     },
-    //     //     update: {
-    //     //         nodeId: 8,
-    //     //         tags: 'Point in front of entrance',
-    //     //         lat: 42.09247813156273,
-    //     //         lng: -71.266430852361,
-    //     //         graphId: 1,
-    //     //     }
-    //     // }),
-    //     // await prisma.node.upsert({
-    //     //     where: {nodeId: 9},
-    //     //     create: {
-    //     //         nodeId: 9,
-    //     //         tags: '[Entrance1]',
-    //     //         lat: 42.092501020817565,
-    //     //         lng: -71.26636647934464,
-    //     //         graphId: 1,
-    //     //     },
-    //     //     update: {
-    //     //         nodeId: 9,
-    //     //         tags: '[Entrance1]',
-    //     //         lat: 42.092501020817565,
-    //     //         lng: -71.26636647934464,
-    //     //         graphId: 1,
-    //     //     }
-    //     // }),
-    //
-    //
-    //     // await prisma.node.upsert({
-    //     //     where: {nodeId: 100},
-    //     //     create: {
-    //     //         nodeId: 100,
-    //     //         tags: '[Parking1]',
-    //     //         lat: 42.091061004913655,
-    //     //         lng: -71.26682002463103,
-    //     //         graphId: 1,
-    //     //     },
-    //     //     update: {
-    //     //         nodeId: 100,
-    //     //         tags: '[Parking1]',
-    //     //         lat: 42.091061004913655,
-    //     //         lng: -71.26682002463103,
-    //     //         graphId: 1,
-    //     //     }
-    //     // }),
-    //     // await prisma.node.upsert({
-    //     //     where: {nodeId: 101},
-    //     //     create: {
-    //     //         nodeId: 101,
-    //     //         tags: 'turn on p lot',
-    //     //         lat: 42.0915152410756,
-    //     //         lng: -71.26701719023977,
-    //     //         graphId: 1,
-    //     //     },
-    //     //     update: {
-    //     //         nodeId: 101,
-    //     //         tags: 'turn on p lot',
-    //     //         lat: 42.0915152410756,
-    //     //         lng: -71.26701719023977,
-    //     //         graphId: 1,
-    //     //     }
-    //     // }),
-    //     //
-    //     // await prisma.node.upsert({
-    //     //     where: {nodeId: 102},
-    //     //     create: {
-    //     //         nodeId: 102,
-    //     //         tags: 'about to cross',
-    //     //         lat: 42.09193261714922,
-    //     //         lng: -71.26677678348538,
-    //     //         graphId: 1,
-    //     //     },
-    //     //     update: {
-    //     //         nodeId: 102,
-    //     //         tags: 'about to cross',
-    //     //         lat: 42.09193261714922,
-    //     //         lng: -71.26677678348538,
-    //     //         graphId: 1,
-    //     //     }
-    //     // }),
-    //     // await prisma.node.upsert({
-    //     //     where: {nodeId: 103},
-    //     //     create: {
-    //     //         nodeId: 103,
-    //     //         tags: 'entering path',
-    //     //         lat: 42.0919989211762,
-    //     //         lng: -71.26694594670606,
-    //     //         graphId: 1,
-    //     //     },
-    //     //     update: {
-    //     //         nodeId: 103,
-    //     //         tags: 'entering path',
-    //     //         lat: 42.0919989211762,
-    //     //         lng: -71.26694594670606,
-    //     //         graphId: 1,
-    //     //     }
-    //     // }),
-    //     // await prisma.node.upsert({
-    //     //     where: {nodeId: 104},
-    //     //     create: {
-    //     //         nodeId: 104,
-    //     //         tags: 'Path 1 end point',
-    //     //         lat: 42.09207738041204,
-    //     //         lng: -71.26688483608865,
-    //     //         graphId: 1,
-    //     //     },
-    //     //     update: {
-    //     //         nodeId: 104,
-    //     //         tags: 'Path 1 end point',
-    //     //         lat: 42.09207738041204,
-    //     //         lng: -71.26688483608865,
-    //     //         graphId: 1,
-    //     //     }
-    //     // }),
-    //     // await prisma.node.upsert({
-    //     //     where: {nodeId: 105},
-    //     //     create: {
-    //     //         nodeId: 105,
-    //     //         tags: 'Point beside entrance',
-    //     //         lat: 42.09251097266492,
-    //     //         lng: -71.26650997752694,
-    //     //         graphId: 1,
-    //     //     },
-    //     //     update: {
-    //     //         nodeId: 105,
-    //     //         tags: 'Point beside entrance',
-    //     //         lat: 42.09251097266492,
-    //     //         lng: -71.26650997752694,
-    //     //         graphId: 1,
-    //     //     }
-    //     // }),
-    //     // await prisma.node.upsert({
-    //     //     where: {nodeId: 106},
-    //     //     create: {
-    //     //         nodeId: 106,
-    //     //         tags: 'Point in front of entrance',
-    //     //         lat: 42.09247813156273,
-    //     //         lng: -71.266430852361,
-    //     //         graphId: 1,
-    //     //     },
-    //     //     update: {
-    //     //         nodeId: 106,
-    //     //         tags: 'Point in front of entrance',
-    //     //         lat: 42.09247813156273,
-    //     //         lng: -71.266430852361,
-    //     //         graphId: 1,
-    //     //     }
-    //     // }),
-    //     // await prisma.node.upsert({
-    //     //     where: {nodeId: 107},
-    //     //     create: {
-    //     //         nodeId: 107,
-    //     //         tags: '[Entrance1]',
-    //     //         lat: 42.092501020817565,
-    //     //         lng: -71.26636647934464,
-    //     //         graphId: 1,
-    //     //     },
-    //     //     update: {
-    //     //         nodeId: 107,
-    //     //         tags: '[Entrance1]',
-    //     //         lat: 42.092501020817565,
-    //     //         lng: -71.26636647934464,
-    //     //         graphId: 1,
-    //     //     }
-    //     // }),
-    //     await prisma.node.upsert({
-    //         where: {nodeId: 0},
-    //         create: {
-    //             nodeId: 0,
-    //             tags: '[Parking1]',
-    //             lat: 42.32628985950129,
-    //             lng: -71.1494973814374,
-    //             graphId: 0,
-    //         },
-    //         update: {
-    //             nodeId: 0,
-    //             tags: '[Parking1]',
-    //             lat: 42.32628985950129,
-    //             lng: -71.1494973814374,
-    //             graphId: 0,
-    //         }
-    //     }),
-    //     await prisma.node.upsert({
-    //         where: {nodeId: 1},
-    //         create: {
-    //             nodeId: 1,
-    //             tags: '[Entrance1]',
-    //             lat: 42.32626804631388,
-    //             lng: -71.14951213358698,
-    //             graphId: 0,
-    //         },
-    //         update: {
-    //             nodeId: 1,
-    //             tags: '[Entrance1]',
-    //             lat: 42.32626804631388,
-    //             lng: -71.14951213358698,
-    //             graphId: 0,
-    //         }
-    //     }),
-    //     await prisma.node.upsert({
-    //         where: {nodeId: 2},
-    //         create: {
-    //             nodeId: 2,
-    //             tags: '[Door1]',
-    //             lat: 42.32626804631388,
-    //             lng: -71.14951213358698,
-    //             graphId: 0,
-    //         },
-    //         update: {
-    //             nodeId: 2,
-    //             tags: '[Door1]',
-    //             lat: 42.32626804631388,
-    //             lng: -71.14951213358698,
-    //             graphId: 0,
-    //         }
-    //     }),
-    //     await prisma.node.upsert({
-    //         where: {nodeId: 3},
-    //         create: {
-    //             nodeId: 3,
-    //             tags: 'Hallway',
-    //             lat: 42.32620458972566,
-    //             lng: -71.14950945137797,
-    //             graphId: 0,
-    //         },
-    //         update: {
-    //             nodeId: 3,
-    //             tags: 'Hallway',
-    //             lat: 42.32620458972566,
-    //             lng: -71.14950945137797,
-    //             graphId: 0,
-    //         }
-    //     }),
-    //     await prisma.node.upsert({
-    //         where: {nodeId: 4},
-    //         create: {
-    //             nodeId: 4,
-    //             tags: 'Hallway 2',
-    //             lat: 42.32619566613782,
-    //             lng: -71.14958187102137,
-    //             graphId: 0,
-    //         },
-    //         update: {
-    //             nodeId: 4,
-    //             tags: 'Hallway 2',
-    //             lat: 42.32619566613782,
-    //             lng: -71.14958187102137,
-    //             graphId: 0,
-    //         }
-    //     }),
-    //
-    //     await prisma.node.upsert({
-    //         where: {nodeId: 5},
-    //         create: {
-    //             nodeId: 5,
-    //             tags: 'Enter room 1',
-    //             lat: 42.32616889536665,
-    //             lng: -71.14958321212588,
-    //             graphId: 0,
-    //         },
-    //         update: {
-    //             nodeId: 5,
-    //             tags: 'Enter room 1',
-    //             lat: 42.32616889536665,
-    //             lng: -71.14958321212588,
-    //             graphId: 0,
-    //         }
-    //     }),
-    //
-    //     await prisma.node.upsert({
-    //         where: {nodeId: 6},
-    //         create: {
-    //             nodeId: 6,
-    //             tags: 'Enter room 2',
-    //             lat: 42.32616269842727,
-    //             lng: -71.14965529649315,
-    //             graphId: 0,
-    //         },
-    //         update: {
-    //             nodeId: 6,
-    //             tags: 'Enter room 2',
-    //             lat: 42.32616269842727,
-    //             lng: -71.14965529649315,
-    //             graphId: 0,
-    //         }
-    //     }),
-    //
-    //     await prisma.node.upsert({
-    //         where: {nodeId: 7},
-    //         create: {
-    //             nodeId: 7,
-    //             tags: '[Checkpoint1]',
-    //             lat: 42.326107173823104,
-    //             lng: -71.14964456765709,
-    //             graphId: 0,
-    //         },
-    //         update: {
-    //             nodeId: 7,
-    //             tags: '[Checkpoint1]',
-    //             lat: 42.326107173823104,
-    //             lng: -71.14964456765709,
-    //             graphId: 0,
-    //         }
-    //     }),
-    //
-    //
-    //
-    //
-    //
-    //     await prisma.node.upsert({
-    //         where: {nodeId: 100},
-    //         create: {
-    //             nodeId: 100,
-    //             tags: '[Parking1]',
-    //             lat: 42.091061004913655,
-    //             lng: -71.26682002463103,
-    //             graphId: 1,
-    //         },
-    //         update: {
-    //             nodeId: 100,
-    //             tags: '[Parking1]',
-    //             lat: 42.091061004913655,
-    //             lng: -71.26682002463103,
-    //             graphId: 1,
-    //         }
-    //     }),
-    //     await prisma.node.upsert({
-    //         where: {nodeId: 101},
-    //         create: {
-    //             nodeId: 101,
-    //             tags: 'turn on p lot',
-    //             lat: 42.0915152410756,
-    //             lng: -71.26701719023977,
-    //             graphId: 1,
-    //         },
-    //         update: {
-    //             nodeId: 101,
-    //             tags: 'turn on p lot',
-    //             lat: 42.0915152410756,
-    //             lng: -71.26701719023977,
-    //             graphId: 1,
-    //         }
-    //     }),
-    //     await prisma.node.upsert({
-    //         where: {nodeId: 102},
-    //         create: {
-    //             nodeId: 102,
-    //             tags: 'about to cross',
-    //             lat: 42.09193261714922,
-    //             lng: -71.26677678348538,
-    //             graphId: 1,
-    //         },
-    //         update: {
-    //             nodeId: 102,
-    //             tags: 'about to cross',
-    //             lat: 42.09193261714922,
-    //             lng: -71.26677678348538,
-    //             graphId: 1,
-    //         }
-    //     }),
-    //
-    //     await prisma.node.upsert({
-    //         where: {nodeId: 103},
-    //         create: {
-    //             nodeId: 103,
-    //             tags: 'sidewalk 1',
-    //             lat: 42.09200217019917,
-    //             lng: -71.2669417764616,
-    //             graphId: 1,
-    //         },
-    //         update: {
-    //             nodeId: 103,
-    //             tags: 'sidewalk 1',
-    //             lat: 42.09200217019917,
-    //             lng: -71.2669417764616,
-    //             graphId: 1,
-    //         }
-    //     }),
-    //     await prisma.node.upsert({
-    //         where: {nodeId: 104},
-    //         create: {
-    //             nodeId: 104,
-    //             tags: 'sidewalk 2',
-    //             lat: 42.092461934557555,
-    //             lng: -71.26656230400417,
-    //             graphId: 1,
-    //         },
-    //         update: {
-    //             nodeId: 104,
-    //             tags: 'sidewalk 2',
-    //             lat: 42.092461934557555,
-    //             lng: -71.26656230400417,
-    //             graphId: 1,
-    //         }
-    //     }),
-    //     await prisma.node.upsert({
-    //         where: {nodeId: 105},
-    //         create: {
-    //             nodeId: 105,
-    //             tags: 'before entrance',
-    //             lat: 42.09253518313532,
-    //             lng: -71.26648666971582,
-    //             graphId: 1,
-    //         },
-    //         update: {
-    //             nodeId: 105,
-    //             tags: 'before entrance',
-    //             lat: 42.09253518313532,
-    //             lng: -71.26648666971582,
-    //             graphId: 1,
-    //         }
-    //     }),
-    //     await prisma.node.upsert({
-    //         where: {nodeId: 106},
-    //         create: {
-    //             nodeId: 106,
-    //             tags: 'front of entrance',
-    //             lat: 42.092479272750566,
-    //             lng: -71.2663831928498,
-    //             graphId: 1,
-    //         },
-    //         update: {
-    //             nodeId: 106,
-    //             tags: 'front of entrance',
-    //             lat: 42.092479272750566,
-    //             lng: -71.2663831928498,
-    //             graphId: 1,
-    //         }
-    //     }),
-    //     await prisma.node.upsert({
-    //         where: {nodeId: 107},
-    //         create: {
-    //             nodeId: 107,
-    //             tags: '[Entrance1]',
-    //             lat: 42.092512979448315,
-    //             lng: -71.26632207406375,
-    //             graphId: 1,
-    //         },
-    //         update: {
-    //             nodeId: 107,
-    //             tags: '[Entrance1]',
-    //             lat: 42.092512979448315,
-    //             lng: -71.26632207406375,
-    //             graphId: 1,
-    //         }
-    //     }),
-    //     await prisma.node.upsert({
-    //         where: {nodeId: 108},
-    //         create: {
-    //             nodeId: 108,
-    //             tags: '[Door1]',
-    //             lat: 42.092512979448315,
-    //             lng: -71.26632207406375,
-    //             graphId: 1,
-    //         },
-    //         update: {
-    //             nodeId: 108,
-    //             tags: '[Door1]',
-    //             lat: 42.092512979448315,
-    //             lng: -71.26632207406375,
-    //             graphId: 1,
-    //         }
-    //     }),
-    //
-    //     await prisma.node.upsert({
-    //         where: {nodeId: 109},
-    //         create: {
-    //             nodeId: 109,
-    //             tags: 'Hallway to checkpoint 1',
-    //             lat: 42.0925935893518,
-    //             lng: -71.2662577010474,
-    //             graphId: 1,
-    //         },
-    //         update: {
-    //             nodeId: 109,
-    //             tags: 'Hallway to checkpoint 1',
-    //             lat: 42.0925935893518,
-    //             lng: -71.2662577010474,
-    //             graphId: 1,
-    //         }
-    //     }),
-    //     await prisma.node.upsert({
-    //         where: {nodeId: 110},
-    //         create: {
-    //             nodeId: 110,
-    //             tags: 'Beside checkpoint 1',
-    //             lat: 42.09265927141964,
-    //             lng: -71.26628854645107,
-    //             graphId: 1,
-    //         },
-    //         update: {
-    //             nodeId: 110,
-    //             tags: 'Beside checkpoint 1',
-    //             lat: 42.09265927141964,
-    //             lng: -71.26628854645107,
-    //             graphId: 1,
-    //         }
-    //     }),
-    //
-    //     await prisma.node.upsert({
-    //         where: {nodeId: 111},
-    //         create: {
-    //             nodeId: 111,
-    //             tags: '[Checkpoint1]',
-    //             lat: 42.092677251176724,
-    //             lng: -71.26635266724202,
-    //             graphId: 1,
-    //         },
-    //         update: {
-    //             nodeId: 111,
-    //             tags: '[Checkpoint1]',
-    //             lat: 42.092677251176724,
-    //             lng: -71.26635266724202,
-    //             graphId: 1,
-    //         }
-    //     }),
-    //
-    //     await prisma.node.upsert({
-    //         where: {nodeId: 112},
-    //         create: {
-    //             nodeId: 112,
-    //             tags: 'Hallway beside checkpoint 2',
-    //             lat: 42.09258498572383,
-    //             lng: -71.26600036962368,
-    //             graphId: 1,
-    //         },
-    //         update: {
-    //             nodeId: 112,
-    //             tags: 'Hallway beside checkpoint 2',
-    //             lat: 42.09258498572383,
-    //             lng: -71.26600036962368,
-    //             graphId: 1,
-    //         }
-    //     }),
-    //     await prisma.node.upsert({
-    //         where: {nodeId: 113},
-    //         create: {
-    //             nodeId: 113,
-    //             tags: '[Checkpoint2]',
-    //             lat: 42.09265066780056,
-    //             lng: -71.26600171072819,
-    //             graphId: 1,
-    //         },
-    //         update: {
-    //             nodeId: 113,
-    //             tags: '[Checkpoint2]',
-    //             lat: 42.09265066780056,
-    //             lng: -71.26600171072819,
-    //             graphId: 1,
-    //         }
-    //     }),
-    //
-    //     await prisma.node.upsert({
-    //         where: {nodeId: 114},
-    //         create: {
-    //             nodeId: 114,
-    //             tags: 'Hallway besides checkpoint 3',
-    //             lat: 42.09262877378253,
-    //             lng: -71.26583675487377,
-    //             graphId: 1,
-    //         },
-    //         update: {
-    //             nodeId: 114,
-    //             tags: 'Hallway beside checkpoint 3',
-    //             lat: 42.09262877378253,
-    //             lng: -71.26583675487377,
-    //             graphId: 1,
-    //         }
-    //     }),
-    //
-    //     await prisma.node.upsert({
-    //         where: {nodeId: 115},
-    //         create: {
-    //             nodeId: 115,
-    //             tags: '[Checkpoint3]',
-    //             lat: 42.09266659448601,
-    //             lng: -71.26586226214057,
-    //             graphId:1
-    //         },
-    //         update: {
-    //             nodeId: 115,
-    //             tags: '[Checkpoint3]',
-    //             lat: 42.09266659448601,
-    //             lng: -71.26586226214057,
-    //             graphId: 1,
-    //         }
-    //     }),
-    //
-    //
-    //
-    //     await prisma.node.upsert({
-    //         where: {nodeId: 200},
-    //         create: {
-    //             nodeId: 200,
-    //             tags: '[Parking1]',
-    //             lat: 42.091061004913655,
-    //             lng: -71.26682002463103,
-    //             graphId: 2,
-    //         },
-    //         update: {
-    //             nodeId: 200,
-    //             tags: '[Parking1]',
-    //             lat: 42.091061004913655,
-    //             lng: -71.26682002463103,
-    //             graphId: 2,
-    //         }
-    //     }),
-    //     await prisma.node.upsert({
-    //         where: {nodeId: 201},
-    //         create: {
-    //             nodeId: 201,
-    //             tags: 'turn on p lot',
-    //             lat: 42.0915152410756,
-    //             lng: -71.26701719023977,
-    //             graphId: 2,
-    //         },
-    //         update: {
-    //             nodeId: 201,
-    //             tags: 'turn on p lot',
-    //             lat: 42.0915152410756,
-    //             lng: -71.26701719023977,
-    //             graphId: 2,
-    //         }
-    //     }),
-    //     await prisma.node.upsert({
-    //         where: {nodeId: 202},
-    //         create: {
-    //             nodeId: 202,
-    //             tags: 'about to cross',
-    //             lat: 42.09193261714922,
-    //             lng: -71.26677678348538,
-    //             graphId: 2,
-    //         },
-    //         update: {
-    //             nodeId: 202,
-    //             tags: 'about to cross',
-    //             lat: 42.09193261714922,
-    //             lng: -71.26677678348538,
-    //             graphId: 2,
-    //         }
-    //     }),
-    //     await prisma.node.upsert({
-    //         where: {nodeId: 203},
-    //         create: {
-    //             nodeId: 203,
-    //             tags: 'cross st 1',
-    //             lat: 42.092053035476496,
-    //             lng: -71.26707182647702,
-    //             graphId: 2,
-    //         },
-    //         update: {
-    //             nodeId: 203,
-    //             tags: 'cross st 1',
-    //             lat: 42.092053035476496,
-    //             lng: -71.26707182647702,
-    //             graphId: 2,
-    //         }
-    //     }),
-    //     await prisma.node.upsert({
-    //         where: {nodeId: 204},
-    //         create: {
-    //             nodeId: 204,
-    //             tags: 'cross st 2',
-    //             lat: 42.09222321305328,
-    //             lng: -71.26694039823529,
-    //             graphId: 2,
-    //         },
-    //         update: {
-    //             nodeId: 204,
-    //             tags: 'cross st 2',
-    //             lat: 42.09222321305328,
-    //             lng: -71.26694039823529,
-    //             graphId: 2,
-    //         }
-    //     }),
-    //     await prisma.node.upsert({
-    //         where: {nodeId: 205},
-    //         create: {
-    //             nodeId: 205,
-    //             tags: '',
-    //             lat: 42.09251119430022,
-    //             lng: -71.26667594984119,
-    //             graphId: 2,
-    //         },
-    //         update: {
-    //             nodeId: 205,
-    //             tags: '',
-    //             lat: 42.09251119430022,
-    //             lng: -71.26667594984119,
-    //             graphId: 2,
-    //         }
-    //     }),
-    //     await prisma.node.upsert({
-    //         where: {nodeId: 206},
-    //         create: {
-    //             nodeId: 206,
-    //             tags: '',
-    //             lat: 42.092609349545725,
-    //             lng: -71.26655339465918,
-    //             graphId: 2,
-    //         },
-    //         update: {
-    //             nodeId: 206,
-    //             tags: '',
-    //             lat: 42.092609349545725,
-    //             lng: -71.26655339465918,
-    //             graphId: 2,
-    //         }
-    //     }),
-    //     await prisma.node.upsert({
-    //         where: {nodeId: 207},
-    //         create: {
-    //             nodeId: 207,
-    //             tags: '[Entrance1]',
-    //             lat: 42.0926342291187,
-    //             lng: -71.26656010018172,
-    //             graphId: 2,
-    //         },
-    //         update: {
-    //             nodeId: 207,
-    //             tags: '[Entrance1]',
-    //             lat: 42.0926342291187,
-    //             lng: -71.26656010018172,
-    //             graphId: 2,
-    //         }
-    //     }),
-    //
-    //     await prisma.node.upsert({
-    //         where: {nodeId: 208},
-    //         create: {
-    //             nodeId: 208,
-    //             tags: '[Door1]',
-    //             lat: 42.09262561259546,
-    //             lng: -71.26674472281589,
-    //             graphId: 2,
-    //         },
-    //         update: {
-    //             nodeId: 208,
-    //             tags: '[Door1]',
-    //             lat: 42.09262561259546,
-    //             lng: -71.26674472281589,
-    //             graphId: 2,
-    //         }
-    //     }),
-    //     await prisma.node.upsert({
-    //         where: {nodeId: 209},
-    //         create: {
-    //             nodeId: 209,
-    //             tags: '',
-    //             lat: 42.09261780145996,
-    //             lng: -71.2667328170303,
-    //             graphId: 2,
-    //         },
-    //         update: {
-    //             nodeId: 209,
-    //             tags: '',
-    //             lat: 42.09261780145996,
-    //             lng: -71.2667328170303,
-    //             graphId: 2,
-    //         }
-    //     }),
-    //     await prisma.node.upsert({
-    //         where: {nodeId: 210},
-    //         create: {
-    //             nodeId: 210,
-    //             tags: '',
-    //             lat: 42.092540425935965,
-    //             lng: -71.26680925998723,
-    //             graphId: 2,
-    //         },
-    //         update: {
-    //             nodeId: 210,
-    //             tags: '',
-    //             lat: 42.092540425935965,
-    //             lng: -71.26680925998723,
-    //             graphId: 2,
-    //         }
-    //     }),
-    //     await prisma.node.upsert({
-    //         where: {nodeId: 211},
-    //         create: {
-    //             nodeId: 211,
-    //             tags: '[Checkpoint1]',
-    //             lat: 42.09250061855566,
-    //             lng: -71.26680255446469,
-    //             graphId: 2,
-    //         },
-    //         update: {
-    //             nodeId: 211,
-    //             tags: '[Checkpoint1]',
-    //             lat: 42.09250061855566,
-    //             lng: -71.26680255446469,
-    //             graphId: 2,
-    //         }
-    //     }),
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //     await prisma.node.upsert({
-    //         where: {nodeId: 300},
-    //         create: {
-    //             nodeId: 300,
-    //             tags: '[Parking1]',
-    //             lat: 42.091061004913655,
-    //             lng: -71.26682002463103,
-    //             graphId: 3,
-    //         },
-    //         update: {
-    //             nodeId: 300,
-    //             tags: '[Parking1]',
-    //             lat: 42.091061004913655,
-    //             lng: -71.26682002463103,
-    //             graphId: 3,
-    //         }
-    //     }),
-    //     await prisma.node.upsert({
-    //         where: {nodeId: 301},
-    //         create: {
-    //             nodeId: 301,
-    //             tags: 'turn on p lot',
-    //             lat: 42.0915152410756,
-    //             lng: -71.26701719023977,
-    //             graphId: 3,
-    //         },
-    //         update: {
-    //             nodeId: 301,
-    //             tags: 'turn on p lot',
-    //             lat: 42.0915152410756,
-    //             lng: -71.26701719023977,
-    //             graphId: 3,
-    //         }
-    //     }),
-    //     await prisma.node.upsert({
-    //         where: {nodeId: 302},
-    //         create: {
-    //             nodeId: 302,
-    //             tags: 'about to cross',
-    //             lat: 42.09193261714922,
-    //             lng: -71.26677678348538,
-    //             graphId: 3,
-    //         },
-    //         update: {
-    //             nodeId: 302,
-    //             tags: 'about to cross',
-    //             lat: 42.09193261714922,
-    //             lng: -71.26677678348538,
-    //             graphId: 3,
-    //         }
-    //     }),
-    //     await prisma.node.upsert({
-    //         where: {nodeId: 303},
-    //         create: {
-    //             nodeId: 303,
-    //             tags: 'cross st 1',
-    //             lat: 42.092053035476496,
-    //             lng: -71.26707182647702,
-    //             graphId: 3,
-    //         },
-    //         update: {
-    //             nodeId: 303,
-    //             tags: 'cross st 1',
-    //             lat: 42.092053035476496,
-    //             lng: -71.26707182647702,
-    //             graphId: 3,
-    //         }
-    //     }),
-    //     await prisma.node.upsert({
-    //         where: {nodeId: 304},
-    //         create: {
-    //             nodeId: 304,
-    //             tags: 'cross st 2',
-    //             lat: 42.09222321305328,
-    //             lng: -71.26694039823529,
-    //             graphId: 3,
-    //         },
-    //         update: {
-    //             nodeId: 304,
-    //             tags: 'cross st 2',
-    //             lat: 42.09222321305328,
-    //             lng: -71.26694039823529,
-    //             graphId: 3,
-    //         }
-    //     }),
-    //     await prisma.node.upsert({
-    //         where: {nodeId: 305},
-    //         create: {
-    //             nodeId: 305,
-    //             tags: '',
-    //             lat: 42.09251119430022,
-    //             lng: -71.26667594984119,
-    //             graphId: 3,
-    //         },
-    //         update: {
-    //             nodeId: 305,
-    //             tags: '',
-    //             lat: 42.09251119430022,
-    //             lng: -71.26667594984119,
-    //             graphId: 3,
-    //         }
-    //     }),
-    //     await prisma.node.upsert({
-    //         where: {nodeId: 306},
-    //         create: {
-    //             nodeId: 306,
-    //             tags: '',
-    //             lat: 42.092609349545725,
-    //             lng: -71.26655339465918,
-    //             graphId: 3,
-    //         },
-    //         update: {
-    //             nodeId: 306,
-    //             tags: '',
-    //             lat: 42.092609349545725,
-    //             lng: -71.26655339465918,
-    //             graphId: 3,
-    //         }
-    //     }),
-    //     await prisma.node.upsert({
-    //         where: {nodeId: 307},
-    //         create: {
-    //             nodeId: 307,
-    //             tags: '[Entrance1]',
-    //             lat: 42.0926342291187,
-    //             lng: -71.26656010018172,
-    //             graphId: 3,
-    //         },
-    //         update: {
-    //             nodeId: 307,
-    //             tags: '[Entrance1]',
-    //             lat: 42.0926342291187,
-    //             lng: -71.26656010018172,
-    //             graphId: 3,
-    //         }
-    //     }),
-    //
-    //
-    //     await prisma.node.upsert({
-    //         where: {nodeId: 308},
-    //         create: {
-    //             nodeId: 308,
-    //             tags: '[Door1]',
-    //             lat: 42.092626391988865,
-    //             lng: -71.26673944540154,
-    //             graphId: 3,
-    //         },
-    //         update: {
-    //             nodeId: 308,
-    //             tags: '[Door1]',
-    //             lat: 42.092626391988865,
-    //             lng: -71.26673944540154,
-    //             graphId: 3,
-    //         }
-    //     }),
-    //     await prisma.node.upsert({
-    //         where: {nodeId: 309},
-    //         create: {
-    //             nodeId: 309,
-    //             tags: '',
-    //             lat: 42.09261917691281,
-    //             lng: -71.26672435797583,
-    //             graphId: 3,
-    //         },
-    //         update: {
-    //             nodeId: 309,
-    //             tags: '',
-    //             lat: 42.09261917691281,
-    //             lng: -71.26672435797583,
-    //             graphId: 3,
-    //         }
-    //     }),
-    //     await prisma.node.upsert({
-    //         where: {nodeId: 310},
-    //         create: {
-    //             nodeId: 310,
-    //             tags: '',
-    //             lat: 42.092669433632366,
-    //             lng: -71.26667574293744,
-    //             graphId: 3,
-    //         },
-    //         update: {
-    //             nodeId: 310,
-    //             tags: '',
-    //             lat: 42.092669433632366,
-    //             lng: -71.26667574293744,
-    //             graphId: 3,
-    //         }
-    //     }),
-    //     await prisma.node.upsert({
-    //         where: {nodeId: 311},
-    //         create: {
-    //             nodeId: 311,
-    //             tags: '[Checkpoint1]',
-    //             lat: 42.092682122203776,
-    //             lng: -71.26663852728736,
-    //             graphId: 3,
-    //         },
-    //         update: {
-    //             nodeId: 311,
-    //             tags: '[Checkpoint1]',
-    //             lat: 42.092682122203776,
-    //             lng: -71.26663852728736,
-    //             graphId: 3,
-    //         }
-    //     }),
-    //     await prisma.node.upsert({
-    //         where: {nodeId: 312},
-    //         create: {
-    //             nodeId: 312,
-    //             tags: '',
-    //             lat: 42.09257930897307,
-    //             lng: -71.26675997892146,
-    //             graphId: 3,
-    //         },
-    //         update: {
-    //             nodeId: 312,
-    //             tags: '',
-    //             lat: 42.09257930897307,
-    //             lng: -71.26675997892146,
-    //             graphId: 3,
-    //         }
-    //     }),
-    //     await prisma.node.upsert({
-    //         where: {nodeId: 313},
-    //         create: {
-    //             nodeId: 313,
-    //             tags: '',
-    //             lat: 42.092567117972976,
-    //             lng: -71.26673785069708,
-    //             graphId: 3,
-    //         },
-    //         update: {
-    //             nodeId: 313,
-    //             tags: '',
-    //             lat: 42.092567117972976,
-    //             lng: -71.26673785069708,
-    //             graphId: 3,
-    //         }
-    //     }),
-    //     await prisma.node.upsert({
-    //         where: {nodeId: 314},
-    //         create: {
-    //             nodeId: 314,
-    //             tags: '[Checkpoint2]',
-    //             lat: 42.09255144382658,
-    //             lng: -71.26675126174216,
-    //             graphId: 3,
-    //         },
-    //         update: {
-    //             nodeId: 314,
-    //             tags: '[Checkpoint2]',
-    //             lat: 42.09255144382658,
-    //             lng: -71.26675126174216,
-    //             graphId: 3,
-    //         }
-    //     }),
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //     // await prisma.node.upsert({
-    //     //     where: {nodeId: 0},
-    //     //     update: {
-    //     //         nodeId: 0,
-    //     //         tags: 'Start',
-    //     //         lat: 42.32628328491628 ,
-    //     //         lng: -71.14950027862017,
-    //     //         graphId: 0,
-    //     //     },
-    //     //     create: {
-    //     //         nodeId: 0,
-    //     //         tags: 'Start',
-    //     //         lat: 42.32628328491628 ,
-    //     //         lng: 71.14950027862017,
-    //     //         graphId: 0,
-    //     //     },
-    //     // }),
-    //     //
-    //     // await prisma.node.upsert({
-    //     //     where: {nodeId: 1},
-    //     //     update: {
-    //     //         nodeId: 1,
-    //     //         tags: '',
-    //     //         lat: 42.326241641547554 ,
-    //     //         lng: 71.14951100745623,
-    //     //         graphId: 0,
-    //     //     },
-    //     //     create: {
-    //     //         nodeId: 1,
-    //     //         tags: '',
-    //     //         lat: 42.326241641547554 ,
-    //     //         lng: 71.14951100745623,
-    //     //         graphId: 0,
-    //     //     },
-    //     // }),
-    //     //
-    //     //
-    //     //
-    //     // await prisma.node.upsert({
-    //     //     where: { nodeId: 2 },
-    //     //     update: {
-    //     //         nodeId: 2,
-    //     //         tags: '',
-    //     //         lat: 42.32620495569991,
-    //     //         lng: -71.14950832524721,
-    //     //         graphId: 0,
-    //     //     },
-    //     //     create: {
-    //     //         nodeId: 2,
-    //     //         tags: '',
-    //     //         lat: 42.32620495569991,
-    //     //         lng: -71.14950832524721,
-    //     //         graphId: 0,
-    //     //     },
-    //     // }),
-    //     //
-    //     // await prisma.node.upsert({
-    //     //     where: { nodeId: 3 },
-    //     //     update: {
-    //     //         nodeId: 3,
-    //     //         tags: '',
-    //     //         lat: 42.3262019811708,
-    //     //         lng: -71.14959013262217,
-    //     //         graphId: 0,
-    //     //     },
-    //     //     create: {
-    //     //         nodeId: 3,
-    //     //         tags: '',
-    //     //         lat: 42.3262019811708,
-    //     //         lng: -71.14959013262217,
-    //     //         graphId: 0,
-    //     //     },
-    //     // }),
-    //     //
-    //     // await prisma.node.upsert({
-    //     //     where: { nodeId: 4 },
-    //     //     update: {
-    //     //         nodeId: 4,
-    //     //         tags: '',
-    //     //         lat: 42.32616926134112,
-    //     //         lng: -71.14958745041315,
-    //     //         graphId: 0,
-    //     //     },
-    //     //     create: {
-    //     //         nodeId: 4,
-    //     //         tags: '',
-    //     //         lat: 42.32616926134112,
-    //     //         lng: -71.14958745041315,
-    //     //         graphId: 0,
-    //     //     },
-    //     // }),
-    //     //
-    //     // await prisma.node.upsert({
-    //     //     where: { nodeId: 5 },
-    //     //     update: {
-    //     //         nodeId: 5,
-    //     //         tags: 'Check in',
-    //     //         lat: 42.326144473580044,
-    //     //         lng: -71.14964645901148,
-    //     //         graphId: 0,
-    //     //     },
-    //     //     create: {
-    //     //         nodeId: 5,
-    //     //         tags: 'Check in',
-    //     //         lat: 42.326144473580044,
-    //     //         lng: -71.14964645901148,
-    //     //         graphId: 0,
-    //     //     },
-    //     // }),
-    //     //
-    //     //
-    //     // //Patriot Place
-    //     // await prisma.node.upsert({
-    //     //     where: { nodeId: 6 },
-    //     //     update: {
-    //     //         nodeId: 6,
-    //     //         tags: 'PP Parking lot: Gillette Stadium: Lot 22',
-    //     //         lat: 42.09124112074461 ,
-    //     //         lng: -71.26697356796514,
-    //     //         graphId: 0,
-    //     //     },
-    //     //     create: {
-    //     //         nodeId: 5,
-    //     //         tags: 'PP Parking lot: Gillette Stadium: Lot 22',
-    //     //         lat: 42.09124112074461 ,
-    //     //         lng: -71.26697356796514,
-    //     //         graphId: 0,
-    //     //     },
-    //     // }),
-    //     //
-    //     // await prisma.node.upsert({
-    //     //     where: { nodeId: 6 },
-    //     //     update: {
-    //     //         nodeId: 6,
-    //     //         name: 'PP Parking lot: Gillette Stadium: Lot 23',
-    //     //         lat: 42.09124112074461,
-    //     //         lng: -71.26697356796514,
-    //     //         graphId: 0,
-    //     //     },
-    //     //     create: {
-    //     //         nodeId: 6,
-    //     //         name: 'PP Parking lot: Gillette Stadium: Lot 23',
-    //     //         lat: 42.09124112074461,
-    //     //         lng: -71.26697356796514,
-    //     //         graphId: 0,
-    //     //     },
-    //     // }),
-    //     //
-    //     // await prisma.node.upsert({
-    //     //     where: { nodeId: 7 },
-    //     //     update: {
-    //     //         nodeId: 7,
-    //     //         name: 'PP Parking lot: Gillette Stadium',
-    //     //         lat: 42.08912260935516,
-    //     //         lng: -71.27005934715271,
-    //     //         graphId: 0,
-    //     //     },
-    //     //     create: {
-    //     //         nodeId: 7,
-    //     //         name: 'PP Parking lot: Gillette Stadium',
-    //     //         lat: 42.08912260935516,
-    //     //         lng: -71.27005934715271,
-    //     //         graphId: 0,
-    //     //     },
-    //     // }),
-    //     //
-    //     // await prisma.node.upsert({
-    //     //     where: { nodeId: 8 },
-    //     //     update: {
-    //     //         nodeId: 8,
-    //     //         name: 'PP Parking lot: Limo Parking',
-    //     //         lat: 42.09305236722215,
-    //     //         lng: -71.26820996403694,
-    //     //         graphId: 0,
-    //     //     },
-    //     //     create: {
-    //     //         nodeId: 8,
-    //     //         name: 'PP Parking lot: Limo Parking',
-    //     //         lat: 42.09305236722215,
-    //     //         lng: -71.26820996403694,
-    //     //         graphId: 0,
-    //     //     },
-    //     // }),
-    //     //
-    //     // await prisma.node.upsert({
-    //     //     where: { nodeId: 9 },
-    //     //     update: {
-    //     //         nodeId: 9,
-    //     //         name: 'PP Parking lot: ADA Parking',
-    //     //         lat: 42.095880863598175,
-    //     //         lng: -71.26509811861098,
-    //     //         graphId: 0,
-    //     //     },
-    //     //     create: {
-    //     //         nodeId: 9,
-    //     //         name: 'PP Parking lot: ADA Parking',
-    //     //         lat: 42.095880863598175,
-    //     //         lng: -71.26509811861098,
-    //     //         graphId: 0,
-    //     //     },
-    //     // }),
-    //     //
-    //     // await prisma.node.upsert({
-    //     //     where: { nodeId: 10 },
-    //     //     update: {
-    //     //         nodeId: 10,
-    //     //         name: 'PP Parking lot: Gillette Stadium: Lot 6',
-    //     //         lat: 42.093978143089934,
-    //     //         lng: -71.26427199823439,
-    //     //         graphId: 0,
-    //     //     },
-    //     //     create: {
-    //     //         nodeId: 10,
-    //     //         name: 'PP Parking lot: Gillette Stadium: Lot 6',
-    //     //         lat: 42.093978143089934,
-    //     //         lng: -71.26427199823439,
-    //     //         graphId: 0,
-    //     //     },
-    //     // }),
-    //     //
-    //     // await prisma.node.upsert({
-    //     //     where: { nodeId: 11 },
-    //     //     update: {
-    //     //         nodeId: 11,
-    //     //         name: 'PP Parking lot: Gillette Stadium: Lot 13\n',
-    //     //         lat: 42.09378707176781,
-    //     //         lng: -71.26363899690688,
-    //     //         graphId: 0,
-    //     //     },
-    //     //     create: {
-    //     //         nodeId: 11,
-    //     //         name: 'PP Parking lot: Gillette Stadium: Lot 13\n',
-    //     //         lat: 42.09378707176781,
-    //     //         lng: -71.26363899690688,
-    //     //         graphId: 0,
-    //     //     },
-    //     // }),
-    //     //
-    //     // await prisma.node.upsert({
-    //     //     where: { nodeId: 12 },
-    //     //     update: {
-    //     //         nodeId: 12,
-    //     //         name: 'PP Parking lot :Gillette Stadium: Lot 14B',
-    //     //         lat: 42.094368232456105,
-    //     //         lng: -71.26248580910168,
-    //     //         graphId: 0,
-    //     //     },
-    //     //     create: {
-    //     //         nodeId: 12,
-    //     //         name: 'PP Parking lot: Gillette Stadium: Lot 14B',
-    //     //         lat: 42.094368232456105,
-    //     //         lng: -71.26248580910168,
-    //     //         graphId: 0,
-    //     //     },
-    //     // }),
-    //     //
-    //     // await prisma.node.upsert({
-    //     //     where: { nodeId: 13 },
-    //     //     update: {
-    //     //         nodeId: 13,
-    //     //         name: 'PP Parking lot: P9 Gate Gillette Stadium\n',
-    //     //         lat: 42.09437221307804,
-    //     //         lng: -71.26248580910168,
-    //     //         graphId: 0,
-    //     //     },
-    //     //     create: {
-    //     //         nodeId: 13,
-    //     //         name: 'PP Parking lot: P9 Gate Gillette Stadium\n',
-    //     //         lat: 42.09437221307804,
-    //     //         lng: -71.26248580910168,
-    //     //         graphId: 0,
-    //     //     },
-    //     // }),
-    //     //
-    //     // await prisma.node.upsert({
-    //     //     where: { nodeId: 14 },
-    //     //     update: {
-    //     //         nodeId: 14,
-    //     //         name: 'PP Parking lot: Gillette Stadium Lot 20',
-    //     //         lat: 42.08998291637353,
-    //     //         lng: -71.26123851882737,
-    //     //         graphId: 0,
-    //     //     },
-    //     //     create: {
-    //     //         nodeId: 14,
-    //     //         name: 'PP Parking lot: Gillette Stadium Lot 20',
-    //     //         lat: 42.08998291637353,
-    //     //         lng: -71.26123851882737,
-    //     //         graphId: 0,
-    //     //     },
-    //     // }),
-    //     //
-    //     // await prisma.node.upsert({
-    //     //     where: { nodeId: 15 },
-    //     //     update: {
-    //     //         nodeId: 15,
-    //     //         name: 'PP Parking lot: Parking Lot 51',
-    //     //         lat: 42.08745647675202,
-    //     //         lng: -71.26928676055769,
-    //     //         graphId: 0,
-    //     //     },
-    //     //     create: {
-    //     //         nodeId: 15,
-    //     //         name: 'PP Parking lot: Parking Lot 51',
-    //     //         lat: 42.08745647675202,
-    //     //         lng: -71.26928676055769,
-    //     //         graphId: 0,
-    //     //     },
-    //     // }),
-    //
-    //
-    //
-    // ];
-    //
-    // console.log('Nodes seeded!');
-    // console.log(nodes);
-    //
-    // console.log('Seeding edges...');
-    // const edges = [
-    //     await prisma.edge.upsert({
-    //         where: {edgeId: 0},
-    //         create: {
-    //             edgeId: 0,
-    //             weight: 0,
-    //             startNodeId: 0,
-    //             endNodeId: 1,
-    //         },
-    //         update: {
-    //             edgeId: 0,
-    //             weight: 0,
-    //             startNodeId: 0,
-    //             endNodeId: 1,
-    //         }
-    //     }),
-    //     await prisma.edge.upsert({
-    //         where: {edgeId: 1},
-    //         create: {
-    //             edgeId: 1,
-    //             weight: 0,
-    //             startNodeId: 1,
-    //             endNodeId: 2,
-    //         },
-    //         update: {
-    //             edgeId: 1,
-    //             weight: 0,
-    //             startNodeId: 1,
-    //             endNodeId: 2,
-    //         }
-    //     }),
-    //     await prisma.edge.upsert({
-    //         where: {edgeId: 2},
-    //         create: {
-    //             edgeId: 2,
-    //             weight: 0,
-    //             startNodeId: 2,
-    //             endNodeId: 3,
-    //         },
-    //         update: {
-    //             edgeId: 2,
-    //             weight: 0,
-    //             startNodeId: 2,
-    //             endNodeId: 3,
-    //         }
-    //     }),
-    //     await prisma.edge.upsert({
-    //         where: {edgeId: 3},
-    //         create: {
-    //             edgeId: 3,
-    //             weight: 0,
-    //             startNodeId: 3,
-    //             endNodeId: 4,
-    //         },
-    //         update: {
-    //             edgeId: 3,
-    //             weight: 0,
-    //             startNodeId: 3,
-    //             endNodeId: 4,
-    //         }
-    //     }),
-    //     await prisma.edge.upsert({
-    //         where: {edgeId: 4},
-    //         create: {
-    //             edgeId: 4,
-    //             weight: 0,
-    //             startNodeId: 4,
-    //             endNodeId: 5,
-    //         },
-    //         update: {
-    //             edgeId: 4,
-    //             weight: 0,
-    //             startNodeId: 4,
-    //             endNodeId: 5,
-    //         }
-    //     }),
-    //     await prisma.edge.upsert({
-    //         where: {edgeId: 5},
-    //         create: {
-    //             edgeId: 5,
-    //             weight: 0,
-    //             startNodeId: 5,
-    //             endNodeId: 6,
-    //         },
-    //         update: {
-    //             edgeId: 5,
-    //             weight: 0,
-    //             startNodeId: 5,
-    //             endNodeId: 6,
-    //         }
-    //     }),
-    //     await prisma.edge.upsert({
-    //         where: {edgeId: 6},
-    //         create: {
-    //             edgeId: 6,
-    //             weight: 0,
-    //             startNodeId: 6,
-    //             endNodeId: 7,
-    //         },
-    //         update: {
-    //             edgeId: 6,
-    //             weight: 0,
-    //             startNodeId: 6,
-    //             endNodeId: 7,
-    //         }
-    //     }),
-    //
-    //
-    //     //OUTSIDE: from garage to entrance path below
-    //     // await prisma.edge.upsert({
-    //     //     where: {edgeId: 100},
-    //     //     create: {
-    //     //         edgeId: 100,
-    //     //         weight: 0,
-    //     //         startNodeId: 100,
-    //     //         endNodeId: 101,
-    //     //     },
-    //     //     update: {
-    //     //         edgeId: 100,
-    //     //         weight: 0,
-    //     //         startNodeId: 100,
-    //     //         endNodeId: 101,
-    //     //     }
-    //     // }),
-    //     // await prisma.edge.upsert({
-    //     //     where: {edgeId: 101},
-    //     //     create: {
-    //     //         edgeId: 101,
-    //     //         weight: 0,
-    //     //         startNodeId: 101,
-    //     //         endNodeId: 102,
-    //     //     },
-    //     //     update: {
-    //     //         edgeId: 101,
-    //     //         weight: 0,
-    //     //         startNodeId: 101,
-    //     //         endNodeId: 102,
-    //     //     }
-    //     // }),
-    //     // await prisma.edge.upsert({
-    //     //     where: {edgeId: 102},
-    //     //     create: {
-    //     //         edgeId: 102,
-    //     //         weight: 0,
-    //     //         startNodeId: 102,
-    //     //         endNodeId: 103,
-    //     //     },
-    //     //     update: {
-    //     //         edgeId: 102,
-    //     //         weight: 0,
-    //     //         startNodeId: 102,
-    //     //         endNodeId: 103,
-    //     //     }
-    //     // }),
-    //     // await prisma.edge.upsert({
-    //     //     where: {edgeId: 103},
-    //     //     create: {
-    //     //         edgeId: 103,
-    //     //         weight: 0,
-    //     //         startNodeId: 103,
-    //     //         endNodeId: 104,
-    //     //     },
-    //     //     update: {
-    //     //         edgeId: 103,
-    //     //         weight: 0,
-    //     //         startNodeId: 103,
-    //     //         endNodeId: 104,
-    //     //     }
-    //     // }),
-    //     // await prisma.edge.upsert({
-    //     //     where: {edgeId: 104},
-    //     //     create: {
-    //     //         edgeId: 104,
-    //     //         weight: 0,
-    //     //         startNodeId: 104,
-    //     //         endNodeId: 105,
-    //     //     },
-    //     //     update: {
-    //     //         edgeId: 104,
-    //     //         weight: 0,
-    //     //         startNodeId: 104,
-    //     //         endNodeId: 105,
-    //     //     }
-    //     // }),
-    //     // await prisma.edge.upsert({
-    //     //     where: {edgeId: 105},
-    //     //     create: {
-    //     //         edgeId: 105,
-    //     //         weight: 0,
-    //     //         startNodeId: 105,
-    //     //         endNodeId: 106,
-    //     //     },
-    //     //     update: {
-    //     //         edgeId: 105,
-    //     //         weight: 0,
-    //     //         startNodeId: 105,
-    //     //         endNodeId: 106,
-    //     //     }
-    //     // }),
-    //     // await prisma.edge.upsert({
-    //     //     where: {edgeId: 106},
-    //     //     create: {
-    //     //         edgeId: 106,
-    //     //         weight: 0,
-    //     //         startNodeId: 106,
-    //     //         endNodeId: 107,
-    //     //     },
-    //     //     update: {
-    //     //         edgeId: 106,
-    //     //         weight: 0,
-    //     //         startNodeId: 106,
-    //     //         endNodeId: 107,
-    //     //     }
-    //     // }),
-    //
-    //     // await prisma.edge.upsert({
-    //     //     where: {edgeId: 0},
-    //     //     create: {
-    //     //         edgeId: 0,
-    //     //         weight: 0,
-    //     //         startNodeId: 0,
-    //     //         endNodeId: 1,
-    //     //     },
-    //     //     update: {
-    //     //         edgeId: 0,
-    //     //         weight: 0,
-    //     //         startNodeId: 0,
-    //     //         endNodeId: 1,
-    //     //     }
-    //     // }),
-    //     // await prisma.edge.upsert({
-    //     //     where: {edgeId: 1},
-    //     //     create: {
-    //     //         edgeId: 1,
-    //     //         weight: 0,
-    //     //         startNodeId: 1,
-    //     //         endNodeId: 2,
-    //     //     },
-    //     //     update: {
-    //     //         edgeId: 1,
-    //     //         weight: 0,
-    //     //         startNodeId: 1,
-    //     //         endNodeId: 2,
-    //     //     }
-    //     // }),
-    //     // await prisma.edge.upsert({
-    //     //     where: {edgeId: 2},
-    //     //     create: {
-    //     //         edgeId: 2,
-    //     //         weight: 0,
-    //     //         startNodeId: 2,
-    //     //         endNodeId: 3,
-    //     //     },
-    //     //     update: {
-    //     //         edgeId: 2,
-    //     //         weight: 0,
-    //     //         startNodeId: 2,
-    //     //         endNodeId: 3,
-    //     //     }
-    //     // }),
-    //     // await prisma.edge.upsert({
-    //     //     where: {edgeId: 3},
-    //     //     create: {
-    //     //         edgeId: 3,
-    //     //         weight: 0,
-    //     //         startNodeId: 3,
-    //     //         endNodeId: 4,
-    //     //     },
-    //     //     update: {
-    //     //         edgeId: 3,
-    //     //         weight: 0,
-    //     //         startNodeId: 3,
-    //     //         endNodeId: 4,
-    //     //     }
-    //     // }),
-    //     // await prisma.edge.upsert({
-    //     //     where: {edgeId: 4},
-    //     //     create: {
-    //     //         edgeId: 4,
-    //     //         weight: 0,
-    //     //         startNodeId: 4,
-    //     //         endNodeId: 5,
-    //     //     },
-    //     //     update: {
-    //     //         edgeId: 4,
-    //     //         weight: 0,
-    //     //         startNodeId: 4,
-    //     //         endNodeId: 5,
-    //     //     }
-    //     // }),
-    //     // await prisma.edge.upsert({
-    //     //     where: {edgeId: 5},
-    //     //     create: {
-    //     //         edgeId: 5,
-    //     //         weight: 0,
-    //     //         startNodeId: 5,
-    //     //         endNodeId: 6,
-    //     //     },
-    //     //     update: {
-    //     //         edgeId: 5,
-    //     //         weight: 0,
-    //     //         startNodeId: 5,
-    //     //         endNodeId: 6,
-    //     //     }
-    //     // }),
-    //     //
-    //     // await prisma.edge.upsert({
-    //     //     where: {edgeId: 6},
-    //     //     create: {
-    //     //         edgeId: 6,
-    //     //         weight: 0,
-    //     //         startNodeId: 6,
-    //     //         endNodeId: 7,
-    //     //     },
-    //     //     update: {
-    //     //         edgeId: 6,
-    //     //         weight: 0,
-    //     //         startNodeId: 6,
-    //     //         endNodeId: 7,
-    //     //     }
-    //     // }),
-    //     // await prisma.edge.upsert({
-    //     //     where: {edgeId: 7},
-    //     //     create: {
-    //     //         edgeId: 7,
-    //     //         weight: 0,
-    //     //         startNodeId: 7,
-    //     //         endNodeId: 8,
-    //     //     },
-    //     //     update: {
-    //     //         edgeId: 7,
-    //     //         weight: 0,
-    //     //         startNodeId: 7,
-    //     //         endNodeId: 8,
-    //     //     }
-    //     // }),
-    //     //
-    //     // await prisma.edge.upsert({
-    //     //     where: {edgeId: 8},
-    //     //     create: {
-    //     //         edgeId: 8,
-    //     //         weight: 0,
-    //     //         startNodeId: 8,
-    //     //         endNodeId: 9,
-    //     //     },
-    //     //     update: {
-    //     //         edgeId: 8,
-    //     //         weight: 0,
-    //     //         startNodeId: 8,
-    //     //         endNodeId: 9,
-    //     //     }
-    //     // }),
-    //     //OUTSIDE: end of path from garage to entrance ABOVE^^
-    //
-    //
-    //
-    //
-    //
-    //     await prisma.edge.upsert({
-    //         where: {edgeId: 100},
-    //         create: {
-    //             edgeId: 100,
-    //             weight: 0,
-    //             startNodeId: 100,
-    //             endNodeId: 101, //checkpoint 3 node
-    //         },
-    //         update: {
-    //             edgeId: 100,
-    //             weight: 0,
-    //             startNodeId: 100,
-    //             endNodeId: 101,
-    //         }
-    //     }),
-    //     await prisma.edge.upsert({
-    //         where: {edgeId: 101},
-    //         create: {
-    //             edgeId: 101,
-    //             weight: 0,
-    //             startNodeId: 101,
-    //             endNodeId: 102, //checkpoint 3 node
-    //         },
-    //         update: {
-    //             edgeId: 101,
-    //             weight: 0,
-    //             startNodeId: 101,
-    //             endNodeId: 102,
-    //         }
-    //     }),
-    //     await prisma.edge.upsert({
-    //         where: {edgeId: 102},
-    //         create: {
-    //             edgeId: 102,
-    //             weight: 0,
-    //             startNodeId: 102,
-    //             endNodeId: 103, //checkpoint 3 node
-    //         },
-    //         update: {
-    //             edgeId: 102,
-    //             weight: 0,
-    //             startNodeId: 102,
-    //             endNodeId: 103,
-    //         }
-    //     }),
-    //     await prisma.edge.upsert({
-    //         where: {edgeId: 103},
-    //         create: {
-    //             edgeId: 103,
-    //             weight: 0,
-    //             startNodeId: 103,
-    //             endNodeId: 104, //checkpoint 3 node
-    //         },
-    //         update: {
-    //             edgeId: 103,
-    //             weight: 0,
-    //             startNodeId: 103,
-    //             endNodeId: 104,
-    //         }
-    //     }),
-    //     await prisma.edge.upsert({
-    //         where: {edgeId: 104},
-    //         create: {
-    //             edgeId: 104,
-    //             weight: 0,
-    //             startNodeId: 104,
-    //             endNodeId: 105, //checkpoint 3 node
-    //         },
-    //         update: {
-    //             edgeId: 104,
-    //             weight: 0,
-    //             startNodeId: 104,
-    //             endNodeId: 105,
-    //         }
-    //     }),
-    //     await prisma.edge.upsert({
-    //         where: {edgeId: 105},
-    //         create: {
-    //             edgeId: 105,
-    //             weight: 0,
-    //             startNodeId: 105,
-    //             endNodeId: 106, //checkpoint 3 node
-    //         },
-    //         update: {
-    //             edgeId: 105,
-    //             weight: 0,
-    //             startNodeId: 105,
-    //             endNodeId: 106,
-    //         }
-    //     }),
-    //     await prisma.edge.upsert({
-    //         where: {edgeId: 106},
-    //         create: {
-    //             edgeId: 106,
-    //             weight: 0,
-    //             startNodeId: 106,
-    //             endNodeId: 107, //checkpoint 3 node
-    //         },
-    //         update: {
-    //             edgeId: 106,
-    //             weight: 0,
-    //             startNodeId: 106,
-    //             endNodeId: 107,
-    //         }
-    //     }),
-    //     // INSIDE BUILDING: from door to checkpoint 1 BELOW
-    //     await prisma.edge.upsert({
-    //         where: {edgeId: 107},
-    //         create: {
-    //             edgeId: 107,
-    //             weight: 0,
-    //             startNodeId: 108,
-    //             endNodeId: 109,
-    //         },
-    //         update: {
-    //             edgeId: 107,
-    //             weight: 0,
-    //             startNodeId: 108,
-    //             endNodeId: 109,
-    //         }
-    //     }),
-    //
-    //     await prisma.edge.upsert({
-    //         where: {edgeId: 108},
-    //         create: {
-    //             edgeId: 108,
-    //             weight: 0,
-    //             startNodeId: 109,
-    //             endNodeId: 110,
-    //         },
-    //         update: {
-    //             edgeId: 108,
-    //             weight: 0,
-    //             startNodeId: 109,
-    //             endNodeId: 110,
-    //         }
-    //     }),
-    //     await prisma.edge.upsert({
-    //         where: {edgeId: 109},
-    //         create: {
-    //             edgeId: 109,
-    //             weight: 0,
-    //             startNodeId: 110,
-    //             endNodeId: 111,
-    //         },
-    //         update: {
-    //             edgeId: 109,
-    //             weight: 0,
-    //             startNodeId: 110,
-    //             endNodeId: 111,
-    //         }
-    //     }),
-    //     // INSIDE BUILDING: end of path from door to checkpoint 1 ABOVE ^^
-    //
-    //
-    //
-    //     // INSIDE BUILDING: from door to checkpoint 2 BELOW
-    //     await prisma.edge.upsert({
-    //         where: {edgeId: 110},
-    //         create: {
-    //             edgeId: 110,
-    //             weight: 0,
-    //             startNodeId: 108, // door node
-    //             endNodeId: 112, // hallway beside checkpoint 2 node
-    //         },
-    //         update: {
-    //             edgeId: 110,
-    //             weight: 0,
-    //             startNodeId: 108,
-    //             endNodeId: 112,
-    //         }
-    //     }),
-    //     await prisma.edge.upsert({
-    //         where: {edgeId: 111},
-    //         create: {
-    //             edgeId: 111,
-    //             weight: 0,
-    //             startNodeId: 112,
-    //             endNodeId: 113,
-    //         },
-    //         update: {
-    //             edgeId: 111,
-    //             weight: 0,
-    //             startNodeId: 112,
-    //             endNodeId: 113, //checkpoint 2 node
-    //         }
-    //     }),
-    //     //INSIDE BUILDING: end of path from 'Door 1' to checkpoint 2 ABOVE
-    //
-    //
-    //
-    //     //INSIDE BUILDING: path from 'Door 1' to checkpoint 3 BELOW
-    //     //
-    //     await prisma.edge.upsert({
-    //         where: {edgeId: 112},
-    //         create: {
-    //             edgeId: 112,
-    //             weight: 0,
-    //             startNodeId: 112,
-    //             endNodeId: 114,
-    //         },
-    //         update: {
-    //             edgeId: 112,
-    //             weight: 0,
-    //             startNodeId: 112,
-    //             endNodeId: 114, //hallway besides checkpoint 3
-    //         }
-    //     }),
-    //     //
-    //     await prisma.edge.upsert({
-    //         where: {edgeId: 113},
-    //         create: {
-    //             edgeId: 113,
-    //             weight: 0,
-    //             startNodeId: 114,
-    //             endNodeId: 115, //checkpoint 3 node
-    //         },
-    //         update: {
-    //             edgeId: 113,
-    //             weight: 0,
-    //             startNodeId: 114,
-    //             endNodeId: 115,
-    //         }
-    //     }),
-    //
-    //
-    //
-    //
-    //     await prisma.edge.upsert({
-    //         where: {edgeId: 200},
-    //         create: {
-    //             edgeId: 200,
-    //             weight: 0,
-    //             startNodeId: 200,
-    //             endNodeId: 201, //checkpoint 3 node
-    //         },
-    //         update: {
-    //             edgeId: 200,
-    //             weight: 0,
-    //             startNodeId: 200,
-    //             endNodeId: 201,
-    //         }
-    //     }),
-    //     await prisma.edge.upsert({
-    //         where: {edgeId: 201},
-    //         create: {
-    //             edgeId: 201,
-    //             weight: 0,
-    //             startNodeId: 201,
-    //             endNodeId: 202, //checkpoint 3 node
-    //         },
-    //         update: {
-    //             edgeId: 201,
-    //             weight: 0,
-    //             startNodeId: 201,
-    //             endNodeId: 202,
-    //         }
-    //     }),
-    //     await prisma.edge.upsert({
-    //         where: {edgeId: 202},
-    //         create: {
-    //             edgeId: 202,
-    //             weight: 0,
-    //             startNodeId: 202,
-    //             endNodeId: 203, //checkpoint 3 node
-    //         },
-    //         update: {
-    //             edgeId: 202,
-    //             weight: 0,
-    //             startNodeId: 202,
-    //             endNodeId: 203,
-    //         }
-    //     }),
-    //     await prisma.edge.upsert({
-    //         where: {edgeId: 203},
-    //         create: {
-    //             edgeId: 203,
-    //             weight: 0,
-    //             startNodeId: 203,
-    //             endNodeId: 204, //checkpoint 3 node
-    //         },
-    //         update: {
-    //             edgeId: 203,
-    //             weight: 0,
-    //             startNodeId: 203,
-    //             endNodeId: 204,
-    //         }
-    //     }),
-    //     await prisma.edge.upsert({
-    //         where: {edgeId: 204},
-    //         create: {
-    //             edgeId: 204,
-    //             weight: 0,
-    //             startNodeId: 204,
-    //             endNodeId: 205, //checkpoint 3 node
-    //         },
-    //         update: {
-    //             edgeId: 204,
-    //             weight: 0,
-    //             startNodeId: 204,
-    //             endNodeId: 205,
-    //         }
-    //     }),
-    //     await prisma.edge.upsert({
-    //         where: {edgeId: 205},
-    //         create: {
-    //             edgeId: 205,
-    //             weight: 0,
-    //             startNodeId: 205,
-    //             endNodeId: 206, //checkpoint 3 node
-    //         },
-    //         update: {
-    //             edgeId: 205,
-    //             weight: 0,
-    //             startNodeId: 205,
-    //             endNodeId: 206,
-    //         }
-    //     }),
-    //     await prisma.edge.upsert({
-    //         where: {edgeId: 206},
-    //         create: {
-    //             edgeId: 206,
-    //             weight: 0,
-    //             startNodeId: 206,
-    //             endNodeId: 207, //checkpoint 3 node
-    //         },
-    //         update: {
-    //             edgeId: 206,
-    //             weight: 0,
-    //             startNodeId: 206,
-    //             endNodeId: 207,
-    //         }
-    //     }),
-    //
-    //
-    //     await prisma.edge.upsert({
-    //         where: {edgeId: 208},
-    //         create: {
-    //             edgeId: 208,
-    //             weight: 0,
-    //             startNodeId: 208,
-    //             endNodeId: 209, //checkpoint 3 node
-    //         },
-    //         update: {
-    //             edgeId: 208,
-    //             weight: 0,
-    //             startNodeId: 208,
-    //             endNodeId: 209,
-    //         }
-    //     }),
-    //     await prisma.edge.upsert({
-    //         where: {edgeId: 209},
-    //         create: {
-    //             edgeId: 209,
-    //             weight: 0,
-    //             startNodeId: 209,
-    //             endNodeId: 210, //checkpoint 3 node
-    //         },
-    //         update: {
-    //             edgeId: 209,
-    //             weight: 0,
-    //             startNodeId: 209,
-    //             endNodeId: 210,
-    //         }
-    //     }),
-    //     await prisma.edge.upsert({
-    //         where: {edgeId: 210},
-    //         create: {
-    //             edgeId: 210,
-    //             weight: 0,
-    //             startNodeId: 210,
-    //             endNodeId: 211, //checkpoint 3 node
-    //         },
-    //         update: {
-    //             edgeId: 210,
-    //             weight: 0,
-    //             startNodeId: 210,
-    //             endNodeId: 211,
-    //         }
-    //     }),
-    //
-    //
-    //
-    //
-    //     await prisma.edge.upsert({
-    //         where: {edgeId: 300},
-    //         create: {
-    //             edgeId: 300,
-    //             weight: 0,
-    //             startNodeId: 300,
-    //             endNodeId: 301, //checkpoint 3 node
-    //         },
-    //         update: {
-    //             edgeId: 300,
-    //             weight: 0,
-    //             startNodeId: 300,
-    //             endNodeId: 301,
-    //         }
-    //     }),
-    //     await prisma.edge.upsert({
-    //         where: {edgeId: 301},
-    //         create: {
-    //             edgeId: 301,
-    //             weight: 0,
-    //             startNodeId: 301,
-    //             endNodeId: 302, //checkpoint 3 node
-    //         },
-    //         update: {
-    //             edgeId: 301,
-    //             weight: 0,
-    //             startNodeId: 301,
-    //             endNodeId: 302,
-    //         }
-    //     }),
-    //     await prisma.edge.upsert({
-    //         where: {edgeId: 302},
-    //         create: {
-    //             edgeId: 302,
-    //             weight: 0,
-    //             startNodeId: 302,
-    //             endNodeId: 303, //checkpoint 3 node
-    //         },
-    //         update: {
-    //             edgeId: 302,
-    //             weight: 0,
-    //             startNodeId: 302,
-    //             endNodeId: 303,
-    //         }
-    //     }),
-    //     await prisma.edge.upsert({
-    //         where: {edgeId: 303},
-    //         create: {
-    //             edgeId: 303,
-    //             weight: 0,
-    //             startNodeId: 303,
-    //             endNodeId: 304, //checkpoint 3 node
-    //         },
-    //         update: {
-    //             edgeId: 303,
-    //             weight: 0,
-    //             startNodeId: 303,
-    //             endNodeId: 304,
-    //         }
-    //     }),
-    //     await prisma.edge.upsert({
-    //         where: {edgeId: 304},
-    //         create: {
-    //             edgeId: 304,
-    //             weight: 0,
-    //             startNodeId: 304,
-    //             endNodeId: 305, //checkpoint 3 node
-    //         },
-    //         update: {
-    //             edgeId: 304,
-    //             weight: 0,
-    //             startNodeId: 304,
-    //             endNodeId: 305,
-    //         }
-    //     }),
-    //     await prisma.edge.upsert({
-    //         where: {edgeId: 305},
-    //         create: {
-    //             edgeId: 305,
-    //             weight: 0,
-    //             startNodeId: 305,
-    //             endNodeId: 306, //checkpoint 3 node
-    //         },
-    //         update: {
-    //             edgeId: 305,
-    //             weight: 0,
-    //             startNodeId: 305,
-    //             endNodeId: 306,
-    //         }
-    //     }),
-    //     await prisma.edge.upsert({
-    //         where: {edgeId: 306},
-    //         create: {
-    //             edgeId: 306,
-    //             weight: 0,
-    //             startNodeId: 306,
-    //             endNodeId: 307, //checkpoint 3 node
-    //         },
-    //         update: {
-    //             edgeId: 306,
-    //             weight: 0,
-    //             startNodeId: 306,
-    //             endNodeId: 307,
-    //         }
-    //     }),
-    //
-    //
-    //     await prisma.edge.upsert({
-    //         where: {edgeId: 307},
-    //         create: {
-    //             edgeId: 307,
-    //             weight: 0,
-    //             startNodeId: 308,
-    //             endNodeId: 309, //checkpoint 3 node
-    //         },
-    //         update: {
-    //             edgeId: 307,
-    //             weight: 0,
-    //             startNodeId: 308,
-    //             endNodeId: 309,
-    //         }
-    //     }),
-    //     await prisma.edge.upsert({
-    //         where: {edgeId: 308},
-    //         create: {
-    //             edgeId: 308,
-    //             weight: 0,
-    //             startNodeId: 309,
-    //             endNodeId: 310, //checkpoint 3 node
-    //         },
-    //         update: {
-    //             edgeId: 308,
-    //             weight: 0,
-    //             startNodeId: 309,
-    //             endNodeId: 310,
-    //         }
-    //     }),
-    //     await prisma.edge.upsert({
-    //         where: {edgeId: 309},
-    //         create: {
-    //             edgeId: 309,
-    //             weight: 0,
-    //             startNodeId: 310,
-    //             endNodeId: 311, //checkpoint 3 node
-    //         },
-    //         update: {
-    //             edgeId: 309,
-    //             weight: 0,
-    //             startNodeId: 310,
-    //             endNodeId: 311,
-    //         }
-    //     }),
-    //     await prisma.edge.upsert({
-    //         where: {edgeId: 310},
-    //         create: {
-    //             edgeId: 310,
-    //             weight: 0,
-    //             startNodeId: 309,
-    //             endNodeId: 312, //checkpoint 3 node
-    //         },
-    //         update: {
-    //             edgeId: 310,
-    //             weight: 0,
-    //             startNodeId: 309,
-    //             endNodeId: 312,
-    //         }
-    //     }),
-    //     await prisma.edge.upsert({
-    //         where: {edgeId: 311},
-    //         create: {
-    //             edgeId: 311,
-    //             weight: 0,
-    //             startNodeId: 312,
-    //             endNodeId: 313, //checkpoint 3 node
-    //         },
-    //         update: {
-    //             edgeId: 311,
-    //             weight: 0,
-    //             startNodeId: 312,
-    //             endNodeId: 313,
-    //         }
-    //     }),
-    //     await prisma.edge.upsert({
-    //         where: {edgeId: 312},
-    //         create: {
-    //             edgeId: 312,
-    //             weight: 0,
-    //             startNodeId: 313,
-    //             endNodeId: 314, //checkpoint 3 node
-    //         },
-    //         update: {
-    //             edgeId: 312,
-    //             weight: 0,
-    //             startNodeId: 313,
-    //             endNodeId: 314,
-    //         }
-    //     }),
-    //
-    //
-    // ];
-    //
-    // console.log('Edges seeded!');
-    // console.log(edges);
-
-
-
-
-    // console.log('Seeding hospitals...')
-    // const hospitals = [
-    //     await prisma.hospital.upsert({
-    //         where: {hospitalId: 0},
-    //         update: {
-    //             hospitalId: 0,
-    //             name: 'Chestnut Hill',
-    //             placeId: 'ChIJLwkLvP5444kRGTnWxi0zsnM',
-    //             defaultZoom: 19,
-    //             defaultLat: 42.325956546246374,
-    //             defaultLng: -71.14971804046458,
-    //         },
-    //         create: {
-    //             hospitalId: 0,
-    //             name: 'Chestnut Hill',
-    //             placeId: 'ChIJLwkLvP5444kRGTnWxi0zsnM',
-    //             defaultZoom: 19,
-    //             defaultLat: 42.325956546246374,
-    //             defaultLng: -71.14971804046458,
-    //         },
-    //     }),
-    //     await prisma.hospital.upsert({
-    //         where: {hospitalId: 1},
-    //         update: {
-    //             hospitalId: 1,
-    //             name: 'Patriot Place',
-    //             placeId: 'ChIJKQrcBrd85IkRhhpDZMarvhQ',
-    //             defaultZoom: 18,
-    //             defaultLat: 42.09179246168661,
-    //             defaultLng: -71.26649009979019,
-    //         },
-    //         create: {
-    //             hospitalId: 1,
-    //             name: 'Patriot Place',
-    //             placeId: 'ChIJKQrcBrd85IkRhhpDZMarvhQ',
-    //             defaultZoom: 18,
-    //             defaultLat: 42.09179246168661,
-    //             defaultLng: -71.26649009979019,
-    //         },
-    //     }),
-    // ];
-    //
-    // console.log('Hospitals seeded!');
-    // console.log(hospitals);
-    //
-    // console.log('Seeding floors...');
-    //
-    // const floors = [
-    //     await prisma.floor.upsert({
-    //         where: {floorId: 0},
-    //         update: {
-    //             floorId: 0,
-    //             num: 1,
-    //             imageURL: '/src/public/floormaps/chf1.png',
-    //             north: 42.32629,
-    //             south: 42.32569,
-    //             east: -71.14921,
-    //             west: -71.15013,
-    //             hospitalId: 0,
-    //         },
-    //         create: {
-    //             floorId: 0,
-    //             num: 1,
-    //             imageURL: '/src/public/floormaps/chf1.png',
-    //             north: 42.32629,
-    //             south: 42.32569,
-    //             east: -71.14921,
-    //             west: -71.15013,
-    //             hospitalId: 0,
-    //         },
-    //     }),
-    //     await prisma.floor.upsert({
-    //         where: {floorId: 1},
-    //         update: {
-    //             floorId: 1,
-    //             num: 1,
-    //             imageURL: '/src/public/floormaps/pp20f1.png',
-    //             north: 42.09310,
-    //             south: 42.09246,
-    //             east: -71.26553,
-    //             west: -71.26657,
-    //             hospitalId: 1,
-    //         },
-    //         create: {
-    //             floorId: 1,
-    //             num: 1,
-    //             imageURL: '/src/public/floormaps/pp20f1.png',
-    //             north: 42.09310,
-    //             south: 42.09246,
-    //             east: -71.26553,
-    //             west: -71.26657,
-    //             hospitalId: 1,
-    //         },
-    //     }),
-    //     await prisma.floor.upsert({
-    //         where: {floorId: 2},
-    //         update: {
-    //             floorId: 2,
-    //             num: 3,
-    //             imageURL: '/src/public/floormaps/pp22f3.png',
-    //             north: 42.09308,
-    //             south: 42.09223,
-    //             east: -71.26654,
-    //             west: -71.26744,
-    //             hospitalId: 1,
-    //         },
-    //         create: {
-    //             floorId: 2,
-    //             num: 3,
-    //             imageURL: '/src/public/floormaps/pp22f3.png',
-    //             north: 42.09308,
-    //             south: 42.09223,
-    //             east: -71.26654,
-    //             west: -71.26744,
-    //             hospitalId: 1,
-    //         },
-    //     }),
-    //     await prisma.floor.upsert({
-    //         where: {floorId: 3},
-    //         update: {
-    //             floorId: 3,
-    //             num: 4,
-    //             imageURL: '/src/public/floormaps/pp22f4.png',
-    //             north: 42.09308,
-    //             south: 42.09223,
-    //             east: -71.26654,
-    //             west: -71.26744,
-    //             hospitalId: 1,
-    //         },
-    //         create: {
-    //             floorId: 3,
-    //             num: 4,
-    //             imageURL: '/src/public/floormaps/pp22f4.png',
-    //             north: 42.09308,
-    //             south: 42.09223,
-    //             east: -71.26654,
-    //             west: -71.26744,
-    //             hospitalId: 1,
-    //         },
-    //     }),
-    // ];
-    //
-    // console.log('Floors seeded!');
-    // console.log(floors);
-    //
-    // console.log('Seeding departments...');
-    // const departments = [
-    //     await prisma.department.upsert({
-    //         where: {departmentId: 0},
-    //         update: {
-    //             departmentId: 0,
-    //             name: 'Laboratory',
-    //             suite: '100',
-    //             floorId: 0,
-    //         },
-    //         create: {
-    //             departmentId: 0,
-    //             name: 'Laboratory',
-    //             suite: '100',
-    //             floorId: 0,
-    //         },
-    //     }),
-    //     await prisma.department.upsert({
-    //         where: {departmentId: 1},
-    //         update: {
-    //             departmentId: 1,
-    //             name: 'Multi-Specialty Clinic',
-    //             suite: '130',
-    //             floorId: 0,
-    //         },
-    //         create: {
-    //             departmentId: 1,
-    //             name: 'Multi-Specialty Clinic',
-    //             suite: '130',
-    //             floorId: 0,
-    //         },
-    //     }),
-    //     await prisma.department.upsert({
-    //         where: {departmentId: 2},
-    //         update: {
-    //             departmentId: 2,
-    //             name: 'Radiology, MRI/CT scan',
-    //             suite: '102B',
-    //             floorId: 0,
-    //         },
-    //         create: {
-    //             departmentId: 2,
-    //             name: 'Radiology, MRI/CT scan',
-    //             suite: '102B',
-    //             floorId: 0,
-    //         },
-    //     }),
-    //     await prisma.department.upsert({
-    //         where: {departmentId: 3},
-    //         update: {
-    //             departmentId: 3,
-    //             name: 'Blood Draw / Phlebotomy (20 floor 1)',
-    //             suite: '',
-    //             floorId: 1,
-    //         },
-    //         create: {
-    //             departmentId: 3,
-    //             name: 'Blood Draw / Phlebotomy (20 floor 1)',
-    //             suite: '',
-    //             floorId: 1,
-    //         },
-    //     }),
-    //     await prisma.department.upsert({
-    //         where: {departmentId: 4},
-    //         update: {
-    //             departmentId: 4,
-    //             name: 'Pharmacy',
-    //             suite: '',
-    //             floorId: 1,
-    //         },
-    //         create: {
-    //             departmentId: 4,
-    //             name: 'Pharmacy',
-    //             suite: '',
-    //             floorId: 1,
-    //         },
-    //     }),
-    //     await prisma.department.upsert({
-    //         where: {departmentId: 5},
-    //         update: {
-    //             departmentId: 5,
-    //             name: 'Radiology',
-    //             suite: '',
-    //             floorId: 1,
-    //         },
-    //         create: {
-    //             departmentId: 5,
-    //             name: 'Radiology',
-    //             suite: '',
-    //             floorId: 1,
-    //         },
-    //     }),
-    //     await prisma.department.upsert({
-    //         where: {departmentId: 6},
-    //         update: {
-    //             departmentId: 6,
-    //             name: 'Cardiovascular Services',
-    //             suite: '',
-    //             floorId: 1,
-    //         },
-    //         create: {
-    //             departmentId: 6,
-    //             name: 'Cardiovascular Services',
-    //             suite: '',
-    //             floorId: 1,
-    //         },
-    //     }),
-    //     await prisma.department.upsert({
-    //         where: {departmentId: 7},
-    //         update: {
-    //             departmentId: 7,
-    //             name: 'Urology',
-    //             suite: '',
-    //             floorId: 1,
-    //         },
-    //         create: {
-    //             departmentId: 7,
-    //             name: 'Urology',
-    //             suite: '',
-    //             floorId: 1,
-    //         },
-    //     }),
-    //     await prisma.department.upsert({
-    //         where: {departmentId: 8},
-    //         update: {
-    //             departmentId: 8,
-    //             name: 'Urgent Care Center',
-    //             suite: '',
-    //             floorId: 1,
-    //         },
-    //         create: {
-    //             departmentId: 8,
-    //             name: 'Urgent Care Center',
-    //             suite: '',
-    //             floorId: 1,
-    //         },
-    //     }),
-    //     await prisma.department.upsert({
-    //         where: {departmentId: 9},
-    //         update: {
-    //             departmentId: 9,
-    //             name: 'Multi Specialty Clinic',
-    //             suite: '',
-    //             floorId: 2,
-    //         },
-    //         create: {
-    //             departmentId: 9,
-    //             name: 'Multi Specialty Clinic',
-    //             suite: '',
-    //             floorId: 2,
-    //         },
-    //     }),
-    //     await prisma.department.upsert({
-    //         where: {departmentId: 10},
-    //         update: {
-    //             departmentId: 10,
-    //             name: 'Patient Financial Services',
-    //             suite: '',
-    //             floorId: 2,
-    //         },
-    //         create: {
-    //             departmentId: 10,
-    //             name: 'Patient Financial Services',
-    //             suite: '',
-    //             floorId: 2,
-    //         },
-    //     }),
-    //     await prisma.department.upsert({
-    //         where: {departmentId: 11},
-    //         update: {
-    //             departmentId: 11,
-    //             name: 'Blood Draw / Phlebotomy (22 floor 4)',
-    //             suite: '',
-    //             floorId: 3,
-    //         },
-    //         create: {
-    //             departmentId: 11,
-    //             name: 'Blood Draw / Phlebotomy (22 floor 4)',
-    //             suite: '',
-    //             floorId: 3,
-    //         },
-    //     }),
-    //     await prisma.department.upsert({
-    //         where: {departmentId: 12},
-    //         update: {
-    //             departmentId: 12,
-    //             name: 'Community Room',
-    //             suite: '',
-    //             floorId: 3,
-    //         },
-    //         create: {
-    //             departmentId: 12,
-    //             name: 'Community Room',
-    //             suite: '',
-    //             floorId: 3,
-    //         },
-    //     }),
-    //     await prisma.department.upsert({
-    //         where: {departmentId: 13},
-    //         update: {
-    //             departmentId: 13,
-    //             name: 'Primary Care',
-    //             suite: '',
-    //             floorId: 3,
-    //         },
-    //         create: {
-    //             departmentId: 13,
-    //             name: 'Primary Care',
-    //             suite: '',
-    //             floorId: 3,
-    //         },
-    //     }),
-    // ];
-    //
-    // console.log('Departments seeded!');
-    // console.log(departments);
-
-
-    // console.log('Seeding hospitals...')
-    // const hospitals = [
-    //     await prisma.hospital.upsert({
-    //         where: {hospitalId: 0},
-    //         update: {},
-    //         create: {
-    //             hospitalId: 0,
-    //             name: 'Chestnut Hill',
-    //             placeId: 'ChIJLwkLvP5444kRGTnWxi0zsnM',
-    //             defaultZoom: 20,
-    //             defaultLat: 42.325956546246374,
-    //             defaultLong: -71.14971804046458,
-    //         },
-    //     }),
-    //     await prisma.hospital.upsert({
-    //         where: {hospitalId: 1},
-    //         update: {},
-    //         create: {
-    //             hospitalId: 1,
-    //             name: '20 Patriot Place',
-    //             placeId: 'ChIJHzla42V95IkR_bz0ni4NvfI',
-    //             defaultZoom: 20,
-    //             defaultLat: 42.09281274014584,
-    //             defaultLong: -71.26612984263076,
-    //         },
-    //     }),
-    //     await prisma.hospital.upsert({
-    //         where: {hospitalId: 2},
-    //         update: {},
-    //         create: {
-    //             hospitalId: 2,
-    //             name: '22 Patriot Place',
-    //             placeId: 'ChIJKQrcBrd85IkRhhpDZMarvhQ',
-    //             defaultZoom: 20,
-    //             defaultLat: 42.09265139820163,
-    //             defaultLong: -71.2669845235888,
-    //         },
-    //     }),
-    // ];
-    //
-    // console.log('Hospitals seeded!');
-    // console.log(hospitals);
-    //
-    // console.log('Seeding floors...');
-    //
-    // const floors = [
-    //     await prisma.floor.upsert({
-    //         where: {floorId: 0},
-    //         update: {},
-    //         create: {
-    //             floorId: 0,
-    //             num: 1,
-    //             imageURL: '',
-    //             hospitalId: 0,
-    //         },
-    //     }),
-    //     await prisma.floor.upsert({
-    //         where: {floorId: 1},
-    //         update: {},
-    //         create: {
-    //             floorId: 1,
-    //             num: 1,
-    //             imageURL: '',
-    //             hospitalId: 1,
-    //         },
-    //     }),
-    //     await prisma.floor.upsert({
-    //         where: {floorId: 2},
-    //         update: {},
-    //         create: {
-    //             floorId: 2,
-    //             num: 3,
-    //             imageURL: '',
-    //             hospitalId: 2,
-    //         },
-    //     }),
-    //     await prisma.floor.upsert({
-    //         where: {floorId: 3},
-    //         update: {},
-    //         create: {
-    //             floorId: 3,
-    //             num: 4,
-    //             imageURL: '',
-    //             hospitalId: 2,
-    //         },
-    //     }),
-    // ];
-    //
-    // console.log('Floors seeded!');
-    // console.log(floors);
-    //
-    // console.log('Seeding departments...');
-    // const departments = [
-    //     await prisma.department.upsert({
-    //         where: {departmentId: 0},
-    //         update: {},
-    //         create: {
-    //             departmentId: 0,
-    //             name: 'Laboratory',
-    //             suite: '100',
-    //             floorId: 0,
-    //         },
-    //     }),
-    //     await prisma.department.upsert({
-    //         where: {departmentId: 1},
-    //         update: {},
-    //         create: {
-    //             departmentId: 1,
-    //             name: 'Multi-Specialty Clinic',
-    //             suite: '130',
-    //             floorId: 0,
-    //         },
-    //     }),
-    //     await prisma.department.upsert({
-    //         where: {departmentId: 2},
-    //         update: {},
-    //         create: {
-    //             departmentId: 2,
-    //             name: 'Radiology, MRI/CT scan',
-    //             suite: '102B',
-    //             floorId: 0,
-    //         },
-    //     }),
-    //     await prisma.department.upsert({
-    //         where: {departmentId: 3},
-    //         update: {},
-    //         create: {
-    //             departmentId: 3,
-    //             name: 'Blood Draw / Phlebotomy',
-    //             suite: '',
-    //             floorId: 1,
-    //         },
-    //     }),
-    //     await prisma.department.upsert({
-    //         where: {departmentId: 4},
-    //         update: {},
-    //         create: {
-    //             departmentId: 4,
-    //             name: 'Pharmacy',
-    //             suite: '',
-    //             floorId: 1,
-    //         },
-    //     }),
-    //     await prisma.department.upsert({
-    //         where: {departmentId: 5},
-    //         update: {},
-    //         create: {
-    //             departmentId: 5,
-    //             name: 'Radiology',
-    //             suite: '',
-    //             floorId: 1,
-    //         },
-    //     }),
-    //     await prisma.department.upsert({
-    //         where: {departmentId: 6},
-    //         update: {},
-    //         create: {
-    //             departmentId: 6,
-    //             name: 'Cardiovascular Services',
-    //             suite: '',
-    //             floorId: 1,
-    //         },
-    //     }),
-    //     await prisma.department.upsert({
-    //         where: {departmentId: 7},
-    //         update: {},
-    //         create: {
-    //             departmentId: 7,
-    //             name: 'Urology',
-    //             suite: '',
-    //             floorId: 1,
-    //         },
-    //     }),
-    //     await prisma.department.upsert({
-    //         where: {departmentId: 8},
-    //         update: {},
-    //         create: {
-    //             departmentId: 8,
-    //             name: 'Urgent Care Center',
-    //             suite: '',
-    //             floorId: 1,
-    //         },
-    //     }),
-    //     await prisma.department.upsert({
-    //         where: {departmentId: 9},
-    //         update: {},
-    //         create: {
-    //             departmentId: 9,
-    //             name: 'Multi Specialty Clinic',
-    //             suite: '',
-    //             floorId: 2,
-    //         },
-    //     }),
-    //     await prisma.department.upsert({
-    //         where: {departmentId: 10},
-    //         update: {},
-    //         create: {
-    //             departmentId: 10,
-    //             name: 'Patient Financial Services',
-    //             suite: '',
-    //             floorId: 2,
-    //         },
-    //     }),
-    //     await prisma.department.upsert({
-    //         where: {departmentId: 11},
-    //         update: {},
-    //         create: {
-    //             departmentId: 11,
-    //             name: 'Blood Draw / Phlebotomy',
-    //             suite: '',
-    //             floorId: 3,
-    //         },
-    //     }),
-    //     await prisma.department.upsert({
-    //         where: {departmentId: 12},
-    //         update: {},
-    //         create: {
-    //             departmentId: 12,
-    //             name: 'Community Room',
-    //             suite: '',
-    //             floorId: 3,
-    //         },
-    //     }),
-    //     await prisma.department.upsert({
-    //         where: {departmentId: 13},
-    //         update: {},
-    //         create: {
-    //             departmentId: 13,
-    //             name: 'Primary Care',
-    //             suite: '',
-    //             floorId: 3,
-    //         },
-    //     }),
-    // ];
-    //
-    // console.log('Departments seeded!');
-    // console.log(departments);
-
-
-    // Seed departments
-    // console.log('Seeding departments...');
-    // const departments = [
-    //     await prisma.department.upsert({
-    //         where: {departmentId: 1},
-    //         update: {},
-    //         create: {
-    //             name: "Allergy and Clinical Immunology",
-    //             floor: 3,
-    //             suite: "301",
-    //             specialtyServices:
-    //                 "Allergy, (environmental, food, medication, and venoms), asthma, anaphylaxis, angioedema, sinusitis, and immunodeficiency",
-    //             telephone: "(617) 732–9850",
-    //         }
-    //     }),
-    //     await prisma.department.upsert({
-    //         where: {departmentId: 2},
-    //         update: {},
-    //         create: {
-    //             name: "Allergy and Clinical Immunology",
-    //             floor: 5,
-    //             suite: "540",
-    //             specialtyServices:
-    //                 "Allergy, (environmental, food, medication, and venoms), asthma, anaphylaxis, angioedema, sinusitis, and immunodeficiency",
-    //             telephone: "(617) 732–9850",
-    //         }
-    //     }),
-    //     await prisma.department.upsert({
-    //         where: {departmentId: 3},
-    //         update: {},
-    //         create: {
-    //             name: "Backup Child Care Center",
-    //             floor: 2,
-    //             suite: "210",
-    //             specialtyServices: "Backup childcare for employees",
-    //             hours:"Monday – Friday, 8 am–4:30 pm",
-    //             telephone: "(617) 732–9543",
-    //         }
-    //     }),
-    //     await prisma.department.upsert({
-    //         where: {departmentId: 4},
-    //         update: {},
-    //         create: {
-    //             name: "Brigham Dermatology Associates (BDA)",
-    //             floor: 3,
-    //             suite: "317",
-    //             specialtyServices: "Medical and surgical dermatology",
-    //             telephone: "(617) 732–9080",
-    //         }
-    //     }),
-    //     await prisma.department.upsert({
-    //         where: {departmentId: 5},
-    //         update: {},
-    //         create: {
-    //             name: "Brigham Obstetrics and Gynecology Group (BOGG)",
-    //             floor: 5,
-    //             suite: "575",
-    //             specialtyServices: "Gynecology, Obstetrics",
-    //             telephone: "(617) 732–9100",
-    //         }
-    //     }),
-    //     await prisma.department.upsert({
-    //         where: {departmentId: 6},
-    //         update: {},
-    //         create: {
-    //             name: "Brigham Physicians Group (BPG)",
-    //             floor: 4,
-    //             suite: "428",
-    //             specialtyServices: "Adult Primary Care",
-    //             telephone: "(617) 732–9900",
-    //         }
-    //     }),
-    //     await prisma.department.upsert({
-    //         where: {departmentId: 7},
-    //         update: {},
-    //         create: {
-    //             name: "Brigham Physicians Group (BPG)",
-    //             floor: 5,
-    //             suite: "530",
-    //             specialtyServices: "Adult Primary Care",
-    //             telephone: "(617) 732–9900",
-    //         }
-    //     }),
-    //     await prisma.department.upsert({
-    //         where: {departmentId: 8},
-    //         update: {},
-    //         create: {
-    //             name: "Brigham Psychiatric Specialities",
-    //             floor: 3,
-    //             suite: "303",
-    //             specialtyServices: "Psychiatry, Psychology, Social Work",
-    //             telephone: "(617) 732–9811",
-    //         }
-    //     }),
-    //     await prisma.department.upsert({
-    //         where: {departmentId: 9},
-    //         update: {},
-    //         create: {
-    //             name: "Center for Pain Medicine",
-    //             floor: 3,
-    //             suite: "320",
-    //             specialtyServices: "Multidisciplinary pain management",
-    //             telephone: "(617) 732–9060",
-    //         }
-    //     }),
-    //     await prisma.department.upsert({
-    //         where: {departmentId: 10},
-    //         update: {},
-    //         create: {
-    //             name: "Crohn's and Colitis Center",
-    //             floor: 2,
-    //             suite: "201",
-    //             specialtyServices: "Crohn's disease, inflammatory bowel disease, infusion services, microscopic colitis, pulmonary, rheumatology, ulcerative colitis",
-    //             telephone: "(617) 732–6389",
-    //         }
-    //     }),
-    //     await prisma.department.upsert({
-    //         where: {departmentId: 11},
-    //         update: {},
-    //         create: {
-    //             name: "Endoscopy Center",
-    //             floor: 2,
-    //             suite: "202",
-    //             specialtyServices: "Bacterial overgrowth breath test, colonoscopy, H. Pylori breath test, lactose malabsorption breath test, upper endoscopy",
-    //             telephone: "(617) 732–7426",
-    //         }
-    //     }),
-    //     await prisma.department.upsert({
-    //         where: {departmentId: 12},
-    //         update: {},
-    //         create: {
-    //             name: "Gretchen S. and Edward A. Fish Center for Women's Health",
-    //             floor: 4,
-    //             suite: "402",
-    //             specialtyServices: "Cardiology, Dermatology (cosmetic, medical, and surgical), Endocrinology, Gastroenterology, Gynecology, Hematology, Infectious Diseases, Mental Health (social work), General neurology, Nutrition, Primary care, Pulmonary, Renal, Rheumatology, Sleep medicine, Women's Health (Menopause and Midlife Clinic, Obstetric Internal Medicine)\n",
-    //             telephone: "(617) 732–9300",
-    //         }
-    //     }),
-    //     await prisma.department.upsert({
-    //         where: {departmentId: 13},
-    //         update: {},
-    //         create: {
-    //             name: "Laboratory",
-    //             floor: 1,
-    //             suite: "100",
-    //             specialtyServices: "Blood work, lab services",
-    //             hours: "Mon–Fri, 7 a.m.–7 p.m.; Sat, 7 a.m.–3 p.m.",
-    //             telephone: "(617) 732–9841",
-    //         }
-    //     }),
-    //     await prisma.department.upsert({
-    //         where: {departmentId: 14},
-    //         update: {},
-    //         create: {
-    //             name: "Multi-Specialty Clinic",
-    //             floor: 1,
-    //             suite: "130",
-    //             specialtyServices:
-    //                 "Orthopedic surgery, Vascular surgery, Contact Dermatitis and Occupational Dermatology Program, Pain Medicine and Travel Medicine\n",
-    //             telephone: "(617) 732–9500",
-    //         }
-    //     }),
-    //     await prisma.department.upsert({
-    //         where: {departmentId: 15},
-    //         update: {},
-    //         create: {
-    //             name: "Osher Clinical Center for Integrative Health",
-    //             floor: 4,
-    //             suite: "422",
-    //             specialtyServices: "Acupuncture, health coaching, chiropractic, craniosacral therapy, integrative medicine, structural massage & movement therapies, neurology (movement disorders and headache), echocardiography, and pulmonary.\n" +
-    //                 "Educational courses: Integrative wellness courses are also offered.\n",
-    //             telephone: "(617) 732–9700",
-    //         }
-    //     }),
-    //     await prisma.department.upsert({
-    //         where: {departmentId: 16},
-    //         update: {},
-    //         create: {
-    //             name: "Patient Financial Services",
-    //             floor: 2,
-    //             suite: "204B",
-    //             specialtyServices: "Patient financial counselling (Payment, Insurance, Billing questions)",
-    //             telephone: "(617) 732–9677",
-    //         }
-    //     }),
-    //     await prisma.department.upsert({
-    //         where: {departmentId: 17},
-    //         update: {},
-    //         create: {
-    //             name: "Pharmacy",
-    //             floor: 3,
-    //             suite: "317",
-    //             specialtyServices: "Outpatient Pharmacy Service",
-    //             hours: "(Monday - Friday, 9 am-4 pm excluding holidays)",
-    //             telephone: "(617) 732–9040",
-    //         }
-    //     }),
-    //     await prisma.department.upsert({
-    //         where: {departmentId: 18},
-    //         update: {},
-    //         create: {
-    //             name: "Radiology",
-    //             floor: 5,
-    //             suite: "560",
-    //             specialtyServices: "Bone Density, Breast Imaging/Mammography, Ultrasound, X-Ray",
-    //             telephone: "(617) 732–9801",
-    //         }
-    //     }),
-    //     await prisma.department.upsert({
-    //         where: {departmentId: 19},
-    //         update: {},
-    //         create: {
-    //             name: "Radiology, MRI/CT scan",
-    //             floor: 1,
-    //             suite: "102B",
-    //             specialtyServices: "CT scan, MRI, X-Ray",
-    //             telephone: "(617) 732–9821",
-    //         }
-    //     }),
-    //     await prisma.department.upsert({
-    //         where: {departmentId: 20},
-    //         update: {},
-    //         create: {
-    //             name: "Rehabilitation Services",
-    //             floor: 2,
-    //             suite: "200",
-    //             specialtyServices: "Orthopedic, sports, neurologic and vestibular Physical Therapy, Men's and Women's pelvic floor Physical Therapy. Hand/Occupational, Therapy Speech Language Pathology",
-    //             telephone: "(617) 732–9525",
-    //         }
-    //     })
-    // ];
-    // console.log('Departments seeded!');
-    // console.log(departments);
-
-    //seed nodes
-    // console.log('Seeding Nodes...');
-    // const nodes = [
-    //     await prisma.node.upsert({
-    //         where: {nodeId: 1},
-    //         update: {},
-    //         create: {
-    //             name: 'entrance',
-    //             xCoord: 705,
-    //             yCoord: 1060,
-    //         }
-    //     }),
-    //     await prisma.node.upsert({
-    //         where: {nodeId: 2},
-    //         update: {},
-    //         create: {
-    //             name: 'n1',
-    //             xCoord: 360,
-    //             yCoord: 500,
-    //         }
-    //     })
-    // ];
-    //
-    // console.log('Nodes seeded!');
-    // console.log(nodes);
-    //
-    //
-    // //seed edges
-    // console.log('Seeding Edges...');
-    // const edges = [
-    //     await prisma.edge.upsert({
-    //         where: {edgeId: 1},
-    //         update: {},
-    //         create: {
-    //             weight: 12,
-    //             startNodeId: 1,
-    //             endNodeId: 2,
-    //         }
-    //     })
-    // ];
-    //
-    // console.log('Edges seeded!');
-    // console.log(edges);
-
-
-    // console.log('Seeding graphs:');
-    //
-    // const graphs = [
-    //     await prisma.graph.upsert({
-    //         where: {graphId: 0},
-    //         update: {
-    //             graphId: 0,
-    //             name: 'CH FL1',
-    //             floorId: 0,
-    //         },
-    //         create: {
-    //             graphId: 0,
-    //             name: 'CH FL1',
-    //             floorId: 0,
-    //         },
-    //     }),
-    // ];
-    //
-    // console.log('Graphs seeded!');
-    // console.log(graphs);
-    //
-    // console.log('Seeding nodes:');
-    //
-    // const nodes = [
-    //     await prisma.node.upsert({
-    //         where: {nodeId: 0},
-    //         update: {
-    //             nodeId: 0,
-    //             name: 'Entrance',
-    //             lat: 0,
-    //             lng: 0,
-    //             graphId: 0,
-    //         },
-    //         create: {
-    //             nodeId: 0,
-    //             name: 'Entrance',
-    //             lat: 0,
-    //             lng: 0,
-    //             graphId: 0,
-    //         },
-    //     }),
-    //     await prisma.node.upsert({
-    //         where: {nodeId: 1},
-    //         update: {
-    //             nodeId: 1,
-    //             name: 'Exit',
-    //             lat: 1,
-    //             lng: 1,
-    //             graphId: 0,
-    //         },
-    //         create: {
-    //             nodeId: 1,
-    //             name: 'Exit',
-    //             lat: 1,
-    //             lng: 1,
-    //             graphId: 0,
-    //         },
-    //     }),
-    // ];
-    //
-    // console.log('Nodes seeded!');
-    // console.log(nodes);
-    //
-    // console.log('Seeding edges:');
-    // const edges = [
-    //     await prisma.edge.upsert({
-    //         where: {edgeId: 0},
-    //         update: {
-    //             edgeId: 0,
-    //             weight: 1,
-    //             startNodeId: 0,
-    //             endNodeId: 1,
-    //         },
-    //         create: {
-    //             edgeId: 0,
-    //             weight: 1,
-    //             startNodeId: 0,
-    //             endNodeId: 1,
-    //         },
-    //     })
-    // ];
-    // console.log('Departments seeded!');
-    // console.log(departments);
-
     // Seed service requests
     console.log('Seeding service requests...');
+
+    await prisma.translatorRequest.deleteMany({});
+    await prisma.sanitationRequest.deleteMany({});
+    await prisma.securityRequest.deleteMany({});
+    await prisma.equipmentRequest.deleteMany({});
+    await prisma.serviceRequest.deleteMany({});
+
     const serviceRequests = [
         await prisma.serviceRequest.upsert({
             where: { requestId: 1},
@@ -8767,7 +8180,6 @@ async function main() {
     ];
     console.log('Service Requests seeded!');
     console.log(serviceRequests);
-
 
     // Seed translator requests
     console.log('Seeding translator requests...');
@@ -8970,8 +8382,6 @@ async function main() {
     console.log(sanitationRequests);
 }
 
-
-
 main()
     .then(async () => {
         await prisma.$disconnect();
@@ -8981,4 +8391,3 @@ main()
         await prisma.$disconnect();
         process.exit(1);
     });
-

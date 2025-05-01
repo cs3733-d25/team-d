@@ -1,52 +1,70 @@
 import React from 'react';
+import ServiceRequestCard from "@/components/ServiceRequest/ServiceReqCard.tsx";
 import {faLanguage} from "@fortawesome/free-solid-svg-icons";
 import {faHandHoldingDroplet} from "@fortawesome/free-solid-svg-icons";
 import {faScrewdriverWrench} from "@fortawesome/free-solid-svg-icons";
 import {faShield} from "@fortawesome/free-solid-svg-icons";
-import RequestPopup from "@/components/RequestPopup.tsx";
-import ServiceHubBackground from "../public/ServiceHubBackground.png";
-import EquipmentServiceRequest from "@/components/ServiceRequest/EquipmentRequest/EquipmentServiceRequest.tsx";
+import translatorImage from "../public/translation.jpg"
+import sanitationImage from "../public/sanitation_pic.webp"
+import equipmentImage from "../public/equipment.jpg"
+import securityImage from "../public/security2.jpg"
+import serviceRequestBg from "../public/service_request_bg.jpg";
+// import TranslatorRequestPopup from "@/components/ServiceRequest/TranslatorRequest/TranslatorRequestPopup.tsx";
+// import SanitationPopup  from "@/components/ServiceRequest/SanitationRequest/SanitationPopup.tsx";
+// import EquipmentRequestPopup from "@/components/ServiceRequest/EquipmentRequest/EquipmentRequestPopup.tsx";
+// import SecurityRequestPopup from "@/components/ServiceRequest/SecurityRequest/SecurityRequestPopup.tsx";
 import TranslatorServiceRequest from "@/components/ServiceRequest/TranslatorRequest/TranslatorServiceRequest.tsx";
+
 import SanitationServiceRequest from "@/components/ServiceRequest/SanitationRequest/SanitationServiceRequest.tsx";
+import EquipmentServiceRequest from "@/components/ServiceRequest/EquipmentRequest/EquipmentServiceRequest.tsx";
 import SecurityServiceRequest from "@/components/ServiceRequest/SecurityRequest/SecurityServiceRequest.tsx";
+import ServiceHubBackground from "../public/ServiceHubBackground.png";
 
 
 const ServiceRequestHub = () => {
     return (
-        <div>
-                <img src={ServiceHubBackground} className="absolute h-screen w-screen z-0 filter brightness-75 contrast-125" />
+        <div
+            className="min-h-screen flex flex-col bg-cover bg-center bg-no-repeat"
+            style={{ backgroundImage: `url(${serviceRequestBg})` }}
+        >
 
 
-                <div className="relative flex justify-center">
-                    <div className="relative z-10 flex items-center justify-center mt-12 bg-gray-300/60 h-20 w-110 rounded-full text-5xl font-bold font-nunito">
-                        Service Requests</div>
+            <main className="relative flex flex-col items-center justify-center z-10 flex-grow">
+                <div className="absolute inset-0 bg-yellow-600/10 mix-blend-multiply pointer-events-none"></div>
+                <div className="absolute inset-0 bg-zinc-900/50 pointer-events-none"></div>
+                <div className="relative text-5xl z-10 mb-10 pb-4 flex top-x items-center justify-center justify-top mt-5 h-20 w-110 text-5xl font-bold font-nunito">
+                    <div className="flex items-center justify-center bg-gray-300/50 p-3 rounded-md">
+                    Service Requests
+                    </div>
                 </div>
-                <div className="relative flex items-center justify-center h-screen w-screen overflow-hidden">
-                    <div className="flex flex-row items-center justify-evenly bg-blue-900/80 w-300 h-100 rounded-md">
-                        <RequestPopup
-                            title="Translator Request "
-                            iconName={faLanguage}
-                            serviceRequest={<TranslatorServiceRequest />}
+                <div className="relative flex items-center justify-center h-auto w-full overflow-hidden p-8">
+                    <div className="flex justify-between items-center w-full px-8">
+                        <ServiceRequestCard
+                            title="Translator"
+                            image={translatorImage}
+                            popupComponent={<TranslatorServiceRequest />}
                         />
-                        <RequestPopup
-                            title="Sanitation Request"
-                            iconName={faHandHoldingDroplet}
-                            serviceRequest={<SanitationServiceRequest />}
+                        <ServiceRequestCard
+                            title="Sanitation"
+                            image={sanitationImage}
+                            popupComponent={<SanitationServiceRequest />}
                         />
-                        <RequestPopup
-                            title="Equipment Request "
-                            iconName={faScrewdriverWrench}
-                            serviceRequest={<EquipmentServiceRequest />}
+                        <ServiceRequestCard
+                            title="Equipment"
+                            image={equipmentImage}
+                            popupComponent={<EquipmentServiceRequest />}
                         />
-                        <RequestPopup
-                            title="Security Request"
-                            iconName={faShield}
-                            serviceRequest={<SecurityServiceRequest />}
+                        <ServiceRequestCard
+                            title="Security"
+                            image={securityImage}
+                            popupComponent={<SecurityServiceRequest />}
                         />
                     </div>
                 </div>
-            </div>
-    )
+            </main>
+        </div>
+    );
 }
 
+//
 export default ServiceRequestHub;
