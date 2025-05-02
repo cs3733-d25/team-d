@@ -96,7 +96,16 @@ export default function NewDirections() {
 
     const setPathfindingResultsExternal = (results: PathfindingResults | null, refresh: boolean) => {
         setPathfindingResults(results);
-        if (refresh) setCurrentStep(-1);
+        console.log(results?.sections[0].directions[0].distance);
+        if (refresh) {
+            setCurrentSection(-1);
+        }
+        else {
+            const temp = currentSection;
+            // setCurrentSection(-1);
+            console.log(temp);
+            setCurrentSection(temp);
+        }
     }
 
     useEffect(() => {
@@ -342,7 +351,7 @@ export default function NewDirections() {
                                         </Button>
                                     </div>
                                     <div className="items-center justify-center">
-                                        <Tabs defaultValue="Metric" onValueChange={(value: string) => console.log(value)}>
+                                        <Tabs defaultValue="Metric" onValueChange={(value: string) => map?.convertUnits(value)}>
                                             <TabsList>
                                                 <TabsTrigger className="border-2 border-amber-600 flex-1 grow m-2 bg-blue-900 active:scale-95 active:shadow-inner transition-transform" value="Metric">Metric</TabsTrigger>
                                                 <TabsTrigger className="border-2 border-amber-600 flex-1 grow m-2 bg-blue-900 active:scale-95 active:shadow-inner transition-transform" value="Imperial">Imperial</TabsTrigger>

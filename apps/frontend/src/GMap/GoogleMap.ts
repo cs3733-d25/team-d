@@ -1274,7 +1274,7 @@ export class PathfindingMap extends GoogleMap {
     }
 
 
-    private convertUnits(unitPreference: 'Metric' | 'Imperial') {
+    convertUnits(unitPreference: string) {
 
         const convert = (distanceString: string): string => {
 
@@ -1317,6 +1317,10 @@ export class PathfindingMap extends GoogleMap {
                 step.distance = convert(step.distance);
             });
         });
+
+        console.log(this.currentSteps);
+
+        this.updater(this.currentSteps, false);
     }
 }
 
