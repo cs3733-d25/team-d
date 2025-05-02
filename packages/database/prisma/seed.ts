@@ -8206,8 +8206,8 @@ async function main() {
                 priority: 'Medium',
                 requestStatus: 'Working',
                 roomNum: '118',
-                createdAt: new Date(today.getTime() - 24 * 60 * 60 * 1000),
-                updatedAt: new Date(today.getTime() - 24 * 60 * 60 * 1000),
+                createdAt: new Date(today.getTime()),
+                updatedAt: new Date(today.getTime()),
             },
         }),
     ];

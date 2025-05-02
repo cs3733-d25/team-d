@@ -157,9 +157,6 @@ model Department {
   room     String
   lat      Float
   lng      Float
-  services String?
-  contact  String?
-  hours    String?
 
   hospitalId Int
   Hospital   Hospital @relation(fields: [hospitalId], references: [hospitalId])
