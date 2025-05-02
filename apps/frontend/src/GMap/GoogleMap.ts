@@ -1310,8 +1310,51 @@ export class PathfindingMap extends GoogleMap {
     }
 
 
-}
+    private convertUnits( unitPreference: 'metric' | 'imperial' ) {
 
+        const convert = (distanceString : string): string => {
+
+            if (unitPreference === 'imperial') {
+                if (distanceString.includes('km')) {
+
+                    const value= parseFloat(distanceString);
+                    const miles = value * 0.621371;
+                    return parseFloat(miles.toFixed(2)) + ' mi';
+
+
+                } else if (distanceString.includes('m')) {
+
+                    const value= parseFloat(distanceString);
+                    const feet = value * 3.28084;
+                    return parseFloat(feet.toFixed(0)) + ' ft';
+
+                }
+
+            } else {
+                if (distanceString.includes('mi')) {
+                    const value = parseFloat(distanceString);
+                    const meters = value / 0.621371;
+                    return parseFloat(meters.toFixed(2)) + ' km';
+
+                } else if (distanceString.includes('ft')) {
+
+                    const value= parseFloat(distanceString);
+                    const meters = value / 3.28084;
+                    return parseFloat(meters.toFixed(0)) + ' m';
+                }
+            }
+            return distanceString;
+
+
+
+        }
+        this.currentSteps?.sections.forEach((section) => {
+
+            section.directions.forEach(step => {
+                step.distance = convert(step.distance);
+            });
+        });
+    }
 
 
 class EditorMapGraph {
