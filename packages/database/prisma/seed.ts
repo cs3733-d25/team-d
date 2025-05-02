@@ -361,6 +361,9 @@ async function main() {
                 hospitalId: 0,
                 buildingId: 0,
                 floorGraphId: 1,
+                services:
+                    "Allergy, (environmental, food, medication, and venoms), asthma, anaphylaxis, angioedema, sinusitis, and immunodeficiency",
+                telephone: "(617) 732–9850",
             },
             {
                 departmentId: 1,
@@ -372,6 +375,9 @@ async function main() {
                 hospitalId: 0,
                 buildingId: 0,
                 floorGraphId: 1,
+                services:
+                    "Allergy, (environmental, food, medication, and venoms), asthma, anaphylaxis, angioedema, sinusitis, and immunodeficiency",
+                telephone: "(617) 732–9850",
             },
             {
                 departmentId: 2,
@@ -383,6 +389,9 @@ async function main() {
                 hospitalId: 0,
                 buildingId: 0,
                 floorGraphId: 1,
+                services: "Backup childcare for employees",
+                hours:"Monday – Friday, 8 am–4:30 pm",
+                telephone: "(617) 732–9543",
             },
             {
                 departmentId: 3,
@@ -394,6 +403,8 @@ async function main() {
                 hospitalId: 0,
                 buildingId: 0,
                 floorGraphId: 1,
+                services: "Medical and surgical dermatology",
+                telephone: "(617) 732–9080",
             },
             {
                 departmentId: 4,
@@ -405,6 +416,8 @@ async function main() {
                 hospitalId: 0,
                 buildingId: 0,
                 floorGraphId: 1,
+                services: "Gynecology, Obstetrics",
+                telephone: "(617) 732–9100",
             },
             {
                 departmentId: 5,
@@ -416,6 +429,8 @@ async function main() {
                 hospitalId: 0,
                 buildingId: 0,
                 floorGraphId: 1,
+                services: "Adult Primary Care",
+                telephone: "(617) 732–9900",
             },
             {
                 departmentId: 6,
@@ -427,6 +442,8 @@ async function main() {
                 hospitalId: 0,
                 buildingId: 0,
                 floorGraphId: 1,
+                services: "Adult Primary Care",
+                telephone: "(617) 732–9900",
             },
             {
                 departmentId: 7,
@@ -438,6 +455,8 @@ async function main() {
                 hospitalId: 0,
                 buildingId: 0,
                 floorGraphId: 1,
+                services: "Psychiatry, Psychology, Social Work",
+                telephone: "(617) 732–9811",
             },
             {
                 departmentId: 8,
@@ -449,6 +468,8 @@ async function main() {
                 hospitalId: 0,
                 buildingId: 0,
                 floorGraphId: 1,
+                services: "Multidisciplinary pain management",
+                telephone: "(617) 732–9060",
             },
             {
                 departmentId: 9,
@@ -460,6 +481,8 @@ async function main() {
                 hospitalId: 0,
                 buildingId: 0,
                 floorGraphId: 1,
+                services: "Crohn's disease, inflammatory bowel disease, infusion services, microscopic colitis, pulmonary, rheumatology, ulcerative colitis",
+                telephone: "(617) 732–6389",
             },
             {
                 departmentId: 10,
@@ -471,6 +494,8 @@ async function main() {
                 hospitalId: 0,
                 buildingId: 0,
                 floorGraphId: 1,
+                services: "Bacterial overgrowth breath test, colonoscopy, H. Pylori breath test, lactose malabsorption breath test, upper endoscopy",
+                telephone: "(617) 732–7426",
             },
             {
                 departmentId: 11,
@@ -482,6 +507,8 @@ async function main() {
                 hospitalId: 0,
                 buildingId: 0,
                 floorGraphId: 1,
+                services: "Cardiology, Dermatology (cosmetic, medical, and surgical), Endocrinology, Gastroenterology, Gynecology, Hematology, Infectious Diseases, Mental Health (social work), General neurology, Nutrition, Primary care, Pulmonary, Renal, Rheumatology, Sleep medicine, Women's Health (Menopause and Midlife Clinic, Obstetric Internal Medicine)\n",
+                telephone: "(617) 732–9300",
             },
             {
                 departmentId: 12,
@@ -493,6 +520,9 @@ async function main() {
                 hospitalId: 0,
                 buildingId: 0,
                 floorGraphId: 1,
+                services: "Blood work, lab services",
+                hours: "Mon–Fri, 7 a.m.–7 p.m.; Sat, 7 a.m.–3 p.m.",
+                telephone: "(617) 732–9841",
             },
             {
                 departmentId: 13,
@@ -504,6 +534,9 @@ async function main() {
                 hospitalId: 0,
                 buildingId: 0,
                 floorGraphId: 1,
+                services:
+                    "Orthopedic surgery, Vascular surgery, Contact Dermatitis and Occupational Dermatology Program, Pain Medicine and Travel Medicine\n",
+                telephone: "(617) 732–9500",
             },
             {
                 departmentId: 14,
@@ -515,6 +548,9 @@ async function main() {
                 hospitalId: 0,
                 buildingId: 0,
                 floorGraphId: 1,
+                services: "Acupuncture, health coaching, chiropractic, craniosacral therapy, integrative medicine, structural massage & movement therapies, neurology (movement disorders and headache), echocardiography, and pulmonary.\n" +
+                    "Educational courses: Integrative wellness courses are also offered.\n",
+                telephone: "(617) 732–9700",
             },
             {
                 departmentId: 15,
@@ -526,6 +562,8 @@ async function main() {
                 hospitalId: 0,
                 buildingId: 0,
                 floorGraphId: 1,
+                services: "Patient financial counselling (Payment, Insurance, Billing questions)",
+                telephone: "(617) 732–9677",
             },
             {
                 departmentId: 16,
@@ -537,6 +575,9 @@ async function main() {
                 hospitalId: 0,
                 buildingId: 0,
                 floorGraphId: 1,
+                services: "Outpatient Pharmacy Service",
+                hours: "(Monday - Friday, 9 am-4 pm excluding holidays)",
+                telephone: "(617) 732–9040",
             },
             {
                 departmentId: 17,
@@ -548,6 +589,8 @@ async function main() {
                 hospitalId: 0,
                 buildingId: 0,
                 floorGraphId: 1,
+                services: "Bone Density, Breast Imaging/Mammography, Ultrasound, X-Ray",
+                telephone: "(617) 732–9801",
             },
             {
                 departmentId: 18,
@@ -559,6 +602,8 @@ async function main() {
                 hospitalId: 0,
                 buildingId: 0,
                 floorGraphId: 1,
+                services: "CT scan, MRI, X-Ray",
+                telephone: "(617) 732–9821",
             },
             {
                 departmentId: 19,
@@ -570,6 +615,8 @@ async function main() {
                 hospitalId: 0,
                 buildingId: 0,
                 floorGraphId: 1,
+                services: "Orthopedic, sports, neurologic and vestibular Physical Therapy, Men's and Women's pelvic floor Physical Therapy. Hand/Occupational, Therapy Speech Language Pathology",
+                telephone: "(617) 732–9525",
             },
             {
                 departmentId: 20,
@@ -647,6 +694,7 @@ async function main() {
                 hospitalId: 1,
                 buildingId: 1,
                 floorGraphId: 101,
+                services: "Hand and Upper Extremity, Arthroplasty, Pediatric Trauma, Physiatry, Podiatry",
             },
             {
                 departmentId: 27,
@@ -658,6 +706,7 @@ async function main() {
                 hospitalId: 1,
                 buildingId: 1,
                 floorGraphId: 101,
+                services: "Cardiac Rehab, Occupational Therapy, Hand Therapy, Upper Extremity, Physical Therapy, Speech - Language",
             },
             {
                 departmentId: 28,
@@ -691,6 +740,7 @@ async function main() {
                 hospitalId: 1,
                 buildingId: 1,
                 floorGraphId: 101,
+                services: "Audiology, ENT, General and Gastrointestinal Surgery, Plastic Surgery, Thoracic Surgery, Vascular Surgery, Weight Management and Wellness",
             },
             {
                 departmentId: 31,
@@ -702,6 +752,7 @@ async function main() {
                 hospitalId: 1,
                 buildingId: 1,
                 floorGraphId: 101,
+                services: "X-Ray Suite",
             },
             {
                 departmentId: 32,
@@ -779,6 +830,8 @@ async function main() {
                 hospitalId: 1,
                 buildingId: 2,
                 floorGraphId: 203,
+                services:
+                    "Allergy, Cardiac Arrhythmia, Dermatology, Endocrinology, Gastroenterology, Kidney (Renal) Medicine, Neurology, Neurosurgery, Ophthalmology, Optometry, Pulmonology, Rheumatology, Vein Care Services, Women's Health",
             },
             {
                 departmentId: 39,

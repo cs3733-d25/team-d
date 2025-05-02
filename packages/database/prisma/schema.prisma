@@ -158,7 +158,7 @@ model Department {
   lat      Float
   lng      Float
   services String?
-  contact  String?
+  telephone  String?
   hours    String?
 
   hospitalId Int
