@@ -356,6 +356,14 @@ export default function NewDirections() {
             {showOnboarding && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
                     <div className="relative bg-white w-11/12 max-w-md rounded-xl shadow-lg p-6 text-center">
+                        <button
+                            type="button"
+                            onClick={() => setShowOnboarding(false)}
+                            aria-label="Close"
+                            className="absolute top-4 right-4 text-xl font-semibold text-gray-400
+             hover:text-gray-600 focus:outline-none">
+                            ×
+                        </button>
 
 
                         <h3 className="text-lg font-bold mb-4 capitalize">
