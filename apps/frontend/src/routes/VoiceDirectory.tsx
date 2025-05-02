@@ -184,6 +184,14 @@ const patriotData: Entry[] = [
         phone: "",
     },
 ];
+
+/* Faulkner Hospital */
+const faulknerData: Entry[] = [];
+
+/* Brigham Main Campus */
+const mainCampusData: Entry[] = [];
+
+
 /* Fuse helper  */
 const createFuse = (data: Entry[]) =>
     new Fuse(data, {
@@ -194,8 +202,16 @@ const createFuse = (data: Entry[]) =>
 
 const VoiceDirectory: React.FC = () => {
     /* directory state */
-    const [hospital, setHospital] = useState<0 | 1>(0);
-    const data = hospital === 0 ? chestnutData : patriotData;
+    const [hospital, setHospital] = useState<0 | 1 | 2 | 3>(0);   // 0‑CH 1‑PP 2‑F 3‑MC
+    const data = useMemo(() => {
+        switch (hospital) {
+            case 0: return chestnutData;
+            case 1: return patriotData;
+            case 2: return faulknerData;
+            case 3: return mainCampusData;
+            default: return [];
+        }
+    }, [hospital]);
 
     const [query, setQuery] = useState("");
     const [selected, setSelected] = useState<Entry>(data[0]);
@@ -259,11 +275,14 @@ const VoiceDirectory: React.FC = () => {
                 {/* LEFT column */}
                 <div className="w-4/12 h-full border-r border-gray-200 flex flex-col p-5 bg-white">
                     {/* hospital buttons */}
-                    <div className="flex gap-3 mb-4">
+                    <div className="grid grid-cols-2 gap-3 mb-4">
+                        {/* Chestnut Hill */}
                         <Button
-                            className={`flex-1 ${
-                                hospital === 0 ? "bg-blue-900 text-white  mb-1 mb-2 border-2 border-amber-600 rounded-md inline-block px-2 py-1" : "border-2 border-amber-600/0 px-2 py-1 bg-gray-200"
-                            }`}
+                            className={`${
+                                hospital === 0
+                                    ? "bg-blue-900 text-white border-2 border-amber-600"
+                                    : "bg-gray-200"
+                            } rounded-md px-2 py-1`}
                             onClick={() => {
                                 setHospital(0);
                                 setQuery("");
@@ -271,10 +290,14 @@ const VoiceDirectory: React.FC = () => {
                         >
                             Chestnut Hill
                         </Button>
+
+                        {/* Patriot Place */}
                         <Button
-                            className={`flex-1 ${
-                                hospital === 1 ? "bg-blue-900 text-white mb-1 mb-2 border-2 border-amber-600 rounded-md inline-block px-2 py-1" : "border-2 border-amber-600/0 px-2 py-1 bg-gray-200"
-                            }`}
+                            className={`${
+                                hospital === 1
+                                    ? "bg-blue-900 text-white border-2 border-amber-600"
+                                    : "bg-gray-200"
+                            } rounded-md px-2 py-1`}
                             onClick={() => {
                                 setHospital(1);
                                 setQuery("");
@@ -282,7 +305,38 @@ const VoiceDirectory: React.FC = () => {
                         >
                             Patriot Place
                         </Button>
+
+                        {/* Faulkner */}
+                        <Button
+                            className={`${
+                                hospital === 2
+                                    ? "bg-blue-900 text-white border-2 border-amber-600"
+                                    : "bg-gray-200"
+                            } rounded-md px-2 py-1`}
+                            onClick={() => {
+                                setHospital(2);
+                                setQuery("");
+                            }}
+                        >
+                            Faulkner
+                        </Button>
+
+                        {/* Main Campus */}
+                        <Button
+                            className={`${
+                                hospital === 3
+                                    ? "bg-blue-900 text-white border-2 border-amber-600"
+                                    : "bg-gray-200"
+                            } rounded-md px-2 py-1`}
+                            onClick={() => {
+                                setHospital(3);
+                                setQuery("");
+                            }}
+                        >
+                            Main Campus
+                        </Button>
                     </div>
+
 
                     {/* search bar + mic */}
                     <div className="relative mb-4 flex items-center">
