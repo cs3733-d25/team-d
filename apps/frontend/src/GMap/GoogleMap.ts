@@ -1287,20 +1287,20 @@ class EditorMapGraph {
 
 
             case 'NORMAL':
-                return '#AAAAAA';
+                return '#c5facf';
 
         }
-        return '#AAAAAA';
+        return '#c5facf';
     }
 
     private getNodeStrokeColor(type: number | null): string {
 
         if (!type){
 
-            return '#FFFFFF';
+            return '#c556f5';
         } else {
 
-            return '#7038c9';
+            return '#0a010a';
         }
 
     }
@@ -1316,11 +1316,11 @@ class EditorMapGraph {
             },
             icon: {
                 path: google.maps.SymbolPath.CIRCLE,
-                scale: 5,
+                scale: 8,
                 fillOpacity: 1,
                 fillColor: this.getNodeColor(node.type),
                 strokeColor: this.getNodeStrokeColor(node.connectedNodeId),
-                strokeWeight: 2
+                strokeWeight: 3
             },
             draggable: true,
             zIndex: 20,
@@ -1461,7 +1461,8 @@ class EditorMapGraph {
                 startNode.marker.getPosition() || {lat: 0, lng: 0},
                 endNode.marker.getPosition() || {lat: 0, lng: 0},
             ],
-            strokeColor: '#0cf',
+            strokeColor: '#00c',
+            strokeWeight: 5,
         });
         line.setMap(this.map);
 
