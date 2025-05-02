@@ -6,6 +6,8 @@ import { TileLayer } from "react-leaflet";
 import { Marker } from "react-leaflet";
 import { Popup } from "react-leaflet";
 
+import literally from '@/public/literally-just-white.png';
+import map from '@/public/ChestnutHillFloor1Transparent.png'
 import Path from '@/LeafletMap/Path.tsx';
 
 import {Coordinates} from 'common/src/constants.ts'
@@ -52,10 +54,10 @@ export default function LeafletMap() {
                 maxBounds={[[-IMG_HEIGHT * SCALE, -IMG_WIDTH * SCALE], [IMG_HEIGHT * SCALE, IMG_WIDTH * SCALE]]}
             >
                 <TileLayer
-                    url="../src/public/literally-just-white.png"
+                    url={literally}
                     bounds={[[-1, -1], [1, 1]]}
                 />
-                <ImageOverlay url="../src/public/ChestnutHillFloor1Transparent.png" bounds={[[IMG_HEIGHT * SCALE * -0.5, IMG_WIDTH * SCALE * -0.5], [IMG_HEIGHT * SCALE * 0.5, IMG_WIDTH * SCALE * 0.5]]} >
+                <ImageOverlay url={map} bounds={[[IMG_HEIGHT * SCALE * -0.5, IMG_WIDTH * SCALE * -0.5], [IMG_HEIGHT * SCALE * 0.5, IMG_WIDTH * SCALE * 0.5]]} >
 
                 </ImageOverlay>
                 <SVGOverlay bounds={[[IMG_HEIGHT * SCALE * -0.5, IMG_WIDTH * SCALE * -0.5], [IMG_HEIGHT * SCALE * 0.5, IMG_WIDTH * SCALE * 0.5]]} attributes={{stroke: 'red'}}>
