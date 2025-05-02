@@ -447,7 +447,6 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
     res.json(response);
 });
 
-
 ////////////////////////////////////////////algorithms rewrite:
 
 // Load nodes and edges from the
@@ -629,9 +628,7 @@ if (topFloorGraph.floorNum > 2) {
     const insideDoorNodeId = response.floorPaths[response.floorPaths.length - 1].path[0].nodeId;
 
     // Get the node with the node ID of the top floor elevator
-    insideDoorNode = bottomFloorGraph.Graph.Nodes.find(
-        (node) => node.nodeId === insideDoorNodeId
-    );
+    insideDoorNode = bottomFloorGraph.Graph.Nodes.find((node) => node.nodeId === insideDoorNodeId);
 } else {
     // TODO: fill this with the path from the
     // check-in node to the first door node it sees
@@ -688,10 +685,7 @@ if (
 // door node to the first parking node it sees
 // instead of an empty array
 
-const parkingLotPath: NodePathResponse[] = parkingLotGraphObj.search(
-    'PARKING',
-    outsideDoorNodeId
-);
+const parkingLotPath: NodePathResponse[] = parkingLotGraphObj.search('PARKING', outsideDoorNodeId);
 
 const parkingLotDirections: string[] =
     parkingLotGraphObj.generateDirectionStepsFromNodes(parkingLotPath);
@@ -706,12 +700,7 @@ response.parkingLotPath.path = parkingLotPath;
 response.floorPaths.reverse();
 res.json(response);
 
-
-
-
 ////////////////////////////////////////////
-
-
 
 router.put('/algorithm/:name', async (req: Request, res: Response) => {
     const name = req.params.name;
