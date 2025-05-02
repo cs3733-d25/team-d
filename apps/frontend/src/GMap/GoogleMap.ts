@@ -1310,11 +1310,11 @@ export class PathfindingMap extends GoogleMap {
     }
 
 
-    private convertUnits(unitPreference: 'metric' | 'imperial') {
+    private convertUnits(unitPreference: 'Metric' | 'Imperial') {
 
         const convert = (distanceString: string): string => {
 
-            if (unitPreference === 'imperial') {
+            if (unitPreference === 'Imperial') {
                 if (distanceString.includes('km')) {
 
                     const value = parseFloat(distanceString);
