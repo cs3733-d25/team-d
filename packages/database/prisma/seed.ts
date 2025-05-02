@@ -7980,6 +7980,7 @@ async function main() {
     await prisma.equipmentRequest.deleteMany({});
     await prisma.serviceRequest.deleteMany({});
 
+    const today = new Date();
     const serviceRequests = [
         await prisma.serviceRequest.upsert({
             where: { requestId: 1 },
@@ -7991,8 +7992,8 @@ async function main() {
                 priority: 'Low',
                 requestStatus: 'Done',
                 roomNum: '111',
-                createdAt: new Date('2025-04-21T09:15:00Z'),
-                updatedAt: new Date('2025-04-28T09:15:00Z'),
+                createdAt: new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000),
+                updatedAt: new Date(today.getTime() - 24 * 60 * 60 * 1000),
             },
         }),
         await prisma.serviceRequest.upsert({
@@ -8005,8 +8006,8 @@ async function main() {
                 priority: 'Medium',
                 requestStatus: 'Working',
                 roomNum: '121',
-                createdAt: new Date('2025-04-22T13:45:00Z'),
-                updatedAt: new Date('2025-04-22T13:45:00Z'),
+                createdAt: new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000),
+                updatedAt: new Date(today.getTime() - 5 * 24 * 60 * 60 * 1000),
             },
         }),
         await prisma.serviceRequest.upsert({
@@ -8019,8 +8020,8 @@ async function main() {
                 priority: 'High',
                 requestStatus: 'Assigned',
                 roomNum: '232',
-                createdAt: new Date('2025-04-22T16:30:00Z'),
-                updatedAt: new Date('2025-04-22T16:30:00Z'),
+                createdAt: new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000),
+                updatedAt: new Date(today.getTime() - 5 * 24 * 60 * 60 * 1000),
             },
         }),
         await prisma.serviceRequest.upsert({
@@ -8033,8 +8034,8 @@ async function main() {
                 priority: 'Medium',
                 requestStatus: 'Unassigned',
                 roomNum: '301',
-                createdAt: new Date('2025-04-23T08:20:00Z'),
-                updatedAt: new Date('2025-04-23T08:20:00Z'),
+                createdAt: new Date(today.getTime() - 6 * 24 * 60 * 60 * 1000),
+                updatedAt: new Date(today.getTime() - 6 * 24 * 60 * 60 * 1000),
             },
         }),
         await prisma.serviceRequest.upsert({
@@ -8047,8 +8048,8 @@ async function main() {
                 priority: 'High',
                 requestStatus: 'Done',
                 roomNum: '130',
-                createdAt: new Date('2025-04-23T10:45:00Z'),
-                updatedAt: new Date('2025-04-27T10:45:00Z'),
+                createdAt: new Date(today.getTime() - 6 * 24 * 60 * 60 * 1000),
+                updatedAt: new Date(today.getTime() - 4 * 24 * 60 * 60 * 1000),
             },
         }),
         await prisma.serviceRequest.upsert({
@@ -8061,8 +8062,8 @@ async function main() {
                 priority: 'Emergency',
                 requestStatus: 'Unassigned',
                 roomNum: '211',
-                createdAt: new Date('2025-04-24T14:10:00Z'),
-                updatedAt: new Date('2025-04-24T14:10:00Z'),
+                createdAt: new Date(today.getTime() - 5 * 24 * 60 * 60 * 1000),
+                updatedAt: new Date(today.getTime() - 5 * 24 * 60 * 60 * 1000),
             },
         }),
         await prisma.serviceRequest.upsert({
@@ -8075,8 +8076,8 @@ async function main() {
                 priority: 'Low',
                 requestStatus: 'Done',
                 roomNum: '123',
-                createdAt: new Date('2025-04-24T15:30:00Z'),
-                updatedAt: new Date('2025-04-26T15:30:00Z'),
+                createdAt: new Date(today.getTime() - 4 * 24 * 60 * 60 * 1000),
+                updatedAt: new Date(today.getTime() - 24 * 60 * 60 * 1000),
             },
         }),
         await prisma.serviceRequest.upsert({
@@ -8089,8 +8090,8 @@ async function main() {
                 priority: 'Medium',
                 requestStatus: 'Working',
                 roomNum: '312',
-                createdAt: new Date('2025-04-25T09:00:00Z'),
-                updatedAt: new Date('2025-04-25T09:00:00Z'),
+                createdAt: new Date(today.getTime() - 4 * 24 * 60 * 60 * 1000),
+                updatedAt: new Date(today.getTime() - 2 * 24 * 60 * 60 * 1000),
             },
         }),
         await prisma.serviceRequest.upsert({
@@ -8103,8 +8104,8 @@ async function main() {
                 priority: 'Low',
                 requestStatus: 'Unassigned',
                 roomNum: '133',
-                createdAt: new Date('2025-04-25T10:15:00Z'),
-                updatedAt: new Date('2025-04-25T10:15:00Z'),
+                createdAt: new Date(today.getTime() - 3 * 24 * 60 * 60 * 1000),
+                updatedAt: new Date(today.getTime() - 3 * 24 * 60 * 60 * 1000),
             },
         }),
         await prisma.serviceRequest.upsert({
@@ -8117,8 +8118,8 @@ async function main() {
                 priority: 'Low',
                 requestStatus: 'Done',
                 roomNum: '112',
-                createdAt: new Date('2025-04-26T08:05:00Z'),
-                updatedAt: new Date('2025-04-28T08:05:00Z'),
+                createdAt: new Date(today.getTime() - 3 * 24 * 60 * 60 * 1000),
+                updatedAt: new Date(today.getTime()),
             },
         }),
         await prisma.serviceRequest.upsert({
@@ -8131,8 +8132,8 @@ async function main() {
                 priority: 'Emergency',
                 requestStatus: 'Unassigned',
                 roomNum: '113',
-                createdAt: new Date('2025-04-26T08:45:00Z'),
-                updatedAt: new Date('2025-04-26T08:45:00Z'),
+                createdAt: new Date(today.getTime() - 2 * 24 * 60 * 60 * 1000),
+                updatedAt: new Date(today.getTime() - 2 * 24 * 60 * 60 * 1000),
             },
         }),
         await prisma.serviceRequest.upsert({
@@ -8146,8 +8147,8 @@ async function main() {
                 requestStatus: 'Assigned',
                 roomNum: '201',
                 comments: 'Please calibrate prior to appointment.',
-                createdAt: new Date('2025-04-27T12:00:00Z'),
-                updatedAt: new Date('2025-04-27T12:00:00Z'),
+                createdAt: new Date(today.getTime() - 2 * 24 * 60 * 60 * 1000),
+                updatedAt: new Date(today.getTime() - 24 * 60 * 60 * 1000),
             },
         }),
         await prisma.serviceRequest.upsert({
@@ -8161,8 +8162,8 @@ async function main() {
                 requestStatus: 'Unassigned',
                 roomNum: '204',
                 comments: 'Please set up system.',
-                createdAt: new Date('2025-04-27T13:30:00Z'),
-                updatedAt: new Date('2025-04-27T13:30:00Z'),
+                createdAt: new Date(today.getTime() - 24 * 60 * 60 * 1000),
+                updatedAt: new Date(today.getTime() - 24 * 60 * 60 * 1000),
             },
         }),
         await prisma.serviceRequest.upsert({
@@ -8176,8 +8177,8 @@ async function main() {
                 requestStatus: 'Unassigned',
                 roomNum: '318',
                 comments: 'Send help!',
-                createdAt: new Date('2025-04-28T07:15:00Z'),
-                updatedAt: new Date('2025-04-28T07:15:00Z'),
+                createdAt: new Date(today.getTime() - 24 * 60 * 60 * 1000),
+                updatedAt: new Date(today.getTime() - 24 * 60 * 60 * 1000),
             },
         }),
         await prisma.serviceRequest.upsert({
@@ -8191,8 +8192,8 @@ async function main() {
                 requestStatus: 'Unassigned',
                 roomNum: '241',
                 comments: 'They ran out the west door.',
-                createdAt: new Date('2025-04-28T09:40:00Z'),
-                updatedAt: new Date('2025-04-28T09:40:00Z'),
+                createdAt: new Date(today.getTime() - 24 * 60 * 60 * 1000),
+                updatedAt: new Date(today.getTime() - 24 * 60 * 60 * 1000),
             },
         }),
         await prisma.serviceRequest.upsert({
@@ -8205,8 +8206,8 @@ async function main() {
                 priority: 'Medium',
                 requestStatus: 'Working',
                 roomNum: '118',
-                createdAt: new Date('2025-04-28T11:25:00Z'),
-                updatedAt: new Date('2025-04-28T11:25:00Z'),
+                createdAt: new Date(today.getTime() - 24 * 60 * 60 * 1000),
+                updatedAt: new Date(today.getTime() - 24 * 60 * 60 * 1000),
             },
         }),
     ];
