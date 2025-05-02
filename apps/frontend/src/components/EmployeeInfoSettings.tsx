@@ -3,6 +3,7 @@ import axios from "axios";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {useAuth0} from "@auth0/auth0-react";
+import {Label} from "@/components/ui/label.tsx";
 type Employee = {
     employeeId: number;
     email: string;
@@ -63,61 +64,87 @@ const EmployeeInfoSettings = () => {
     if (!employee) return <p className="text-red-500">Employee data not available.</p>;
 
     return (
-        <div className="max-w-xl mx-auto">
+        <div className="max-w-xl">
             <h1 className="text-2xl font-bold mb-6">Edit Your Information</h1>
 
             <div className="space-y-4">
+                <Label className="" htmlFor="firstName">First name</Label>
                 <Input
                     type="text"
+                    id="firstName"
                     placeholder="First Name"
                     value={form.firstName || ""}
                     onChange={(e) => handleChange("firstName", e.target.value)}
                 />
+
+                <Label className="" htmlFor="middleInitial">Middle Initial</Label>
                 <Input
                     type="text"
                     placeholder="Middle Initial"
+                    id="middleInitial"
                     value={form.middleInitial || ""}
                     onChange={(e) => handleChange("middleInitial", e.target.value)}
                 />
+
+                <Label className="" htmlFor="lastName">Last Name</Label>
                 <Input
                     type="text"
                     placeholder="Last Name"
+                    id="lastName"
                     value={form.lastName || ""}
                     onChange={(e) => handleChange("lastName", e.target.value)}
                 />
+
+                <Label className="" htmlFor="email">Email</Label>
                 <Input
                     type="email"
                     placeholder="Email"
+                    id="email"
                     value={form.email || ""}
                     onChange={(e) => handleChange("email", e.target.value)}
                 />
+
+                <Label className="" htmlFor="occupation">Occupation</Label>
                 <Input
                     type="text"
                     placeholder="Occupation"
+                    id="occupation"
                     value={form.occupation || ""}
                     onChange={(e) => handleChange("occupation", e.target.value)}
                 />
+
+                <Label className="" htmlFor="userType">User Type</Label>
                 <Input
                     type="text"
                     placeholder="User Type"
+                    id="userType"
                     value={form.userType || ""}
                     onChange={(e) => handleChange("userType", e.target.value)}
                 />
+
+                <Label className="" htmlFor="dateOfBirth">Date of Birth</Label>
                 <Input
                     type="date"
                     placeholder="Date of Birth"
+                    id="dateOfBirth"
                     value={form.dateOfBirth?.substring(0, 10) || ""}
                     onChange={(e) => handleChange("dateOfBirth", e.target.value)}
                 />
+
+                <Label className="" htmlFor="phoneNumber">Phone Number</Label>
                 <Input
                     type="text"
                     placeholder="Phone Number"
+                    id="phoneNumber"
                     value={form.phoneNumber || ""}
                     onChange={(e) => handleChange("phoneNumber", e.target.value)}
                 />
+
+                <Label className="" htmlFor="pronoun">Pronoun</Label>
                 <Input
                     type="text"
                     placeholder="Pronoun"
+                    id="pronoun"
                     value={form.pronoun || ""}
                     onChange={(e) => handleChange("pronoun", e.target.value)}
                 />

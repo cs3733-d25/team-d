@@ -9,15 +9,6 @@ import EmployeeInfoSettings from "@/components/EmployeeInfoSettings.tsx";
 import {Label} from "@/components/ui/label.tsx";
 import {Input} from "@/components/ui/input.tsx";
 
-
-// const handleChange = (field: string, value: string) => {
-//     setFormData((prev) => ({
-//         ...prev,
-//         [field]: value
-//     }));
-// };
-//
-
 const AdminSettings: React.FC = () => {
     const [activePanel, setActivePanel] = useState<Panel>("profile");
     return (
@@ -66,10 +57,7 @@ const AdminSettings: React.FC = () => {
             {/* Main pane */}
             <main className="w-9/12 p-10">
                 {activePanel === "profile" && (
-                    <p className="flex flex-col text-xl text-black gap-y-4">
-                        Personal Information
-                        <EmployeeInfoSettings />
-                    </p>
+                    <EmployeeInfoSettings />
                 )}
 
                 {activePanel === "algorithms" && (
