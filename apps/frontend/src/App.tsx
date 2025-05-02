@@ -16,7 +16,7 @@ import HospitalDirectory from "@/routes/hospitalDirectory.tsx";
 import VoiceDirectory from "@/routes/VoiceDirectory.tsx";
 import About from "@/routes/About.tsx";
 import Citations from "@/routes/Citations.tsx";
-
+import NotFound from "@/routes/NotFound.tsx";
 
 import AdminSettings from "@/routes/admingSettings.tsx";
 
@@ -54,6 +54,8 @@ function App() {
                             <Route path="all-service-requests" element={<AllServiceRequests />} />
                             <Route path="profile" element={<Auth0Profile />} />
                         </Route>
+
+                        <Route path="*" element={<NotFound />} />
                     </Route>
                 </Routes>
 
