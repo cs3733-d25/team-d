@@ -527,7 +527,6 @@ export type DirectionsStep = {
 export class PathfindingMap extends GoogleMap {
 
 
-
     public static async makeMap(mapDivElement: HTMLDivElement, autocompleteInput: HTMLInputElement, updater: (results: PathfindingResults | null, refresh: boolean) => void, sectioner: (section: number) => void) {
         await GoogleMap.loadScript();
         return new PathfindingMap(mapDivElement, autocompleteInput, updater, sectioner);
@@ -562,7 +561,6 @@ export class PathfindingMap extends GoogleMap {
     // private currentStepMarker: google.maps.Marker | null = null;
 
     private department: DepartmentOptions | null;
-
 
 
     private constructor(mapDivElement: HTMLDivElement, autocompleteInput: HTMLInputElement, updater: (results: PathfindingResults | null, refresh: boolean) => void, sectioner: (section: number) => void) {
@@ -859,7 +857,9 @@ export class PathfindingMap extends GoogleMap {
         // });
 
         this.currentPath?.setVisibility(false);
-        this.allPaths?.forEach((path) => {path.remove()});
+        this.allPaths?.forEach((path) => {
+            path.remove()
+        });
         this.currentStepPolyline?.setMap(null);
 
 
@@ -891,7 +891,7 @@ export class PathfindingMap extends GoogleMap {
                     time: time.toFixed(2).toString() + ' sec',
                     icon: direction.includes('right') ? 'right' : direction.includes('left') ? 'left' : 'straight',
                     googleMapData: null,
-                    pathFindingData:  {
+                    pathFindingData: {
                         graphIdx: 0,
                         points: nextPath ? [
                             {
@@ -1032,7 +1032,7 @@ export class PathfindingMap extends GoogleMap {
                             time: time.toFixed(2).toString() + ' sec',
                             icon: direction.includes('right') ? 'right' : direction.includes('left') ? 'left' : 'straight',
                             googleMapData: null,
-                            pathFindingData:  {
+                            pathFindingData: {
                                 graphIdx: j + 1,
                                 points: nextPath ? [
                                     {
@@ -1310,21 +1310,21 @@ export class PathfindingMap extends GoogleMap {
     }
 
 
-    private convertUnits( unitPreference: 'metric' | 'imperial' ) {
+    private convertUnits(unitPreference: 'metric' | 'imperial') {
 
-        const convert = (distanceString : string): string => {
+        const convert = (distanceString: string): string => {
 
             if (unitPreference === 'imperial') {
                 if (distanceString.includes('km')) {
 
-                    const value= parseFloat(distanceString);
+                    const value = parseFloat(distanceString);
                     const miles = value * 0.621371;
                     return parseFloat(miles.toFixed(2)) + ' mi';
 
 
                 } else if (distanceString.includes('m')) {
 
-                    const value= parseFloat(distanceString);
+                    const value = parseFloat(distanceString);
                     const feet = value * 3.28084;
                     return parseFloat(feet.toFixed(0)) + ' ft';
 
@@ -1338,13 +1338,12 @@ export class PathfindingMap extends GoogleMap {
 
                 } else if (distanceString.includes('ft')) {
 
-                    const value= parseFloat(distanceString);
+                    const value = parseFloat(distanceString);
                     const meters = value / 3.28084;
                     return parseFloat(meters.toFixed(0)) + ' m';
                 }
             }
             return distanceString;
-
 
 
         }
@@ -1355,6 +1354,7 @@ export class PathfindingMap extends GoogleMap {
             });
         });
     }
+}
 
 
 class EditorMapGraph {
