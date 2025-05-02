@@ -1741,6 +1741,8 @@ class EditorMapGraph {
             cnode.data.nodeId === nodeId
         );
 
+        const nodeCopy = JSON.parse(JSON.stringify(this.nodes[nodeIndexLocal])) as EditorNode;
+
         this.nodes[nodeIndexLocal].marker.setMap(null);
         this.nodes.splice(nodeIndexLocal, 1);
 
@@ -1762,8 +1764,8 @@ class EditorMapGraph {
 
         if (!this.undoing) {
             this.undoRedoStack.push([() => {
-
-            }])
+                this.addNode(nodeCopy);
+            }]);
         }
     }
 
@@ -1771,6 +1773,8 @@ class EditorMapGraph {
         const edgeIndexLocal = this.edges.findIndex(cedge =>
             cedge.data.edgeId === edgeId
         );
+
+        const edgeCopy = JSON.parse(JSON.stringify(this.edges[edgeIndexLocal])) as EditorEdges;
 
         this.edges[edgeIndexLocal].line.setMap(null);
 
@@ -1781,6 +1785,12 @@ class EditorMapGraph {
         );
 
         this.editorGraph.Edges.splice(edgeIndexEncapsulator, 1);
+
+        if (!this.undoing) {
+            this.undoRedoStack.push([() => {
+                this.addEdge(edgeCopy);
+            }]);
+        }
     }
 
     updateNode(nodeCopy: EditorNode) {
@@ -1793,6 +1803,7 @@ class EditorMapGraph {
 
 
         if (nodeEncapsulator && nodeVisual) {
+            const old = JSON.parse(JSON.stringify(nodeEncapsulator)) as EditorNode;
             // console.log(node.data);
             const temp = JSON.parse(JSON.stringify(nodeCopy)) as EditorNode;
             nodeVisual.data = temp;
@@ -1808,6 +1819,12 @@ class EditorMapGraph {
             icon.fillColor = this.getNodeColor(temp.type);
             icon.strokeColor = this.getNodeStrokeColor(temp.connectedNodeId);
             nodeVisual.marker.setIcon(icon);
+
+            if (!this.undoing) {
+                this.undoRedoStack.push([() => {
+                    this.updateNode(old);
+                }])
+            }
         }
     }
 
@@ -1816,6 +1833,7 @@ class EditorMapGraph {
         const edgeVisual = this.edges.find(cedge => cedge.data.edgeId === edgeCopy.edgeId);
 
         if (edgeEncapsulator && edgeVisual) {
+            const old = JSON.parse(JSON.stringify(edgeEncapsulator)) as EditorEdges;
             const temp = JSON.parse(JSON.stringify(edgeCopy)) as EditorEdges;
             edgeVisual.data = temp;
             edgeEncapsulator.edgeId = temp.edgeId;
@@ -1823,6 +1841,12 @@ class EditorMapGraph {
             edgeEncapsulator.name = temp.name;
             edgeEncapsulator.startNodeId = temp.startNodeId;
             edgeEncapsulator.endNodeId = temp.endNodeId;
+
+            if (!this.undoing) {
+                this.undoRedoStack.push([() => {
+                    this.updateEdge(old);
+                }]);
+            }
         }
     }
 
