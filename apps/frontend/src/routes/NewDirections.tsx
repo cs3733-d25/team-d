@@ -387,7 +387,7 @@ export default function NewDirections() {
                             onClick={handleOnboardNext}
                             className="w-full border-2 border-amber-600 bg-blue-900 active:scale-95 active:shadow-inner transition-transform"
                         >
-                            {onboardIdx === onboardingSteps.length - 1 ? 'Got it' : 'Next'}
+                            {onboardIdx === onboardingSteps.length - 1 ? 'Got it!' : 'Next'}
                         </Button>
                     </div>
                 </div>
