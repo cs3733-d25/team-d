@@ -51,30 +51,13 @@ const members: Person[] = [
     { name: "Jiaming Du",     position: "Algorithms & Feature Engineer", photo: JiamingImg, quote: "I like Trains" },
 ];
 
-/*  Card component */
-const Card: React.FC<Person> = ({ name, position, photo }) => (
-    <div className="flex flex-col items-center p-4 bg-white rounded-xl shadow-md hover:shadow-lg transition">
-        {photo ? (
-            <img
-                src={photo}
-                alt={name}
-                className="w-24 h-24 rounded-full object-cover mb-3 shrink-0"
-            />
-        ) : (
-            <div className="w-24 h-24 rounded-full bg-gray-200 mb-3 shrink-0" />
-        )}
-
-        <h3 className="text-lg font-semibold text-center">{name}</h3>
-        <p className="text-sm text-gray-600 text-center">{position}</p>
-    </div>
-);
 
 const FlipCard: React.FC<Person> = ({ name, position, photo, quote }) => {
     const [flipped, setFlipped] = useState(false);
 
     return (
         <div
-            className="w-80 h-48 cusor-pointer shadow-md hover:shadow-lg"
+            className="w-80 h-48 cusor-pointer "
             style = {{perspective: "1000px"}}
             onClick={() => setFlipped(!flipped)}
         >
@@ -97,7 +80,8 @@ const FlipCard: React.FC<Person> = ({ name, position, photo, quote }) => {
                         <p className="text-sm text-gray-600 text-center">{position}</p>
                     </div>
                 </div>
-                <div className="absolute w-full h-full bg-blue-100 border rounded-xl shadow-md flex items-center justify-center"
+                {/*Back*/}
+                <div className="absolute w-full h-full bg-white border rounded-xl shadow-md flex items-center justify-center"
                      style={{
                          transform: "rotateY(180deg)",
                          backfaceVisibility: "hidden",
