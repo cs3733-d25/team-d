@@ -6,7 +6,7 @@ import {
     FloorPathResponse,
     EditorNode,
     PathfindingResponse,
-    DepartmentOptions,
+    DepartmentOptions, NodePathResponse,
 } from 'common/src/constants.ts';
 import {EditorEncapsulator} from "@/routes/MapEditor.tsx";
 
@@ -141,14 +141,14 @@ class PathfindingGraph {
         this.path = new google.maps.Polyline({
             path: path,
             strokeColor: '#00c',
-            strokeWeight: 3,
+            strokeWeight: 5,
             icons: [{
                 icon: {
                     path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
                     scale: 2,
-                    strokeColor: '#ccc',
+                    strokeColor: '#fff',
                     strokeWeight: 2,
-                    fillColor: '#ccc',
+                    fillColor: '#fff',
                     fillOpacity: 1
                 },
                 repeat: "20px"
@@ -505,22 +505,21 @@ class PathfindingGraph {
 }
 
 export type PathfindingResults = {
-    floors: number[];
+    numSteps: number,
+    sections: PathfindingSection[];
+}
+
+export type PathfindingSection = {
+    name: string;
     directions: DirectionsStep[];
-    startLocation?: google.maps.LatLngLiteral;
-    endLocation?: google.maps.LatLngLiteral;
-    path?: google.maps.LatLngLiteral[];
 }
 
 export type DirectionsStep = {
+    idx: number;
     instructions: string;
     distance: string;
     time: string;
     icon: string;
-}
-
-type InternalStep = {
-    step: DirectionsStep;
     googleMapData: google.maps.DirectionsStep | null;
     pathFindingData: {graphIdx: number, points: google.maps.LatLngLiteral[]} | null;
 }
@@ -529,29 +528,32 @@ export class PathfindingMap extends GoogleMap {
 
 
 
-    public static async makeMap(mapDivElement: HTMLDivElement, autocompleteInput: HTMLInputElement, updater: (results: PathfindingResults | null) => void) {
+    public static async makeMap(mapDivElement: HTMLDivElement, autocompleteInput: HTMLInputElement, updater: (results: PathfindingResults | null, refresh: boolean) => void, sectioner: (section: number) => void) {
         await GoogleMap.loadScript();
-        return new PathfindingMap(mapDivElement, autocompleteInput, updater);
+        return new PathfindingMap(mapDivElement, autocompleteInput, updater, sectioner);
     }
 
     private readonly directionsService: google.maps.DirectionsService;
     private readonly directionsRenderer: google.maps.DirectionsRenderer;
     private readonly autocomplete: google.maps.places.Autocomplete;
 
-    private readonly updater: (results: PathfindingResults | null) => void;
+    private readonly updater: (results: PathfindingResults | null, refresh: boolean) => void;
+    private readonly sectioner: (section: number) => void;
 
     private startPlaceId: string | null;
     private endLocation: google.maps.LatLngLiteral | null;
     private travelMode: google.maps.TravelMode;
 
     private currentPathfindingResponse: PathfindingResponse | null;
-    private currentSteps: InternalStep[] | null;
+    private currentSteps: PathfindingResults | null;
     // private currentParkingPath: PathfindingGraph | null;
     // private currentFloorPaths: PathfindingGraph[] | null;
     // private selectedFloorPath: PathfindingGraph | null;
 
     private currentPath: PathfindingGraph | null;
     private allPaths: PathfindingGraph[];
+
+    private directionsBounds: google.maps.LatLngBounds | null;
 
     // For Google Map directions
     // private stepIndex: number = 0;
@@ -563,7 +565,7 @@ export class PathfindingMap extends GoogleMap {
 
 
 
-    private constructor(mapDivElement: HTMLDivElement, autocompleteInput: HTMLInputElement, updater: (results: PathfindingResults | null) => void) {
+    private constructor(mapDivElement: HTMLDivElement, autocompleteInput: HTMLInputElement, updater: (results: PathfindingResults | null, refresh: boolean) => void, sectioner: (section: number) => void) {
 
         super(mapDivElement, {
             center: {
@@ -582,7 +584,7 @@ export class PathfindingMap extends GoogleMap {
             // preserveViewport: true,
             polylineOptions: {
                 strokeColor: '#00c',
-                strokeWeight: 3,
+                strokeWeight: 5,
                 strokeOpacity: 1,
                 // icons: [{
                 //     icon: {
@@ -706,6 +708,7 @@ export class PathfindingMap extends GoogleMap {
         });
 
         this.updater = updater;
+        this.sectioner = sectioner;
 
         this.startPlaceId = null;
         this.endLocation = null;
@@ -718,6 +721,8 @@ export class PathfindingMap extends GoogleMap {
         // this.selectedFloorPath = null;
         this.currentPath = null;
         this.allPaths = [];
+
+        this.directionsBounds = null;
 
         this.currentStepPolyline = null;
 
@@ -772,7 +777,7 @@ export class PathfindingMap extends GoogleMap {
         // destination dept is not found
         if (!this.startPlaceId || !this.department) return;
 
-        this.currentSteps = [];
+        this.currentSteps = null;
 
         // Get directions within the hospital
         await axios.get(API_ROUTES.PATHFIND + '/path-to-dept/' + this.department.departmentId).then(response => {
@@ -797,8 +802,10 @@ export class PathfindingMap extends GoogleMap {
             },
             destination: this.endLocation,
             travelMode: this.travelMode,
+            unitSystem: google.maps.UnitSystem.METRIC,
         }).then((directions) => {
             this.directionsRenderer.setDirections(directions);
+            this.directionsBounds = directions.routes[0].bounds;
         }).catch(error => {
             console.log(error);
             this.directionsRenderer.setDirections(null);
@@ -807,11 +814,19 @@ export class PathfindingMap extends GoogleMap {
         console.log('im tired');
         console.log(this.currentPathfindingResponse);
 
+        this.currentSteps = {
+            numSteps: 0,
+            sections: [],
+        }
 
-        // Add the result from above into the steps
-        this.directionsRenderer.getDirections()?.routes[0].legs[0].steps.forEach((step) => {
-            this.currentSteps?.push({
-                step: {
+        let idx = 0;
+
+        this.currentSteps?.sections.push({
+            name: 'To the hospital',
+            directions: this.directionsRenderer.getDirections()?.routes[0].legs[0].steps.map(step => {
+                if (this.currentSteps) this.currentSteps.numSteps++;
+                return {
+                    idx: idx++,
                     instructions: step.instructions.split('<div')[0].replace(/<[^>]*>/g, ''),
                     distance: step.distance?.text || '',
                     time: step.duration?.text || '',
@@ -819,11 +834,29 @@ export class PathfindingMap extends GoogleMap {
                         step.maneuver.includes('right') ? 'right' :
                             step.maneuver.includes('left') ? 'left' :
                                 'straight',
-                },
-                googleMapData: step,
-                pathFindingData: null,
-            });
+                    googleMapData: step,
+                    pathFindingData: null,
+                }
+            }) || []
         });
+
+
+        // Add the result from above into the steps
+        // this.directionsRenderer.getDirections()?.routes[0].legs[0].steps.forEach((step) => {
+        //     this.currentSteps?.push({
+        //         step: {
+        //             instructions: step.instructions.split('<div')[0].replace(/<[^>]*>/g, ''),
+        //             distance: step.distance?.text || '',
+        //             time: step.duration?.text || '',
+        //             icon:
+        //                 step.maneuver.includes('right') ? 'right' :
+        //                     step.maneuver.includes('left') ? 'left' :
+        //                         'straight',
+        //         },
+        //         googleMapData: step,
+        //         pathFindingData: null,
+        //     });
+        // });
 
         this.currentPath?.setVisibility(false);
         this.allPaths?.forEach((path) => {path.remove()});
@@ -837,197 +870,288 @@ export class PathfindingMap extends GoogleMap {
         );
 
         this.setCurrentGraphIdx(0);
+        this.currentSteps?.sections.push({
+            name: 'Parking Lot',
+            directions: this.currentPathfindingResponse.parkingLotPath.path.map((path, i) => {
+                if (this.currentSteps) this.currentSteps.numSteps++;
 
-        // Pushing the directions in the parking lot
-        for (let j=0; j<=this.currentPathfindingResponse.parkingLotPath.path.length - 1; j++) {
+                const nextPath: NodePathResponse | undefined = this.currentPathfindingResponse?.parkingLotPath.path[i + 1];
 
-            let distance: number;
-            // distance is in meter
-            let time: number;
-            const pos1 = this.currentPathfindingResponse.parkingLotPath.path[j];
-            const pos2 = this.currentPathfindingResponse.parkingLotPath.path[j+1];
-
-            if (pos1 && pos2) {
-                distance = google.maps.geometry.spherical.computeDistanceBetween(pos1, pos2);
-
+                // distance is in meter
+                const distance = nextPath ? google.maps.geometry.spherical.computeDistanceBetween(path, nextPath) : 0;
                 // Estimate duration assuming average indoor walking speed (~1.4 meters/sec)
-                time = distance / 1.4;
-            } else {
-                distance = 0;
-                time = 0;
-            }
+                const time = distance / 1.4;
 
-            const direction = this.currentPathfindingResponse.parkingLotPath.direction[j];
+                const direction = this.currentPathfindingResponse?.parkingLotPath.direction[i] || '';
 
-            if (j==0){
-                this.currentSteps?.push({
-                    step: {
-                        instructions: 'PARKING LOT INSTRUCTIONS: '+ direction,
-                        distance: distance.toFixed(2).toString() + ' m',
-                        time: time.toFixed(2).toString() + ' sec',
-                        icon: direction.includes('right') ? 'right' : direction.includes('left') ? 'left' : 'straight',
-                    },
-                    googleMapData: null,
-                    pathFindingData:  {
-                        graphIdx: 0,
-                        points: [
-                            {
-                                lat: pos1.lat,
-                                lng: pos1.lng,
-                            },
-                            {
-                                lat: pos2.lat,
-                                lng: pos2.lng,
-                            },
-                        ],
-                    },
-                });
-                continue;
-            }
-
-            if (j == this.currentPathfindingResponse.parkingLotPath.path.length - 1){
-                this.currentSteps?.push({
-                    step: {
-                        instructions: direction,
-                        distance: '0 m',
-                        time: '0 sec',
-                        icon: direction.includes('right') ? 'right' : direction.includes('left') ? 'left' : 'straight',
-                    },
-                    googleMapData: null,
-                    pathFindingData:  {
-                        graphIdx: 0,
-                        points: [
-                            {
-                                lat: pos1.lat,
-                                lng: pos1.lng,
-                            },
-                        ],
-                    },
-                });
-                continue;
-            }
-
-            this.currentSteps?.push({
-                step: {
+                return {
+                    idx: idx++,
                     instructions: direction,
                     distance: distance.toFixed(2).toString() + ' m',
                     time: time.toFixed(2).toString() + ' sec',
                     icon: direction.includes('right') ? 'right' : direction.includes('left') ? 'left' : 'straight',
-                },
-                googleMapData: null,
-                pathFindingData:  {
-                    graphIdx: 0,
-                    points: [
-                        {
-                            lat: pos1.lat,
-                            lng: pos1.lng,
-                        },
-                        {
-                            lat: pos2.lat,
-                            lng: pos2.lng,
-                        },
-                    ],
-                },
-            });
-
-        }
-
-        // Pushing the directions in the floor paths
-        for (let i=0; i<this.currentPathfindingResponse.floorPaths.length; i++) {
-            for (let j=0; j<=this.currentPathfindingResponse.floorPaths[i].path.length - 1; j++) {
-
-                let distance: number;
-                // distance is in meter
-                let time: number;
-                const pos1 = this.currentPathfindingResponse.floorPaths[i].path[j];
-                const pos2 = this.currentPathfindingResponse.floorPaths[i].path[j+1];
-
-                if (pos1 && pos2) {
-                    distance = google.maps.geometry.spherical.computeDistanceBetween(pos1, pos2);
-
-                    // Estimate duration assuming average indoor walking speed (~1.4 meters/sec)
-                    time = distance / 1.4;
-                } else {
-                    distance = 0;
-                    time = 0;
-                }
-
-                const direction = this.currentPathfindingResponse.floorPaths[i].direction[j];
-
-                if (j == 0){
-                    this.currentSteps?.push({
-                        step: {
-                            instructions: 'FLOOR ' + this.currentPathfindingResponse.floorPaths[i].floorNum +' INSTRUCTIONS: ' + direction,
-                            distance: distance.toFixed(2).toString() + ' m',
-                            time: time.toFixed(2).toString() + ' sec',
-                            icon: direction.includes('right') ? 'right' : direction.includes('left') ? 'left' : 'straight',
-                        },
-                        googleMapData: null,
-                        pathFindingData: {
-                            graphIdx: i + 1,
-                            points: [
-                                {
-                                    lat: pos1.lat,
-                                    lng: pos1.lng,
-                                },
-                                {
-                                    lat: pos2.lat,
-                                    lng: pos2.lng,
-                                },
-                            ],
-                        },
-                    });
-                    continue;
-                }
-
-
-                if (j == this.currentPathfindingResponse.floorPaths[i].path.length - 1){
-                    this.currentSteps?.push({
-                        step: {
-                            instructions: direction,
-                            distance: '0 m',
-                            time: '0 sec',
-                            icon: direction.includes('right') ? 'right' : direction.includes('left') ? 'left' : 'straight',
-                        },
-                        googleMapData: null,
-                        pathFindingData: {
-                            graphIdx: i + 1,
-                            points: [
-                                {
-                                    lat: pos1.lat,
-                                    lng: pos1.lng,
-                                },
-                            ],
-                        },
-                    });
-                    continue;
-                }
-
-                this.currentSteps?.push({
-                    step: {
-                        instructions: direction,
-                        distance: distance.toFixed(2).toString() + ' m',
-                        time: time.toFixed(2).toString() + ' sec',
-                        icon: direction.includes('right') ? 'right' : direction.includes('left') ? 'left' : 'straight',
-                    },
                     googleMapData: null,
-                    pathFindingData: {
-                        graphIdx: i + 1,
-                        points: [
+                    pathFindingData:  {
+                        graphIdx: 0,
+                        points: nextPath ? [
                             {
-                                lat: pos1.lat,
-                                lng: pos1.lng,
+                                lat: path.lat,
+                                lng: path.lng,
                             },
                             {
-                                lat: pos2.lat,
-                                lng: pos2.lng,
+                                lat: nextPath.lat,
+                                lng: nextPath.lng,
+                            },
+                        ] : [
+                            {
+                                lat: path.lat,
+                                lng: path.lng,
                             },
                         ],
                     },
-                });
+                }
+            }),
+        });
 
-            }
-        }
+
+        // Pushing the directions in the parking lot
+        // for (let j=0; j<=this.currentPathfindingResponse.parkingLotPath.path.length - 1; j++) {
+        //
+        //     let distance: number;
+        //     // distance is in meter
+        //     let time: number;
+        //     const pos1 = this.currentPathfindingResponse.parkingLotPath.path[j];
+        //     const pos2 = this.currentPathfindingResponse.parkingLotPath.path[j+1];
+        //
+        //     if (pos1 && pos2) {
+        //         distance = google.maps.geometry.spherical.computeDistanceBetween(pos1, pos2);
+        //
+        //         // Estimate duration assuming average indoor walking speed (~1.4 meters/sec)
+        //         time = distance / 1.4;
+        //     } else {
+        //         distance = 0;
+        //         time = 0;
+        //     }
+        //
+        //     const direction = this.currentPathfindingResponse.parkingLotPath.direction[j];
+        //
+        //     if (j==0){
+        //         this.currentSteps?.push({
+        //             step: {
+        //                 instructions: 'PARKING LOT INSTRUCTIONS: '+ direction,
+        //                 distance: distance.toFixed(2).toString() + ' m',
+        //                 time: time.toFixed(2).toString() + ' sec',
+        //                 icon: direction.includes('right') ? 'right' : direction.includes('left') ? 'left' : 'straight',
+        //             },
+        //             googleMapData: null,
+        //             pathFindingData:  {
+        //                 graphIdx: 0,
+        //                 points: [
+        //                     {
+        //                         lat: pos1.lat,
+        //                         lng: pos1.lng,
+        //                     },
+        //                     {
+        //                         lat: pos2.lat,
+        //                         lng: pos2.lng,
+        //                     },
+        //                 ],
+        //             },
+        //         });
+        //         continue;
+        //     }
+        //
+        //     if (j == this.currentPathfindingResponse.parkingLotPath.path.length - 1){
+        //         this.currentSteps?.push({
+        //             step: {
+        //                 instructions: direction,
+        //                 distance: '0 m',
+        //                 time: '0 sec',
+        //                 icon: direction.includes('right') ? 'right' : direction.includes('left') ? 'left' : 'straight',
+        //             },
+        //             googleMapData: null,
+        //             pathFindingData:  {
+        //                 graphIdx: 0,
+        //                 points: [
+        //                     {
+        //                         lat: pos1.lat,
+        //                         lng: pos1.lng,
+        //                     },
+        //                 ],
+        //             },
+        //         });
+        //         continue;
+        //     }
+        //
+        //     this.currentSteps?.push({
+        //         step: {
+        //             instructions: direction,
+        //             distance: distance.toFixed(2).toString() + ' m',
+        //             time: time.toFixed(2).toString() + ' sec',
+        //             icon: direction.includes('right') ? 'right' : direction.includes('left') ? 'left' : 'straight',
+        //         },
+        //         googleMapData: null,
+        //         pathFindingData:  {
+        //             graphIdx: 0,
+        //             points: [
+        //                 {
+        //                     lat: pos1.lat,
+        //                     lng: pos1.lng,
+        //                 },
+        //                 {
+        //                     lat: pos2.lat,
+        //                     lng: pos2.lng,
+        //                 },
+        //             ],
+        //         },
+        //     });
+        //
+        // }
+
+
+        this.currentSteps.sections = this.currentSteps.sections.concat(
+            this.currentPathfindingResponse.floorPaths.map((floor, j) => {
+                return {
+                    name: `Floor ${floor.floorNum}`,
+                    directions: floor.path.map((path, i) => {
+                        if (this.currentSteps) this.currentSteps.numSteps++;
+
+                        const nextPath: NodePathResponse | undefined = this.currentPathfindingResponse?.floorPaths[j].path[i + 1];
+
+                        // distance is in meter
+                        const distance = nextPath ? google.maps.geometry.spherical.computeDistanceBetween(path, nextPath) : 0;
+                        // Estimate duration assuming average indoor walking speed (~1.4 meters/sec)
+                        const time = distance / 1.4;
+
+                        const direction = this.currentPathfindingResponse?.floorPaths[j].direction[i] || '';
+
+                        return {
+                            idx: idx++,
+                            instructions: direction,
+                            distance: distance.toFixed(2).toString() + ' m',
+                            time: time.toFixed(2).toString() + ' sec',
+                            icon: direction.includes('right') ? 'right' : direction.includes('left') ? 'left' : 'straight',
+                            googleMapData: null,
+                            pathFindingData:  {
+                                graphIdx: j + 1,
+                                points: nextPath ? [
+                                    {
+                                        lat: path.lat,
+                                        lng: path.lng,
+                                    },
+                                    {
+                                        lat: nextPath.lat,
+                                        lng: nextPath.lng,
+                                    },
+                                ] : [
+                                    {
+                                        lat: path.lat,
+                                        lng: path.lng,
+                                    },
+                                ],
+                            },
+                        }
+                    })
+                }
+            })
+        );
+
+        // // Pushing the directions in the floor paths
+        // for (let i=0; i<this.currentPathfindingResponse.floorPaths.length; i++) {
+        //     for (let j=0; j<=this.currentPathfindingResponse.floorPaths[i].path.length - 1; j++) {
+        //
+        //         let distance: number;
+        //         // distance is in meter
+        //         let time: number;
+        //         const pos1 = this.currentPathfindingResponse.floorPaths[i].path[j];
+        //         const pos2 = this.currentPathfindingResponse.floorPaths[i].path[j+1];
+        //
+        //         if (pos1 && pos2) {
+        //             distance = google.maps.geometry.spherical.computeDistanceBetween(pos1, pos2);
+        //
+        //             // Estimate duration assuming average indoor walking speed (~1.4 meters/sec)
+        //             time = distance / 1.4;
+        //         } else {
+        //             distance = 0;
+        //             time = 0;
+        //         }
+        //
+        //         const direction = this.currentPathfindingResponse.floorPaths[i].direction[j];
+        //
+        //         if (j == 0){
+        //             this.currentSteps?.push({
+        //                 step: {
+        //                     instructions: 'FLOOR ' + this.currentPathfindingResponse.floorPaths[i].floorNum +' INSTRUCTIONS: ' + direction,
+        //                     distance: distance.toFixed(2).toString() + ' m',
+        //                     time: time.toFixed(2).toString() + ' sec',
+        //                     icon: direction.includes('right') ? 'right' : direction.includes('left') ? 'left' : 'straight',
+        //                 },
+        //                 googleMapData: null,
+        //                 pathFindingData: {
+        //                     graphIdx: i + 1,
+        //                     points: [
+        //                         {
+        //                             lat: pos1.lat,
+        //                             lng: pos1.lng,
+        //                         },
+        //                         {
+        //                             lat: pos2.lat,
+        //                             lng: pos2.lng,
+        //                         },
+        //                     ],
+        //                 },
+        //             });
+        //             continue;
+        //         }
+        //
+        //
+        //         if (j == this.currentPathfindingResponse.floorPaths[i].path.length - 1){
+        //             this.currentSteps?.push({
+        //                 step: {
+        //                     instructions: direction,
+        //                     distance: '0 m',
+        //                     time: '0 sec',
+        //                     icon: direction.includes('right') ? 'right' : direction.includes('left') ? 'left' : 'straight',
+        //                 },
+        //                 googleMapData: null,
+        //                 pathFindingData: {
+        //                     graphIdx: i + 1,
+        //                     points: [
+        //                         {
+        //                             lat: pos1.lat,
+        //                             lng: pos1.lng,
+        //                         },
+        //                     ],
+        //                 },
+        //             });
+        //             continue;
+        //         }
+        //
+        //         this.currentSteps?.push({
+        //             step: {
+        //                 instructions: direction,
+        //                 distance: distance.toFixed(2).toString() + ' m',
+        //                 time: time.toFixed(2).toString() + ' sec',
+        //                 icon: direction.includes('right') ? 'right' : direction.includes('left') ? 'left' : 'straight',
+        //             },
+        //             googleMapData: null,
+        //             pathFindingData: {
+        //                 graphIdx: i + 1,
+        //                 points: [
+        //                     {
+        //                         lat: pos1.lat,
+        //                         lng: pos1.lng,
+        //                     },
+        //                     {
+        //                         lat: pos2.lat,
+        //                         lng: pos2.lng,
+        //                     },
+        //                 ],
+        //             },
+        //         });
+        //
+        //     }
+        // }
 
         // this.currentPath.setVisibility(true);
 
@@ -1047,24 +1171,56 @@ export class PathfindingMap extends GoogleMap {
         // this.currentFloorPaths[0].setVisibility(true);
 
         // Update the frontend directions
-        this.updater({
-            floors: this.currentPathfindingResponse.floorPaths.map(floor => floor.floorNum),
-            directions: this.currentSteps.map(step => step.step),
-            startLocation: this.currentPathfindingResponse.parkingLotPath.path[0],
-            endLocation: this.endLocation,
-            path: this.currentPathfindingResponse.parkingLotPath.path,
-        });
+
+        console.log(this.currentSteps);
+        this.sectioner(-1);
+        this.updater(this.currentSteps, true);
     }
 
     async setCurrentStepIdx(stepIdx: number, tts: boolean) {
         console.log('setCurrentStepIdx', stepIdx, tts);
 
+        if (stepIdx === -1) {
+            this.setCurrentGraphIdx(0);
+            if (this.directionsBounds) this.map.fitBounds(this.directionsBounds);
+            this.currentStepPolyline?.setMap(null);
+            this.currentStepPolyline = null;
+        }
+
         if (!this.currentSteps) return;
-        const step = this.currentSteps[stepIdx];
+
+        let step: DirectionsStep | undefined;
+
+        // for (let i = 0; i < stepIdx; i++) {
+        //
+        // }
+
+        this.currentSteps.sections.forEach((section, i) => {
+            const candidate = section.directions.find((direction) => {
+                return direction.idx === stepIdx;
+            });
+
+            if (candidate) {
+                step = candidate;
+                this.sectioner(i);
+            }
+            // if (section.directions.length > 0 &&
+            //     section.directions[0].idx <= stepIdx &&
+            //     section.directions[section.directions.length - 1].idx >= stepIdx) {
+            //
+            //     step = section.directions[stepIdx - section.directions[0].idx];
+            // }
+        });
+
+        console.log(step);
+
+        // this.currentSteps.sections.find(section => {
+        //     return
+        // })
 
         if (tts) {
             console.log('kajbfj');
-            const utter = new SpeechSynthesisUtterance(step.step.instructions);
+            const utter = new SpeechSynthesisUtterance(step?.instructions || '');
             utter.lang = 'en-US';
             speechSynthesis.cancel();
             speechSynthesis.speak(utter);
@@ -1072,7 +1228,7 @@ export class PathfindingMap extends GoogleMap {
 
         const bounds = new google.maps.LatLngBounds();
 
-        if (step.googleMapData?.polyline) {
+        if (step?.googleMapData?.polyline) {
             this.setCurrentGraphIdx(0);
             this.currentStepPolyline?.setMap(null);
             const path = google.maps.geometry.encoding.decodePath(step.googleMapData.polyline.points);
@@ -1080,8 +1236,8 @@ export class PathfindingMap extends GoogleMap {
                 map: this.map,
                 path: path,
                 strokeWeight: 10,
-                strokeColor: '#f04',
-                strokeOpacity: 0.5,
+                strokeColor: '#0ff',
+                strokeOpacity: 0.8,
                 zIndex: 50,
             });
             path.forEach(point => {
@@ -1096,7 +1252,7 @@ export class PathfindingMap extends GoogleMap {
             // this.map.setZoom(17);
         }
 
-        if (step.pathFindingData) {
+        if (step?.pathFindingData) {
             step.pathFindingData.points.forEach(point => {
                 bounds.extend(point);
             });
@@ -1109,8 +1265,8 @@ export class PathfindingMap extends GoogleMap {
                 map: this.map,
                 path: step.pathFindingData.points,
                 strokeWeight: 10,
-                strokeColor: '#f04',
-                strokeOpacity: 0.5,
+                strokeColor: '#0ff',
+                strokeOpacity: 0.8,
                 zIndex: 50,
             });
 
@@ -1121,7 +1277,7 @@ export class PathfindingMap extends GoogleMap {
         }
     }
 
-    setCurrentGraphIdx(idx: number) {
+    private setCurrentGraphIdx(idx: number) {
         this.currentPath?.setVisibility(false);
         this.currentPath = this.allPaths[idx];
         this.currentPath.setVisibility(true);

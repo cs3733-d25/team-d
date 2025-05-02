@@ -1595,6 +1595,22 @@
 	graphId: 101,
 },
 {
+	nodeId: 330,
+	name: 'kdhfhk',
+	lat: 42.092536960979814,
+	lng: -71.26598247201423,
+	type: 'DOOR',
+	graphId: 101,
+},
+{
+	nodeId: 331,
+	name: '',
+	lat: 42.0924759745494,
+	lng: -71.26596294343472,
+	type: 'NORMAL',
+	graphId: 101,
+},
+{
 	nodeId: 214,
 	name: 'floor 1 entrance',
 	lat: 42.09263672447995,
@@ -2362,7 +2378,7 @@
 {
 	nodeId: 299,
 	name: '',
-	lat: 42.336027837306446,
+	lat: 42.33602783730645,
 	lng: -71.10842809081078,
 	type: 'NORMAL',
 	graphId: 400,
@@ -2434,7 +2450,7 @@
 {
 	nodeId: 318,
 	name: '',
-	lat: 42.335111323066464,
+	lat: 42.33511132306646,
 	lng: -71.10885590314865,
 	type: 'NORMAL',
 	graphId: 400,
@@ -2450,7 +2466,7 @@
 {
 	nodeId: 320,
 	name: '',
-	lat: 42.334967574353584,
+	lat: 42.33496757435358,
 	lng: -71.10862657427788,
 	type: 'NORMAL',
 	graphId: 400,

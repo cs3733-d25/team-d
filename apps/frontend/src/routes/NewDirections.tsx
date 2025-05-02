@@ -30,6 +30,12 @@ import {
     SelectTrigger,
     SelectValue
 } from "@/components/ui/select.tsx";
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
+} from "@/components/ui/accordion"
 import {Button} from "@/components/ui/button.tsx";
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 
@@ -80,16 +86,18 @@ export default function NewDirections() {
 
     const [currentStep, setCurrentStep] = useState<number>(-1);
 
-    const setPathfindingResultsExternal = (results: PathfindingResults | null) => {
+    const [currentSection, setCurrentSection] = useState<number>(-1);
+
+    const setPathfindingResultsExternal = (results: PathfindingResults | null, refresh: boolean) => {
         setPathfindingResults(results);
-        setCurrentStep(-1);
+        if (refresh) setCurrentStep(-1);
     }
 
     useEffect(() => {
         console.log('useEffect NewDirections');
         const fetchMap = async () => {
             if (mapRef.current && autocompleteRef.current ) {
-                setMap(await PathfindingMap.makeMap(mapRef.current, autocompleteRef.current, setPathfindingResultsExternal));
+                setMap(await PathfindingMap.makeMap(mapRef.current, autocompleteRef.current, setPathfindingResultsExternal, setCurrentSection));
             }
         }
         fetchMap().then(() => {
@@ -126,7 +134,7 @@ export default function NewDirections() {
 
 
     const handleNextStep = () => {
-        if (!pathfindingResults || currentStep >= pathfindingResults.directions.length - 1) return;
+        if (!pathfindingResults || currentStep >= pathfindingResults.numSteps - 1) return;
 
         map?.setCurrentStepIdx(currentStep + 1, tts);
         setCurrentStep(currentStep + 1);
@@ -161,6 +169,18 @@ export default function NewDirections() {
             map?.setCurrentStepIdx(currentStep, false);
         }
     };
+
+    const handleSectionChange = (value: string) => {
+        const val = Number(value) - 1;
+        if (!pathfindingResults) return;
+        if (val === -1) {
+            map?.setCurrentStepIdx(-1, false);
+            setCurrentStep(-1);
+            return;
+        }
+        map?.setCurrentStepIdx(pathfindingResults.sections[val].directions[0].idx, tts);
+        setCurrentStep(pathfindingResults.sections[val].directions[0].idx);
+    }
 
     return (
         <div className="flex flex-row flex-1 h-screen overflow-y-hidden border-2 border-[#012D5A] rounded-md shadow-md bg-[#F1F1F1]">
@@ -287,7 +307,14 @@ export default function NewDirections() {
                     </Card>
                 </div>
 
-
+                {/*<Accordion type="single" collapsible>*/}
+                {/*    <AccordionItem value="item-1">*/}
+                {/*        <AccordionTrigger>Is it accessible?</AccordionTrigger>*/}
+                {/*        <AccordionContent>*/}
+                {/*            Yes. It adheres to the WAI-ARIA design pattern.*/}
+                {/*        </AccordionContent>*/}
+                {/*    </AccordionItem>*/}
+                {/*</Accordion>*/}
 
                 {pathfindingResults &&
                     <>
@@ -311,31 +338,44 @@ export default function NewDirections() {
                                     <div className="flex flex-row">
                                         <Button className="border-2 border-amber-600 flex-1 grow m-2 bg-blue-900 active:scale-95 active:shadow-inner transition-transform" onClick={handlePrevStep} disabled={currentStep < 1}>Previous</Button>
                                         <Separator className="mt-4 mb-4" orientation="vertical" />
-                                        <Button className="border-2 border-amber-600 flex-1 grow m-2 bg-blue-900 active:scale-95 active:shadow-inner transition-transform" onClick={handleNextStep} disabled={currentStep >= pathfindingResults.directions.length - 1}>Next</Button>
+                                        <Button className="border-2 border-amber-600 flex-1 grow m-2 bg-blue-900 active:scale-95 active:shadow-inner transition-transform" onClick={handleNextStep} disabled={currentStep >= pathfindingResults.numSteps - 1}>Next</Button>
                                     </div>
                                 </CardHeader>
                                 <CardContent>
-                                    <div className="h-[400px] overflow-y-scroll">
-                                        {pathfindingResults.directions.map((step, i) => (
-                                            <div className= {`relative group px-2 ${currentStep === i ? 'bg-gray-200 rounded-md' : 'bg-white'}`}
-                                                 onClick={() => {
-                                                     map?.setCurrentStepIdx(i, tts);
-                                                     setCurrentStep(i);
-                                                     console.log(i);
-                                                 }}>
-                                                {step.icon === "right" ? <FontAwesomeIcon icon={faArrowRight} className="text-amber-600"/>
-                                                    : step.icon === "left" ? <FontAwesomeIcon icon={faArrowLeft} className="text-amber-600"/>
-                                                        : <FontAwesomeIcon icon={faArrowUp} className="text-amber-600"/>}
-                                                <span> </span>
-                                                <span className="text-blue-900">{step.instructions}</span>
-                                                <br/>
-                                                <span className="text-black">{step.time} ({step.distance})</span>
-                                                <span className="absolute bottom-0 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-black ml-30">
-                                        Click to view
-                                    </span>
-                                                <br/><br/>
-                                            </div>
-                                        ))}
+                                    <div className="h-[400px] overflow-y-scroll" key={currentSection}>
+                                        <Accordion type="single" defaultValue={(currentSection + 1).toString()} collapsible onValueChange={handleSectionChange}>
+                                            {pathfindingResults.sections.map((section, j) => {
+                                                return <AccordionItem value={(j + 1).toString()}>
+                                                    <AccordionTrigger>
+                                                        {section.name}
+                                                    </AccordionTrigger>
+                                                    <AccordionContent>
+                                                        {
+                                                            section.directions.map((step) => (
+                                                                <div className= {`relative group px-2 ${currentStep === step.idx ? 'bg-gray-200 rounded-md' : 'bg-white'}`}
+                                                                     onClick={() => {
+                                                                         map?.setCurrentStepIdx(step.idx, tts);
+                                                                         setCurrentStep(step.idx);
+                                                                         console.log(step.idx);
+                                                                     }}>
+                                                                    {step.icon === "right" ? <FontAwesomeIcon icon={faArrowRight} className="text-amber-600"/>
+                                                                        : step.icon === "left" ? <FontAwesomeIcon icon={faArrowLeft} className="text-amber-600"/>
+                                                                            : <FontAwesomeIcon icon={faArrowUp} className="text-amber-600"/>}
+                                                                    <span> </span>
+                                                                    <span className="text-blue-900">{step.instructions}</span>
+                                                                    <br/>
+                                                                    <span className="text-black">{step.time} ({step.distance})</span>
+                                                                    <span className="absolute bottom-0 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-black ml-30">
+                                                                        Click to view
+                                                                    </span>
+                                                                    <br/><br/>
+                                                                </div>
+                                                            ))
+                                                        }
+                                                    </AccordionContent>
+                                                </AccordionItem>
+                                            })}
+                                        </Accordion>
                                     </div>
                                 </CardContent>
                             </Card>
