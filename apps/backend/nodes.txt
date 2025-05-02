@@ -1597,7 +1597,7 @@
 {
 	nodeId: 330,
 	name: 'kdhfhk',
-	lat: 42.092536960979814,
+	lat: 42.09253696097981,
 	lng: -71.26598247201423,
 	type: 'DOOR',
 	graphId: 101,
@@ -2969,4 +2969,12 @@
 	type: 'DOOR',
 	graphId: 402,
 	connectedNodeId: 287,
+},
+{
+	nodeId: 329,
+	name: '',
+	lat: 42.33572101223098,
+	lng: -71.10805124044418,
+	type: 'PARKING',
+	graphId: 402,
 },

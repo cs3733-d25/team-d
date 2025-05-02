@@ -17,6 +17,12 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
+import {
+    Tabs,
+    TabsContent,
+    TabsList,
+    TabsTrigger,
+} from "@/components/ui/tabs";
 import axios from "axios";
 import {Separator} from "@/components/ui/separator.tsx";
 import {Label} from "@/components/ui/label.tsx";
@@ -281,7 +287,7 @@ export default function NewDirections() {
 
 
 
-                                {selectedHospital &&
+                            {selectedHospital &&
                                 <>
                                     {/*<Separator className="mt-4 mb-4" />*/}
 
@@ -334,6 +340,14 @@ export default function NewDirections() {
                                             <FontAwesomeIcon icon={faCrosshairs} />
                                             Re-center
                                         </Button>
+                                    </div>
+                                    <div className="items-center justify-center">
+                                        <Tabs defaultValue="Metric" onValueChange={(value: string) => console.log(value)}>
+                                            <TabsList>
+                                                <TabsTrigger className="border-2 border-amber-600 flex-1 grow m-2 bg-blue-900 active:scale-95 active:shadow-inner transition-transform" value="Metric">Metric</TabsTrigger>
+                                                <TabsTrigger className="border-2 border-amber-600 flex-1 grow m-2 bg-blue-900 active:scale-95 active:shadow-inner transition-transform" value="Imperial">Imperial</TabsTrigger>
+                                            </TabsList>
+                                        </Tabs>
                                     </div>
                                     <div className="flex flex-row">
                                         <Button className="border-2 border-amber-600 flex-1 grow m-2 bg-blue-900 active:scale-95 active:shadow-inner transition-transform" onClick={handlePrevStep} disabled={currentStep < 1}>Previous</Button>

@@ -1323,6 +1323,10 @@ class EditorMapGraph {
     private readonly nodeUpdater: (selected: EditorNode | null) => void;
     private readonly edgeUpdater: (selected: EditorEdges | null) => void;
 
+
+    private readonly undoRedoStack: (() => void)[][];
+    private undoing: boolean;
+
     private selectedNode: EditorNode | null;
     private selectedEdge: EditorEdges | null;
 
@@ -1344,6 +1348,9 @@ class EditorMapGraph {
 
         this.nodeUpdater = nodeUpdater;
         this.edgeUpdater = edgeUpdater;
+
+        this.undoRedoStack = [];
+        this.undoing = false;
 
         this.nodes = [];
         this.edges = [];
@@ -1487,7 +1494,7 @@ class EditorMapGraph {
         // add edge state, finalize this edge
         marker.addListener("click", (e: google.maps.MapMouseEvent) => {
             this.edgeUpdater(null);
-            this.nodeUpdater(node);
+            this.nodeUpdater(JSON.parse(JSON.stringify(node)) as EditorNode);
             // const rawPosition = e.latLng;
             // if (!rawPosition) return;
             //
@@ -1693,7 +1700,7 @@ class EditorMapGraph {
 
         line.addListener('click', (e: google.maps.MapMouseEvent) => {
             this.nodeUpdater(null);
-            this.edgeUpdater(edge);
+            this.edgeUpdater(JSON.parse(JSON.stringify(edge)) as EditorEdges);
         })
 
         this.edges.push({
@@ -1724,6 +1731,13 @@ class EditorMapGraph {
         this.editorGraph.Nodes.push(node);
         this.addNodeLocal(node);
 
+        if (!this.undoing) {
+            this.undoRedoStack.push([() => {
+                this.deleteNode(node.nodeId);
+            }]);
+        }
+
+
         return node;
     }
 
@@ -1748,6 +1762,12 @@ class EditorMapGraph {
         console.log(id);
         this.editorGraph.Edges.push(edge);
         this.addEdgeLocal(edge);
+
+        if (!this.undoing) {
+            this.undoRedoStack.push([() => {
+                this.deleteEdge(edge.edgeId);
+            }]);
+        }
 
         return edge;
     }
@@ -1774,7 +1794,13 @@ class EditorMapGraph {
         });
         edgesIdsToDelete.forEach(edgeId => {
             this.deleteEdge(edgeId);
-        })
+        });
+
+        if (!this.undoing) {
+            this.undoRedoStack.push([() => {
+
+            }])
+        }
     }
 
     deleteEdge(edgeId: number) {
@@ -1791,6 +1817,49 @@ class EditorMapGraph {
         );
 
         this.editorGraph.Edges.splice(edgeIndexEncapsulator, 1);
+    }
+
+    updateNode(nodeCopy: EditorNode) {
+
+        console.log(nodeCopy);
+
+        const nodeEncapsulator = this.editorGraph.Nodes.find(cnode => cnode.nodeId === nodeCopy.nodeId);
+        const nodeVisual = this.nodes.find(cnode => cnode.data.nodeId === nodeCopy.nodeId);
+
+
+
+        if (nodeEncapsulator && nodeVisual) {
+            // console.log(node.data);
+            const temp = JSON.parse(JSON.stringify(nodeCopy)) as EditorNode;
+            nodeVisual.data = temp;
+            nodeEncapsulator.nodeId = temp.nodeId;
+            nodeEncapsulator.connectedNodeId = temp.connectedNodeId;
+            nodeEncapsulator.lat = temp.lat;
+            nodeEncapsulator.lng = temp.lng;
+            nodeEncapsulator.type = temp.type;
+            nodeEncapsulator.name = temp.name;
+            nodeEncapsulator.graphId = temp.graphId;
+            // console.log(node.data);
+            const icon = nodeVisual.marker.getIcon() as google.maps.Symbol;
+            icon.fillColor = this.getNodeColor(temp.type);
+            icon.strokeColor = this.getNodeStrokeColor(temp.connectedNodeId);
+            nodeVisual.marker.setIcon(icon);
+        }
+    }
+
+    updateEdge(edgeCopy: EditorEdges) {
+        const edgeEncapsulator = this.editorGraph.Edges.find(cedge => cedge.edgeId === edgeCopy.edgeId);
+        const edgeVisual = this.edges.find(cedge => cedge.data.edgeId === edgeCopy.edgeId);
+
+        if (edgeEncapsulator && edgeVisual) {
+            const temp = JSON.parse(JSON.stringify(edgeCopy)) as EditorEdges;
+            edgeVisual.data = temp;
+            edgeEncapsulator.edgeId = temp.edgeId;
+            edgeEncapsulator.graphId = temp.graphId;
+            edgeEncapsulator.name = temp.name;
+            edgeEncapsulator.startNodeId = temp.startNodeId;
+            edgeEncapsulator.endNodeId = temp.endNodeId;
+        }
     }
 
     setVisibility(visibility: boolean) {
@@ -1916,5 +1985,13 @@ export class EditorMap extends GoogleMap {
         //         this.map.setZoom(20);
         //     }
         // }
+    }
+
+    updateNode(node: EditorNode) {
+        this.currentGraph?.updateNode(node);
+    }
+
+    updateEdge(edge: EditorEdges) {
+        this.currentGraph?.updateEdge(edge);
     }
 }

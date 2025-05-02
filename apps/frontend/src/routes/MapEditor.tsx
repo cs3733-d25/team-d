@@ -230,6 +230,13 @@ export default function MapEditor() {
                                     {!connectedNodeIdExists && (
                                         <p className={'text-red-600'}>Connected node ID doesn't exist!</p>
                                     )}
+                                    <Button
+                                        className="mt-4 flex-1 grow m-2 bg-blue-900 border-2 border-amber-600"
+                                        onClick={() => {
+                                            map?.updateNode(selectedNode);
+                                        }}
+                                        disabled={!connectedNodeIdExists}
+                                    >Save</Button>
                                 </CardContent>
                             </Card>
 
@@ -254,6 +261,13 @@ export default function MapEditor() {
                                         placeholder={'Enter a name'}
                                         onChange={(e) => selectedEdge.name = e.target.value}
                                     />
+                                    <Button
+                                        className="mt-4 flex-1 grow m-2 bg-blue-900 border-2 border-amber-600"
+                                        onClick={() => {
+                                            map?.updateEdge(selectedEdge);
+                                        }}
+                                        disabled={!connectedNodeIdExists}
+                                    >Save</Button>
                                 </CardContent>
                             </Card>
                         </div>
