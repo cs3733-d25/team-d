@@ -17,7 +17,6 @@ interface Employee {
     dateOfBirth: string;
     pronoun: string;
     phoneNumber: string;
-
 }
 
 
