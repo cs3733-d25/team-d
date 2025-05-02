@@ -216,7 +216,6 @@ router.get('/typeBreakdown', async function (req: Request, res: Response) {
 
 //Priority breakdown
 router.get('/priorityBreakdown', async function (req: Request, res: Response) {
-    //count num of translator requests
     const requests = await PrismaClient.serviceRequest.groupBy({
         by: ['priority'],
         _count: {
@@ -288,6 +287,37 @@ router.get('/past7days', async function (req: Request, res: Response) {
         console.error(error);
         res.json(error);
     }
+});
+
+// GET NUM OF REQUESTS BY DEPARTMENT
+router.get('/departmentBreakdown', async function (req: Request, res: Response) {
+    const requests = await PrismaClient.serviceRequest.groupBy({
+        by: ['departmentUnderId'],
+        _count: {
+            requestId: true,
+        },
+    });
+
+    const departmentIds: number[] = requests
+        .map((r) => r.departmentUnderId)
+        .filter((id): id is number => id !== null);
+    const departments = await PrismaClient.department.findMany({
+        where: {
+            departmentId: { in: departmentIds },
+        },
+        select: {
+            departmentId: true,
+            name: true,
+        },
+    });
+
+    const departmentMap = new Map(departments.map((d) => [d.departmentId, d.name]));
+    const typeBreakdown = requests.map((r) => ({
+        Department: departmentMap.get(r.departmentUnderId!) ?? 'Unknown',
+        count: r._count.requestId,
+    }));
+
+    res.json(typeBreakdown);
 });
 
 // POST TRANSLATOR REQUESTS TO DATABASE

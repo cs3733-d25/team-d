@@ -1,6 +1,7 @@
 import ReqBreakdown from "@/components/stats/ReqBreakdown.tsx";
 import PriorityBreakdown from "@/components/stats/priorityBreakdown.tsx";
 import PastWeekReqs from "@/components/stats/PastWeekReqs.tsx";
+import DepartmentBreakdown from "@/components/stats/DepartmentBreakdown.tsx";
 
 export function Statistics() {
     return (
@@ -14,6 +15,9 @@ export function Statistics() {
                 </div>
                 <div className="inline-flex">
                     <PriorityBreakdown/>
+                </div>
+                <div className="inline-flex">
+                    <DepartmentBreakdown/>
                 </div>
             </div>
 
