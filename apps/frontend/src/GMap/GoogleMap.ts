@@ -502,7 +502,6 @@ export type DirectionsStep = {
 export class PathfindingMap extends GoogleMap {
 
 
-
     public static async makeMap(mapDivElement: HTMLDivElement, autocompleteInput: HTMLInputElement, updater: (results: PathfindingResults | null, refresh: boolean) => void, sectioner: (section: number) => void) {
         await GoogleMap.loadScript();
         return new PathfindingMap(mapDivElement, autocompleteInput, updater, sectioner);
@@ -537,7 +536,6 @@ export class PathfindingMap extends GoogleMap {
     // private currentStepMarker: google.maps.Marker | null = null;
 
     private department: DepartmentOptions | null;
-
 
 
     private constructor(mapDivElement: HTMLDivElement, autocompleteInput: HTMLInputElement, updater: (results: PathfindingResults | null, refresh: boolean) => void, sectioner: (section: number) => void) {
@@ -823,7 +821,9 @@ export class PathfindingMap extends GoogleMap {
         // });
 
         this.currentPath?.setVisibility(false);
-        this.allPaths?.forEach((path) => {path.remove()});
+        this.allPaths?.forEach((path) => {
+            path.remove()
+        });
         this.currentStepPolyline?.setMap(null);
 
 
@@ -855,7 +855,7 @@ export class PathfindingMap extends GoogleMap {
                     time: time.toFixed(2).toString() + ' sec',
                     icon: direction.includes('right') ? 'right' : direction.includes('left') ? 'left' : 'straight',
                     googleMapData: null,
-                    pathFindingData:  {
+                    pathFindingData: {
                         graphIdx: 0,
                         points: nextPath ? [
                             {
@@ -996,7 +996,7 @@ export class PathfindingMap extends GoogleMap {
                             time: time.toFixed(2).toString() + ' sec',
                             icon: direction.includes('right') ? 'right' : direction.includes('left') ? 'left' : 'straight',
                             googleMapData: null,
-                            pathFindingData:  {
+                            pathFindingData: {
                                 graphIdx: j + 1,
                                 points: nextPath ? [
                                     {
@@ -1274,8 +1274,51 @@ export class PathfindingMap extends GoogleMap {
     }
 
 
-}
+    private convertUnits(unitPreference: 'Metric' | 'Imperial') {
 
+        const convert = (distanceString: string): string => {
+
+            if (unitPreference === 'Imperial') {
+                if (distanceString.includes('km')) {
+
+                    const value = parseFloat(distanceString);
+                    const miles = value * 0.621371;
+                    return parseFloat(miles.toFixed(2)) + ' mi';
+
+
+                } else if (distanceString.includes('m')) {
+
+                    const value = parseFloat(distanceString);
+                    const feet = value * 3.28084;
+                    return parseFloat(feet.toFixed(0)) + ' ft';
+
+                }
+
+            } else {
+                if (distanceString.includes('mi')) {
+                    const value = parseFloat(distanceString);
+                    const meters = value / 0.621371;
+                    return parseFloat(meters.toFixed(2)) + ' km';
+
+                } else if (distanceString.includes('ft')) {
+
+                    const value = parseFloat(distanceString);
+                    const meters = value / 3.28084;
+                    return parseFloat(meters.toFixed(0)) + ' m';
+                }
+            }
+            return distanceString;
+
+
+        }
+        this.currentSteps?.sections.forEach((section) => {
+
+            section.directions.forEach(step => {
+                step.distance = convert(step.distance);
+            });
+        });
+    }
+}
 
 
 class EditorMapGraph {
@@ -1414,20 +1457,20 @@ class EditorMapGraph {
 
 
             case 'NORMAL':
-                return '#AAAAAA';
+                return '#c5facf';
 
         }
-        return '#AAAAAA';
+        return '#c5facf';
     }
 
     private getNodeStrokeColor(type: number | null): string {
 
         if (!type){
 
-            return '#FFFFFF';
+            return '#c556f5';
         } else {
 
-            return '#7038c9';
+            return '#0a010a';
         }
 
     }
@@ -1443,11 +1486,11 @@ class EditorMapGraph {
             },
             icon: {
                 path: google.maps.SymbolPath.CIRCLE,
-                scale: 5,
+                scale: 8,
                 fillOpacity: 1,
                 fillColor: this.getNodeColor(node.type),
                 strokeColor: this.getNodeStrokeColor(node.connectedNodeId),
-                strokeWeight: 2
+                strokeWeight: 3
             },
             draggable: true,
             zIndex: 20,
@@ -1588,7 +1631,8 @@ class EditorMapGraph {
                 startNode.marker.getPosition() || {lat: 0, lng: 0},
                 endNode.marker.getPosition() || {lat: 0, lng: 0},
             ],
-            strokeColor: '#0cf',
+            strokeColor: '#00c',
+            strokeWeight: 5,
         });
         line.setMap(this.map);
 
