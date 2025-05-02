@@ -155,32 +155,39 @@ class PathfindingGraph {
             }]
         });
 
-        // function animateCircle(line: google.maps.Polyline) {
-        let offsetPixels = 0;
+        //only create markers for start and end points
+        this.nodes = [
+            new google.maps.Marker({
+                icon: {
+                    path: google.maps.SymbolPath.CIRCLE,
+                    scale: 5,
+                    fillOpacity: 1,
+                    fillColor: '#00c',
+                    strokeColor: '#fff',
+                    strokeWeight: 2
+                },
+                position: path[0],
+            }),
+            new google.maps.Marker({
+                icon: {
+                    path: google.maps.SymbolPath.CIRCLE,
+                    scale: 5,
+                    fillOpacity: 1,
+                    fillColor: '#00c',
+                    strokeColor: '#fff',
+                    strokeWeight: 2
+                },
+                position: path[path.length - 1],
+            })
+        ];
 
+        // Add animation for the path
+        let offsetPixels = 0;
         window.setInterval(() => {
             offsetPixels = (offsetPixels + 1) % 1000;
-
-            // this.path.setOptions({
-            //     icons: [
-            //         {
-            //             offset: offsetPixels + 'px',
-            //         },
-            //     ],
-            // });
-
             const icons = this.path.get("icons");
-            //
             icons[0].offset = offsetPixels + "px";
             this.path.set("icons", icons);
-
-            // this.path.setOptions({
-            //     icons: [
-            //         {
-            //             icon: icon,
-            //         }
-            //     ]
-            // })
         }, 50);
 
         // let offsetPixels = 0;
@@ -210,38 +217,6 @@ class PathfindingGraph {
         //
         // // Start the animation
         // animateDashedLine.call(this);
-
-        this.nodes = path.map(position =>
-            new google.maps.Marker({
-                icon: {
-                    path: google.maps.SymbolPath.CIRCLE,
-                    scale: 2,
-                    fillOpacity: 1,
-                    strokeColor: '#666666',
-                    fillColor: '#666666',
-                    strokeWeight: 2
-                },
-                position: position,
-            })
-        );
-
-        // Calculate the distance and time
-        // for (let i = 0; i < this.nodes.length - 1; i++) {
-        //     const pos1 = this.nodes[i].getPosition();
-        //     const pos2 = this.nodes[i + 1].getPosition();
-        //
-        //     if (pos1 && pos2) {
-        //         const distanceMeters = google.maps.geometry.spherical.computeDistanceBetween(pos1, pos2);
-        //         this.innerDistances.push(distanceMeters);
-        //
-        //         // Estimate duration assuming average indoor walking speed (~1.4 meters/sec)
-        //         const estimatedSeconds = distanceMeters / 1.4;
-        //         this.innerDurations.push(estimatedSeconds);
-        //     } else {
-        //         this.innerDistances.push(0);
-        //         this.innerDurations.push(0);
-        //     }
-        // }
 
         this.selectedSegment = null;
 
@@ -650,17 +625,6 @@ export class PathfindingMap extends GoogleMap {
         //     // const icons = this.directionsRenderer.get("polylineOptions").get("icons");
         //
         //     // icons[0].offset = offsetPixels + "px";
-        //     // this.directionsRenderer.setOptions({
-        //     //     polylineOptions: {
-        //     //         icons: [{
-        //     //             offset: `${offsetPixels}px`,
-        //     //         }]
-        //     //     }
-        //     // });
-        //     // const icons = this.directionsRenderer.get("polylineOptions").get("icons");
-        //     //
-        //     // icons[0].offset = offsetPixels + "px";
-        //
         //     // this.directionsRenderer
         //
         //     // const plo: google.maps.PolylineOptions = this.directionsRenderer.get("polylineOptions");
