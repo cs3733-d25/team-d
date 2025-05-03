@@ -1,13 +1,4 @@
 import React, {useState, useEffect} from "react";
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-} from "@/components/ui/alert-dialog"
 
 type SubmissionReqProps = {
     children?: React.ReactNode;

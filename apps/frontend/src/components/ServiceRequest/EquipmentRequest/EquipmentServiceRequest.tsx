@@ -9,7 +9,6 @@ import axios from "axios";
 import ReturnEquipmentRequest from "@/components/ServiceRequest/EquipmentRequest/ReturnEquipmentRequest.tsx";
 import SubmissionReqPopup from "@/components/SubmissionReqPopup.tsx";
 import {Department} from "@/routes/Directions.tsx";
-import ReturnSanitationRequest from "@/components/ServiceRequest/SanitationRequest/ReturnSanitationRequest.tsx";
 import {Employee} from "@/routes/AllServiceRequests.tsx";
 
 

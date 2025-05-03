@@ -10,7 +10,6 @@ import {
 
 import Banner from "@/components/Banner";
 import Auth0LogoutButton from "@/components/Auth0LogoutButton.tsx";
-import AccessDropMenu from "@/components/Accessibility.tsx";
 import {useEffect} from "react";
 //
 

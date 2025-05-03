@@ -1,7 +1,6 @@
 import React from 'react';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faFacebook, faInstagram, faLinkedin, faSquareXTwitter, faYoutube} from "@fortawesome/free-brands-svg-icons";
-import {NavigationMenuItem, NavigationMenuLink} from "@/components/ui/navigation-menu.tsx";
 import {Link} from "react-router-dom";
 
 //
