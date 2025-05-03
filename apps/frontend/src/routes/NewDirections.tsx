@@ -312,8 +312,8 @@ export default function NewDirections() {
 
                                     <Label className="mb-1 mb-2 border-2 border-amber-600 rounded-md inline-block px-2 py-1">Department</Label>
                                     <Select onValueChange={handleDepartmentChange}>
-                                        <SelectTrigger className="w-full mt-1 mb-4 border-2 border-[#012D5A] focus:border-[#D47F00] focus:ring-[#D47F00]/50 focus:ring-[3px]">
-                                            <SelectValue placeholder="Choose a department..." />
+                                        <SelectTrigger className="w-full mt-1 mb-4 border-2 border-[#012D5A] focus:border-[#D47F00] focus:ring-[#D47F00]/50 focus:ring-[3px] [&>span:first-child]:truncate">
+                                            <SelectValue placeholder="Choose a department..." className=""/>
                                         </SelectTrigger>
                                         <SelectContent>
                                             <SelectGroup key="0">
