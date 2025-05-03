@@ -99,6 +99,75 @@ async function main() {
     console.log('Employees seeded!');
     console.log(employees);
 
+    // seed forum posts
+    console.log('Seeding forum posts...');
+    const posts = [
+        await prisma.post.upsert({
+            where: {postId: 1},
+            update: {},
+            create: {
+                title: 'I have a headache!',
+                content: 'What department should I visit if I have a headache and feel dizzy',
+                email: 'kevintheminion@gmail.com',
+            }
+        }),
+        await prisma.post.upsert({
+            where: {postId: 2},
+            update: {},
+            create: {
+                title: 'Is Doctor Smith on vacation??',
+                content: 'I would like to schedule my annual checkup with Doctor Smith but cannot find him when trying to make an appointment.',
+                email: 'albertkim@gmail.com',
+            }
+        }),
+        await prisma.post.upsert({
+            where: {postId: 3},
+            update: {},
+            create: {
+                title: 'Spanish?',
+                content: 'Solo hablo español, ¿alguien puede ayudarme?',
+                email: 'ssrose@gmail.com',
+            }
+        }),
+    ];
+    console.log('Forum posts seeded!');
+    console.log(posts);
+
+
+    // seed forum replies
+    console.log('Seeding forum replies...');
+    const replies = [
+        await prisma.reply.upsert({
+            where: {replyId: 1},
+            update: {},
+            create: {
+                content: 'Please see the Brigham Physicians Group (BPG) at Chestnut Hill. For more information visit https://dc02wovgk0w23.cloudfront.net/voice-directory.',
+                postId: 1,
+                replierId: 1
+            }
+        }),
+        await prisma.reply.upsert({
+            where: {replyId: 2},
+            update: {},
+            create: {
+                content: 'Doctor Smith is unavailable until June, please see a different provider or wait until then.',
+                postId: 2,
+                replierId: 1
+            }
+        }),
+        await prisma.reply.upsert({
+            where: {replyId: 3},
+            update: {},
+            create: {
+                content: 'Aquí está el formulario de solicitud de traductor: https://dc02wovgk0w23.cloudfront.net/servicerequesthub',
+                postId: 3,
+                email: 'jacob@gmail.com'
+            }
+        }),
+    ];
+    console.log('Employees seeded!');
+    console.log(employees);
+
     await prisma.edge.deleteMany({});
     await prisma.node.deleteMany({});
     await prisma.department.deleteMany({});
