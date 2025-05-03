@@ -178,6 +178,10 @@ export default function MapEditor() {
                                 <Button className="flex-1 grow m-2 bg-blue-900 border-2 border-amber-600" onClick={() => map?.undo()}>
                                     Undo
                                 </Button>
+                                <Separator className="mr-4 ml-4" orientation="vertical" />
+                                <Button className="flex-1 grow m-2 bg-blue-900 border-2 border-amber-600" onClick={() => map?.redo()}>
+                                    Redo
+                                </Button>
                             </div>
                         </CardContent>
                     </Card>
