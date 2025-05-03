@@ -41,7 +41,7 @@ model Post {
   title         String
   content       String
   createdAt     DateTime      @default(now())
-  posterId      Int
+  posterId      Int?
   poster        Employee?     @relation(fields: [posterId], references: [employeeId])
   email         String?
   replies       Reply[]
@@ -50,12 +50,12 @@ model Post {
 model Reply {
   replyId       Int           @id @default(autoincrement())
   content       String
-  createdAt     DateTime
-  replierId     Int
+  createdAt     DateTime      @default(now())
+  replierId     Int?
   replier       Employee?     @relation(fields: [replierId], references: [employeeId])
   email         String?
   postId        Int
-  post          Post        @relation(fields: [postId], references: [postId])
+  post          Post          @relation(fields: [postId], references: [postId], onDelete: Cascade)
 }
 
 //**
