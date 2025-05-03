@@ -24,7 +24,7 @@ type Person = {
 };
 
 const faculty: Person[] = [
-    { name: "Prof. Wilson Wong", position: "Course Instructor", photo: WongImg, quote: "\" You guys are last for a reason \"" },
+    { name: "Prof. Wilson Wong", position: "Course Instructor", photo: WongImg, quote: "" },
     { name: "Katy Stuparu",      position: "Team Coach", photo: KatyImg, quote: "I like Trains" },
 ];
 
@@ -43,9 +43,9 @@ const members: Person[] = [
         position: "Front-End & Feature Software Engineer",
         photo:    StuvatImg, quote: "I like Trains"
     },
-    { name: "Brandon Small",  position: "Front-End & Feature Engineer • Scrum Master", photo: BrandonImg, quote: "\"Sometimes... the journey is umm, sometimes, friends..., real journey is friends along the way\"" },
+    { name: "Brandon Small",  position: "Front-End & Feature Engineer • Scrum Master", photo: BrandonImg, quote: "\"Sometimes... the journey is umm, sometimes, friends..., real journey is friends along the way\"-Brandon" },
     { name: "Delia Jasper",   position: "Front-End & Feature Engineer", photo: DeliaImg, quote: "I like Trains" },
-    { name: "Lucien La Rock", position: "Front-End & Feature Engineer • Project Manager", photo: LucienImg, quote: "I like Trains" },
+    { name: "Lucien La Rock", position: "Front-End & Feature Engineer • Project Manager", photo: LucienImg, quote: "\"You guys are last for a reason\"-Professor Wong" },
     { name: "Christine Ngo",  position: "Back-End Database Engineer & Product Owner", photo: ChristineImg, quote: "I like Trains" },
     { name: "Ali Riad",       position: "Algorithms & Feature Engineer", photo: AliImg, quote: "I like Trains" },
     { name: "Jiaming Du",     position: "Algorithms & Feature Engineer", photo: JiamingImg, quote: "I like Trains" },
@@ -81,12 +81,13 @@ const FlipCard: React.FC<Person> = ({ name, position, photo, quote }) => {
                     </div>
                 </div>
                 {/*Back*/}
-                <div className="absolute w-full h-full bg-white border rounded-xl shadow-md flex items-center justify-center"
+                <div className="absolute w-full h-full bg-white border rounded-xl shadow-md flex flex-col items-center justify-center"
                      style={{
                          transform: "rotateY(180deg)",
                          backfaceVisibility: "hidden",
                      }}>
-                    <p className="text-lg font-semibold">{quote}</p>
+                    <p className="text-lg font-semibold">Favorite Quote</p>
+                    <p className="px-2">{quote}</p>
                 </div>
             </div>
         </div>
