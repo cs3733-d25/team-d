@@ -3,7 +3,8 @@ const router: Router = express.Router();
 
 import { Graph, BFSStrategy, DFSStrategy, DijkstraStrategy, PathFindingStrategy, createFloorPath  } from '../pathfinding/src/bfs.ts';
 import PrismaClient from '../bin/prisma-client';
-import { computeDistance } from './src/distance';
+import { computeDistance } from '../pathfinding/src/distance';
+
 import {
     FloorPathResponse,
     HospitalOptions,
@@ -184,6 +185,10 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
     }
 
 
+
+
+
+
     const parkingGraphObj = new Graph(strategy);
     parkingLotGraph.Graph.Nodes.forEach((node) => parkingGraphObj.addNode(node));
     parkingLotGraph.Graph.Edges.forEach((edge) => parkingGraphObj.addEdge(edge.startNodeId, edge.endNodeId));
@@ -225,6 +230,19 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
     }
 
 
+    const result = await findOptimalFullPath(
+        parkingGraphObj,
+        bottomFloorGraphObj,
+        topFloorGraphObj,
+        { lat: department.lat, lng: department.lng }
+    );
+
+    res.status(200).json(result);
+});
+
+
+
+
     ////////////////////////////////////////////algorithms rewrite:
     async function findOptimalFullPath(
 
@@ -234,7 +252,7 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
         department: { lat: number; lng: number }
 
     )
-    : Promise<PathfindingResponse> {
+        : Promise<PathfindingResponse> {
 
         const allPaths: {
             totalDistance: number;
@@ -328,15 +346,6 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
 
 ////////////////////////////////////////////
 
-    const result = await findOptimalFullPath(
-        parkingGraphObj,
-        bottomFloorGraphObj,
-        topFloorGraphObj,
-        { lat: department.lat, lng: department.lng }
-    );
-
-
-
     router.put('/algorithm/:name', async (req: Request, res: Response) => {
         const name = req.params.name;
 
@@ -359,5 +368,6 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
             message: 'Successfully updated algorithm',
         });
     });
+
 
     export default router;

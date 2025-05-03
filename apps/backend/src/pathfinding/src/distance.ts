@@ -1,4 +1,4 @@
-import type { Coordinates } from 'common/src/constants';
+import type { Coordinates, NodePathResponse  } from 'common/src/constants';
 
 //  Calculates Euclidean distance between two coordinates.
 
