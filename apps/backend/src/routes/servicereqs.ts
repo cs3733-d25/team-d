@@ -497,6 +497,9 @@ router.get('/:id', async function (req: Request, res: Response) {
             equipmentRequest: true,
             securityRequest: true,
             sanitationRequest: true,
+            employeeRequestedBy: true,
+            assignedEmployee: true,
+            departmentUnder: true,
         },
     });
 
