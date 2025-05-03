@@ -133,11 +133,19 @@ export default function ShowAllRequests() {
     // await loadEmployees();
 
     const [data, setData] = useState<ServiceRequest[]>([]);
+    const [departments, setDepartments] = useState<Department[]>([]);
+    const [employees, setEmployees] = useState<Employee[]>([]);
 
     const fetchData = async () => {
         try {
             const dataResponse = await axios.get('/api/servicereqs');
             setData(dataResponse.data);
+            axios.get(API_ROUTES.DEPARTMENT + "/all").then((response) => {
+                setDepartments(response.data)
+            });
+            axios.get(API_ROUTES.EMPLOYEE + "/names").then((response) => {
+                setEmployees(response.data)
+            });
         } catch (error) {
             console.error('Error fetching data:', error);
         }
@@ -344,6 +352,7 @@ export default function ShowAllRequests() {
                     <AssignEmployeeDialog ID={row.original.requestId}
                                           requestType={getRequestType(row.original)}
                                           onUpdate={fetchData}
+                                          employees={employees}
                                           trigger={<div className="pl-4 w-full text-left"><UserPen className="text-gray-500"/></div>}
                     />
                 )
@@ -359,6 +368,8 @@ export default function ShowAllRequests() {
                     <RequestSheet ID={row.original.requestId}
                                   requestType={getRequestType(row.original)}
                                   onUpdate={fetchData}
+                                  departments={departments}
+                                  employees={employees}
                                   trigger={<div className="pl-4 w-full text-left"><SquarePen className="text-gray-500"/></div>}
                     />
                 )

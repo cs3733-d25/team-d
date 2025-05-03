@@ -20,41 +20,20 @@ type AssignEmployeeDialogProps = {
     requestType: string;
     trigger?: React.ReactNode;
     onUpdate?: () => void;
+    employees: Employee[];
 };
 
-const AssignEmployeeDialog: React.FC<AssignEmployeeDialogProps> = ({ID, requestType, trigger, onUpdate}) => {
+const AssignEmployeeDialog: React.FC<AssignEmployeeDialogProps> = ({ID, requestType, trigger, onUpdate, employees}) => {
     const [request, setRequest] = useState<ServiceRequest | null>(null);
-    const [translator, setTranslator] = useState<TranslatorRequest | null>(null);
-    const [equipment, setEquipment] = useState<EquipmentRequest | null>(null);
-    const [security, setSecurity] = useState<SecurityRequest | null>(null);
-    const [sanitation, setSanitation] = useState<SanitationRequest | null>(null);
     const [open, setOpen] = React.useState(false);
     const [assignedEmployee, setAssignedEmployee] = useState("");
     const [assignedEmployeeId, setAssignedEmployeeId] = useState("");
     const [assignedEmployeeFirstName, setAssignedEmployeeFirstName] = useState("");
     const [assignedEmployeeLastName, setAssignedEmployeeLastName] = useState("");
-    const [employees, setEmployees] = useState<Employee[]>([]);
 
     const fetchData = async () => {
         try {
-            const translatorRes = await axios.get('/api/servicereqs/translator');
-            const equipmentRes = await axios.get('/api/servicereqs/equipment');
-            const securityRes = await axios.get('/api/servicereqs/security');
-            const sanitationRes = await axios.get('/api/servicereqs/sanitation');
-
-            setTranslator(translatorRes.data);
-            setEquipment(equipmentRes.data);
-            setSecurity(securityRes.data);
-            setSanitation(sanitationRes.data);
-
-            const allRequests: ServiceRequest[] = [
-                ...translatorRes.data,
-                ...equipmentRes.data,
-                ...securityRes.data,
-                ...sanitationRes.data,
-            ];
-
-            const match = allRequests.find(req => req.requestId === ID);
+            const match = (await axios.get('/api/servicereqs/' + ID)).data;
             if (match) {
                 setRequest(match);
             }
@@ -65,9 +44,6 @@ const AssignEmployeeDialog: React.FC<AssignEmployeeDialogProps> = ({ID, requestT
 
     useEffect(() => {
         fetchData();
-        axios.get(API_ROUTES.EMPLOYEE + "/names").then((response) => {
-            setEmployees(response.data)
-        });
     }, []);
 
     useEffect(() => {
