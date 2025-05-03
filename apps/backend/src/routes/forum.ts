@@ -6,7 +6,16 @@ const router: Router = express.Router();
 // Returns all posts, if any
 router.get('/posts', async function (req: Request, res: Response) {
     // Query db, store response
-    const posts = await PrismaClient.post.findMany();
+    const posts = await PrismaClient.post.findMany({
+        include: {
+            poster: true,
+            replies: {
+                include: {
+                    replier: true,
+                },
+            },
+        },
+    });
     // If no posts are found, send 204 and log it
     if (posts == null) {
         console.error('No posts found in database!');
@@ -84,6 +93,5 @@ router.post('/reply', async function (req: Request, res: Response) {
     }
     res.sendStatus(200);
 });
-
 
 export default router;

@@ -34,7 +34,7 @@ app.use(cookieParser()); // Cookie parser
 /**
  * All routers here should be accessible for both logIned and non-logedIn users
  */
-app.use(API_ROUTES.FORUM, forumRouter)
+app.use(API_ROUTES.FORUM, forumRouter);
 app.use(API_ROUTES.PATHFIND, pathfindRouter);
 app.use(API_ROUTES.DEPARTMENT, directoryRouter);
 app.use(API_ROUTES.SERVICEREQS, servicereqsRouter);
