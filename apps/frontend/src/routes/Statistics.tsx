@@ -5,11 +5,11 @@ import DepartmentBreakdown from "@/components/stats/DepartmentBreakdown.tsx";
 
 export function Statistics() {
     return (
-        <div className="flex flex-col items-center gap-4 m-4">
-            <div className="relative text-5xl z-10 mb-10 pb-4 flex top-x items-center justify-center justify-top mt-5 h-20  text-5xl font-bold font-nunito">
-                Service Request Statistics
-            </div>
-            <div className="grid grid-cols-2 gap-4">
+        <div className="flex flex-col items-center max-w-screen-xl mx-auto gap-8 p-6">
+            <h1 className="text-4xl md:text-5xl font-bold font-nunito text-center mb-8">
+                Service Request&nbsp;Statistics
+            </h1>
+            <div className="grid w-full grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <div className="inline-flex">
                     <ReqBreakdown/>
                 </div>
@@ -21,7 +21,7 @@ export function Statistics() {
                 </div>
             </div>
 
-            <div>
+            <div className="w-full mt-8">
                 <PastWeekReqs/>
             </div>
         </div>
