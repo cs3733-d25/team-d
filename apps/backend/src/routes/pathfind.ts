@@ -553,7 +553,7 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
 
                         res.json(response);
                     });
-                
+
                     ////////////////////////////////////////////algorithms rewrite:
 
                     async function findOptimalFullPath(
@@ -579,6 +579,7 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
                                 let totalDistance = 0;
 
                                 //From CHECKIN to ELEVATOR
+
 
 
 
