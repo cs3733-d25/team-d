@@ -127,8 +127,10 @@ export const getEmployeesPlusNothing = (): string[] => {
     return employeesPlusNothing;
 };
 
-await loadEmployees();
+// await loadEmployees();
 export default function ShowAllRequests() {
+    // await loadEmployees();
+
     const [data, setData] = useState<ServiceRequest[]>([]);
 
     const fetchData = async () => {
@@ -387,6 +389,7 @@ export default function ShowAllRequests() {
     )
 
     useEffect(() => {
+        loadEmployees();
         fetchData();
     }, []);
 
@@ -518,6 +521,7 @@ export default function ShowAllRequests() {
 }
 
 function Filter({ column }: { column: Column<ServiceRequest, unknown> }) {
+
     const columnFilterValue = column.getFilterValue() as string[] ?? [];
     const meta = column.columnDef.meta;
 

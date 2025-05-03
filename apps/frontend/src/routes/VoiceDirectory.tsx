@@ -5,11 +5,15 @@ import { Input } from "@/components/ui/input";
 import { Mic, MicOff } from "lucide-react";
 import beep from "../components/beep.mp3";
 
+// import {SpeechRecognition} from 'dom-speech-recognition';
+// import SpeechRecognition from "react-speech-recognition";
+// import web
 /* Browser type helpers */
+// TODO
 declare global {
     interface Window {
-        webkitSpeechRecognition: any;
-        SpeechRecognition: any;
+        webkitSpeechRecognition: unknown;
+        SpeechRecognition: unknown;
     }
 }
 
@@ -213,7 +217,8 @@ const VoiceDirectory: React.FC = () => {
     }, [filtered, selected]);
 
     /* Voice search */
-    const recognitionRef = useRef<any>(null);
+    // TODO
+    const recognitionRef = useRef<unknown>(null);
     const [listening, setListening] = useState(false);
 
     useEffect(() => {
@@ -226,12 +231,15 @@ const VoiceDirectory: React.FC = () => {
         recognitionRef.current.lang = "en-US";
         recognitionRef.current.maxAlternatives = 1;
 
+        // TODO
         recognitionRef.current.onstart = () => setListening(true);
-        recognitionRef.current.onresult = (e: any) => {
+        recognitionRef.current.onresult = (e: unknown) => {
             const spoken = e.results[0][0].transcript;
             setQuery(spoken);
         };
-        recognitionRef.current.onerror = (e: any) =>
+
+        // TODO
+        recognitionRef.current.onerror = (e: unknown) =>
             console.error("Speech error:", e.error);
         recognitionRef.current.onend = () => setListening(false);
     }, []);
