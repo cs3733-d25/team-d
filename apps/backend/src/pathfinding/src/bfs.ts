@@ -4,7 +4,6 @@ import { PrismaClient } from 'database';
 import { euclideanDistance, haversineDistance } from './distance.ts';
 import { FloorPathResponse } from 'common/src/constants.ts';
 
-
 // Search Strategy Interface
 interface PathFindingStrategy {
     search(start: NodePathResponseType, end: number, graph: Graph): NodePathResponse[];
@@ -182,7 +181,6 @@ class Graph {
         return this.pathFindingStrategy.search(startNodeType, endNodeId, this);
     }
 
-
     getNodesOfType(type: NodePathResponseType): NodePathResponse[] {
         const result: NodePathResponse[] = [];
         for (const node of this.nodesMap.values()) {
@@ -297,12 +295,8 @@ class Graph {
     }
 }
 
-
-
-
 function createFloorPath(path: NodePathResponse[], graph: Graph): FloorPathResponse {
     return {
-
         floorNum: (graph as any).floorNum,
         image: (graph as any).image,
         imageBoundsNorth: (graph as any).imageBoundsNorth,
@@ -316,7 +310,6 @@ function createFloorPath(path: NodePathResponse[], graph: Graph): FloorPathRespo
 }
 
 export { createFloorPath };
-
 
 export { Graph };
 export type { PathFindingStrategy };

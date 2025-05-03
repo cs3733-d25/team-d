@@ -1,7 +1,14 @@
 import express, { Router, Request, Response } from 'express';
 const router: Router = express.Router();
 
-import { Graph, BFSStrategy, DFSStrategy, DijkstraStrategy, PathFindingStrategy, createFloorPath  } from '../pathfinding/src/bfs.ts';
+import {
+    Graph,
+    BFSStrategy,
+    DFSStrategy,
+    DijkstraStrategy,
+    PathFindingStrategy,
+    createFloorPath,
+} from '../pathfinding/src/bfs.ts';
 import PrismaClient from '../bin/prisma-client';
 import { computeDistance } from '../pathfinding/src/distance';
 
@@ -12,8 +19,6 @@ import {
     PathfindingOptions,
     PathfindingResponse,
 } from 'common/src/constants.ts';
-
-
 
 function getStrategyByName(name: string): PathFindingStrategy {
     switch (name) {
@@ -93,7 +98,7 @@ router.get('/options', async (req: Request, res: Response) => {
 router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
     // Find the algorithm we want and return it as a new object strategy
     const activeAlgorithm = await PrismaClient.algorithm.findFirst({
-        where: {isActive: true},
+        where: { isActive: true },
     });
 
     const strategy = getStrategyByName(activeAlgorithm?.name || 'BFS'); // default fallback
@@ -108,7 +113,7 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
     // If it doesn't exist return 404
     // (most likely a bad request)
     if (!department) {
-        res.status(404).send({message: 'Department not found'});
+        res.status(404).send({ message: 'Department not found' });
         return;
     }
 
@@ -130,7 +135,7 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
     // If it doesn't exist return 500
     // (most likely a bad database)
     if (!topFloorGraph || !topFloorGraph.Graph) {
-        res.status(500).send({message: 'Top Floor Graph does not exist'});
+        res.status(500).send({ message: 'Top Floor Graph does not exist' });
         return;
     }
 
@@ -144,7 +149,7 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
     // If it doesn't exist return 500
     // (most likely a bad database)
     if (!building) {
-        res.status(500).send({message: 'Building does not exist'});
+        res.status(500).send({ message: 'Building does not exist' });
         return;
     }
 
@@ -158,7 +163,7 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
     // If it doesn't exist return 500
     // (most likely a bad database)
     if (!hospital) {
-        res.status(500).send({message: 'Hospital does not exist'});
+        res.status(500).send({ message: 'Hospital does not exist' });
         return;
     }
 
@@ -180,22 +185,21 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
     // If it doesn't exist return 500
     // (most likely a bad database)
     if (!parkingLotGraph || !parkingLotGraph.Graph) {
-        res.status(500).send({message: 'ParkingLot does not exist'});
+        res.status(500).send({ message: 'ParkingLot does not exist' });
         return;
     }
 
-
-
-
-
-
     const parkingGraphObj = new Graph(strategy);
     parkingLotGraph.Graph.Nodes.forEach((node) => parkingGraphObj.addNode(node));
-    parkingLotGraph.Graph.Edges.forEach((edge) => parkingGraphObj.addEdge(edge.startNodeId, edge.endNodeId));
+    parkingLotGraph.Graph.Edges.forEach((edge) =>
+        parkingGraphObj.addEdge(edge.startNodeId, edge.endNodeId)
+    );
 
     const topFloorGraphObj = new Graph(strategy);
     topFloorGraph.Graph.Nodes.forEach((node) => topFloorGraphObj.addNode(node));
-    topFloorGraph.Graph.Edges.forEach((edge) => topFloorGraphObj.addEdge(edge.startNodeId, edge.endNodeId));
+    topFloorGraph.Graph.Edges.forEach((edge) =>
+        topFloorGraphObj.addEdge(edge.startNodeId, edge.endNodeId)
+    );
 
     let bottomFloorGraphObj: Graph | null = null;
 
@@ -216,19 +220,16 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
         });
 
         if (!bottomFloorGraph || !bottomFloorGraph.Graph) {
-            res.status(500).send({message: 'Bottom Floor Graph does not exist'});
+            res.status(500).send({ message: 'Bottom Floor Graph does not exist' });
             return;
         }
 
         bottomFloorGraphObj = new Graph(strategy);
-        bottomFloorGraph.Graph.Nodes.forEach((node) =>
-            bottomFloorGraphObj!.addNode(node)
-        );
+        bottomFloorGraph.Graph.Nodes.forEach((node) => bottomFloorGraphObj!.addNode(node));
         bottomFloorGraph.Graph.Edges.forEach((edge) =>
             bottomFloorGraphObj!.addEdge(edge.startNodeId, edge.endNodeId)
         );
     }
-
 
     const result = await findOptimalFullPath(
         parkingGraphObj,
@@ -240,134 +241,118 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
     res.status(200).json(result);
 });
 
+////////////////////////////////////////////algorithms rewrite:
+async function findOptimalFullPath(
+    parkingGraph: Graph,
+    bottomFloorGraph: Graph | null,
+    topFloorGraph: Graph,
+    department: { lat: number; lng: number }
+): Promise<PathfindingResponse> {
+    const allPaths: {
+        totalDistance: number;
+        parkingPath: NodePathResponse[];
+        floorPaths: FloorPathResponse[];
+    }[] = [];
 
+    const parkingNodes = parkingGraph.getNodesOfType('PARKING');
+    const checkInNodes = topFloorGraph.getNodesOfType('CHECKIN');
 
+    for (const parkingNode of parkingNodes) {
+        for (const checkInNode of checkInNodes) {
+            const tempFloorPaths: FloorPathResponse[] = [];
+            let totalDistance = 0;
 
-    ////////////////////////////////////////////algorithms rewrite:
-    async function findOptimalFullPath(
+            // From CHECKIN to ELEVATOR (on top floor)
 
-        parkingGraph: Graph,
-        bottomFloorGraph: Graph | null,
-        topFloorGraph: Graph,
-        department: { lat: number; lng: number }
+            const topPath = topFloorGraph.search('ELEVATOR', checkInNode.nodeId);
+            if (topPath.length === 0) continue;
+            tempFloorPaths.push(createFloorPath(topPath, topFloorGraph));
+            totalDistance += computeDistance(topPath);
 
-    )
-        : Promise<PathfindingResponse> {
+            let insideDoorNodeId: number | null = null;
 
-        const allPaths: {
-            totalDistance: number;
-            parkingPath: NodePathResponse[];
-            floorPaths: FloorPathResponse[];
-        }[] = [];
+            if (bottomFloorGraph) {
+                // Get top floor elevator node
+                const topElevatorNode = topPath[0];
+                const connectedNodeId = topElevatorNode.connectedNodeId;
+                if (!connectedNodeId) continue;
 
+                // From ELEVATOR to DOOR (on bottom floor)
+                const bottomPath = bottomFloorGraph.search('DOOR', connectedNodeId);
+                if (bottomPath.length === 0) continue;
+                tempFloorPaths.push(createFloorPath(bottomPath, bottomFloorGraph));
+                totalDistance += computeDistance(bottomPath);
 
-        const parkingNodes = parkingGraph.getNodesOfType('PARKING');
-        const checkInNodes = topFloorGraph.getNodesOfType('CHECKIN');
-
-        for (const parkingNode of parkingNodes) {
-            for (const checkInNode of checkInNodes) {
-                const tempFloorPaths: FloorPathResponse[] = [];
-                let totalDistance = 0;
-
-
-                // From CHECKIN to ELEVATOR (on top floor)
-
-                const topPath = topFloorGraph.search('ELEVATOR', checkInNode.nodeId);
-                if (topPath.length === 0) continue;
-                tempFloorPaths.push(createFloorPath(topPath, topFloorGraph));
-                totalDistance += computeDistance(topPath);
-
-                let insideDoorNodeId: number | null = null;
-
-                if (bottomFloorGraph) {
-                    // Get top floor elevator node
-                    const topElevatorNode = topPath[0];
-                    const connectedNodeId = topElevatorNode.connectedNodeId;
-                    if (!connectedNodeId) continue;
-
-                    // From ELEVATOR to DOOR (on bottom floor)
-                    const bottomPath = bottomFloorGraph.search('DOOR', connectedNodeId);
-                    if (bottomPath.length === 0) continue;
-                    tempFloorPaths.push(createFloorPath(bottomPath, bottomFloorGraph));
-                    totalDistance += computeDistance(bottomPath);
-
-                    insideDoorNodeId = bottomPath[0].nodeId;
-
-                } else {
-
-                    // From CHECKIN to DOOR directly (for single floor buildings)
-                    const singlePath = topFloorGraph.search('DOOR', checkInNode.nodeId);
-                    if (singlePath.length === 0) continue;
-                    tempFloorPaths.push(createFloorPath(singlePath, topFloorGraph));
-                    totalDistance += computeDistance(singlePath);
-                    insideDoorNodeId = singlePath[0].nodeId;
-                }
-
-
-                let insideDoorNode: NodePathResponse | undefined;
-
-                if (bottomFloorGraph) {
-                    insideDoorNode = bottomFloorGraph.getNodeById(insideDoorNodeId!);
-                } else {
-                    insideDoorNode = topFloorGraph.getNodeById(insideDoorNodeId!);
-                }
-
-
-                if (!insideDoorNode || !insideDoorNode.connectedNodeId) {
-                    continue;
-                }
-
-
-                const outsideDoorId = insideDoorNode.connectedNodeId;
-                const parkingPath = parkingGraph.search('PARKING', outsideDoorId);
-                if (parkingPath.length === 0) continue;
-                totalDistance += computeDistance(parkingPath);
-
-                allPaths.push({
-                    totalDistance,
-                    parkingPath,
-                    floorPaths: tempFloorPaths,
-                });
+                insideDoorNodeId = bottomPath[0].nodeId;
+            } else {
+                // From CHECKIN to DOOR directly (for single floor buildings)
+                const singlePath = topFloorGraph.search('DOOR', checkInNode.nodeId);
+                if (singlePath.length === 0) continue;
+                tempFloorPaths.push(createFloorPath(singlePath, topFloorGraph));
+                totalDistance += computeDistance(singlePath);
+                insideDoorNodeId = singlePath[0].nodeId;
             }
+
+            let insideDoorNode: NodePathResponse | undefined;
+
+            if (bottomFloorGraph) {
+                insideDoorNode = bottomFloorGraph.getNodeById(insideDoorNodeId!);
+            } else {
+                insideDoorNode = topFloorGraph.getNodeById(insideDoorNodeId!);
+            }
+
+            if (!insideDoorNode || !insideDoorNode.connectedNodeId) {
+                continue;
+            }
+
+            const outsideDoorId = insideDoorNode.connectedNodeId;
+            const parkingPath = parkingGraph.search('PARKING', outsideDoorId);
+            if (parkingPath.length === 0) continue;
+            totalDistance += computeDistance(parkingPath);
+
+            allPaths.push({
+                totalDistance,
+                parkingPath,
+                floorPaths: tempFloorPaths,
+            });
         }
-
-        const best = allPaths.sort((a, b) => a.totalDistance - b.totalDistance)[0];
-        if (!best) throw new Error('No valid full path found');
-
-        return {
-            parkingLotPath: {
-                path: best.parkingPath,
-                direction: parkingGraph.generateDirectionStepsFromNodes(best.parkingPath),
-            },
-            floorPaths: best.floorPaths.reverse(), // Bottom to top
-        };
     }
 
+    const best = allPaths.sort((a, b) => a.totalDistance - b.totalDistance)[0];
+    if (!best) throw new Error('No valid full path found');
+
+    return {
+        parkingLotPath: {
+            path: best.parkingPath,
+            direction: parkingGraph.generateDirectionStepsFromNodes(best.parkingPath),
+        },
+        floorPaths: best.floorPaths.reverse(), // Bottom to top
+    };
+}
 
 ////////////////////////////////////////////
 
-    router.put('/algorithm/:name', async (req: Request, res: Response) => {
-        const name = req.params.name;
+router.put('/algorithm/:name', async (req: Request, res: Response) => {
+    const name = req.params.name;
 
-        const existing = await PrismaClient.algorithm.findUnique({ where: { name } });
-        if (!existing) {
-            res.status(404).json({ message: 'Algorithm not found' });
-            return;
-        }
+    const existing = await PrismaClient.algorithm.findUnique({ where: { name } });
+    if (!existing) {
+        res.status(404).json({ message: 'Algorithm not found' });
+        return;
+    }
 
-        // Reset all to inactive
-        await PrismaClient.algorithm.updateMany({ data: { isActive: false } });
+    // Reset all to inactive
+    await PrismaClient.algorithm.updateMany({ data: { isActive: false } });
 
-        // Activate the selected one
-        await PrismaClient.algorithm.update({
-            where: { name },
-            data: { isActive: true },
-        });
-
-        res.status(200).json({
-            message: 'Successfully updated algorithm',
-        });
+    // Activate the selected one
+    await PrismaClient.algorithm.update({
+        where: { name },
+        data: { isActive: true },
     });
 
+    res.status(200).json({
+        message: 'Successfully updated algorithm',
+    });
+});
 
-    export default router;
+export default router;

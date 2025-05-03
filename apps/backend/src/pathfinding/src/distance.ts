@@ -1,4 +1,4 @@
-import type { Coordinates, NodePathResponse  } from 'common/src/constants';
+import type { Coordinates, NodePathResponse } from 'common/src/constants';
 
 //  Calculates Euclidean distance between two coordinates.
 
@@ -35,19 +35,13 @@ export function haversineDistance(
     return distance;
 }
 
-
-
 export function computeDistance(path: NodePathResponse[]): number {
     let total = 0;
     for (let i = 0; i < path.length - 1; i++) {
-
         total += haversineDistance(
-
             { lat: path[i].lat, lng: path[i].lng },
             { lat: path[i + 1].lat, lng: path[i + 1].lng }
-
         );
-
     }
     return total;
 }
