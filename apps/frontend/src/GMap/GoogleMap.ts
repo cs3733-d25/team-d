@@ -1324,6 +1324,16 @@ export class PathfindingMap extends GoogleMap {
     }
 }
 
+type VisualNode = {
+    data: EditorNode;
+    marker: google.maps.Marker;
+}
+
+type VisualEdge = {
+    data: EditorEdges;
+    line: google.maps.Polyline;
+}
+
 
 class EditorMapGraph {
 
@@ -1344,8 +1354,8 @@ class EditorMapGraph {
 
     private readonly floorMap: google.maps.GroundOverlay | null;
 
-    private nodes: {data: EditorNode, marker: google.maps.Marker}[];
-    private edges: {data: EditorEdges, line: google.maps.Polyline}[];
+    private nodes: VisualNode[];
+    private edges: VisualEdge[];
 
     private newEdge: {startNodeId: number, line: google.maps.Polyline} | null;
 
@@ -1622,6 +1632,16 @@ class EditorMapGraph {
             }
         });
 
+        marker.addListener('dragend', (e: google.maps.MapMouseEvent) => {
+            const rawPosition = e.latLng;
+            if (!rawPosition) return;
+            const newNode = JSON.parse(JSON.stringify(node)) as EditorNode;
+            newNode.lat = rawPosition.toJSON().lat;
+            newNode.lng = rawPosition.toJSON().lng;
+
+            this.updateNode(newNode);
+        });
+
         this.nodes.push({
             data: node,
             marker: marker,
@@ -1666,14 +1686,16 @@ class EditorMapGraph {
         // Once the drag has ended, update
         // the node position in the
         // encapsulator
-        startNode.marker.addListener('dragend', (e: google.maps.MapMouseEvent) => {
-            if (this.editingState === 'DEFAULT') {
-                const rawPosition = e.latLng;
-                if (!rawPosition) return;
-                startNode.data.lat = rawPosition.toJSON().lat;
-                startNode.data.lng = rawPosition.toJSON().lng;
-            }
-        });
+        // startNode.marker.addListener('dragend', (e: google.maps.MapMouseEvent) => {
+        //     if (this.editingState === 'DEFAULT') {
+        //         const rawPosition = e.latLng;
+        //         if (!rawPosition) return;
+        //         const newNode = JSON.parse(JSON.stringify(startNode.data)) as EditorNode;
+        //         newNode.lat = rawPosition.toJSON().lat;
+        //         newNode.lng = rawPosition.toJSON().lng;
+        //
+        //     }
+        // });
 
 
         // If start node dragged, update
@@ -1694,18 +1716,18 @@ class EditorMapGraph {
         // Once the drag has ended, update
         // the node position in the
         // encapsulator
-        endNode.marker.addListener('dragend', (e: google.maps.MapMouseEvent) => {
-            if (this.editingState === 'DEFAULT') {
-                const rawPosition = e.latLng;
-                if (!rawPosition) return;
-                endNode.data.lat = rawPosition.toJSON().lat;
-                endNode.data.lng = rawPosition.toJSON().lng;
-                console.log({
-                    lat: rawPosition.toJSON().lat,
-                    lng: rawPosition.toJSON().lng,
-                })
-            }
-        });
+        // endNode.marker.addListener('dragend', (e: google.maps.MapMouseEvent) => {
+        //     if (this.editingState === 'DEFAULT') {
+        //         const rawPosition = e.latLng;
+        //         if (!rawPosition) return;
+        //         endNode.data.lat = rawPosition.toJSON().lat;
+        //         endNode.data.lng = rawPosition.toJSON().lng;
+        //         console.log({
+        //             lat: rawPosition.toJSON().lat,
+        //             lng: rawPosition.toJSON().lng,
+        //         })
+        //     }
+        // });
 
         // If line is double-clicked delete it
         line.addListener('dblclick', (e: google.maps.MapMouseEvent) => {
@@ -1734,17 +1756,23 @@ class EditorMapGraph {
         // Give the node an ID that doesn't exist yet
         // Needs improving for efficiency
         let id = 0;
-        for (; id < 10000; id++) {
-            let idExists = false;
-            this.editorEncapsulator.editorGraphs.forEach(graph => {
-                if (graph.Nodes.find(cnode =>
-                    cnode.nodeId === id
-                )) idExists = true;
-            });
-            if (!idExists) {
-                break;
+        if (node.nodeId >= 0) {
+            id = node.nodeId;
+        }
+        else {
+            for (; id < 10000; id++) {
+                let idExists = false;
+                this.editorEncapsulator.editorGraphs.forEach(graph => {
+                    if (graph.Nodes.find(cnode =>
+                        cnode.nodeId === id
+                    )) idExists = true;
+                });
+                if (!idExists) {
+                    break;
+                }
             }
         }
+
 
         node.nodeId = id;
         console.log(id);
@@ -1771,17 +1799,23 @@ class EditorMapGraph {
         // Give the edge an ID that doesn't exist yet
         // Needs improving for efficiency
         let id = 0;
-        for (; id < 10000; id++) {
-            let idExists = false;
-            this.editorEncapsulator.editorGraphs.forEach(graph => {
-                if (graph.Edges.find(cedge =>
-                    cedge.edgeId === id
-                )) idExists = true;
-            });
-            if (!idExists) {
-                break;
+        if (edge.edgeId >= 0) {
+            id = edge.edgeId;
+        }
+        else {
+            for (; id < 10000; id++) {
+                let idExists = false;
+                this.editorEncapsulator.editorGraphs.forEach(graph => {
+                    if (graph.Edges.find(cedge =>
+                        cedge.edgeId === id
+                    )) idExists = true;
+                });
+                if (!idExists) {
+                    break;
+                }
             }
         }
+
 
         edge.edgeId = id;
         console.log(id);
@@ -1897,6 +1931,32 @@ class EditorMapGraph {
             icon.fillColor = this.getNodeColor(temp.type);
             icon.strokeColor = this.getNodeStrokeColor(temp.connectedNodeId);
             nodeVisual.marker.setIcon(icon);
+
+            nodeVisual.marker.setPosition({
+                lat: temp.lat,
+                lng: temp.lng,
+            })
+
+            this.edges.forEach(edge => {
+                if (edge.data.startNodeId === temp.nodeId) {
+                    edge.line.setPath([
+                        {
+                            lat: temp.lat,
+                            lng: temp.lng,
+                        },
+                        edge.line.getPath().getAt(1),
+                    ]);
+                }
+                if (edge.data.endNodeId === temp.nodeId) {
+                    edge.line.setPath([
+                        edge.line.getPath().getAt(0),
+                        {
+                            lat: temp.lat,
+                            lng: temp.lng,
+                        },
+                    ]);
+                }
+            })
 
             if (!this.undoing) {
                 if (!this.lock) {
