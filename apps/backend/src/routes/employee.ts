@@ -99,6 +99,42 @@ router.get('/:id', async function (req: Request, res: Response) {
 });
 
 // Update employee with specified id
+router.put('/user/:email', async function (req: Request, res: Response) {
+    // parse email into variable
+    const userEmail: string = encodeURI(req.params.email);
+
+    console.log(userEmail);
+    // find profile with email
+    const employee = await PrismaClient.employee.findUnique({
+        where: {
+            email: userEmail,
+        },
+    });
+
+    // error if no employee with the id is found
+    if (employee == null) {
+        console.error(`The employee with email ${userEmail} not found in database!`);
+        res.status(404);
+    }
+    // success: update specified employee
+    else {
+        try {
+            const employeeId = employee.employeeId;
+            const updateRequest = await PrismaClient.employee.update({
+                where: { employeeId: employeeId },
+                data: req.body,
+            });
+            // send 200 and updated employee if success
+            res.status(200).json(updateRequest);
+            // send 400 and error message if request cannot be updated
+        } catch (error) {
+            console.error(`Unable to update employee ${userEmail}: ${error}`);
+            res.sendStatus(400);
+        }
+    }
+});
+
+// Update employee with specified id
 router.put('/:id', async function (req: Request, res: Response) {
     // parse id into variable
     const employeeId: number = Number(req.params.id);

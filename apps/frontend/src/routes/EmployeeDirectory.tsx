@@ -14,11 +14,9 @@ interface Employee {
     middleInitial: string;
     lastName: string;
     occupation: string;
-    DOB: string;
-    Gender: string;
-    Pronouns: string;
-    PhoneNumber: string;
-
+    dateOfBirth: string;
+    pronoun: string;
+    phoneNumber: string;
 }
 
 
@@ -181,20 +179,16 @@ export default function ShowAllEmployees() {
                             </section>
                             <section className="mb-8">
                                 <h2 className="text-xl font-semibold">Date of Birth:</h2>
-                                <p>{selectedEmployee.DOB}</p>
-                            </section>
-                            <section className="mb-8">
-                                <h2 className="text-xl font-semibold">Gender:</h2>
-                                <p>{selectedEmployee.Gender}</p>
+                                <p>{selectedEmployee.dateOfBirth.slice(0, 10)}</p>
                             </section>
                             <section className="mb-8">
                                 <h2 className="text-xl font-semibold">Phone Number:</h2>
-                                <p>{selectedEmployee.PhoneNumber}</p>
+                                <p>{selectedEmployee.phoneNumber}</p>
                             </section>
 
                             <section className="mb-8">
                                 <h2 className="text-xl font-semibold">Pronouns:</h2>
-                                <p>{selectedEmployee.Pronouns}</p>
+                                <p>{selectedEmployee.pronoun}</p>
                             </section>
                             <div>
                                 <h2 className="text-xl font-semibold">Email:</h2>
