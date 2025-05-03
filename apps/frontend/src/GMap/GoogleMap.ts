@@ -1337,6 +1337,7 @@ class EditorMapGraph {
 
     private readonly undoRedoStack: (() => void)[][];
     private undoing: boolean;
+    private lock: boolean;
 
     private selectedNode: EditorNode | null;
     private selectedEdge: EditorEdges | null;
@@ -1362,6 +1363,7 @@ class EditorMapGraph {
 
         this.undoRedoStack = [];
         this.undoing = false;
+        this.lock = false;
 
         this.nodes = [];
         this.edges = [];
@@ -1579,6 +1581,7 @@ class EditorMapGraph {
                             connectedNodeId: null,
                         });
                         this.newEdge.line.setMap(null);
+                        this.lock = true;
                         this.addEdge({
                             edgeId: -1,
                             name: '',
@@ -1586,6 +1589,7 @@ class EditorMapGraph {
                             endNodeId: newNode.nodeId,
                             graphId: this.editorGraph.graphId,
                         });
+                        this.lock = false;
                         this.newEdge = null;
                         this.editingState = 'DEFAULT';
                     }
@@ -1611,7 +1615,10 @@ class EditorMapGraph {
 
             console.log('delete node');
             if (this.editingState === 'DEFAULT') {
+                this.lock = true;
+                this.undoRedoStack.push([]);
                 this.deleteNode(node.nodeId);
+                this.lock = false;
             }
         });
 
@@ -1722,6 +1729,7 @@ class EditorMapGraph {
     }
 
     addNode(node: EditorNode) {
+        console.log('addNode');
 
         // Give the node an ID that doesn't exist yet
         // Needs improving for efficiency
@@ -1744,9 +1752,13 @@ class EditorMapGraph {
         this.addNodeLocal(node);
 
         if (!this.undoing) {
-            this.undoRedoStack.push([() => {
+            if (!this.lock) {
+                this.undoRedoStack.push([]);
+            }
+            this.undoRedoStack.at(-1)?.push(() => {
                 this.deleteNode(node.nodeId);
-            }]);
+            });
+            console.log(this.undoRedoStack);
         }
 
 
@@ -1754,6 +1766,7 @@ class EditorMapGraph {
     }
 
     addEdge(edge: EditorEdges) {
+        console.log('addEdge');
 
         // Give the edge an ID that doesn't exist yet
         // Needs improving for efficiency
@@ -1776,20 +1789,26 @@ class EditorMapGraph {
         this.addEdgeLocal(edge);
 
         if (!this.undoing) {
-            this.undoRedoStack.push([() => {
+            if (!this.lock) {
+                this.undoRedoStack.push([]);
+            }
+            this.undoRedoStack.at(-1)?.push(() => {
                 this.deleteEdge(edge.edgeId);
-            }]);
+            });
+            console.log(this.undoRedoStack);
         }
 
         return edge;
     }
 
     deleteNode(nodeId: number) {
+        console.log('deleteNode');
+
         const nodeIndexLocal = this.nodes.findIndex(cnode =>
             cnode.data.nodeId === nodeId
         );
 
-        const nodeCopy = JSON.parse(JSON.stringify(this.nodes[nodeIndexLocal])) as EditorNode;
+        const nodeCopy = JSON.parse(JSON.stringify(this.nodes[nodeIndexLocal].data)) as EditorNode;
 
         this.nodes[nodeIndexLocal].marker.setMap(null);
         this.nodes.splice(nodeIndexLocal, 1);
@@ -1811,18 +1830,24 @@ class EditorMapGraph {
         });
 
         if (!this.undoing) {
-            this.undoRedoStack.push([() => {
+            if (!this.lock) {
+                this.undoRedoStack.push([]);
+            }
+            this.undoRedoStack.at(-1)?.push(() => {
                 this.addNode(nodeCopy);
-            }]);
+            });
+            console.log(this.undoRedoStack);
         }
     }
 
     deleteEdge(edgeId: number) {
+        console.log('deleteEdge');
+
         const edgeIndexLocal = this.edges.findIndex(cedge =>
             cedge.data.edgeId === edgeId
         );
 
-        const edgeCopy = JSON.parse(JSON.stringify(this.edges[edgeIndexLocal])) as EditorEdges;
+        const edgeCopy = JSON.parse(JSON.stringify(this.edges[edgeIndexLocal].data)) as EditorEdges;
 
         this.edges[edgeIndexLocal].line.setMap(null);
 
@@ -1835,15 +1860,20 @@ class EditorMapGraph {
         this.editorGraph.Edges.splice(edgeIndexEncapsulator, 1);
 
         if (!this.undoing) {
-            this.undoRedoStack.push([() => {
+            if (!this.lock) {
+                this.undoRedoStack.push([]);
+            }
+            this.undoRedoStack.at(-1)?.push(() => {
                 this.addEdge(edgeCopy);
-            }]);
+            });
+            console.log(this.undoRedoStack);
         }
     }
 
     updateNode(nodeCopy: EditorNode) {
+        console.log('updateNode');
 
-        console.log(nodeCopy);
+        // console.log(nodeCopy);
 
         const nodeEncapsulator = this.editorGraph.Nodes.find(cnode => cnode.nodeId === nodeCopy.nodeId);
         const nodeVisual = this.nodes.find(cnode => cnode.data.nodeId === nodeCopy.nodeId);
@@ -1869,14 +1899,19 @@ class EditorMapGraph {
             nodeVisual.marker.setIcon(icon);
 
             if (!this.undoing) {
-                this.undoRedoStack.push([() => {
+                if (!this.lock) {
+                    this.undoRedoStack.push([]);
+                }
+                this.undoRedoStack.at(-1)?.push(() => {
                     this.updateNode(old);
-                }])
+                });
+                console.log(this.undoRedoStack);
             }
         }
     }
 
     updateEdge(edgeCopy: EditorEdges) {
+        console.log('updateEdge');
         const edgeEncapsulator = this.editorGraph.Edges.find(cedge => cedge.edgeId === edgeCopy.edgeId);
         const edgeVisual = this.edges.find(cedge => cedge.data.edgeId === edgeCopy.edgeId);
 
@@ -1891,9 +1926,13 @@ class EditorMapGraph {
             edgeEncapsulator.endNodeId = temp.endNodeId;
 
             if (!this.undoing) {
-                this.undoRedoStack.push([() => {
-                    this.updateEdge(old);
-                }]);
+                if (!this.lock) {
+                    this.undoRedoStack.push([]);
+                }
+                this.undoRedoStack.at(-1)?.push(() => {
+                    this.updateEdge(edgeCopy);
+                });
+                console.log(this.undoRedoStack);
             }
         }
     }
@@ -1922,6 +1961,20 @@ class EditorMapGraph {
             }
         }
         this.visible = visibility;
+    }
+
+    undo() {
+        this.undoing = true;
+        const steps = this.undoRedoStack.pop();
+        while (steps && steps.length > 0) {
+            const fn = steps.pop();
+            if (fn) fn();
+        }
+        // steps?.forEach((step) => {
+        //     console.log('step');
+        //     step();
+        // });
+        this.undoing = false;
     }
 }
 
@@ -2029,5 +2082,13 @@ export class EditorMap extends GoogleMap {
 
     updateEdge(edge: EditorEdges) {
         this.currentGraph?.updateEdge(edge);
+    }
+
+    undo() {
+        if (!this) {
+            console.log('whyyyy');
+            return;
+        }
+        this.currentGraph?.undo();
     }
 }

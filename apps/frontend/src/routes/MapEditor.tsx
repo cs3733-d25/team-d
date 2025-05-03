@@ -174,6 +174,10 @@ export default function MapEditor() {
                                 <Button className="flex-1 grow m-2 bg-blue-900 border-2 border-amber-600" onClick={handleSave}>
                                     Save
                                 </Button>
+                                <Separator className="mr-4 ml-4" orientation="vertical" />
+                                <Button className="flex-1 grow m-2 bg-blue-900 border-2 border-amber-600" onClick={() => map?.undo()}>
+                                    Undo
+                                </Button>
                             </div>
                         </CardContent>
                     </Card>
@@ -236,7 +240,7 @@ export default function MapEditor() {
                                             map?.updateNode(selectedNode);
                                         }}
                                         disabled={!connectedNodeIdExists}
-                                    >Save</Button>
+                                    >Apply</Button>
                                 </CardContent>
                             </Card>
 
@@ -267,7 +271,7 @@ export default function MapEditor() {
                                             map?.updateEdge(selectedEdge);
                                         }}
                                         disabled={!connectedNodeIdExists}
-                                    >Save</Button>
+                                    >Apply</Button>
                                 </CardContent>
                             </Card>
                         </div>
