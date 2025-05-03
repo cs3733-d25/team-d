@@ -162,7 +162,7 @@ class PathfindingGraph {
                     path: google.maps.SymbolPath.CIRCLE,
                     scale: 5,
                     fillOpacity: 1,
-                    fillColor: '#00c',
+                    fillColor: '#ff0000',
                     strokeColor: '#fff',
                     strokeWeight: 2
                 },
@@ -173,7 +173,7 @@ class PathfindingGraph {
                     path: google.maps.SymbolPath.CIRCLE,
                     scale: 5,
                     fillOpacity: 1,
-                    fillColor: '#00c',
+                    fillColor: '#00ff00',
                     strokeColor: '#fff',
                     strokeWeight: 2
                 },
