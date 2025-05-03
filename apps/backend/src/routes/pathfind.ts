@@ -1,11 +1,9 @@
 import express, { Router, Request, Response } from 'express';
 const router: Router = express.Router();
 
-import { Graph } from 'backend/src/pathfinding/src/bfs.ts';
+import { Graph, BFSStrategy, DFSStrategy, DijkstraStrategy, PathFindingStrategy, createFloorPath  } from '../pathfinding/src/bfs.ts';
 import PrismaClient from '../bin/prisma-client';
 import { computeDistance } from './src/distance';
-
-import { euclideanDistance, haversineDistance } from '../pathfinding/src/distance.ts';
 import {
     FloorPathResponse,
     HospitalOptions,
@@ -13,14 +11,8 @@ import {
     PathfindingOptions,
     PathfindingResponse,
 } from 'common/src/constants.ts';
-import prismaClient from '../bin/prisma-client';
 
-import {
-    BFSStrategy,
-    DFSStrategy,
-    DijkstraStrategy,
-    PathFindingStrategy,
-} from '../pathfinding/src/bfs.ts';
+
 
 function getStrategyByName(name: string): PathFindingStrategy {
     switch (name) {
@@ -100,7 +92,7 @@ router.get('/options', async (req: Request, res: Response) => {
 router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
     // Find the algorithm we want and return it as a new object strategy
     const activeAlgorithm = await PrismaClient.algorithm.findFirst({
-        where: { isActive: true },
+        where: {isActive: true},
     });
 
     const strategy = getStrategyByName(activeAlgorithm?.name || 'BFS'); // default fallback
@@ -115,7 +107,7 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
     // If it doesn't exist return 404
     // (most likely a bad request)
     if (!department) {
-        res.status(404).send({ message: 'Department not found' });
+        res.status(404).send({message: 'Department not found'});
         return;
     }
 
@@ -137,7 +129,7 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
     // If it doesn't exist return 500
     // (most likely a bad database)
     if (!topFloorGraph || !topFloorGraph.Graph) {
-        res.status(500).send({ message: 'Top Floor Graph does not exist' });
+        res.status(500).send({message: 'Top Floor Graph does not exist'});
         return;
     }
 
@@ -151,7 +143,7 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
     // If it doesn't exist return 500
     // (most likely a bad database)
     if (!building) {
-        res.status(500).send({ message: 'Building does not exist' });
+        res.status(500).send({message: 'Building does not exist'});
         return;
     }
 
@@ -165,7 +157,7 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
     // If it doesn't exist return 500
     // (most likely a bad database)
     if (!hospital) {
-        res.status(500).send({ message: 'Hospital does not exist' });
+        res.status(500).send({message: 'Hospital does not exist'});
         return;
     }
 
@@ -187,8 +179,49 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
     // If it doesn't exist return 500
     // (most likely a bad database)
     if (!parkingLotGraph || !parkingLotGraph.Graph) {
-        res.status(500).send({ message: 'ParkingLot does not exist' });
+        res.status(500).send({message: 'ParkingLot does not exist'});
         return;
+    }
+
+
+    const parkingGraphObj = new Graph(strategy);
+    parkingLotGraph.Graph.Nodes.forEach((node) => parkingGraphObj.addNode(node));
+    parkingLotGraph.Graph.Edges.forEach((edge) => parkingGraphObj.addEdge(edge.startNodeId, edge.endNodeId));
+
+    const topFloorGraphObj = new Graph(strategy);
+    topFloorGraph.Graph.Nodes.forEach((node) => topFloorGraphObj.addNode(node));
+    topFloorGraph.Graph.Edges.forEach((edge) => topFloorGraphObj.addEdge(edge.startNodeId, edge.endNodeId));
+
+    let bottomFloorGraphObj: Graph | null = null;
+
+    if (topFloorGraph.floorNum > 2) {
+        const bottomFloorGraph = await PrismaClient.floorGraph.findFirst({
+            where: {
+                buildingId: building.buildingId,
+                floorNum: 1,
+            },
+            include: {
+                Graph: {
+                    include: {
+                        Nodes: true,
+                        Edges: true,
+                    },
+                },
+            },
+        });
+
+        if (!bottomFloorGraph || !bottomFloorGraph.Graph) {
+            res.status(500).send({message: 'Bottom Floor Graph does not exist'});
+            return;
+        }
+
+        bottomFloorGraphObj = new Graph(strategy);
+        bottomFloorGraph.Graph.Nodes.forEach((node) =>
+            bottomFloorGraphObj!.addNode(node)
+        );
+        bottomFloorGraph.Graph.Edges.forEach((edge) =>
+            bottomFloorGraphObj!.addEdge(edge.startNodeId, edge.endNodeId)
+        );
     }
 
 
@@ -295,27 +328,36 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
 
 ////////////////////////////////////////////
 
-                    router.put('/algorithm/:name', async (req: Request, res: Response) => {
-                        const name = req.params.name;
+    const result = await findOptimalFullPath(
+        parkingGraphObj,
+        bottomFloorGraphObj,
+        topFloorGraphObj,
+        { lat: department.lat, lng: department.lng }
+    );
 
-                        const existing = await PrismaClient.algorithm.findUnique({ where: { name } });
-                        if (!existing) {
-                            res.status(404).json({ message: 'Algorithm not found' });
-                            return;
-                        }
 
-                        // Reset all to inactive
-                        await PrismaClient.algorithm.updateMany({ data: { isActive: false } });
 
-                        // Activate the selected one
-                        await PrismaClient.algorithm.update({
-                            where: { name },
-                            data: { isActive: true },
-                        });
+    router.put('/algorithm/:name', async (req: Request, res: Response) => {
+        const name = req.params.name;
 
-                        res.status(200).json({
-                            message: 'Successfully updated algorithm',
-                        });
-                    });
+        const existing = await PrismaClient.algorithm.findUnique({ where: { name } });
+        if (!existing) {
+            res.status(404).json({ message: 'Algorithm not found' });
+            return;
+        }
 
-                    export default router;
+        // Reset all to inactive
+        await PrismaClient.algorithm.updateMany({ data: { isActive: false } });
+
+        // Activate the selected one
+        await PrismaClient.algorithm.update({
+            where: { name },
+            data: { isActive: true },
+        });
+
+        res.status(200).json({
+            message: 'Successfully updated algorithm',
+        });
+    });
+
+    export default router;

@@ -2,6 +2,8 @@ import { Coordinates, NodePathResponse, NodePathResponseType } from 'common/src/
 import { readFileSync } from 'fs';
 import { PrismaClient } from 'database';
 import { euclideanDistance, haversineDistance } from './distance.ts';
+import { FloorPathResponse } from 'common/src/constants.ts';
+
 
 // Search Strategy Interface
 interface PathFindingStrategy {
@@ -180,6 +182,19 @@ class Graph {
         return this.pathFindingStrategy.search(startNodeType, endNodeId, this);
     }
 
+
+    getNodesOfType(type: NodePathResponseType): NodePathResponse[] {
+        const result: NodePathResponse[] = [];
+        for (const node of this.nodesMap.values()) {
+            if (node.data.type === type) result.push(node.data);
+        }
+        return result;
+    }
+
+    getNodeById(nodeId: number): NodePathResponse | undefined {
+        return this.nodesMap.get(nodeId)?.data;
+    }
+
     generateDirectionStepsFromNodes(path: NodePathResponse[]): string[] {
         if (path.length < 2) return ['Not enough points for directions'];
 
@@ -281,6 +296,27 @@ class Graph {
         return `(${node.lat.toFixed(5)}, ${node.lng.toFixed(5)})`;
     }
 }
+
+
+
+
+function createFloorPath(path: NodePathResponse[], graph: Graph): FloorPathResponse {
+    return {
+
+        floorNum: (graph as any).floorNum,
+        image: (graph as any).image,
+        imageBoundsNorth: (graph as any).imageBoundsNorth,
+        imageBoundsSouth: (graph as any).imageBoundsSouth,
+        imageBoundsEast: (graph as any).imageBoundsEast,
+        imageBoundsWest: (graph as any).imageBoundsWest,
+        imageRotation: (graph as any).imageRotation,
+        path: path,
+        direction: graph.generateDirectionStepsFromNodes(path),
+    };
+}
+
+export { createFloorPath };
+
 
 export { Graph };
 export type { PathFindingStrategy };

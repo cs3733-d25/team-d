@@ -45,6 +45,8 @@ export type NodePathResponse = {
     lat: number;
     lng: number;
     type: NodePathResponseType;
+    connectedNodeId?: number | null;
+
 }
 
 export type ParkingPathResponse = {
