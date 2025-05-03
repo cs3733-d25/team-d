@@ -38,6 +38,31 @@ export default function AllPost () {
     const [batchNumber, setBatchNumber] = useState<number>(0);
     const postPerBatch = 3;
 
+    const [searchQuery, setSearchQuery] = useState("");
+
+    const handleSearch = () => {
+        const filtered = allPosts.filter(
+            (post) =>
+                post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                post.content.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+        setCurrentPosts(filtered.slice(0, postPerBatch));
+        setBatchNumber(0);
+    };
+
+    const resetSearch = () => {
+        setSearchQuery("");
+        setCurrentPosts(allPosts.slice(0, postPerBatch));
+        setBatchNumber(0);
+    };
+
+    useEffect(() => {
+        if (searchQuery.trim() === "") {
+            resetSearch();
+        }
+    }, [searchQuery]);
+
+
     const toPreviousBatch = () => {
         if (batchNumber > 0) {
             setBatchNumber(batchNumber - 1);
@@ -90,18 +115,41 @@ export default function AllPost () {
     return(
         <div>
 
-            <div>
-                <h2 className="text-3xl font-bold"> Help forum</h2>
+            <div className=" p-5 mb-5">
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
+                    <h2 className="text-3xl font-bold text-[#012D5A] mb-4 md:mb-0">Help Forum</h2>
 
-                <div>
-                    Search bar and filtering stuff
+                    <button
+                        onClick={handleSearch}
+                        className="bg-blue-900 text-white px-5 py-2 rounded-xl hover:bg-blue-800 transition"
+                    >
+                        + Make a Post
+                    </button>
                 </div>
 
-
-                <div>
-                    Make a post button
+                <div className="flex flex-col sm:flex-row items-center gap-3">
+                    <input
+                        type="text"
+                        placeholder="Search posts..."
+                        className="border border-gray-300 rounded-xl px-4 py-2 w-full sm:max-w-md focus:outline-none focus:ring-2 focus:ring-blue-900 transition"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                    <button
+                        onClick={handleSearch}
+                        className="bg-blue-900 text-white px-4 py-2 rounded-xl hover:bg-blue-900 transition"
+                    >
+                        Search
+                    </button>
+                    <button
+                        onClick={resetSearch}
+                        className="bg-white text-gray-700 px-4 py-2 rounded-xl hover:bg-gray-200 transition"
+                    >
+                        Reset
+                    </button>
                 </div>
             </div>
+
 
 
 
