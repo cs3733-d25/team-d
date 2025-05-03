@@ -59,7 +59,7 @@ function App() {
                             <Route path="profile" element={<Auth0Profile />} />
                         </Route>
 
-                        <Route path="detailed-post" element={<DetailPost />} />
+                        <Route path="detailed-post/:postId" element={<DetailPost />} />
 
                         <Route path="*" element={<NotFound />} />
                     </Route>

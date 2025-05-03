@@ -10,23 +10,28 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 import ReplyCard from '@/components/Forum/ReplyCard.tsx';
+import { API_ROUTES } from 'common/src/constants.ts';
+import axios from 'axios';
+import { useParams } from 'react-router-dom';
 
-export type User = {
-    name: string;
+export type Employee = {
+    firstName: string;
+    lastName: string;
 }
 
 export type Post = {
     title: string;
     content: string;
-    date: Date;
-    user: User;
+    createdAt: string;
+    poster: Employee | null;
+    email: string | null;
     replies: Reply[];
 }
 
 export type Reply = {
     content: string;
-    date: Date;
-    user: User;
+    createdAt: string;
+    poster: Employee;
 }
 
 
@@ -34,49 +39,32 @@ export default function DetailPost() {
 
     const [post, setPost] = useState<Post>();
 
+    const params = useParams();
+
     useEffect(() => {
-        setPost({
-            title: 'testn jknfdskj',
-            content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-            date: new Date(Date.now()),
-            user: {
-                name: 'John Smith',
-            },
-            replies: [
-                {
-                    content: 'I like trains',
-                    date: new Date(Date.now()),
-                    user: {
-                        name: 'Alice Bob',
-                    }
-                },
-                {
-                    content: 'dsiuf hdsgh uifghsog hruihgr iurh iguhreiu ghiureh iugh iuruh guiresh giuhreeui igho',
-                    date: new Date(Date.now()),
-                    user: {
-                        name: 'Juan',
-                    }
-                }
-            ]
-        })
+        const postId = params.postId;
+        if (!postId) return;
+        axios.get(API_ROUTES.FORUM + '/post/' + postId).then(res => {
+            const p = (res.data) as Post;
+            console.log(p);
+            // p.createdAt
+            setPost(p);
+
+        });
     }, []);
 
     return (
         <>
             {post ? (
                 <>
-                    <FullPost post={post}></FullPost>
                     <div className="w-screen p-10 flex">
                         <Card className="flex-1 border-4 border-[#012D5A] rounded-md shadow-md bg-[#F1F1F1]">
                             <CardHeader className="pl-10">
-                                <CardTitle className="text-left pb-0">Replies</CardTitle>
+                                <CardTitle className="text-left pb-0">{post.title}</CardTitle>
+                                <i>Posted by {post.poster ? post.poster.firstName : post.email} on {new Date(post.createdAt).toLocaleDateString()} at {new Date(post.createdAt).toLocaleTimeString()}</i>
                             </CardHeader>
                             <CardContent>
-                                <div className="flex-1 flex flex-col">
-                                    {post.replies.map(reply => (
-                                        <ReplyCard reply={reply} />
-                                    ))}
-                                </div>
+                                {post.content}
                             </CardContent>
                         </Card>
                     </div>
