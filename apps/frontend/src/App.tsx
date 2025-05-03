@@ -24,6 +24,7 @@ import { ProtectedRoute } from "./components/ProtectedRoute";
 import NewDirections from "@/routes/NewDirections.tsx";
 import MapEditor from "@/routes/MapEditor.tsx";
 import EmployeeDirectory from "@/routes/EmployeeDirectory.tsx";
+import DetailPost from '@/routes/Forum/DetailPost.tsx';
 
 function App() {
     return (
@@ -54,6 +55,8 @@ function App() {
                             <Route path="all-service-requests" element={<AllServiceRequests />} />
                             <Route path="profile" element={<Auth0Profile />} />
                         </Route>
+
+                        <Route path="detailed-post" element={<DetailPost />} />
 
                         <Route path="*" element={<NotFound />} />
                     </Route>
