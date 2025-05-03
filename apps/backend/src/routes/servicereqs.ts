@@ -153,6 +153,173 @@ router.get('/sanitation', async function (req: Request, res: Response) {
     }
 });
 
+// GET SERVICE REQ TYPE BREAKDOWN
+router.get('/typeBreakdown', async function (req: Request, res: Response) {
+    //count num of translator requests
+    const translatorRequests = await PrismaClient.serviceRequest.aggregate({
+        _count: {
+            requestId: true,
+        },
+        where: {
+            translatorRequest: {
+                isNot: null, //filter for translator request
+            },
+        },
+    });
+
+    //count num of equipment requests
+    const equipmentRequests = await PrismaClient.serviceRequest.aggregate({
+        _count: {
+            requestId: true,
+        },
+        where: {
+            equipmentRequest: {
+                isNot: null, //filter for equipment request
+            },
+        },
+    });
+
+    //count num of security requests
+    const securityRequests = await PrismaClient.serviceRequest.aggregate({
+        _count: {
+            requestId: true,
+        },
+        where: {
+            securityRequest: {
+                isNot: null, //filter for security request
+            },
+        },
+    });
+
+    //count num of sanitation requests
+    const sanitationRequests = await PrismaClient.serviceRequest.aggregate({
+        _count: {
+            requestId: true,
+        },
+        where: {
+            sanitationRequest: {
+                isNot: null, //filter for sanitation request
+            },
+        },
+    });
+
+    //breakdown of request types
+    const typeBreakdown = [
+        { Type: 'Translator', num: translatorRequests._count.requestId },
+        { Type: 'Equipment', num: equipmentRequests._count.requestId },
+        { Type: 'Security', num: securityRequests._count.requestId },
+        { Type: 'Sanitation', num: sanitationRequests._count.requestId },
+    ];
+
+    res.json(typeBreakdown);
+});
+
+//Priority breakdown
+router.get('/priorityBreakdown', async function (req: Request, res: Response) {
+    const requests = await PrismaClient.serviceRequest.groupBy({
+        by: ['priority'],
+        _count: {
+            requestId: true,
+        },
+    });
+
+    const typeBreakdown = [];
+    for (const request of requests) {
+        typeBreakdown.push({ Priority: request.priority, count: request._count.requestId });
+    }
+
+    res.json(typeBreakdown);
+});
+
+// GET NUM OF SERVICE REQ PAST 7 DAYS
+router.get('/past7days', async function (req: Request, res: Response) {
+    const now = new Date();
+    const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+    try {
+        const newReqs = await PrismaClient.serviceRequest.groupBy({
+            by: ['createdAt'],
+            where: {
+                createdAt: {
+                    gte: sevenDaysAgo,
+                },
+            },
+            _count: {
+                _all: true,
+            },
+        });
+
+        const completedReqs = await PrismaClient.serviceRequest.groupBy({
+            by: ['updatedAt'],
+            where: {
+                updatedAt: {
+                    gte: sevenDaysAgo,
+                },
+                requestStatus: 'Done',
+            },
+            _count: {
+                _all: true,
+            },
+        });
+
+        const formatDate = (date: Date) => date.toISOString().split('T')[0];
+        const newByDay: Record<string, number> = {};
+        for (const entry of newReqs) {
+            const date = formatDate(entry.createdAt);
+            newByDay[date] = (newByDay[date] || 0) + entry._count._all;
+        }
+
+        const completedByDay: Record<string, number> = {};
+        for (const entry of completedReqs) {
+            const date = formatDate(entry.updatedAt);
+            completedByDay[date] = (completedByDay[date] || 0) + entry._count._all;
+        }
+
+        const allDates = new Set([...Object.keys(newByDay), ...Object.keys(completedByDay)]);
+        const result = Array.from(allDates)
+            .map((date) => ({
+                date,
+                numOfNewReq: newByDay[date] || 0,
+                numOfCompletedReq: completedByDay[date] || 0,
+            }))
+            .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+        res.json(result);
+    } catch (error) {
+        console.error(error);
+        res.json(error);
+    }
+});
+
+// GET NUM OF REQUESTS BY DEPARTMENT
+router.get('/departmentBreakdown', async function (req: Request, res: Response) {
+    const requests = await PrismaClient.serviceRequest.groupBy({
+        by: ['departmentUnderId'],
+        _count: {
+            requestId: true,
+        },
+    });
+
+    const departmentIds: number[] = requests
+        .map((r) => r.departmentUnderId)
+        .filter((id): id is number => id !== null);
+    const departments = await PrismaClient.department.findMany({
+        where: {
+            departmentId: { in: departmentIds },
+        },
+        select: {
+            departmentId: true,
+            name: true,
+        },
+    });
+
+    const departmentMap = new Map(departments.map((d) => [d.departmentId, d.name]));
+    const typeBreakdown = requests.map((r) => ({
+        Department: departmentMap.get(r.departmentUnderId!) ?? 'Unknown',
+        count: r._count.requestId,
+    }));
+
+    res.json(typeBreakdown);
+});
+
 // POST TRANSLATOR REQUESTS TO DATABASE
 router.post('/translator', async function (req: Request, res: Response) {
     const {

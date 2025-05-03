@@ -24,6 +24,7 @@ import { ProtectedRoute } from "./components/ProtectedRoute";
 import NewDirections from "@/routes/NewDirections.tsx";
 import MapEditor from "@/routes/MapEditor.tsx";
 import EmployeeDirectory from "@/routes/EmployeeDirectory.tsx";
+import Statistics from "@/routes/Statistics.tsx";
 
 function App() {
     return (
@@ -49,6 +50,7 @@ function App() {
                         {/* Protected routes wrapped in ProtectedRoute */}
                         <Route element={<ProtectedRoute />}>
                             <Route path="admin-database" element={<AdminDatabase />} />
+                            <Route path="statistics" element={<Statistics />} />
                             {/*<Route path="map-editor" element={<Directions editor={true} />} />*/}
                             <Route path="map-editor" element={<MapEditor />} />
                             <Route path="all-service-requests" element={<AllServiceRequests />} />

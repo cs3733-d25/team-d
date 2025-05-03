@@ -14,7 +14,7 @@ import DeliaImg from "../public/team/Delia.jpg";
 import WongImg from "../public/team/Wong.jpg";
 import KatyImg from "../public/team/Katy.jpg";
 
-
+//for the 1000th Commit
 type Person = {
     name: string;
     position: string;
