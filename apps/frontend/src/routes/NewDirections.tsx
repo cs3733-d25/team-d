@@ -45,10 +45,13 @@ import {
 import {Button} from "@/components/ui/button.tsx";
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+
 import StartLocationImg from "../public/StartLocation.jpg";
 import TransportImg from "../public/Transport.jpg";
 import DestinationImg from "../public/Destination.jpg";
 import DepartmentImg from "../public/Department.jpg";
+import { Checkbox } from '@/components/ui/checkbox.tsx';
 
 
 interface TransportModeOption {
@@ -347,27 +350,42 @@ export default function NewDirections() {
                         <div className="flex flex-row border-4 border-[#012D5A] rounded-md">
                             <Card className="flex-1 grow">
                                 <CardHeader>
-                                    <div className="flex items-center justify-between">
-                                        <Label className="flex items-center gap-2">
-                                            Text-to-speech
-                                            <Switch className="data-[state=checked]:bg-blue-900" onCheckedChange={setTts} />
+                                    <div className="">
+                                        <Label className="mb-1 mb-2 border-2 border-amber-600 rounded-md inline-block px-2 py-1">
+                                            Text-to-speech?
                                         </Label>
-                                        <Button
-                                            onClick={handleRecenter}
-                                            className=" border-2 border-amber-600 flex-1 grow m-2 bg-blue-900 active:scale-95 active:shadow-inner transition-transform"
-                                        >
-                                            <FontAwesomeIcon icon={faCrosshairs} />
-                                            Re-center
-                                        </Button>
+                                        <br/>
+                                        <Checkbox className="border-2 border-amber-600" />
+                                        <br/>
+                                        <Label className="mb-1 mb-2 border-2 border-amber-600 rounded-md inline-block px-2 py-1">
+                                            Unit System
+                                        </Label>
+                                        <RadioGroup defaultValue="Metric">
+                                            <RadioGroupItem value="Imperial" className="border-2 border-amber-600"/>
+                                            <RadioGroupItem value="Metric" className="border-2 border-amber-600"/>
+                                        </RadioGroup>
                                     </div>
-                                    <div className="items-center justify-center">
-                                        <Tabs defaultValue="Metric" onValueChange={(value: string) => map?.convertUnits(value)}>
-                                            <TabsList>
-                                                <TabsTrigger className="border-2 border-amber-600 flex-1 grow m-2 bg-blue-900 active:scale-95 active:shadow-inner transition-transform" value="Metric">Metric</TabsTrigger>
-                                                <TabsTrigger className="border-2 border-amber-600 flex-1 grow m-2 bg-blue-900 active:scale-95 active:shadow-inner transition-transform" value="Imperial">Imperial</TabsTrigger>
-                                            </TabsList>
-                                        </Tabs>
-                                    </div>
+                                    {/*<div className="flex items-center justify-between">*/}
+                                    {/*    <Label className="flex items-center gap-2">*/}
+                                    {/*        Text-to-speech*/}
+                                    {/*        <Switch className="data-[state=checked]:bg-blue-900" onCheckedChange={setTts} />*/}
+                                    {/*    </Label>*/}
+                                    {/*    <Button*/}
+                                    {/*        onClick={handleRecenter}*/}
+                                    {/*        className=" border-2 border-amber-600 flex-1 grow m-2 bg-blue-900 active:scale-95 active:shadow-inner transition-transform"*/}
+                                    {/*    >*/}
+                                    {/*        <FontAwesomeIcon icon={faCrosshairs} />*/}
+                                    {/*        Re-center*/}
+                                    {/*    </Button>*/}
+                                    {/*</div>*/}
+                                    {/*<div className="items-center justify-center">*/}
+                                    {/*    <Tabs defaultValue="Metric" onValueChange={(value: string) => map?.convertUnits(value)}>*/}
+                                    {/*        <TabsList>*/}
+                                    {/*            <TabsTrigger className="border-2 border-amber-600 flex-1 grow m-2 bg-blue-900 active:scale-95 active:shadow-inner transition-transform" value="Metric">Metric</TabsTrigger>*/}
+                                    {/*            <TabsTrigger className="border-2 border-amber-600 flex-1 grow m-2 bg-blue-900 active:scale-95 active:shadow-inner transition-transform" value="Imperial">Imperial</TabsTrigger>*/}
+                                    {/*        </TabsList>*/}
+                                    {/*    </Tabs>*/}
+                                    {/*</div>*/}
                                     <div className="flex flex-row">
                                         <Button className="border-2 border-amber-600 flex-1 grow m-2 bg-blue-900 active:scale-95 active:shadow-inner transition-transform" onClick={handlePrevStep} disabled={currentStep < 1}>Previous</Button>
                                         <Separator className="mt-4 mb-4" orientation="vertical" />
