@@ -283,6 +283,7 @@ async function findOptimalFullPath(
 
             let topPath: NodePathResponse[] = [];
 
+            //check if have door, if yes do not need to check elevator
             if (hasDoor) {
                 topPath = topFloorGraph.search('DOOR', checkInNode.nodeId);
                 if (topPath.length === 0) {
@@ -316,6 +317,7 @@ async function findOptimalFullPath(
 
                 insideDoorNodeId = bottomPath[0].nodeId;
             } else {
+
                 // From CHECKIN to DOOR directly (for single floor buildings)
                 const singlePath = topFloorGraph.search('DOOR', checkInNode.nodeId);
                 if (singlePath.length === 0) continue;
@@ -359,7 +361,7 @@ async function findOptimalFullPath(
             path: best.parkingPath,
             direction: parkingGraph.generateDirectionStepsFromNodes(best.parkingPath),
         },
-        floorPaths: best.floorPaths.reverse(), // Bottom to top
+        floorPaths: best.floorPaths.reverse(), // bottom to top
     };
 }
 
