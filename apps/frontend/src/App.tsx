@@ -26,6 +26,7 @@ import MapEditor from "@/routes/MapEditor.tsx";
 import EmployeeDirectory from "@/routes/EmployeeDirectory.tsx";
 import DetailPost from '@/routes/Forum/DetailPost.tsx';
 
+import AllPost from "@/routes/Forum/AllPost.tsx";
 function App() {
     return (
         <div className="h-screen bg-accent flex flex-col parent">
@@ -44,6 +45,8 @@ function App() {
                         <Route path="employee-page" element={<EmployeeDirectory />} />
                         <Route path="about" element={<About />} />
                         <Route path="voice-directory" element={<VoiceDirectory />} />
+
+                        <Route path="all-post" element={<AllPost />} />
 
 
 
