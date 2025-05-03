@@ -1,11 +1,21 @@
-export default function PostPreview() {
+import React from 'react';
+
+export type PostPreviewProps = {
+    postId: string;
+    title: string;
+    content: string;
+    date: string;
+    email: string;
+};
+
+const PostPreview: React.FC<PostPreviewProps> = ({ postId, title, content, date, email }) => {
     return (
         <div className="border-4 border-[#012D5A] rounded-2xl shadow-lg p-6 bg-white max-w-xl mx-auto my-6">
             <div className="space-y-2">
-                <h2 className="text-2xl font-semibold text-[#012D5A]">Title</h2>
-                <p className="text-sm text-gray-500">Created at time by User / Email</p>
-                <div className="text-gray-700">
-                    Content preview
+                <h2 className="text-2xl font-semibold text-[#012D5A]">{title}</h2>
+                <p className="text-sm text-gray-500">Created at {date} by {email}</p>
+                <div className="text-gray-700 truncate">
+                    {content}
                 </div>
             </div>
 
@@ -14,4 +24,6 @@ export default function PostPreview() {
             </div>
         </div>
     );
-}
+};
+
+export default PostPreview;

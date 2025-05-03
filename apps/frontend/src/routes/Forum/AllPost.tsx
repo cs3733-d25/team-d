@@ -13,7 +13,7 @@ import {API_ROUTES} from "common/src/constants.ts";
 import axios from "axios";
 
 
-type PostPreviewProps = {
+export type PostPreviewProps = {
     postId: string,
     title: string,
     content: string,
@@ -33,26 +33,54 @@ type ReplyProps = {
 export default function AllPost () {
     const [allPosts, setAllPosts] = useState<PostPreviewProps[]>([]);
     const [currentPost, setCurrentPosts] = useState<PostPreviewProps[]>([]);
-    const [batchNumber, setBatchNumber] = useState<number>();
+    const [batchNumber, setBatchNumber] = useState<number>(0);
 
-    // useEffect(()=> {
-    //
-    //         // Get all posts data into
-    //         axios.get<PostPreviewProps>()
-    //             .then((response) => {
-    //                 setAllPosts(response.data as PostPreviewProps[]);
-    //                 setBatchNumber(0);
-    //                 if (allPosts.length > 5){
-    //                     setCurrentPosts(allPosts.slice(0, 5) as PostPreviewProps[]);
-    //                 }
-    //                 else {
-    //                     setCurrentPosts(allPosts.slice(0, allPosts.length) as PostPreviewProps[]);
-    //                 }
-    //             })
-    //
-    //     },
-    //     []
-    // )
+    const toPreviousBatch = ()=>{
+        if(batchNumber > 0){
+            console.log("To previous batch");
+            setBatchNumber(batchNumber - 1);
+            setCurrentPosts(allPosts.slice(batchNumber * 5, batchNumber * 5 + 5) as PostPreviewProps[]);
+        }
+        else return;
+    }
+
+    const toThisBatch = (number: number) => {
+        setBatchNumber(number);
+        setCurrentPosts(allPosts.slice(number * 5, number * 5 + 5) as PostPreviewProps[]);
+    }
+
+    const toNextBatch = ()=>{
+        if(batchNumber > allPosts.length/5){
+            console.log("To next batch");
+            setBatchNumber(batchNumber + 1);
+            setCurrentPosts(allPosts.slice(batchNumber * 5, batchNumber * 5 + 5) as PostPreviewProps[]);
+        }
+        else return;
+    }
+
+
+    const fetchData = async () => {
+        try {
+            const postArrays = await axios.get<PostPreviewProps[]>('/api/forum/posts');
+            const fetchArrays= postArrays.data;
+            setAllPosts(fetchArrays);
+            setBatchNumber(0)
+            if (allPosts.length > 5){
+                setCurrentPosts(fetchArrays.slice(0, 4) as PostPreviewProps[]);
+            }
+            else {
+                setCurrentPosts(fetchArrays.slice(0, fetchArrays.length) as PostPreviewProps[]);
+
+            }
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+    useEffect(()=> {
+            fetchData();
+        },
+        []
+    )
 
     return(
         <div>
@@ -74,17 +102,12 @@ export default function AllPost () {
 
             <div>
                 <div>
-                    {allPosts.length > 0 && (
-                            allPosts.map((post: PostPreviewProps) => (
-                                <h1> hi </h1>
+                    {currentPost.length > 0 && (
+                        currentPost.map((post: PostPreviewProps) => (
+                                <h1> <PostPreview {...post}></PostPreview> </h1>
                             ))
                         )
                     }
-
-                    <PostPreview></PostPreview>
-                    <PostPreview></PostPreview>
-                    <PostPreview></PostPreview>
-
                 </div>
 
 
@@ -92,16 +115,16 @@ export default function AllPost () {
                     <Pagination>
                         <PaginationContent>
                             <PaginationItem>
-                                <PaginationPrevious href="#" />
+                                <PaginationPrevious onClick={toPreviousBatch} />
                             </PaginationItem>
                             <PaginationItem>
-                                <PaginationLink href="#">1</PaginationLink>
+                                <PaginationLink onClick={ () => toThisBatch(1) }>1</PaginationLink>
                             </PaginationItem>
                             <PaginationItem>
                                 <PaginationEllipsis />
                             </PaginationItem>
                             <PaginationItem>
-                                <PaginationNext href="#" />
+                                <PaginationNext onClick={toNextBatch} />
                             </PaginationItem>
                         </PaginationContent>
                     </Pagination>
