@@ -201,6 +201,18 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
         topFloorGraphObj.addEdge(edge.startNodeId, edge.endNodeId)
     );
 
+    const allNodeTypes = topFloorGraph.Graph.Nodes.map((n) => n.type);
+    const typeCounts = allNodeTypes.reduce(
+        (acc, type) => {
+            const key = type?.toUpperCase() || 'UNKNOWN';
+            acc[key] = (acc[key] || 0) + 1;
+            return acc;
+        },
+        {} as Record<string, number>
+    );
+
+    console.log('Node type counts in topFloorGraph:', typeCounts);
+
     let bottomFloorGraphObj: Graph | null = null;
 
     if (topFloorGraph.floorNum > 2) {
@@ -241,7 +253,8 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
     res.status(200).json(result);
 });
 
-////////////////////////////////////////////algorithms rewrite:
+
+//algorithms rewrite:
 async function findOptimalFullPath(
     parkingGraph: Graph,
     bottomFloorGraph: Graph | null,
@@ -259,13 +272,29 @@ async function findOptimalFullPath(
 
     for (const parkingNode of parkingNodes) {
         for (const checkInNode of checkInNodes) {
+            const checkInNodeObj = topFloorGraph.getNode(checkInNode.nodeId);
+            const neighbors = checkInNodeObj?.getNeighbors().map((n: any) => n.data.nodeId);
+
             const tempFloorPaths: FloorPathResponse[] = [];
             let totalDistance = 0;
 
             // From CHECKIN to ELEVATOR (on top floor)
+            const hasDoor = topFloorGraph.getNodesOfType('DOOR').length > 0;
 
-            const topPath = topFloorGraph.search('ELEVATOR', checkInNode.nodeId);
-            if (topPath.length === 0) continue;
+            let topPath: NodePathResponse[] = [];
+
+            if (hasDoor) {
+                topPath = topFloorGraph.search('DOOR', checkInNode.nodeId);
+                if (topPath.length === 0) {
+                    continue;
+                }
+            } else {
+                topPath = topFloorGraph.search('ELEVATOR', checkInNode.nodeId);
+                if (topPath.length === 0) {
+                    continue;
+                }
+            }
+
             tempFloorPaths.push(createFloorPath(topPath, topFloorGraph));
             totalDistance += computeDistance(topPath);
 
@@ -275,7 +304,9 @@ async function findOptimalFullPath(
                 // Get top floor elevator node
                 const topElevatorNode = topPath[0];
                 const connectedNodeId = topElevatorNode.connectedNodeId;
-                if (!connectedNodeId) continue;
+                if (!connectedNodeId) {
+                    continue;
+                }
 
                 // From ELEVATOR to DOOR (on bottom floor)
                 const bottomPath = bottomFloorGraph.search('DOOR', connectedNodeId);
@@ -307,7 +338,9 @@ async function findOptimalFullPath(
 
             const outsideDoorId = insideDoorNode.connectedNodeId;
             const parkingPath = parkingGraph.search('PARKING', outsideDoorId);
-            if (parkingPath.length === 0) continue;
+            if (parkingPath.length === 0) {
+                continue;
+            }
             totalDistance += computeDistance(parkingPath);
 
             allPaths.push({
@@ -330,7 +363,8 @@ async function findOptimalFullPath(
     };
 }
 
-////////////////////////////////////////////
+//
+
 
 router.put('/algorithm/:name', async (req: Request, res: Response) => {
     const name = req.params.name;
