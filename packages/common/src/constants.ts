@@ -37,7 +37,7 @@ export type PathfindingOptions = {
 
 ///////////// FOR DIRECTIONS
 
-export type NodePathResponseType = 'NORMAL' | 'PARKING' | 'DOOR' | 'ELEVATOR' | 'CHECKIN';
+export type NodePathResponseType = 'NORMAL' | 'PARKING' | 'DOOR' | 'ELEVATOR' | 'CHECKIN' | 'UNKNOWN' ;
 
 export type NodePathResponse = {
     nodeId: number;

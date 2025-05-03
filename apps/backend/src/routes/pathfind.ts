@@ -18,6 +18,7 @@ import {
     NodePathResponse,
     PathfindingOptions,
     PathfindingResponse,
+    NodePathResponseType
 } from 'common/src/constants.ts';
 
 function getStrategyByName(name: string): PathFindingStrategy {
@@ -190,13 +191,29 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
     }
 
     const parkingGraphObj = new Graph(strategy);
-    parkingLotGraph.Graph.Nodes.forEach((node) => parkingGraphObj.addNode(node));
+
+    parkingLotGraph.Graph.Nodes.forEach((node) => {
+        const normalizedNode = {
+            ...node,
+            type: (node.type?.toUpperCase() ?? 'UNKNOWN') as NodePathResponseType,
+        };
+        parkingGraphObj.addNode(normalizedNode);
+    });
+
     parkingLotGraph.Graph.Edges.forEach((edge) =>
         parkingGraphObj.addEdge(edge.startNodeId, edge.endNodeId)
     );
 
     const topFloorGraphObj = new Graph(strategy);
-    topFloorGraph.Graph.Nodes.forEach((node) => topFloorGraphObj.addNode(node));
+
+    topFloorGraph.Graph.Nodes.forEach((node) => {
+        const normalizedNode = {
+            ...node,
+            type: node.type?.toUpperCase() as NodePathResponseType || 'UNKNOWN'
+        };
+        topFloorGraphObj.addNode(normalizedNode);
+    });
+
     topFloorGraph.Graph.Edges.forEach((edge) =>
         topFloorGraphObj.addEdge(edge.startNodeId, edge.endNodeId)
     );
@@ -237,10 +254,14 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
         }
 
         bottomFloorGraphObj = new Graph(strategy);
-        bottomFloorGraph.Graph.Nodes.forEach((node) => bottomFloorGraphObj!.addNode(node));
-        bottomFloorGraph.Graph.Edges.forEach((edge) =>
-            bottomFloorGraphObj!.addEdge(edge.startNodeId, edge.endNodeId)
-        );
+        bottomFloorGraph.Graph.Nodes.forEach((node) => {
+            const normalizedNode: NodePathResponse = {
+                ...node,
+                type: (node.type?.toUpperCase() ?? 'UNKNOWN') as NodePathResponseType,
+                connectedNodeId: node.connectedNodeId ?? null,
+            };
+            bottomFloorGraphObj!.addNode(normalizedNode);
+        });
     }
 
     const result = await findOptimalFullPath(
@@ -319,11 +340,9 @@ async function findOptimalFullPath(
             } else {
 
                 // From CHECKIN to DOOR directly (for single floor buildings)
-                const singlePath = topFloorGraph.search('DOOR', checkInNode.nodeId);
-                if (singlePath.length === 0) continue;
-                tempFloorPaths.push(createFloorPath(singlePath, topFloorGraph));
-                totalDistance += computeDistance(singlePath);
-                insideDoorNodeId = singlePath[0].nodeId;
+
+                insideDoorNodeId = topPath.find((n) => n.type === 'DOOR')?.nodeId ?? null;
+
             }
 
             let insideDoorNode: NodePathResponse | undefined;
