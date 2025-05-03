@@ -166,20 +166,20 @@ export default function MapEditor() {
                             </Select>
                             <Separator className="mt-4 mb-4" />
 
-                            <div className="flex flex-row">
-                                <Button className="flex-1 grow m-2 bg-blue-900 border-2 border-amber-600" onClick={handleZoom}>
+                            <div className="flex flex-wrap">
+                                <Button className="m-2 bg-blue-900 border-2 border-amber-600" onClick={handleZoom}>
                                     Zoom
                                 </Button>
-                                <Separator className="mr-4 ml-4" orientation="vertical" />
-                                <Button className="flex-1 grow m-2 bg-blue-900 border-2 border-amber-600" onClick={handleSave}>
+                                <Separator className="" orientation="vertical" />
+                                <Button className="m-2 bg-blue-900 border-2 border-amber-600" onClick={handleSave}>
                                     Save
                                 </Button>
-                                <Separator className="mr-4 ml-4" orientation="vertical" />
-                                <Button className="flex-1 grow m-2 bg-blue-900 border-2 border-amber-600" onClick={() => map?.undo()}>
+                                <Separator className="" orientation="vertical" />
+                                <Button className="m-2 bg-blue-900 border-2 border-amber-600" onClick={() => map?.undo()}>
                                     Undo
                                 </Button>
-                                <Separator className="mr-4 ml-4" orientation="vertical" />
-                                <Button className="flex-1 grow m-2 bg-blue-900 border-2 border-amber-600" onClick={() => map?.redo()}>
+                                <Separator className="" orientation="vertical" />
+                                <Button className="m-2 bg-blue-900 border-2 border-amber-600" onClick={() => map?.redo()}>
                                     Redo
                                 </Button>
                             </div>
