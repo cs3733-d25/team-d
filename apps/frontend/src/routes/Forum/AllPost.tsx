@@ -17,14 +17,16 @@ export type PostPreviewProps = {
     postId: string,
     title: string,
     content: string,
-    date: string,
-    email: string
+    createdAt: string,
+    email: string,
+    replies: Array<ReplyProps>,
 }
 
 
 type ReplyProps = {
+    replyId: string,
     content: string,
-    date: string,
+    createdAt: string,
     email: string,
     postId: number,
 }
@@ -34,48 +36,51 @@ export default function AllPost () {
     const [allPosts, setAllPosts] = useState<PostPreviewProps[]>([]);
     const [currentPost, setCurrentPosts] = useState<PostPreviewProps[]>([]);
     const [batchNumber, setBatchNumber] = useState<number>(0);
+    const postPerBatch = 3;
 
-    const toPreviousBatch = ()=>{
-        if(batchNumber > 0){
-            console.log("To previous batch");
+    const toPreviousBatch = () => {
+        if (batchNumber > 0) {
             setBatchNumber(batchNumber - 1);
-            setCurrentPosts(allPosts.slice(batchNumber * 5, batchNumber * 5 + 5) as PostPreviewProps[]);
         }
-        else return;
-    }
+    };
+
+    const toNextBatch = () => {
+        if ((batchNumber + 1) * postPerBatch < allPosts.length) {
+            setBatchNumber(batchNumber + 1);
+        }
+    };
 
     const toThisBatch = (number: number) => {
         setBatchNumber(number);
-        setCurrentPosts(allPosts.slice(number * 5, number * 5 + 5) as PostPreviewProps[]);
-    }
+    };
 
-    const toNextBatch = ()=>{
-        if(batchNumber > allPosts.length/5){
-            console.log("To next batch");
-            setBatchNumber(batchNumber + 1);
-            setCurrentPosts(allPosts.slice(batchNumber * 5, batchNumber * 5 + 5) as PostPreviewProps[]);
-        }
-        else return;
-    }
+    useEffect(() => {
+        const start = batchNumber * postPerBatch;
+        const end = start + postPerBatch;
+        setCurrentPosts(allPosts.slice(start, end));
+    }, [batchNumber, allPosts]);
 
 
     const fetchData = async () => {
         try {
-            const postArrays = await axios.get<PostPreviewProps[]>('/api/forum/posts');
-            const fetchArrays= postArrays.data;
-            setAllPosts(fetchArrays);
-            setBatchNumber(0)
-            if (allPosts.length > 5){
-                setCurrentPosts(fetchArrays.slice(0, 4) as PostPreviewProps[]);
-            }
-            else {
-                setCurrentPosts(fetchArrays.slice(0, fetchArrays.length) as PostPreviewProps[]);
+            const response = await axios.get<PostPreviewProps[]>('/api/forum/posts');
+            const fetchArrays = response.data;
 
+            setAllPosts(fetchArrays);
+            setBatchNumber(0);
+
+            if (fetchArrays.length > postPerBatch) {
+                setCurrentPosts(fetchArrays.slice(0, postPerBatch));
+            } else {
+                setCurrentPosts(fetchArrays.slice(0, fetchArrays.length));
             }
+
+            console.log('Current posts:', fetchArrays.slice(0, postPerBatch));
         } catch (error) {
             console.error('Error fetching data:', error);
         }
     };
+
     useEffect(()=> {
             fetchData();
         },

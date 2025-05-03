@@ -129,6 +129,187 @@ async function main() {
                 email: 'ssrose@gmail.com',
             }
         }),
+        await prisma.post.upsert({
+            where: { postId: 4 },
+            update: {},
+            create: {
+                title: 'Billing error?',
+                content: 'I was charged twice for my last visit. How do I get this corrected?',
+                email: 'janedoe@example.com',
+            },
+        }),
+        await prisma.post.upsert({
+            where: { postId: 5 },
+            update: {},
+            create: {
+                title: 'Can I bring my emotional support animal?',
+                content: 'Do your clinics allow emotional support animals during checkups?',
+                email: 'supportlover@gmail.com',
+            },
+        }),
+        await prisma.post.upsert({
+            where: { postId: 6 },
+            update: {},
+            create: {
+                title: 'Prescription refill help',
+                content: 'I need a refill for my blood pressure medication. What’s the fastest way to request this?',
+                email: 'healthyliving@outlook.com',
+            },
+        }),
+        await prisma.post.upsert({
+            where: { postId: 7 },
+            update: {},
+            create: {
+                title: 'Do you offer telehealth?',
+                content: 'Can I schedule a video call instead of an in-person appointment?',
+                email: 'techsavvy@gmail.com',
+            },
+        }),
+        await prisma.post.upsert({
+            where: { postId: 8 },
+            update: {},
+            create: {
+                title: 'Help with medical records',
+                content: 'I need a copy of my immunization record for work. How do I request that?',
+                email: 'employercheck@workmail.com',
+            },
+        }),
+        await prisma.post.upsert({
+            where: { postId: 9 },
+            update: {},
+            create: {
+                title: 'Is fasting required before a blood test?',
+                content: 'I have a blood test tomorrow morning. Should I fast beforehand?',
+                email: 'fastingquestion@gmail.com',
+            },
+        }),
+        await prisma.post.upsert({
+            where: { postId: 10 },
+            update: {},
+            create: {
+                title: 'Can I switch doctors?',
+                content: 'I’d like to change my primary care physician. What’s the process?',
+                email: 'switchitup@health.com',
+            },
+        }),
+        await prisma.post.upsert({
+            where: { postId: 11 },
+            update: {},
+            create: {
+                title: 'Insurance not accepted?',
+                content: 'My insurer isn’t listed on your website. Can I still get treated?',
+                email: 'confusedpatient@insurance.com',
+            },
+        }),
+        await prisma.post.upsert({
+            where: { postId: 12 },
+            update: {},
+            create: {
+                title: 'Symptoms after vaccine',
+                content: 'I’m experiencing swelling after my COVID booster. Is this normal?',
+                email: 'vaxresponse@mail.com',
+            },
+        }),
+        await prisma.post.upsert({
+            where: { postId: 13 },
+            update: {},
+            create: {
+                title: 'Wheelchair access?',
+                content: 'Is your downtown clinic wheelchair accessible?',
+                email: 'accessibilitymatters@gmail.com',
+            },
+        }),
+        await prisma.post.upsert({
+            where: { postId: 14 },
+            update: {},
+            create: {
+                title: 'Follow-up scheduling issues',
+                content: 'I had a procedure last month but still haven’t received a follow-up date.',
+                email: 'followmeup@protonmail.com',
+            },
+        }),
+        await prisma.post.upsert({
+            where: { postId: 15 },
+            update: {},
+            create: {
+                title: 'Blood pressure monitor recommendation?',
+                content: 'Any recommended home blood pressure monitors compatible with your system?',
+                email: 'homehealthgear@aol.com',
+            },
+        }),
+        await prisma.post.upsert({
+            where: { postId: 16 },
+            update: {},
+            create: {
+                title: 'I missed my appointment',
+                content: 'What should I do if I accidentally missed my appointment this morning?',
+                email: 'oopsies@oops.com',
+            },
+        }),
+        await prisma.post.upsert({
+            where: { postId: 17 },
+            update: {},
+            create: {
+                title: 'Do you offer physical therapy?',
+                content: 'I was recently in a car accident and need PT. Do you provide this?',
+                email: 'recoveringsoon@gmail.com',
+            },
+        }),
+        await prisma.post.upsert({
+            where: { postId: 18 },
+            update: {},
+            create: {
+                title: 'How early should I arrive?',
+                content: 'My appointment is at 9 AM. Should I arrive earlier to fill out forms?',
+                email: 'punctualpatient@ymail.com',
+            },
+        }),
+        await prisma.post.upsert({
+            where: { postId: 19 },
+            update: {},
+            create: {
+                title: 'Allergy to latex?',
+                content: 'I have a latex allergy. Should I inform someone ahead of time?',
+                email: 'safeskin@latexalert.com',
+            },
+        }),
+        await prisma.post.upsert({
+            where: { postId: 20 },
+            update: {},
+            create: {
+                title: 'Can I get test results by email?',
+                content: 'Is there a secure way to receive my bloodwork results via email?',
+                email: 'resultsplease@gmail.com',
+            },
+        }),
+        await prisma.post.upsert({
+            where: { postId: 21 },
+            update: {},
+            create: {
+                title: 'Interpreter services?',
+                content: 'I have a relative who needs an interpreter during the visit. Do you offer that?',
+                email: 'translationrequest@mailbox.com',
+            },
+        }),
+        await prisma.post.upsert({
+            where: { postId: 22 },
+            update: {},
+            create: {
+                title: 'What vaccines do you provide?',
+                content: 'I’m preparing for travel and need multiple vaccines. Do you provide Yellow Fever?',
+                email: 'travelready@passport.org',
+            },
+        }),
+        await prisma.post.upsert({
+            where: { postId: 23 },
+            update: {},
+            create: {
+                title: 'Sick note for work',
+                content: 'Can I request a doctor’s note for my employer if I miss work due to illness?',
+                email: 'worknote@notes.com',
+            },
+        }),
+
     ];
     console.log('Forum posts seeded!');
     console.log(posts);
