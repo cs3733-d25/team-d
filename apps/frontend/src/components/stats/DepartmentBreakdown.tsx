@@ -30,7 +30,7 @@ export function DepartmentBreakdown() {
     const fetchData = async () => {
         try {
             const dataResponse = await axios.get(API_ROUTES.SERVICEREQS+'/departmentBreakdown');
-            const normalizedData: DepartmentBreakdown[] = dataResponse.data.map((item: any) => ({
+            const normalizedData: DepartmentBreakdown[] = dataResponse.data.map((item: unknown) => ({
                 Type: item.Department,
                 num: item.count
             }));

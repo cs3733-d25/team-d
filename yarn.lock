@@ -4504,6 +4504,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/dom-speech-recognition@npm:*, @types/dom-speech-recognition@npm:0.0.6":
+  version: 0.0.6
+  resolution: "@types/dom-speech-recognition@npm:0.0.6"
+  checksum: 10c0/2483e59689b62c5be1d5da5168ee49be933d91e6866d5f60978b31aaf1f254d921c67f4c795c14a90442b0f86d51496cec88d26c810cf6e3124db1880f798c13
+  languageName: node
+  linkType: hard
+
 "@types/emscripten@npm:^1.39.6":
   version: 1.40.0
   resolution: "@types/emscripten@npm:1.40.0"
@@ -4757,6 +4764,15 @@ __metadata:
     "@types/history": "npm:^4.7.11"
     "@types/react": "npm:*"
   checksum: 10c0/1f7eee61981d2f807fa01a34a0ef98ebc0774023832b6611a69c7f28fdff01de5a38cabf399f32e376bf8099dcb7afaf724775bea9d38870224492bea4cb5737
+  languageName: node
+  linkType: hard
+
+"@types/react-speech-recognition@npm:^3.9.6":
+  version: 3.9.6
+  resolution: "@types/react-speech-recognition@npm:3.9.6"
+  dependencies:
+    "@types/dom-speech-recognition": "npm:*"
+  checksum: 10c0/d39d3fc44f2c5314f6d24864f7d8197271f6529640a46e33965c32ffd4aaba66359d4205a52960a675a07078c6b08ff479fc71ea208c22ec3262230b5fcc4dd6
   languageName: node
   linkType: hard
 
@@ -8001,6 +8017,7 @@ __metadata:
     "@radix-ui/react-tabs": "npm:^1.1.9"
     "@tailwindcss/vite": "npm:^4.0.17"
     "@tanstack/react-table": "npm:^8.21.3"
+    "@types/dom-speech-recognition": "npm:0.0.6"
     "@types/google.maps": "npm:^3.58.1"
     "@types/leaflet": "npm:^1.9.17"
     "@types/node": "npm:^22.14.0"
@@ -8009,6 +8026,7 @@ __metadata:
     "@types/react-dom": "npm:^18.0.11"
     "@types/react-router-bootstrap": "npm:^0.26.0"
     "@types/react-router-dom": "npm:^5.3.3"
+    "@types/react-speech-recognition": "npm:^3.9.6"
     "@vis.gl/react-google-maps": "npm:^1.5.2"
     "@vitejs/plugin-react-swc": "npm:^3.0.0"
     axios: "npm:^1.7.4"

@@ -6589,6 +6589,15 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["@types/dom-speech-recognition", [\
+      ["npm:0.0.6", {\
+        "packageLocation": "./.yarn/cache/@types-dom-speech-recognition-npm-0.0.6-7323470dac-2483e59689.zip/node_modules/@types/dom-speech-recognition/",\
+        "packageDependencies": [\
+          ["@types/dom-speech-recognition", "npm:0.0.6"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["@types/emscripten", [\
       ["npm:1.40.0", {\
         "packageLocation": "./.yarn/cache/@types-emscripten-npm-1.40.0-8fced77d84-2c809da43c.zip/node_modules/@types/emscripten/",\
@@ -6930,6 +6939,16 @@ const RAW_RUNTIME_STATE =
           ["@types/history", "npm:4.7.11"],\
           ["@types/react", "npm:19.0.12"],\
           ["@types/react-router", "npm:5.1.20"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["@types/react-speech-recognition", [\
+      ["npm:3.9.6", {\
+        "packageLocation": "./.yarn/cache/@types-react-speech-recognition-npm-3.9.6-7bdb1ba0e2-d39d3fc44f.zip/node_modules/@types/react-speech-recognition/",\
+        "packageDependencies": [\
+          ["@types/react-speech-recognition", "npm:3.9.6"],\
+          ["@types/dom-speech-recognition", "npm:0.0.6"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -10709,6 +10728,7 @@ const RAW_RUNTIME_STATE =
           ["@radix-ui/react-tabs", "virtual:d3996bc66f5a97675d735c6457b44af0f25df32a5e5981f61ff7f22e93004839ccc5d56298eff651f971a908820429de35800a3f2669be95e1c0f6bb82e8a700#npm:1.1.9"],\
           ["@tailwindcss/vite", "virtual:d3996bc66f5a97675d735c6457b44af0f25df32a5e5981f61ff7f22e93004839ccc5d56298eff651f971a908820429de35800a3f2669be95e1c0f6bb82e8a700#npm:4.0.17"],\
           ["@tanstack/react-table", "virtual:d3996bc66f5a97675d735c6457b44af0f25df32a5e5981f61ff7f22e93004839ccc5d56298eff651f971a908820429de35800a3f2669be95e1c0f6bb82e8a700#npm:8.21.3"],\
+          ["@types/dom-speech-recognition", "npm:0.0.6"],\
           ["@types/google.maps", "npm:3.58.1"],\
           ["@types/leaflet", "npm:1.9.17"],\
           ["@types/node", "npm:22.13.13"],\
@@ -10717,6 +10737,7 @@ const RAW_RUNTIME_STATE =
           ["@types/react-dom", "virtual:d3996bc66f5a97675d735c6457b44af0f25df32a5e5981f61ff7f22e93004839ccc5d56298eff651f971a908820429de35800a3f2669be95e1c0f6bb82e8a700#npm:18.3.5"],\
           ["@types/react-router-bootstrap", "npm:0.26.6"],\
           ["@types/react-router-dom", "npm:5.3.3"],\
+          ["@types/react-speech-recognition", "npm:3.9.6"],\
           ["@vis.gl/react-google-maps", "virtual:d3996bc66f5a97675d735c6457b44af0f25df32a5e5981f61ff7f22e93004839ccc5d56298eff651f971a908820429de35800a3f2669be95e1c0f6bb82e8a700#npm:1.5.2"],\
           ["@vitejs/plugin-react-swc", "virtual:d3996bc66f5a97675d735c6457b44af0f25df32a5e5981f61ff7f22e93004839ccc5d56298eff651f971a908820429de35800a3f2669be95e1c0f6bb82e8a700#npm:3.8.1"],\
           ["axios", "npm:1.8.4"],\
