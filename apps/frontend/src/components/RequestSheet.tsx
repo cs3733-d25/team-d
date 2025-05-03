@@ -95,6 +95,9 @@ const RequestSheet: React.FC<RequestSheetProps> = ({ID, requestType, trigger, on
     const [sanitationType, setSanitationType] = useState("");
     const [roomStatus, setRoomStatus] = useState("");
     const [comments, setComments] = useState("");
+    const stopPropagation = (e: React.MouseEvent) => {
+        e.stopPropagation();
+    }
 
     useEffect(() => {
         fetchData();
@@ -143,6 +146,7 @@ const RequestSheet: React.FC<RequestSheetProps> = ({ID, requestType, trigger, on
     }, [request]);
 
     return (
+        <div onClick={stopPropagation}>
         <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
                 {trigger ? trigger : (
@@ -464,6 +468,7 @@ const RequestSheet: React.FC<RequestSheetProps> = ({ID, requestType, trigger, on
                 )}
             </SheetContent>
         </Sheet>
+        </div>
     );
 }
 
