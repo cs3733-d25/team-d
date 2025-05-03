@@ -4,15 +4,11 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Home from "@/routes/Home";
 import Map from "@/routes/Map";
-import Directory from "@/routes/Directory";
-import WithinHospital from "@/routes/WithinHospital";
-import ToHospital from "@/routes/ToHospital";
 import AdminDatabase from "@/routes/AdminDatabase";
 import ServiceRequestHub from "@/routes/ServiceRequestHub.tsx";
 import AllServiceRequests from "@/routes/AllServiceRequests.tsx";
 import Directions from "@/routes/Directions.tsx";
 import Auth0Profile from "@/components/Auth0Profile.tsx";
-import HospitalDirectory from "@/routes/hospitalDirectory.tsx";
 import VoiceDirectory from "@/routes/VoiceDirectory.tsx";
 import About from "@/routes/About.tsx";
 import Citations from "@/routes/Citations.tsx";
@@ -25,6 +21,7 @@ import NewDirections from "@/routes/NewDirections.tsx";
 import MapEditor from "@/routes/MapEditor.tsx";
 import EmployeeDirectory from "@/routes/EmployeeDirectory.tsx";
 import Statistics from "@/routes/Statistics.tsx";
+
 
 function App() {
     return (
@@ -39,12 +36,10 @@ function App() {
                         <Route path="directory" element={<NewDirections />} />
                         <Route path="citations" element={<Citations />} />
                         <Route path="servicerequesthub" element={<ServiceRequestHub />} />
-                        <Route path="hospital-directory" element={<HospitalDirectory />} />
                         <Route path="admin-settings" element={<AdminSettings />} />
                         <Route path="employee-page" element={<EmployeeDirectory />} />
                         <Route path="about" element={<About />} />
                         <Route path="voice-directory" element={<VoiceDirectory />} />
-
 
 
                         {/* Protected routes wrapped in ProtectedRoute */}

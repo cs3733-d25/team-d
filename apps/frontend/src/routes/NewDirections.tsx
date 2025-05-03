@@ -45,6 +45,12 @@ import {
 import {Button} from "@/components/ui/button.tsx";
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 
+import StartLocationImg from "../public/StartLocation.jpg";
+import TransportImg from "../public/Transport.jpg";
+import DestinationImg from "../public/Destination.jpg";
+import DepartmentImg from "../public/Department.jpg";
+
+
 interface TransportModeOption {
     value: string;
     label: string;
@@ -91,6 +97,26 @@ export default function NewDirections() {
     const [selectedMode, setSelectedMode] = useState<string>("DRIVING");
 
     const [currentStep, setCurrentStep] = useState<number>(-1);
+
+    /* ────────────── onboarding pop‑up tour ────────────── */
+    const onboardingSteps = [
+        { title: 'choose your current address',         img: StartLocationImg },
+        { title: 'choose your mode of transportation',  img: TransportImg },
+        { title: 'pick your destination hospital',      img: DestinationImg },
+        { title: "once you're here, pick a department", img: DepartmentImg },
+    ];
+
+    const [showOnboarding, setShowOnboarding] = useState(false);
+    const [onboardIdx,    setOnboardIdx]    = useState(0);
+
+    const handleOnboardNext = () => {
+        if (onboardIdx < onboardingSteps.length - 1) {
+            setOnboardIdx(onboardIdx + 1);
+        } else {
+            setShowOnboarding(false);          // “Got it” closes the tour
+        }
+    };
+
 
     const [currentSection, setCurrentSection] = useState<number>(-1);
 
@@ -208,29 +234,13 @@ export default function NewDirections() {
                     <div className="relative group">
                         <button
                             type="button"
+                            onClick={() => { setShowOnboarding(true); setOnboardIdx(0); }}
                             className="w-7 h-7 flex items-center justify-center rounded-full
-                 border border-gray-400 bg-white text-gray-600
-                 hover:bg-gray-200 focus:outline-none"
-                        >
+             border border-gray-400 bg-white text-gray-600
+             hover:bg-gray-200 focus:outline-none">
                             ?
                         </button>
 
-                        <div
-                            className="absolute right-0 mt-2 w-64 z-10 p-4 text-sm text-white
-                 bg-gray-800 rounded-lg shadow-lg
-                 opacity-0 pointer-events-none
-                 transition-opacity duration-200
-                 group-hover:opacity-100 group-focus-within:opacity-100"
-                        >
-                            <p className="font-semibold mb-2">Steps for navigation:</p>
-                            <ol className="list-decimal ml-4 space-y-1">
-                                <li>Enter your current address</li>
-                                <li>Choose transportation mode</li>
-                                <li>Choose destination hospital</li>
-                                <li>Once at the hospital, pick a department</li>
-                                <li>You can enable text-to-speech for voice directions!</li>
-                            </ol>
-                        </div>
                     </div>
                 </div>
 
@@ -303,7 +313,7 @@ export default function NewDirections() {
                                     <Label className="mb-1 mb-2 border-2 border-amber-600 rounded-md inline-block px-2 py-1">Department</Label>
                                     <Select onValueChange={handleDepartmentChange}>
                                         <SelectTrigger className="w-full mt-1 mb-4 border-2 border-[#012D5A] focus:border-[#D47F00] focus:ring-[#D47F00]/50 focus:ring-[3px]">
-                                            <SelectValue placeholder="Choose a department..." />
+                                            <SelectValue placeholder="Choose a department..." className=""/>
                                         </SelectTrigger>
                                         <SelectContent>
                                             <SelectGroup key="0">
@@ -406,6 +416,46 @@ export default function NewDirections() {
                     </>
                 }
             </div>
+            {showOnboarding && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+                    <div className="relative bg-white w-11/12 max-w-md rounded-xl shadow-lg p-6 text-center">
+                        <button
+                            type="button"
+                            onClick={() => setShowOnboarding(false)}
+                            aria-label="Close"
+                            className="absolute top-4 right-4 text-xl font-semibold text-gray-400
+             hover:text-gray-600 focus:outline-none">
+                            ×
+                        </button>
+
+
+                        <h3 className="text-lg font-bold mb-4 capitalize">
+                            {onboardingSteps[onboardIdx].title}
+                        </h3>
+
+                        {/* Picture area */}
+                        <div className="h-48 flex items-center justify-center mb-6 border border-dashed rounded-lg bg-[#F1F1F1]">
+                            {onboardingSteps[onboardIdx].img ? (
+                                <img
+                                    src={onboardingSteps[onboardIdx].img}
+                                    alt=""
+                                    className="max-h-full max-w-full object-contain"
+                                />
+                            ) : (
+                                <span className="text-gray-400">picture here</span>
+                            )}
+                        </div>
+
+                        <Button
+                            onClick={handleOnboardNext}
+                            className="w-full border-2 border-amber-600 bg-blue-900 active:scale-95 active:shadow-inner transition-transform"
+                        >
+                            {onboardIdx === onboardingSteps.length - 1 ? 'Got it!' : 'Next'}
+                        </Button>
+                    </div>
+                </div>
+            )}
+
             <div ref={mapRef} className="flex-3">
                 {/* Google map will go here */}
             </div>
