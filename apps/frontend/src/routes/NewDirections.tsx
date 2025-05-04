@@ -125,7 +125,7 @@ export default function NewDirections() {
 
     const setPathfindingResultsExternal = (results: PathfindingResults | null, refresh: boolean) => {
         setPathfindingResults(results);
-        console.log(results?.sections[0].directions[0].distance);
+        // console.log(results?.sections[0].directions[0].distance);
         setCurrentStep(-1);
         if (refresh) {
             console.log('resetSecton');
@@ -195,7 +195,7 @@ export default function NewDirections() {
         console.log(currentStep - 1);
     }
 
-
+    const [units, setUnits] = useState<string>('Imperial');
 
 
     const handleZoom = () => {
@@ -359,7 +359,7 @@ export default function NewDirections() {
                                             {/*<Label className="mb-1 mb-2 border-2 border-amber-600 rounded-md inline-block px-2 py-1">*/}
                                             {/*    Unit System*/}
                                             {/*</Label>*/}
-                                            <RadioGroup defaultValue="Imperial" onValueChange={(value: string) => map?.convertUnits(value)}>
+                                            <RadioGroup defaultValue="Imperial" onValueChange={(value: string) => setUnits(value)}>
                                                 <div className="flex items-center space-x-2">
                                                     <RadioGroupItem id="imp" value="Imperial" className="border-2 border-amber-600 peer-checked:bg-blue-900"/>
                                                     <Label htmlFor="imp">Imperial</Label>
@@ -434,7 +434,7 @@ export default function NewDirections() {
                                                                     <span> </span>
                                                                     <span className="text-blue-900">{step.instructions}</span>
                                                                     <br/>
-                                                                    <span className="text-black">{step.time} ({step.distance})</span>
+                                                                    <span className="text-black">{step.time} ({units === 'Imperial' ? step.distanceImp : step.distanceMet})</span>
                                                                     <span className="absolute bottom-0 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-black ml-30">
                                                                         {currentStep !== step.idx && 'Click to view'}
                                                                     </span>

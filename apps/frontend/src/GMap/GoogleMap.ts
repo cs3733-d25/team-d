@@ -233,7 +233,8 @@ export type PathfindingSection = {
 export type DirectionsStep = {
     idx: number;
     instructions: string;
-    distance: string;
+    distanceMet: string;
+    distanceImp: string;
     time: string;
     icon: string;
     googleMapData: google.maps.DirectionsStep | null;
@@ -364,7 +365,7 @@ export class PathfindingMap extends GoogleMap {
             },
             destination: this.endLocation,
             travelMode: this.travelMode,
-            unitSystem: google.maps.UnitSystem.METRIC,
+            unitSystem: google.maps.UnitSystem.IMPERIAL,
         }).then((directions) => {
             this.directionsRenderer.setDirections(directions);
             this.directionsBounds = directions.routes[0].bounds;
@@ -390,7 +391,8 @@ export class PathfindingMap extends GoogleMap {
                 return {
                     idx: idx++,
                     instructions: step.instructions.split('<div')[0].replace(/<[^>]*>/g, ''),
-                    distance: step.distance?.text || '',
+                    distanceMet: this.imperialToMetric(step.distance?.text || ''),
+                    distanceImp: step.distance?.text || '',
                     time: step.duration?.text || '',
                     icon:
                         step.maneuver.includes('right') ? 'right' :
@@ -432,7 +434,8 @@ export class PathfindingMap extends GoogleMap {
                 return {
                     idx: idx++,
                     instructions: direction,
-                    distance: distance.toFixed(2).toString() + ' m',
+                    distanceMet: distance.toFixed(2).toString() + ' m',
+                    distanceImp: this.metricToImperial(distance.toFixed(2).toString() + ' m'),
                     time: time.toFixed(2).toString() + ' sec',
                     icon: direction.includes('right') ? 'right' : direction.includes('left') ? 'left' : 'straight',
                     googleMapData: null,
@@ -478,7 +481,8 @@ export class PathfindingMap extends GoogleMap {
                         return {
                             idx: idx++,
                             instructions: direction,
-                            distance: distance.toFixed(2).toString() + ' m',
+                            distanceMet: distance.toFixed(2).toString() + ' m',
+                            distanceImp: this.metricToImperial(distance.toFixed(2).toString() + ' m'),
                             time: time.toFixed(2).toString() + ' sec',
                             icon: direction.includes('right') ? 'right' : direction.includes('left') ? 'left' : 'straight',
                             googleMapData: null,
@@ -627,6 +631,39 @@ export class PathfindingMap extends GoogleMap {
         this.map.setZoom(zoom);
     }
 
+    metricToImperial(distanceString: string): string {
+        if (distanceString.includes('km')) {
+
+            const value = parseFloat(distanceString);
+            const miles = value * 0.621371;
+            return parseFloat(miles.toFixed(2)) + ' mi';
+
+
+        } else if (distanceString.includes('m')) {
+
+            const value = parseFloat(distanceString);
+            const feet = value * 3.28084;
+            return parseFloat(feet.toFixed(0)) + ' ft';
+
+        }
+        return distanceString;
+    }
+
+    imperialToMetric(distanceString: string): string {
+        if (distanceString.includes('mi')) {
+            const value = parseFloat(distanceString);
+            const meters = value / 0.621371;
+            return parseFloat(meters.toFixed(2)) + ' km';
+
+        } else if (distanceString.includes('ft')) {
+
+            const value = parseFloat(distanceString);
+            const meters = value / 3.28084;
+            return parseFloat(meters.toFixed(0)) + ' m';
+        }
+        return distanceString;
+    }
+
 
     convertUnits(unitPreference: string) {
 
@@ -668,7 +705,7 @@ export class PathfindingMap extends GoogleMap {
         this.currentSteps?.sections.forEach((section) => {
 
             section.directions.forEach(step => {
-                step.distance = convert(step.distance);
+                step.distanceMet = convert(step.distanceMet);
             });
         });
 
