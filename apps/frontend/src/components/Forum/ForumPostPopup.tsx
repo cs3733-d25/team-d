@@ -33,7 +33,6 @@ const ForumPostPopup: React.FC<ForumPostPopupProps> = ({trigger}) => {
         postId: 0,
         title: '',
         content: '',
-        posterId: 0,
         email: '',
     });
 

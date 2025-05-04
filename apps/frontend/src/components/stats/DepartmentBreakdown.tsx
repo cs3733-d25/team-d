@@ -18,10 +18,11 @@ import {
 import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { API_ROUTES } from "common/src/constants.ts";
+import {Department} from "@/routes/Directions.tsx";
 
 export type DepartmentBreakdown = {
-    Type: string;
-    num: number;
+    Department: string;
+    count: number;
 };
 
 export default function DepartmentBreakdown() {
@@ -35,10 +36,7 @@ export default function DepartmentBreakdown() {
             .get(`${API_ROUTES.SERVICEREQS}/departmentBreakdown`)
             .then(({ data }) =>
                 setData(
-                    data.map((item: any) => ({
-                        Type: item.Department,
-                        num: item.count,
-                    })),
+                    data
                 ),
             )
             .catch(console.error);
@@ -56,7 +54,7 @@ export default function DepartmentBreakdown() {
         ];
         const cfg: ChartConfig = { num: { label: "Count", color: "" } };
         data.forEach((d, idx) => {
-            cfg[d.Type] = { label: d.Type, color: colors[idx % colors.length] };
+            cfg[d.Department] = { label: d.Department, color: colors[idx % colors.length] };
         });
         return cfg;
     }, [data]);
@@ -70,11 +68,11 @@ export default function DepartmentBreakdown() {
             <PieChart>
                 <ChartTooltip
                     cursor={false}
-                    content={<ChartTooltipContent nameKey="Type" hideLabel />}
+                    content={<ChartTooltipContent nameKey="Department" hideLabel />}
                 />
                 <Pie
                     data={data}
-                    dataKey="num"
+                    dataKey="count"
                     labelLine
                     innerRadius={60}
                     label={({ payload, ...props }) => (
@@ -86,14 +84,14 @@ export default function DepartmentBreakdown() {
                             textAnchor={props.textAnchor}
                             dominantBaseline={props.dominantBaseline}
                         >
-                            {payload.Type}
+                            {payload.Department}
                         </text>
                     )}
                 >
                     {data.map((entry, idx) => (
                         <Cell
                             key={idx}
-                            fill={chartConfig[entry.Type]?.color || "#ccc"}
+                            fill={chartConfig[entry.Department]?.color || "#ccc"}
                         />
                     ))}
 
@@ -112,7 +110,7 @@ export default function DepartmentBreakdown() {
                                             y={(viewBox.cy ?? 0) - 3}
                                             className="fill-foreground text-3xl font-bold"
                                         >
-                                            {data.reduce((sum, item) => sum + item.num, 0)}
+                                            {data.reduce((sum, item) => sum + item.count, 0)}
                                         </tspan>
                                         <tspan
                                             x={viewBox.cx}

@@ -28,6 +28,36 @@ router.get('/posts', async function (req: Request, res: Response) {
     }
 });
 
+// Returns all posts by created time order, if any
+router.get('/newest', async function (req: Request, res: Response) {
+    // Query db, store response
+    const posts = await PrismaClient.post.findMany({
+        orderBy: [
+            {
+                createdAt: 'desc',
+            },
+        ],
+        include: {
+            poster: true,
+            replies: {
+                include: {
+                    replier: true,
+                },
+            },
+        },
+    });
+    // If no posts are found, send 204 and log it
+    if (posts == null) {
+        console.error('No posts found in database!');
+        res.sendStatus(204);
+    }
+    // Otherwise send 200 and the data
+    else {
+        console.log(posts);
+        res.json(posts);
+    }
+});
+
 router.get('/post/:pid', async function (req: Request, res: Response) {
     // Query db, store response
     const posts = await PrismaClient.post.findUnique({
@@ -95,28 +125,6 @@ router.get('/replies', async function (req: Request, res: Response) {
     }
 });
 
-// Returns all posts by created time order, if any
-router.get('/newest', async function (req: Request, res: Response) {
-    // Query db, store response
-    const posts = await PrismaClient.post.findMany({
-        orderBy: [
-            {
-                createdAt: 'desc',
-            },
-        ],
-    });
-    // If no posts are found, send 204 and log it
-    if (posts == null) {
-        console.error('No posts found in database!');
-        res.sendStatus(204);
-    }
-    // Otherwise send 200 and the data
-    else {
-        console.log(posts);
-        res.json(posts);
-    }
-});
-
 // post request to add a post to the database
 router.post('/post', async function (req: Request, res: Response) {
     const postDataAttempt: Prisma.PostCreateInput = req.body;
@@ -137,7 +145,7 @@ router.post('/reply/:id', async function (req: Request, res: Response) {
     // const replyDataAttempt: Prisma.ReplyCreateInput = req.body;
     const data: Prisma.ReplyCreateInput = {
         ...req.body,
-        postId: postId
+        postId: postId,
     };
     try {
         const reply = await PrismaClient.reply.create({
