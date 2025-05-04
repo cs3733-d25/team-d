@@ -345,9 +345,18 @@ async function findOptimalFullPath(
             }
 
             const topFloorDirection = topFloorGraph.generateDirectionStepsFromNodes(topPath);
-            tempFloorPaths.push(
-                createFloorPath(topPath, topFloorGraph, department.lat, department.lng)
-            );
+            tempFloorPaths.push({
+                floorNum: department.floorNum,
+                image: department.image,
+                imageBoundsNorth: department.imageBoundsNorth,
+                imageBoundsSouth: department.imageBoundsSouth,
+                imageBoundsEast: department.imageBoundsEast,
+                imageBoundsWest: department.imageBoundsWest,
+                imageRotation: department.imageRotation,
+                path: topPath,
+                direction: topFloorDirection,
+            });
+
 
             totalDistance += computeDistance(topPath);
 
@@ -365,10 +374,20 @@ async function findOptimalFullPath(
                 const bottomPath = bottomFloorGraph.search('DOOR', connectedNodeId);
                 if (bottomPath.length === 0) continue;
 
-                const bottomFloorDirection =
-                    bottomFloorGraph.generateDirectionStepsFromNodes(bottomPath);
+                const bottomFloorDirection = bottomFloorGraph.generateDirectionStepsFromNodes(bottomPath);
 
-                tempFloorPaths.push(createFloorPath(bottomPath, bottomFloorGraph));
+                tempFloorPaths.push({
+                    floorNum: bottomFloorGraph.floorNum!,
+                    image: bottomFloorGraph.image!,
+                    imageBoundsNorth: bottomFloorGraph.imageBoundsNorth!,
+                    imageBoundsSouth: bottomFloorGraph.imageBoundsSouth!,
+                    imageBoundsEast: bottomFloorGraph.imageBoundsEast!,
+                    imageBoundsWest: bottomFloorGraph.imageBoundsWest!,
+                    imageRotation: bottomFloorGraph.imageRotation!,
+                    path: bottomPath,
+                    direction: bottomFloorDirection,
+                });
+
 
                 totalDistance += computeDistance(bottomPath);
 
