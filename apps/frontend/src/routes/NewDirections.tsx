@@ -351,18 +351,27 @@ export default function NewDirections() {
                             <Card className="flex-1 grow">
                                 <CardHeader>
                                     <div className="">
-                                        <Label className="mb-1 mb-2 border-2 border-amber-600 rounded-md inline-block px-2 py-1">
-                                            Text-to-speech?
-                                        </Label>
+                                        {/*<Label className="mb-1 mb-2 border-2 border-amber-600 rounded-md inline-block px-2 py-1">*/}
+                                        {/*    Text-to-speech?*/}
+                                        {/*</Label>*/}
                                         <br/>
-                                        <Checkbox className="border-2 border-amber-600" />
+                                        <div className="flex items-center space-x-2">
+                                            <Checkbox id="tts" className="border-2 border-amber-600 rounded-xs" onCheckedChange={() => setTts(!tts)}/>
+                                            <Label htmlFor="tts">Text-to-Speech</Label>
+                                        </div>
                                         <br/>
-                                        <Label className="mb-1 mb-2 border-2 border-amber-600 rounded-md inline-block px-2 py-1">
-                                            Unit System
-                                        </Label>
-                                        <RadioGroup defaultValue="Metric">
-                                            <RadioGroupItem value="Imperial" className="border-2 border-amber-600"/>
-                                            <RadioGroupItem value="Metric" className="border-2 border-amber-600"/>
+                                        {/*<Label className="mb-1 mb-2 border-2 border-amber-600 rounded-md inline-block px-2 py-1">*/}
+                                        {/*    Unit System*/}
+                                        {/*</Label>*/}
+                                        <RadioGroup defaultValue="Metric" onValueChange={(value: string) => map?.convertUnits(value)}>
+                                            <div className="flex items-center space-x-2">
+                                                <RadioGroupItem id="imp" value="Imperial" className="border-2 border-amber-600"/>
+                                                <Label htmlFor="imp">Imperial</Label>
+                                            </div>
+                                            <div className="flex items-center space-x-2">
+                                                <RadioGroupItem id="met" value="Metric" className="border-2 border-amber-600"/>
+                                                <Label htmlFor="met">Metric</Label>
+                                            </div>
                                         </RadioGroup>
                                     </div>
                                     {/*<div className="flex items-center justify-between">*/}
@@ -387,9 +396,15 @@ export default function NewDirections() {
                                     {/*    </Tabs>*/}
                                     {/*</div>*/}
                                     <div className="flex flex-row">
-                                        <Button className="border-2 border-amber-600 flex-1 grow m-2 bg-blue-900 active:scale-95 active:shadow-inner transition-transform" onClick={handlePrevStep} disabled={currentStep < 1}>Previous</Button>
+                                        <Button className="border-2 border-amber-600 flex-1 grow m-2 bg-blue-900 active:scale-95 active:shadow-inner transition-transform" onClick={handlePrevStep} disabled={currentStep < 1}>
+                                            <FontAwesomeIcon icon={faArrowLeft} />
+                                            Previous
+                                        </Button>
                                         <Separator className="mt-4 mb-4" orientation="vertical" />
-                                        <Button className="border-2 border-amber-600 flex-1 grow m-2 bg-blue-900 active:scale-95 active:shadow-inner transition-transform" onClick={handleNextStep} disabled={currentStep >= pathfindingResults.numSteps - 1}>Next</Button>
+                                        <Button className="border-2 border-amber-600 flex-1 grow m-2 bg-blue-900 active:scale-95 active:shadow-inner transition-transform" onClick={handleNextStep} disabled={currentStep >= pathfindingResults.numSteps - 1}>
+                                            Next
+                                            <FontAwesomeIcon icon={faArrowRight} />
+                                        </Button>
                                     </div>
                                 </CardHeader>
                                 <CardContent>

@@ -1155,6 +1155,8 @@ export class PathfindingMap extends GoogleMap {
 
         let step: DirectionsStep | undefined;
 
+        let sectionIdx = -1;
+
         // for (let i = 0; i < stepIdx; i++) {
         //
         // }
@@ -1167,6 +1169,7 @@ export class PathfindingMap extends GoogleMap {
             if (candidate) {
                 step = candidate;
                 this.sectioner(i);
+                sectionIdx = i;
             }
             // if (section.directions.length > 0 &&
             //     section.directions[0].idx <= stepIdx &&
@@ -1217,9 +1220,12 @@ export class PathfindingMap extends GoogleMap {
         }
 
         if (step?.pathFindingData) {
-            step.pathFindingData.points.forEach(point => {
-                bounds.extend(point);
-            });
+            this.currentSteps.sections[sectionIdx].directions.forEach((direction) => {
+                direction.pathFindingData?.points.forEach(point => {
+                    bounds.extend(point);
+                });
+            })
+
             this.map.fitBounds(bounds);
             this.map.setZoom((this.map.getZoom() || 10) - 1);
 
