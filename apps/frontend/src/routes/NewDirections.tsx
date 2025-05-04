@@ -126,7 +126,9 @@ export default function NewDirections() {
     const setPathfindingResultsExternal = (results: PathfindingResults | null, refresh: boolean) => {
         setPathfindingResults(results);
         console.log(results?.sections[0].directions[0].distance);
+        setCurrentStep(-1);
         if (refresh) {
+            console.log('resetSecton');
             setCurrentSection(-1);
         }
         else {
@@ -338,32 +340,45 @@ export default function NewDirections() {
                 {pathfindingResults &&
                     <>
                         <Separator className="mt-4 mb-4" />
-                        <div className="flex flex-row border-4 border-[#012D5A] rounded-md">
-                            <Card className="flex-1 grow">
-                                <CardHeader>
-                                    <div className="">
-                                        {/*<Label className="mb-1 mb-2 border-2 border-amber-600 rounded-md inline-block px-2 py-1">*/}
-                                        {/*    Text-to-speech?*/}
-                                        {/*</Label>*/}
-                                        <br/>
-                                        <div className="flex items-center space-x-2">
-                                            <Checkbox id="tts" className="border-2 border-amber-600 rounded-xs" onCheckedChange={() => setTts(!tts)}/>
-                                            <Label htmlFor="tts">Text-to-Speech</Label>
+                        <div className="flex flex-row">
+                            <Card className="flex-1 grow border-4 border-[#012D5A] rounded-md shadow-md bg-[#F1F1F1]">
+
+                            {/*</CardHeader>*/}
+                                <CardContent>
+                                    <div className="flex flex-row">
+                                        <div className="flex-1 grow">
+                                            {/*<Label className="mb-1 mb-2 border-2 border-amber-600 rounded-md inline-block px-2 py-1">*/}
+                                            {/*    Text-to-speech?*/}
+                                            {/*</Label>*/}
+                                            <br/>
+                                            <div className="flex items-center space-x-2">
+                                                <Checkbox id="tts" className="border-2 border-amber-600 rounded-xs" onCheckedChange={() => setTts(!tts)}/>
+                                                <Label htmlFor="tts">Text-to-Speech</Label>
+                                            </div>
+                                            <br/>
+                                            {/*<Label className="mb-1 mb-2 border-2 border-amber-600 rounded-md inline-block px-2 py-1">*/}
+                                            {/*    Unit System*/}
+                                            {/*</Label>*/}
+                                            <RadioGroup defaultValue="Imperial" onValueChange={(value: string) => map?.convertUnits(value)}>
+                                                <div className="flex items-center space-x-2">
+                                                    <RadioGroupItem id="imp" value="Imperial" className="border-2 border-amber-600 peer-checked:bg-blue-900"/>
+                                                    <Label htmlFor="imp">Imperial</Label>
+                                                </div>
+                                                <div className="flex items-center space-x-2">
+                                                    <RadioGroupItem id="met" value="Metric" className="border-2 border-amber-600 peer-checked:bg-blue-900"/>
+                                                    <Label htmlFor="met">Metric</Label>
+                                                </div>
+                                            </RadioGroup>
                                         </div>
-                                        <br/>
-                                        {/*<Label className="mb-1 mb-2 border-2 border-amber-600 rounded-md inline-block px-2 py-1">*/}
-                                        {/*    Unit System*/}
-                                        {/*</Label>*/}
-                                        <RadioGroup defaultValue="Metric" onValueChange={(value: string) => map?.convertUnits(value)}>
-                                            <div className="flex items-center space-x-2">
-                                                <RadioGroupItem id="imp" value="Imperial" className="border-2 border-amber-600"/>
-                                                <Label htmlFor="imp">Imperial</Label>
-                                            </div>
-                                            <div className="flex items-center space-x-2">
-                                                <RadioGroupItem id="met" value="Metric" className="border-2 border-amber-600"/>
-                                                <Label htmlFor="met">Metric</Label>
-                                            </div>
-                                        </RadioGroup>
+                                        <>
+                                            <Button
+                                                onClick={handleRecenter}
+                                                className=" flex-1 grow border-2 border-amber-600 flex-1 grow m-2 bg-blue-900 active:scale-95 active:shadow-inner transition-transform"
+                                            >
+                                                <FontAwesomeIcon icon={faCrosshairs} />
+                                                Re-center
+                                            </Button>
+                                        </>
                                     </div>
                                     {/*<div className="flex items-center justify-between">*/}
                                     {/*    <Label className="flex items-center gap-2">*/}
@@ -397,9 +412,7 @@ export default function NewDirections() {
                                             <FontAwesomeIcon icon={faArrowRight} />
                                         </Button>
                                     </div>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="h-[400px] overflow-y-scroll" key={currentSection}>
+                                    <div className="h-[400px] overflow-y-scroll pr-2" key={currentSection}>
                                         <Accordion type="single" defaultValue={(currentSection + 1).toString()} collapsible onValueChange={handleSectionChange}>
                                             {pathfindingResults.sections.map((section, j) => {
                                                 return <AccordionItem value={(j + 1).toString()}>
@@ -409,7 +422,7 @@ export default function NewDirections() {
                                                     <AccordionContent>
                                                         {
                                                             section.directions.map((step) => (
-                                                                <div className= {`relative group px-2 ${currentStep === step.idx ? 'bg-gray-200 rounded-md' : 'bg-white'}`}
+                                                                <div className= {`relative group px-2 border-2 rounded-md ${currentStep === step.idx ? 'border-amber-600 bg-[#FAFAFA]' : 'border-transparent'}`}
                                                                      onClick={() => {
                                                                          map?.setCurrentStepIdx(step.idx, tts);
                                                                          setCurrentStep(step.idx);
@@ -423,7 +436,7 @@ export default function NewDirections() {
                                                                     <br/>
                                                                     <span className="text-black">{step.time} ({step.distance})</span>
                                                                     <span className="absolute bottom-0 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-black ml-30">
-                                                                        Click to view
+                                                                        {currentStep !== step.idx && 'Click to view'}
                                                                     </span>
                                                                     <br/><br/>
                                                                 </div>
