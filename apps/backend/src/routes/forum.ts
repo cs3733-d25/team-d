@@ -28,6 +28,57 @@ router.get('/posts', async function (req: Request, res: Response) {
     }
 });
 
+router.get('/post/:pid', async function (req: Request, res: Response) {
+    // Query db, store response
+    const posts = await PrismaClient.post.findUnique({
+        where: {
+            postId: Number(req.params.pid),
+        },
+        include: {
+            poster: true,
+            replies: {
+                include: {
+                    replier: true,
+                },
+            },
+        },
+    });
+    // If no posts are found, send 204 and log it
+    if (posts == null) {
+        console.error('No posts found in database!');
+        res.sendStatus(204);
+    }
+    // Otherwise send 200 and the data
+    else {
+        console.log(posts);
+        res.json(posts);
+    }
+});
+
+router.get('/post', async function (req: Request, res: Response) {
+    // Query db, store response
+    const posts = await PrismaClient.post.findMany({
+        include: {
+            poster: true,
+            replies: {
+                include: {
+                    replier: true,
+                },
+            },
+        },
+    });
+    // If no posts are found, send 204 and log it
+    if (posts == null) {
+        console.error('No posts found in database!');
+        res.sendStatus(204);
+    }
+    // Otherwise send 200 and the data
+    else {
+        console.log(posts);
+        res.json(posts);
+    }
+});
+
 // Returns all replies, if any
 router.get('/replies', async function (req: Request, res: Response) {
     // Query db, store response
