@@ -10,10 +10,7 @@ import {useAuth0} from "@auth0/auth0-react";
 import {
     Dialog,
     DialogContent,
-    DialogDescription,
-    DialogFooter,
     DialogHeader,
-    DialogTitle,
     DialogTrigger
 } from "@/components/ui/dialog.tsx";
 import {Employee} from "@/routes/AllServiceRequests.tsx";
@@ -43,28 +40,14 @@ const ForumPostPopup: React.FC<ForumPostPopupProps> = ({trigger}) => {
     const { user } = useAuth0();
     const [open, setOpen] = React.useState(false);
     const [employeeData, setEmployeeData] = useState<Employee | null>(null);
-    const userEmail = user?.email;
-
-    const fetchData = async () => {
-        if(!user?.email) {
-            return (
-                <div className="flex justify-center items-center h-screen">
-                    <div className="text-lg font-semibold">Loading...</div>
-                </div>
-            );
-        }
-
-        try {
-            const employeeDataResponse = await axios.get(`/api/employee/user/${user?.email}`)
-            setEmployeeData(employeeDataResponse.data);
-        } catch (error) {
-            console.error('Error fetching data:', error);
-        }
-    };
 
     useEffect(() => {
-        fetchData();
-    }, []);
+        if (user?.email) {
+            axios.get(`/api/employee/user/${user?.email}`)
+                .then((res) => setEmployeeData(res.data))
+                .catch((err) => console.error('Error fetching data:', err));
+        }
+    }, [user]);
 
     const onSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -76,6 +59,7 @@ const ForumPostPopup: React.FC<ForumPostPopupProps> = ({trigger}) => {
                 console.error("Error submitting forum post:", err);
             });
     };
+
     return (
         <>
             <ScrollArea className="max-h-[95vh] w-115 overflow-y-auto">
@@ -95,16 +79,15 @@ const ForumPostPopup: React.FC<ForumPostPopupProps> = ({trigger}) => {
                                     </h2>
                                 </div>
                                 <form onSubmit={onSubmit}>
-                                    {/*employeeId if logged in, else require email*/}
-                                    {user !== null ? (
-                                    <div>
-                                        <Label className="pt-4 pb-2" htmlFor="employeeName">
-                                            Employee:
-                                        </Label>
+                                    {user ? (
                                         <div>
-                                            {employeeData?.firstName} {employeeData?.lastName}
+                                            <Label className="pt-4 pb-2" htmlFor="employeeName">
+                                                Employee:
+                                            </Label>
+                                            <div>
+                                                {employeeData?.firstName} {employeeData?.lastName}
+                                            </div>
                                         </div>
-                                    </div>
                                     ) : (
                                         <div>
                                             <Label className="pt-4 pb-2" htmlFor="email">
@@ -147,15 +130,14 @@ const ForumPostPopup: React.FC<ForumPostPopupProps> = ({trigger}) => {
                                         <Label className="pt-4 pb-2" htmlFor="content">
                                             Content
                                         </Label>
-                                        <Input
+                                        <textarea
                                             required
-                                            type="text"
                                             id="content"
-                                            className="w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
+                                            className="w-80 h-30 rounded-md border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                                             onChange={(e) =>
                                                 setForm({
                                                     ...form,
-                                                    content: e.target.value,
+                                                    content: e.target.value
                                                 })
                                             }
                                         />
@@ -168,13 +150,6 @@ const ForumPostPopup: React.FC<ForumPostPopupProps> = ({trigger}) => {
                                     </div>
                                 </form>
                             </div>
-                        {/*<DialogFooter>*/}
-                        {/*    <div className="flex flex-row justify-center items-center">*/}
-                        {/*        <Button type="submit" className="mt-6 w-full bg-blue-900">*/}
-                        {/*            Submit*/}
-                        {/*        </Button>*/}
-                        {/*    </div>*/}
-                        {/*</DialogFooter>*/}
                     </DialogContent>
                 </Dialog>
             </ScrollArea>
