@@ -1203,8 +1203,8 @@ export class PathfindingMap extends GoogleMap {
                 map: this.map,
                 path: path,
                 strokeWeight: 10,
-                strokeColor: '#0ff',
-                strokeOpacity: 0.8,
+                strokeColor: '#0f4',
+                strokeOpacity: 0.9,
                 zIndex: 50,
             });
             path.forEach(point => {
@@ -1235,8 +1235,8 @@ export class PathfindingMap extends GoogleMap {
                 map: this.map,
                 path: step.pathFindingData.points,
                 strokeWeight: 10,
-                strokeColor: '#0ff',
-                strokeOpacity: 0.8,
+                strokeColor: '#0f4',
+                strokeOpacity: 0.9,
                 zIndex: 50,
             });
 
