@@ -484,7 +484,7 @@ export default function ShowAllRequests() {
             </div>
             <div className="border rounded-md">
                 <Table className="rounded-md">
-                    <TableHeader className="bg-blue-900 rounded-md">
+                    <TableHeader className="bg-blue-900 rounded-md [&_th]:text-white [&_th button]:text-white">
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
                                 {headerGroup.headers.map((header) => {
