@@ -494,7 +494,7 @@ async function main() {
                 hospitalId: 0,
                 buildingId: 0,
                 floorGraphId: 1,
-                services: "Bacterial overgrowth breath test, colonoscopy, H. pylori breath test, lactose malabsorption breath test, upper endoscopy",
+                services: "Bacterial overgrowth breath test, Colonoscopy, H. pylori breath test, Lactose malabsorption breath test, upper endoscopy",
                 telephone: "(617) 732–7426",
             },
             {
@@ -548,7 +548,7 @@ async function main() {
                 hospitalId: 0,
                 buildingId: 0,
                 floorGraphId: 1,
-                services: "Acupuncture, health coaching, chiropractic, craniosacral therapy, integrative medicine, structural massage & movement therapies, neurology (movement disorders and headache), echocardiography, and pulmonary.\n" +
+                services: "Acupuncture, Health coaching, Chiropractic, Craniosacral therapy, Integrative medicine, Structural massage & Movement therapies, Neurology (movement disorders and headache), Echocardiography, and Pulmonary, \n" +
                     "Educational courses: Integrative wellness courses are also offered.\n",
                 telephone: "(617) 732–9700",
             },
