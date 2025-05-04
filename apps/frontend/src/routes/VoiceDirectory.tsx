@@ -7,11 +7,15 @@ import beep from "../components/beep.mp3";
 import axios from "axios";
 import {API_ROUTES} from "common/src/constants.ts";
 
+// import {SpeechRecognition} from 'dom-speech-recognition';
+// import SpeechRecognition from "react-speech-recognition";
+// import web
 /* Browser type helpers */
+// TODO
 declare global {
     interface Window {
-        webkitSpeechRecognition: any;
-        SpeechRecognition: any;
+        webkitSpeechRecognition: unknown;
+        SpeechRecognition: unknown;
     }
 }
 
@@ -83,7 +87,8 @@ const VoiceDirectory: React.FC = () => {
     }, [filtered, selected]);
 
     /* Voice search */
-    const recognitionRef = useRef<any>(null);
+    // TODO
+    const recognitionRef = useRef<unknown>(null);
     const [listening, setListening] = useState(false);
 
     useEffect(() => {
@@ -96,12 +101,15 @@ const VoiceDirectory: React.FC = () => {
         recognitionRef.current.lang = "en-US";
         recognitionRef.current.maxAlternatives = 1;
 
+        // TODO
         recognitionRef.current.onstart = () => setListening(true);
-        recognitionRef.current.onresult = (e: any) => {
+        recognitionRef.current.onresult = (e: unknown) => {
             const spoken = e.results[0][0].transcript;
             setQuery(spoken);
         };
-        recognitionRef.current.onerror = (e: any) =>
+
+        // TODO
+        recognitionRef.current.onerror = (e: unknown) =>
             console.error("Speech error:", e.error);
         recognitionRef.current.onend = () => setListening(false);
     }, []);
@@ -248,7 +256,7 @@ const VoiceDirectory: React.FC = () => {
                     </h1>
 
                     <section className="mb-8">
-                        <h2 className="text-xl font-semibold mb-3">Services</h2>
+                        <h2 className="text-xl p-2 font-semibold mb-3 b-1 border-2 border-amber-600 rounded-md inline-block">Services</h2>
                         <ul className="list-disc list-inside space-y-1">
                             {selected.services.split(/,\s*(?![^()]*\))/).map((s) => (
                                 <li key={s.trim()}>{s.trim()}</li>
@@ -258,7 +266,7 @@ const VoiceDirectory: React.FC = () => {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
                         <div>
-                            <h2 className="text-xl font-semibold mb-1">
+                            <h2 className="text-xl p-2 font-semibold mb-3 b-1 border-2 border-amber-600 rounded-md inline-block">
                                 Floor&nbsp;&amp;&nbsp;Suite
                             </h2>
                             <p>Floor {selected.floorNum} Suite {selected.room}</p>

@@ -1,6 +1,5 @@
 import {
     Sheet,
-    SheetClose,
     SheetContent,
     SheetDescription,
     SheetFooter,
@@ -30,40 +29,17 @@ type RequestSheetProps = {
     requestType: string;
     trigger?: React.ReactNode;
     onUpdate?: () => void;
+    departments: Department[];
+    employees: Employee[];
 };
 
-const RequestSheet: React.FC<RequestSheetProps> = ({ID, requestType, trigger, onUpdate}) => {
+const RequestSheet: React.FC<RequestSheetProps> = ({ID, requestType, trigger, onUpdate, departments, employees}) => {
     const [request, setRequest] = useState<ServiceRequest | null>(null);
-    const [translator, setTranslator] = useState<TranslatorRequest | null>(null);
-    const [equipment, setEquipment] = useState<EquipmentRequest | null>(null);
-    const [security, setSecurity] = useState<SecurityRequest | null>(null);
-    const [sanitation, setSanitation] = useState<SanitationRequest | null>(null);
     const [open, setOpen] = React.useState(false);
-    const [departments, setDepartments] = useState<Department[]>([]);
-    const [employees, setEmployees] = useState<Employee[]>([]);
 
     const fetchData = async () => {
         try {
-            const translatorRes = (await axios.get('/api/servicereqs/translator')).data as ServiceRequest[];
-            const equipmentRes = (await axios.get('/api/servicereqs/equipment')).data as ServiceRequest[];
-            const securityRes = (await axios.get('/api/servicereqs/security')).data as ServiceRequest[];
-            const sanitationRes = (await axios.get('/api/servicereqs/sanitation')).data as ServiceRequest[];
-
-            // setTranslator(translatorRes.translatorRequest);
-            // setEquipment(equipmentRes.equipmentRequest);
-            // setSecurity(securityRes.securityRequest);
-            // setSanitation(sanitationRes.sanitationRequest);
-
-            const allRequests: ServiceRequest[] = [
-                ...translatorRes,
-                ...equipmentRes,
-                ...securityRes,
-                ...sanitationRes,
-            ];
-
-            console.log(allRequests);
-
-            const match = allRequests.find(req => req.requestId === ID);
+            const match = (await axios.get('/api/servicereqs/' + ID)).data;
             if (match) {
                 setRequest(match);
             }
@@ -96,15 +72,12 @@ const RequestSheet: React.FC<RequestSheetProps> = ({ID, requestType, trigger, on
     const [sanitationType, setSanitationType] = useState("");
     const [roomStatus, setRoomStatus] = useState("");
     const [comments, setComments] = useState("");
+    const stopPropagation = (e: React.MouseEvent) => {
+        e.stopPropagation();
+    }
 
     useEffect(() => {
         fetchData();
-        axios.get(API_ROUTES.DEPARTMENT + "/all").then((response) => {
-            setDepartments(response.data)
-        });
-        axios.get(API_ROUTES.EMPLOYEE + "/names").then((response) => {
-            setEmployees(response.data)
-        });
     }, []);
 
     useEffect(() => {
@@ -144,6 +117,7 @@ const RequestSheet: React.FC<RequestSheetProps> = ({ID, requestType, trigger, on
     }, [request]);
 
     return (
+        <div onClick={stopPropagation}>
         <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
                 {trigger ? trigger : (
@@ -465,6 +439,7 @@ const RequestSheet: React.FC<RequestSheetProps> = ({ID, requestType, trigger, on
                 )}
             </SheetContent>
         </Sheet>
+        </div>
     );
 }
 

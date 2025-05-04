@@ -6,7 +6,7 @@ import {
     FloorPathResponse,
     EditorNode,
     PathfindingResponse,
-    DepartmentOptions,
+    DepartmentOptions, NodePathResponse,
 } from 'common/src/constants.ts';
 import {EditorEncapsulator} from "@/routes/MapEditor.tsx";
 
@@ -119,10 +119,6 @@ class PathfindingGraph {
 
     private visibility: boolean;
 
-    // Distance and time for inner
-    // private innerDistances: number[] = []; // in meters
-    // private innerDurations: number[] = []; // in seconds (estimate)
-
     constructor(map: google.maps.Map, path: google.maps.LatLngLiteral[], floor?: FloorPathResponse) {
         this.map = map;
 
@@ -141,107 +137,54 @@ class PathfindingGraph {
         this.path = new google.maps.Polyline({
             path: path,
             strokeColor: '#00c',
-            strokeWeight: 3,
+            strokeWeight: 5,
             icons: [{
                 icon: {
                     path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
                     scale: 2,
-                    strokeColor: '#ccc',
+                    strokeColor: '#fff',
                     strokeWeight: 2,
-                    fillColor: '#ccc',
+                    fillColor: '#fff',
                     fillOpacity: 1
                 },
                 repeat: "20px"
             }]
         });
 
-        // function animateCircle(line: google.maps.Polyline) {
-        let offsetPixels = 0;
-
-        window.setInterval(() => {
-            offsetPixels = (offsetPixels + 1) % 1000;
-
-            // this.path.setOptions({
-            //     icons: [
-            //         {
-            //             offset: offsetPixels + 'px',
-            //         },
-            //     ],
-            // });
-
-            const icons = this.path.get("icons");
-            //
-            icons[0].offset = offsetPixels + "px";
-            this.path.set("icons", icons);
-
-            // this.path.setOptions({
-            //     icons: [
-            //         {
-            //             icon: icon,
-            //         }
-            //     ]
-            // })
-        }, 50);
-
-        // let offsetPixels = 0;
-        // function animateDashedLine(this: PathfindingGraph) {
-        //     offsetPixels = (offsetPixels + 1) % 1000;
-        //     this.path.setOptions({
-        //         strokeOpacity: 1,
-        //         strokeWeight: 3,
-        //         icons: [{
-        //             icon: {
-        //                 path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-        //                 scale: 2,
-        //                 strokeColor: '#666666',
-        //                 strokeWeight: 2,
-        //                 fillColor: '#666666',
-        //                 fillOpacity: 1
-        //             },
-        //             offset: `${offsetPixels}px`,
-        //             repeat: "20px"
-        //         }]
-        //     });
-        //
-        //     setTimeout(() => {
-        //         requestAnimationFrame(() => animateDashedLine.call(this));
-        //     }, 50);
-        // }
-        //
-        // // Start the animation
-        // animateDashedLine.call(this);
-
-        this.nodes = path.map(position =>
+        //only create markers for start and end points
+        this.nodes = [
             new google.maps.Marker({
                 icon: {
                     path: google.maps.SymbolPath.CIRCLE,
-                    scale: 2,
+                    scale: 5,
                     fillOpacity: 1,
-                    strokeColor: '#666666',
-                    fillColor: '#666666',
+                    fillColor: '#ff0000',
+                    strokeColor: '#fff',
                     strokeWeight: 2
                 },
-                position: position,
+                position: path[0],
+            }),
+            new google.maps.Marker({
+                icon: {
+                    path: google.maps.SymbolPath.CIRCLE,
+                    scale: 5,
+                    fillOpacity: 1,
+                    fillColor: '#00ff00',
+                    strokeColor: '#fff',
+                    strokeWeight: 2
+                },
+                position: path[path.length - 1],
             })
-        );
+        ];
 
-        // Calculate the distance and time
-        // for (let i = 0; i < this.nodes.length - 1; i++) {
-        //     const pos1 = this.nodes[i].getPosition();
-        //     const pos2 = this.nodes[i + 1].getPosition();
-        //
-        //     if (pos1 && pos2) {
-        //         const distanceMeters = google.maps.geometry.spherical.computeDistanceBetween(pos1, pos2);
-        //         this.innerDistances.push(distanceMeters);
-        //
-        //         // Estimate duration assuming average indoor walking speed (~1.4 meters/sec)
-        //         const estimatedSeconds = distanceMeters / 1.4;
-        //         this.innerDurations.push(estimatedSeconds);
-        //     } else {
-        //         this.innerDistances.push(0);
-        //         this.innerDurations.push(0);
-        //     }
-        // }
+        // Add animation for the path
+        let offsetPixels = 0;
+        window.setInterval(() => {
+            offsetPixels = (offsetPixels + 1) % 1000;
+            const icons = this.path.get("icons");
+            icons[0].offset = offsetPixels + "px";
+            this.path.set("icons", icons);
+        }, 50);
 
         this.selectedSegment = null;
 
@@ -251,73 +194,6 @@ class PathfindingGraph {
 
         this.visibility = false;
     }
-
-
-    // private color: string;
-
-
-    // For inner map directions
-
-    // private isFinal: boolean;
-    // private pathForDisplay: google.maps.LatLngLiteral[];
-    // public innerSteps: string[] = [];
-    // private pathPolylines: google.maps.Polyline[] = [];
-    // public innerStepIndex: number = 0;
-    // private highlightedCircle: google.maps.Circle | null = null;
-    // private highlightedLine: google.maps.Polyline | null = null;
-    // private loadThisAfter: PathfindingGraph | null = null;
-    //
-    //
-    // // floor is the map of the map of the graph itself
-    // public floor: FloorPathResponse | null = null;
-
-    // constructor(map: google.maps.Map, path: google.maps.LatLngLiteral[], color: string, after: PathfindingGraph | null, floor: FloorPathResponse | null, isFinal: boolean) {
-    //     this.map = map;
-    //
-    //     // For outside map
-    //     this.selectedSegment = null;
-    //     this.visibility = false;
-    //
-    //     if (floor) {
-    //         this.floorMap = new google.maps.GroundOverlay(GoogleMap.getImgURL(floor.image), {
-    //             north: floor.imageBoundsNorth,
-    //             south: floor.imageBoundsSouth,
-    //             east: floor.imageBoundsEast,
-    //             west: floor.imageBoundsWest,
-    //         }, {
-    //
-    //         });
-    //     }
-    //     else this.floorMap = null;
-    //
-    //     this.path = new google.maps.Polyline({
-    //         path: path,
-    //         strokeColor: '#0cf',
-    //     });
-    //
-    //     this.nodes = path.map(position =>
-    //         new google.maps.Marker({
-    //             icon: {
-    //                 path: google.maps.SymbolPath.CIRCLE,
-    //                 scale: 5,
-    //                 fillOpacity: 1,
-    //                 fillColor: '#0cf',
-    //                 strokeColor: '#fff',
-    //                 strokeWeight: 2
-    //             },
-    //             position: position,
-    //         })
-    //     );
-    //
-    //     // For inner map
-    //     this.pathForDisplay = path;
-    //     this.pathPolylines = [];
-    //     this.loadThisAfter = after;
-    //     this.floor = floor;
-    //     this.isFinal = isFinal;
-    //     this.color = color;
-    //
-    // }
 
 
     setVisibility(visibility: boolean) {
@@ -338,189 +214,29 @@ class PathfindingGraph {
     }
 
 
-    // Text to directions functions for inside of hospital
-
-    // private highlightStep(index: number): void {
-    //
-    //     // TODO: DECIDE IF U WANNA KEEP THE LINE THAT HAVE WALKED OR NOT, ASK EMMA!!
-    //
-    //     if (this.highlightedCircle) {
-    //         this.highlightedCircle.setIcon({
-    //             url: 'https://maps.gstatic.com/intl/en_us/mapfiles/markers2/measle.png',
-    //             size: new google.maps.Size(7, 7),
-    //             anchor: new google.maps.Point(3.5, 3.5)
-    //         });
-    //     }
-    //
-    //     const newMarker = this.nodes[index];
-    //     newMarker.setIcon({
-    //         url: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
-    //         size: new google.maps.Size(30, 30),
-    //         // anchor: new google.maps.Point(3., 10)
-    //     });
-    //     this.highlightedCircle = newMarker;
-    //
-    //
-    //     // Highlight path segment leading to this node, if it exists
-    //     const newLine = index > 0 ? this.pathPolylines[index - 1] : undefined;
-    //     if (newLine) {
-    //         newLine.setOptions({
-    //             strokeColor: '#00AACC',
-    //             zIndex: 9999, // bring to front
-    //         });
-    //         this.highlightedLine = newLine;
-    //     } else {
-    //         if (index > 0) console.warn(`highlightStep: No path at index ${index - 1}`);
-    //         this.highlightedLine = undefined;
-    //     }
-    //
-    // }
-
-    // public showInnerStep(): void {
-    //     const stepDisplay = document.getElementById("inner-step-instruction");
-    //
-    //
-    //     if (stepDisplay && this.innerSteps.length > 0) {
-    //         const stepText = this.innerSteps[this.innerStepIndex];
-    //
-    //         // Update instruction UI
-    //         stepDisplay.innerHTML = `
-    //         <strong>Step ${this.innerStepIndex + 1}/${this.innerSteps.length}</strong><br>
-    //         ${stepText}
-    //     `;
-    //
-    //         // Text-to-speech
-    //         const utter = new SpeechSynthesisUtterance(stepText);
-    //         utter.lang = 'en-US';
-    //         speechSynthesis.cancel();
-    //         speechSynthesis.speak(utter);
-    //
-    //         // Highlight the corresponding step on map
-    //         this.highlightStep(this.innerStepIndex);
-    //
-    //         // Optional: pan the map to the current step's marker/center
-    //         const currentNode = this.nodes[this.innerStepIndex];
-    //         if (currentNode) {
-    //             this.map.panTo(currentNode.getPosition()!);
-    //         }
-    //     } else {
-    //         console.log("No inner steps found or stepDisplay element is missing.");
-    //     }
-    // }
-
-    // private innerNextButtonSetup = false;
-
-    // public setupInnerNextButton(): void {
-    //     if (this.innerNextButtonSetup) return; // prevent adding listener multiple times
-    //     this.innerNextButtonSetup = true;
-    //
-    //     this.innerStepIndex =0;
-    //     // this.path.binder =
-    //     this.nodes = this.pathForDisplay.map((position, i) =>
-    //         new google.maps.Marker({
-    //             map: this.map,
-    //             position: position,
-    //             icon: {
-    //                 url: 'https://maps.gstatic.com/intl/en_us/mapfiles/markers2/measle.png',
-    //                 size: new google.maps.Size(7, 7),
-    //                 anchor: new google.maps.Point(3.5, 3.5)
-    //             },
-    //         })
-    //     );
-    //
-    //     const lineSymbol = {
-    //         path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-    //     };
-    //
-    //     this.path = new google.maps.Polyline({
-    //         map: this.map,
-    //         path: this.pathForDisplay,
-    //         strokeColor: this.color,
-    //         icons: [
-    //             {
-    //                 icon: lineSymbol,
-    //                 offset: '100%',
-    //             },
-    //         ],
-    //     });
-    //
-    //     for (let i = 0; i < this.pathForDisplay.length - 1; i++) {
-    //         const line = new google.maps.Polyline({
-    //             path: [this.pathForDisplay[i], this.pathForDisplay[i + 1]],
-    //             geodesic: true,
-    //             strokeColor: '#CC3300',
-    //             strokeOpacity: 1.0,
-    //             strokeWeight: 4,
-    //             map: this.map,
-    //         });
-    //         this.pathPolylines.push(line);
-    //     }
-    //
-    //     const nextButton = document.getElementById("inner-next-step-btn");
-    //     if (nextButton) {
-    //         nextButton.addEventListener("click", () => {
-    //             if (this.innerStepIndex < this.innerSteps.length - 1) {
-    //                 this.innerStepIndex++;
-    //                 this.showInnerStep();
-    //                 console.log(this.innerStepIndex);
-    //                 console.log('This graph');
-    //                 console.log(this.floor?.image);
-    //             } else {
-    //
-    //                 if(this.isFinal){
-    //                     alert('You have reached the final destination!');
-    //                 } else {
-    //                     this.remove();
-    //                 }
-    //
-    //                 if (this.highlightedCircle) {
-    //                     this.highlightedCircle.setIcon({
-    //                         url: 'https://maps.gstatic.com/intl/en_us/mapfiles/markers2/measle.png',
-    //                         size: new google.maps.Size(7, 7),
-    //                         anchor: new google.maps.Point(3.5, 3.5)
-    //                     });
-    //                 }
-    //
-    //                 const theNextFloorMap = new google.maps.GroundOverlay(GoogleMap.getImgURL(this.loadThisAfter.floor.image), {
-    //                     north: this.loadThisAfter.floor.imageBoundsNorth,
-    //                     south: this.loadThisAfter.floor.imageBoundsSouth,
-    //                     east: this.loadThisAfter.floor.imageBoundsEast,
-    //                     west: this.loadThisAfter.floor.imageBoundsWest,
-    //                 });
-    //                 theNextFloorMap.setMap(this.map);
-    //                 console.log('Next graph');
-    //                 console.log(this.loadThisAfter.floor.image);
-    //                 this.loadThisAfter?.setupInnerNextButton();
-    //                 this.loadThisAfter?.showInnerStep();
-    //             }
-    //         });
-    //     }
-    // }
-
     public remove() {
         this.path.setMap(null);
         this.nodes.forEach(node => node.setMap(null));
-        // this.pathPolylines.forEach(polyline => polyline.setMap(null));
     }
 }
 
 export type PathfindingResults = {
-    floors: number[];
+    numSteps: number,
+    sections: PathfindingSection[];
+}
+
+export type PathfindingSection = {
+    name: string;
     directions: DirectionsStep[];
-    startLocation?: google.maps.LatLngLiteral;
-    endLocation?: google.maps.LatLngLiteral;
-    path?: google.maps.LatLngLiteral[];
 }
 
 export type DirectionsStep = {
+    idx: number;
     instructions: string;
-    distance: string;
+    distanceMet: string;
+    distanceImp: string;
     time: string;
     icon: string;
-}
-
-type InternalStep = {
-    step: DirectionsStep;
     googleMapData: google.maps.DirectionsStep | null;
     pathFindingData: {graphIdx: number, points: google.maps.LatLngLiteral[]} | null;
 }
@@ -528,42 +244,36 @@ type InternalStep = {
 export class PathfindingMap extends GoogleMap {
 
 
-
-    public static async makeMap(mapDivElement: HTMLDivElement, autocompleteInput: HTMLInputElement, updater: (results: PathfindingResults | null) => void) {
+    public static async makeMap(mapDivElement: HTMLDivElement, autocompleteInput: HTMLInputElement, updater: (results: PathfindingResults | null, refresh: boolean) => void, sectioner: (section: number) => void) {
         await GoogleMap.loadScript();
-        return new PathfindingMap(mapDivElement, autocompleteInput, updater);
+        return new PathfindingMap(mapDivElement, autocompleteInput, updater, sectioner);
     }
 
     private readonly directionsService: google.maps.DirectionsService;
     private readonly directionsRenderer: google.maps.DirectionsRenderer;
     private readonly autocomplete: google.maps.places.Autocomplete;
 
-    private readonly updater: (results: PathfindingResults | null) => void;
+    private readonly updater: (results: PathfindingResults | null, refresh: boolean) => void;
+    private readonly sectioner: (section: number) => void;
 
     private startPlaceId: string | null;
     private endLocation: google.maps.LatLngLiteral | null;
     private travelMode: google.maps.TravelMode;
 
     private currentPathfindingResponse: PathfindingResponse | null;
-    private currentSteps: InternalStep[] | null;
-    // private currentParkingPath: PathfindingGraph | null;
-    // private currentFloorPaths: PathfindingGraph[] | null;
-    // private selectedFloorPath: PathfindingGraph | null;
+    private currentSteps: PathfindingResults | null;
 
     private currentPath: PathfindingGraph | null;
     private allPaths: PathfindingGraph[];
 
-    // For Google Map directions
-    // private stepIndex: number = 0;
-    // private steps: google.maps.DirectionsStep[] = [];
+    private directionsBounds: google.maps.LatLngBounds | null;
+
     private currentStepPolyline: google.maps.Polyline | null;
-    // private currentStepMarker: google.maps.Marker | null = null;
 
     private department: DepartmentOptions | null;
 
 
-
-    private constructor(mapDivElement: HTMLDivElement, autocompleteInput: HTMLInputElement, updater: (results: PathfindingResults | null) => void) {
+    private constructor(mapDivElement: HTMLDivElement, autocompleteInput: HTMLInputElement, updater: (results: PathfindingResults | null, refresh: boolean) => void, sectioner: (section: number) => void) {
 
         super(mapDivElement, {
             center: {
@@ -579,115 +289,12 @@ export class PathfindingMap extends GoogleMap {
         this.directionsService = new google.maps.DirectionsService();
         this.directionsRenderer = new google.maps.DirectionsRenderer({
             map: this.map,
-            // preserveViewport: true,
             polylineOptions: {
                 strokeColor: '#00c',
-                strokeWeight: 3,
+                strokeWeight: 5,
                 strokeOpacity: 1,
-                // icons: [{
-                //     icon: {
-                //         path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-                //         scale: 2,
-                //         strokeColor: '#666666',
-                //         strokeWeight: 2,
-                //         fillColor: '#666666',
-                //         fillOpacity: 1
-                //     },
-                //     offset: '0px',
-                //     repeat: '20px'
-                // }]
             }
         });
-        // let offsetPixels = 0;
-        // // Add animation for the directions polyline
-        // function animateDirectionsLine(this: PathfindingMap) {
-        //     offsetPixels = (offsetPixels + 1) % 1000;
-        //     this.directionsRenderer.setOptions({
-        //         polylineOptions: {
-        //             strokeColor: '#00c',
-        //             strokeWeight: 3,
-        //             strokeOpacity: 1,
-        //             icons: [{
-        //                 icon: {
-        //                     path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-        //                     scale: 2,
-        //                     strokeColor: '#666666',
-        //                     strokeWeight: 2,
-        //                     fillColor: '#666666',
-        //                     fillOpacity: 1
-        //                 },
-        //                 offset: `${offsetPixels}px`,
-        //                 repeat: '20px'
-        //             }]
-        //         }
-        //     });
-        //
-        //     setTimeout(() => {
-        //         requestAnimationFrame(() => animateDirectionsLine.call(this));
-        //     }, 50);
-        // }
-
-        // let offsetPixels = 0;
-        //
-        // let count = 0;
-        //
-        // window.setInterval(() => {
-        //     offsetPixels = (offsetPixels + 1) % 1000;
-        //     count++;
-        //
-        //     const icon = this.directionsRenderer.get("polylineOptions").get("icons")[0];
-        //
-        //     icon.offset = offsetPixels + 'px';
-        //
-        //     const plo: google.maps.PolylineOptions = this.directionsRenderer.get("polylineOptions");
-        //
-        //     plo.set
-        //
-        //     this.directionsRenderer.set
-        //
-        //     // const icons = this.directionsRenderer.get("polylineOptions").get("icons");
-        //
-        //     // icons[0].offset = offsetPixels + "px";
-        //     // this.directionsRenderer.setOptions({
-        //     //     polylineOptions: {
-        //     //         icons: [{
-        //     //             offset: `${offsetPixels}px`,
-        //     //         }]
-        //     //     }
-        //     // });
-        //     // const icons = this.directionsRenderer.get("polylineOptions").get("icons");
-        //     //
-        //     // icons[0].offset = offsetPixels + "px";
-        //
-        //     // this.directionsRenderer
-        //
-        //     // const plo: google.maps.PolylineOptions = this.directionsRenderer.get("polylineOptions");
-        //     // if (count === 100) console.log('1 ', plo);
-        //     //
-        //     // const icos: google.maps.IconSequence[] = plo.icons || [];
-        //     // if (count === 100) console.log('2 ', icos);
-        //     //
-        //     // icos[0].offset = offsetPixels + "px";
-        //     // if (count === 100) console.log('3 ', icos);
-        //     //
-        //     //
-        //     //
-        //     //
-        //     //
-        //     // // const icons = this.path.get("icons");
-        //     // //
-        //     // // icons[0].offset = offsetPixels + "px";
-        //     // plo.icons = icos;
-        //     // if (count === 100) console.log('4 ', plo);
-        //     //
-        //     // this.directionsRenderer.set("polylineOptions", plo);
-        //     //
-        //     // if (count === 100) console.log('5 ', this.directionsRenderer.get("polylineOptions"));
-        //
-        // }, 100);
-
-        // Start the animation
-        // animateDirectionsLine.call(this);
 
         this.autocomplete = new google.maps.places.Autocomplete(autocompleteInput, {
             fields: ['place_id'],
@@ -700,12 +307,12 @@ export class PathfindingMap extends GoogleMap {
             } else {
                 this.startPlaceId = placeId;
                 console.log('Start is now ' + this.startPlaceId);
-                // this.route();
                 this.update();
             }
         });
 
         this.updater = updater;
+        this.sectioner = sectioner;
 
         this.startPlaceId = null;
         this.endLocation = null;
@@ -713,11 +320,10 @@ export class PathfindingMap extends GoogleMap {
 
         this.currentPathfindingResponse = null;
         this.currentSteps = null;
-        // this.currentParkingPath = null;
-        // this.currentFloorPaths = null;
-        // this.selectedFloorPath = null;
         this.currentPath = null;
         this.allPaths = [];
+
+        this.directionsBounds = null;
 
         this.currentStepPolyline = null;
 
@@ -729,50 +335,12 @@ export class PathfindingMap extends GoogleMap {
         this.update();
     }
 
-    // updateDepartmentPathfinding(pathfindingResponse: PathfindingResponse) {
-    //     this.currentPathfindingResponse = pathfindingResponse;
-    //     this.endLocation = pathfindingResponse.parkingLotPath.path[0];
-    //
-    //     // Load new floor overlay
-    //     console.log(pathfindingResponse.floorPaths.length)
-    //
-    //     let floor: FloorPathResponse | null;
-    //     floor = null;
-    //     let graph: PathfindingGraph;
-    //     let previousGraph: PathfindingGraph | null = null;
-    //     for (let i = pathfindingResponse.floorPaths.length - 1 ;i >=0; i--) {
-    //         floor = pathfindingResponse.floorPaths[i];
-    //
-    //         // 4th floor
-    //         if (i==pathfindingResponse.floorPaths.length - 1) {
-    //             graph = new PathfindingGraph(this.map, floor.path, '#CC3300', null, floor, true);
-    //             graph.innerSteps = floor.direction;
-    //             console.log(graph);
-    //
-    //         }
-    //         else {
-    //             graph = new PathfindingGraph(this.map, floor.path, '#CC3300', previousGraph, floor, false);
-    //             graph.innerSteps = floor.direction;
-    //             console.log(graph);
-    //
-    //         }
-    //         previousGraph = graph;
-    //     }
-    //
-    //
-    //     // Now create the parking path and pass in the floor path to trigger after
-    //     this.currentParkingPath = new PathfindingGraph(this.map, pathfindingResponse.parkingLotPath.path, '#CC3300', previousGraph, null , false);
-    //     this.currentParkingPath.innerSteps = pathfindingResponse.parkingLotPath.direction;
-    //     this.currentParkingPath.setupInnerNextButton();
-    //     this.currentParkingPath.showInnerStep(); // start here
-    // }
-
     async update() {
         // Can't go anywhere if a start place and
         // destination dept is not found
         if (!this.startPlaceId || !this.department) return;
 
-        this.currentSteps = [];
+        this.currentSteps = null;
 
         // Get directions within the hospital
         await axios.get(API_ROUTES.PATHFIND + '/path-to-dept/' + this.department.departmentId).then(response => {
@@ -797,8 +365,10 @@ export class PathfindingMap extends GoogleMap {
             },
             destination: this.endLocation,
             travelMode: this.travelMode,
+            unitSystem: google.maps.UnitSystem.IMPERIAL,
         }).then((directions) => {
             this.directionsRenderer.setDirections(directions);
+            this.directionsBounds = directions.routes[0].bounds;
         }).catch(error => {
             console.log(error);
             this.directionsRenderer.setDirections(null);
@@ -807,264 +377,177 @@ export class PathfindingMap extends GoogleMap {
         console.log('im tired');
         console.log(this.currentPathfindingResponse);
 
+        this.currentSteps = {
+            numSteps: 0,
+            sections: [],
+        }
 
-        // Add the result from above into the steps
-        this.directionsRenderer.getDirections()?.routes[0].legs[0].steps.forEach((step) => {
-            this.currentSteps?.push({
-                step: {
+        let idx = 0;
+
+        this.currentSteps?.sections.push({
+            name: 'To the hospital',
+            directions: this.directionsRenderer.getDirections()?.routes[0].legs[0].steps.map(step => {
+                if (this.currentSteps) this.currentSteps.numSteps++;
+                return {
+                    idx: idx++,
                     instructions: step.instructions.split('<div')[0].replace(/<[^>]*>/g, ''),
-                    distance: step.distance?.text || '',
+                    distanceMet: this.imperialToMetric(step.distance?.text || ''),
+                    distanceImp: step.distance?.text || '',
                     time: step.duration?.text || '',
                     icon:
                         step.maneuver.includes('right') ? 'right' :
                             step.maneuver.includes('left') ? 'left' :
                                 'straight',
-                },
-                googleMapData: step,
-                pathFindingData: null,
-            });
+                    googleMapData: step,
+                    pathFindingData: null,
+                }
+            }) || []
         });
 
         this.currentPath?.setVisibility(false);
-        this.allPaths?.forEach((path) => {path.remove()});
+        this.allPaths?.forEach((path) => {
+            path.remove()
+        });
         this.currentStepPolyline?.setMap(null);
 
 
         this.allPaths = [new PathfindingGraph(this.map, this.currentPathfindingResponse.parkingLotPath.path)];
-        // this.allPaths.push();
         this.currentPathfindingResponse.floorPaths.forEach(floor =>
             this.allPaths.push(new PathfindingGraph(this.map, floor.path, floor))
         );
 
         this.setCurrentGraphIdx(0);
+        this.currentSteps?.sections.push({
+            name: 'Parking Lot',
+            directions: this.currentPathfindingResponse.parkingLotPath.path.map((path, i) => {
+                if (this.currentSteps) this.currentSteps.numSteps++;
 
-        // Pushing the directions in the parking lot
-        for (let j=0; j<=this.currentPathfindingResponse.parkingLotPath.path.length - 1; j++) {
+                const nextPath: NodePathResponse | undefined = this.currentPathfindingResponse?.parkingLotPath.path[i + 1];
 
-            let distance: number;
-            // distance is in meter
-            let time: number;
-            const pos1 = this.currentPathfindingResponse.parkingLotPath.path[j];
-            const pos2 = this.currentPathfindingResponse.parkingLotPath.path[j+1];
-
-            if (pos1 && pos2) {
-                distance = google.maps.geometry.spherical.computeDistanceBetween(pos1, pos2);
-
+                // distance is in meter
+                const distance = nextPath ? google.maps.geometry.spherical.computeDistanceBetween(path, nextPath) : 0;
                 // Estimate duration assuming average indoor walking speed (~1.4 meters/sec)
-                time = distance / 1.4;
-            } else {
-                distance = 0;
-                time = 0;
-            }
+                const time = distance / 1.4;
 
-            const direction = this.currentPathfindingResponse.parkingLotPath.direction[j];
+                const direction = this.currentPathfindingResponse?.parkingLotPath.direction[i] || '';
 
-            if (j==0){
-                this.currentSteps?.push({
-                    step: {
-                        instructions: 'PARKING LOT INSTRUCTIONS: '+ direction,
-                        distance: distance.toFixed(2).toString() + ' m',
-                        time: time.toFixed(2).toString() + ' sec',
-                        icon: direction.includes('right') ? 'right' : direction.includes('left') ? 'left' : 'straight',
-                    },
-                    googleMapData: null,
-                    pathFindingData:  {
-                        graphIdx: 0,
-                        points: [
-                            {
-                                lat: pos1.lat,
-                                lng: pos1.lng,
-                            },
-                            {
-                                lat: pos2.lat,
-                                lng: pos2.lng,
-                            },
-                        ],
-                    },
-                });
-                continue;
-            }
-
-            if (j == this.currentPathfindingResponse.parkingLotPath.path.length - 1){
-                this.currentSteps?.push({
-                    step: {
-                        instructions: direction,
-                        distance: '0 m',
-                        time: '0 sec',
-                        icon: direction.includes('right') ? 'right' : direction.includes('left') ? 'left' : 'straight',
-                    },
-                    googleMapData: null,
-                    pathFindingData:  {
-                        graphIdx: 0,
-                        points: [
-                            {
-                                lat: pos1.lat,
-                                lng: pos1.lng,
-                            },
-                        ],
-                    },
-                });
-                continue;
-            }
-
-            this.currentSteps?.push({
-                step: {
+                return {
+                    idx: idx++,
                     instructions: direction,
-                    distance: distance.toFixed(2).toString() + ' m',
+                    distanceMet: distance.toFixed(2).toString() + ' m',
+                    distanceImp: this.metricToImperial(distance.toFixed(2).toString() + ' m'),
                     time: time.toFixed(2).toString() + ' sec',
                     icon: direction.includes('right') ? 'right' : direction.includes('left') ? 'left' : 'straight',
-                },
-                googleMapData: null,
-                pathFindingData:  {
-                    graphIdx: 0,
-                    points: [
-                        {
-                            lat: pos1.lat,
-                            lng: pos1.lng,
-                        },
-                        {
-                            lat: pos2.lat,
-                            lng: pos2.lng,
-                        },
-                    ],
-                },
-            });
-
-        }
-
-        // Pushing the directions in the floor paths
-        for (let i=0; i<this.currentPathfindingResponse.floorPaths.length; i++) {
-            for (let j=0; j<=this.currentPathfindingResponse.floorPaths[i].path.length - 1; j++) {
-
-                let distance: number;
-                // distance is in meter
-                let time: number;
-                const pos1 = this.currentPathfindingResponse.floorPaths[i].path[j];
-                const pos2 = this.currentPathfindingResponse.floorPaths[i].path[j+1];
-
-                if (pos1 && pos2) {
-                    distance = google.maps.geometry.spherical.computeDistanceBetween(pos1, pos2);
-
-                    // Estimate duration assuming average indoor walking speed (~1.4 meters/sec)
-                    time = distance / 1.4;
-                } else {
-                    distance = 0;
-                    time = 0;
-                }
-
-                const direction = this.currentPathfindingResponse.floorPaths[i].direction[j];
-
-                if (j == 0){
-                    this.currentSteps?.push({
-                        step: {
-                            instructions: 'FLOOR ' + this.currentPathfindingResponse.floorPaths[i].floorNum +' INSTRUCTIONS: ' + direction,
-                            distance: distance.toFixed(2).toString() + ' m',
-                            time: time.toFixed(2).toString() + ' sec',
-                            icon: direction.includes('right') ? 'right' : direction.includes('left') ? 'left' : 'straight',
-                        },
-                        googleMapData: null,
-                        pathFindingData: {
-                            graphIdx: i + 1,
-                            points: [
-                                {
-                                    lat: pos1.lat,
-                                    lng: pos1.lng,
-                                },
-                                {
-                                    lat: pos2.lat,
-                                    lng: pos2.lng,
-                                },
-                            ],
-                        },
-                    });
-                    continue;
-                }
-
-
-                if (j == this.currentPathfindingResponse.floorPaths[i].path.length - 1){
-                    this.currentSteps?.push({
-                        step: {
-                            instructions: direction,
-                            distance: '0 m',
-                            time: '0 sec',
-                            icon: direction.includes('right') ? 'right' : direction.includes('left') ? 'left' : 'straight',
-                        },
-                        googleMapData: null,
-                        pathFindingData: {
-                            graphIdx: i + 1,
-                            points: [
-                                {
-                                    lat: pos1.lat,
-                                    lng: pos1.lng,
-                                },
-                            ],
-                        },
-                    });
-                    continue;
-                }
-
-                this.currentSteps?.push({
-                    step: {
-                        instructions: direction,
-                        distance: distance.toFixed(2).toString() + ' m',
-                        time: time.toFixed(2).toString() + ' sec',
-                        icon: direction.includes('right') ? 'right' : direction.includes('left') ? 'left' : 'straight',
-                    },
                     googleMapData: null,
                     pathFindingData: {
-                        graphIdx: i + 1,
-                        points: [
+                        graphIdx: 0,
+                        points: nextPath ? [
                             {
-                                lat: pos1.lat,
-                                lng: pos1.lng,
+                                lat: path.lat,
+                                lng: path.lng,
                             },
                             {
-                                lat: pos2.lat,
-                                lng: pos2.lng,
+                                lat: nextPath.lat,
+                                lng: nextPath.lng,
+                            },
+                        ] : [
+                            {
+                                lat: path.lat,
+                                lng: path.lng,
                             },
                         ],
                     },
-                });
-
-            }
-        }
-
-        // this.currentPath.setVisibility(true);
-
-
-        // // Set the parking path to be visible
-        // this.currentParkingPath?.setVisibility(false);
-        // this.currentParkingPath = new PathfindingGraph(this.map, this.currentPathfindingResponse.parkingLotPath.path);
-        // this.currentParkingPath.setVisibility(true);
-        //
-        // // Set the first floor map to be visible
-        // this.currentFloorPaths?.forEach(path => {
-        //     path.setVisibility(false);
-        // });
-        // this.currentFloorPaths = this.currentPathfindingResponse.floorPaths.map(floor =>
-        //     new PathfindingGraph(this.map, floor.path, floor)
-        // );
-        // this.currentFloorPaths[0].setVisibility(true);
-
-        // Update the frontend directions
-        this.updater({
-            floors: this.currentPathfindingResponse.floorPaths.map(floor => floor.floorNum),
-            directions: this.currentSteps.map(step => step.step),
-            startLocation: this.currentPathfindingResponse.parkingLotPath.path[0],
-            endLocation: this.endLocation,
-            path: this.currentPathfindingResponse.parkingLotPath.path,
+                }
+            }),
         });
+
+
+        this.currentSteps.sections = this.currentSteps.sections.concat(
+            this.currentPathfindingResponse.floorPaths.map((floor, j) => {
+                return {
+                    name: `Floor ${floor.floorNum}`,
+                    directions: floor.path.map((path, i) => {
+                        if (this.currentSteps) this.currentSteps.numSteps++;
+
+                        const nextPath: NodePathResponse | undefined = this.currentPathfindingResponse?.floorPaths[j].path[i + 1];
+
+                        // distance is in meter
+                        const distance = nextPath ? google.maps.geometry.spherical.computeDistanceBetween(path, nextPath) : 0;
+                        // Estimate duration assuming average indoor walking speed (~1.4 meters/sec)
+                        const time = distance / 1.4;
+
+                        const direction = this.currentPathfindingResponse?.floorPaths[j].direction[i] || '';
+
+                        return {
+                            idx: idx++,
+                            instructions: direction,
+                            distanceMet: distance.toFixed(2).toString() + ' m',
+                            distanceImp: this.metricToImperial(distance.toFixed(2).toString() + ' m'),
+                            time: time.toFixed(2).toString() + ' sec',
+                            icon: direction.includes('right') ? 'right' : direction.includes('left') ? 'left' : 'straight',
+                            googleMapData: null,
+                            pathFindingData: {
+                                graphIdx: j + 1,
+                                points: nextPath ? [
+                                    {
+                                        lat: path.lat,
+                                        lng: path.lng,
+                                    },
+                                    {
+                                        lat: nextPath.lat,
+                                        lng: nextPath.lng,
+                                    },
+                                ] : [
+                                    {
+                                        lat: path.lat,
+                                        lng: path.lng,
+                                    },
+                                ],
+                            },
+                        }
+                    })
+                }
+            })
+        );
+
+        console.log(this.currentSteps);
+        this.sectioner(-1);
+        this.updater(this.currentSteps, true);
     }
 
     async setCurrentStepIdx(stepIdx: number, tts: boolean) {
         console.log('setCurrentStepIdx', stepIdx, tts);
 
+        if (stepIdx === -1) {
+            this.setCurrentGraphIdx(0);
+            if (this.directionsBounds) this.map.fitBounds(this.directionsBounds);
+            this.currentStepPolyline?.setMap(null);
+            this.currentStepPolyline = null;
+        }
+
         if (!this.currentSteps) return;
-        const step = this.currentSteps[stepIdx];
+
+        let step: DirectionsStep | undefined;
+
+        let sectionIdx = -1;
+
+        this.currentSteps.sections.forEach((section, i) => {
+            const candidate = section.directions.find((direction) => {
+                return direction.idx === stepIdx;
+            });
+
+            if (candidate) {
+                step = candidate;
+                this.sectioner(i);
+                sectionIdx = i;
+            }
+        });
+
+        console.log(step);
 
         if (tts) {
             console.log('kajbfj');
-            const utter = new SpeechSynthesisUtterance(step.step.instructions);
+            const utter = new SpeechSynthesisUtterance(step?.instructions || '');
             utter.lang = 'en-US';
             speechSynthesis.cancel();
             speechSynthesis.speak(utter);
@@ -1072,7 +555,7 @@ export class PathfindingMap extends GoogleMap {
 
         const bounds = new google.maps.LatLngBounds();
 
-        if (step.googleMapData?.polyline) {
+        if (step?.googleMapData?.polyline) {
             this.setCurrentGraphIdx(0);
             this.currentStepPolyline?.setMap(null);
             const path = google.maps.geometry.encoding.decodePath(step.googleMapData.polyline.points);
@@ -1080,8 +563,8 @@ export class PathfindingMap extends GoogleMap {
                 map: this.map,
                 path: path,
                 strokeWeight: 10,
-                strokeColor: '#f04',
-                strokeOpacity: 0.5,
+                strokeColor: '#0f4',
+                strokeOpacity: 0.9,
                 zIndex: 50,
             });
             path.forEach(point => {
@@ -1091,15 +574,15 @@ export class PathfindingMap extends GoogleMap {
             this.map.fitBounds(bounds);
             this.map.setZoom((this.map.getZoom() || 10) - 1);
 
-
-            // this.map.panTo(step.googleMapData.start_location);
-            // this.map.setZoom(17);
         }
 
-        if (step.pathFindingData) {
-            step.pathFindingData.points.forEach(point => {
-                bounds.extend(point);
-            });
+        if (step?.pathFindingData) {
+            this.currentSteps.sections[sectionIdx].directions.forEach((direction) => {
+                direction.pathFindingData?.points.forEach(point => {
+                    bounds.extend(point);
+                });
+            })
+
             this.map.fitBounds(bounds);
             this.map.setZoom((this.map.getZoom() || 10) - 1);
 
@@ -1109,19 +592,15 @@ export class PathfindingMap extends GoogleMap {
                 map: this.map,
                 path: step.pathFindingData.points,
                 strokeWeight: 10,
-                strokeColor: '#f04',
-                strokeOpacity: 0.5,
+                strokeColor: '#0f4',
+                strokeOpacity: 0.9,
                 zIndex: 50,
             });
 
-            // await new Promise(f => setTimeout(f, 100));
-
-            // this.map.panTo(step.pathFindingData.points[0]);
-            // this.map.setZoom(21);
         }
     }
 
-    setCurrentGraphIdx(idx: number) {
+    private setCurrentGraphIdx(idx: number) {
         this.currentPath?.setVisibility(false);
         this.currentPath = this.allPaths[idx];
         this.currentPath.setVisibility(true);
@@ -1145,7 +624,6 @@ export class PathfindingMap extends GoogleMap {
                 break;
         }
         this.update();
-        // this.route();
     }
 
     recenter(lat: number, lng: number, zoom: number) {
@@ -1153,9 +631,99 @@ export class PathfindingMap extends GoogleMap {
         this.map.setZoom(zoom);
     }
 
+    metricToImperial(distanceString: string): string {
+        if (distanceString.includes('km')) {
 
+            const value = parseFloat(distanceString);
+            const miles = value * 0.621371;
+            return parseFloat(miles.toFixed(2)) + ' mi';
+
+
+        } else if (distanceString.includes('m')) {
+
+            const value = parseFloat(distanceString);
+            const feet = value * 3.28084;
+            return parseFloat(feet.toFixed(0)) + ' ft';
+
+        }
+        return distanceString;
+    }
+
+    imperialToMetric(distanceString: string): string {
+        if (distanceString.includes('mi')) {
+            const value = parseFloat(distanceString);
+            const meters = value / 0.621371;
+            return parseFloat(meters.toFixed(2)) + ' km';
+
+        } else if (distanceString.includes('ft')) {
+
+            const value = parseFloat(distanceString);
+            const meters = value / 3.28084;
+            return parseFloat(meters.toFixed(0)) + ' m';
+        }
+        return distanceString;
+    }
+
+
+    convertUnits(unitPreference: string) {
+
+        const convert = (distanceString: string): string => {
+
+            if (unitPreference === 'Imperial') {
+                if (distanceString.includes('km')) {
+
+                    const value = parseFloat(distanceString);
+                    const miles = value * 0.621371;
+                    return parseFloat(miles.toFixed(2)) + ' mi';
+
+
+                } else if (distanceString.includes('m')) {
+
+                    const value = parseFloat(distanceString);
+                    const feet = value * 3.28084;
+                    return parseFloat(feet.toFixed(0)) + ' ft';
+
+                }
+
+            } else {
+                if (distanceString.includes('mi')) {
+                    const value = parseFloat(distanceString);
+                    const meters = value / 0.621371;
+                    return parseFloat(meters.toFixed(2)) + ' km';
+
+                } else if (distanceString.includes('ft')) {
+
+                    const value = parseFloat(distanceString);
+                    const meters = value / 3.28084;
+                    return parseFloat(meters.toFixed(0)) + ' m';
+                }
+            }
+            return distanceString;
+
+
+        }
+        this.currentSteps?.sections.forEach((section) => {
+
+            section.directions.forEach(step => {
+                step.distanceMet = convert(step.distanceMet);
+            });
+        });
+
+        console.log(this.currentSteps);
+
+        this.updater(this.currentSteps, false);
+    }
 }
 
+type VisualNode = {
+    data: EditorNode;
+    marker: google.maps.Marker;
+}
+
+type VisualEdge = {
+    data: EditorEdges;
+    line: google.maps.Polyline;
+}
 
 
 class EditorMapGraph {
@@ -1167,13 +735,25 @@ class EditorMapGraph {
     private readonly nodeUpdater: (selected: EditorNode | null) => void;
     private readonly edgeUpdater: (selected: EditorEdges | null) => void;
 
+
+    private readonly undoStack: {
+        undo: (() => void),
+        redo: (() => void),
+    }[][];
+    private readonly redoStack: {
+        undo: (() => void),
+        redo: (() => void),
+    }[][];
+    private undoing: boolean;
+    private lock: boolean;
+
     private selectedNode: EditorNode | null;
     private selectedEdge: EditorEdges | null;
 
     private readonly floorMap: google.maps.GroundOverlay | null;
 
-    private nodes: {data: EditorNode, marker: google.maps.Marker}[];
-    private edges: {data: EditorEdges, line: google.maps.Polyline}[];
+    private nodes: VisualNode[];
+    private edges: VisualEdge[];
 
     private newEdge: {startNodeId: number, line: google.maps.Polyline} | null;
 
@@ -1188,6 +768,11 @@ class EditorMapGraph {
 
         this.nodeUpdater = nodeUpdater;
         this.edgeUpdater = edgeUpdater;
+
+        this.undoStack = [];
+        this.redoStack = [];
+        this.undoing = false;
+        this.lock = false;
 
         this.nodes = [];
         this.edges = [];
@@ -1287,20 +872,20 @@ class EditorMapGraph {
 
 
             case 'NORMAL':
-                return '#AAAAAA';
+                return '#c5facf';
 
         }
-        return '#AAAAAA';
+        return '#c5facf';
     }
 
     private getNodeStrokeColor(type: number | null): string {
 
         if (!type){
 
-            return '#FFFFFF';
+            return '#c556f5';
         } else {
 
-            return '#7038c9';
+            return '#0a010a';
         }
 
     }
@@ -1316,11 +901,11 @@ class EditorMapGraph {
             },
             icon: {
                 path: google.maps.SymbolPath.CIRCLE,
-                scale: 5,
+                scale: 8,
                 fillOpacity: 1,
                 fillColor: this.getNodeColor(node.type),
                 strokeColor: this.getNodeStrokeColor(node.connectedNodeId),
-                strokeWeight: 2
+                strokeWeight: 3
             },
             draggable: true,
             zIndex: 20,
@@ -1331,26 +916,7 @@ class EditorMapGraph {
         // add edge state, finalize this edge
         marker.addListener("click", (e: google.maps.MapMouseEvent) => {
             this.edgeUpdater(null);
-            this.nodeUpdater(node);
-            // const rawPosition = e.latLng;
-            // if (!rawPosition) return;
-            //
-            // const infowindow = new google.maps.InfoWindow({
-            //     content: `
-            //             <p>ID: ${node.nodeId}</p>
-            //             <p>Name: ${node.name}</p>
-            //             <p>Type: ${node.type}</p>
-            //             <p>Lat: ${node.lat}</p>
-            //             <p>Lng: ${node.lng}</p>
-            //             <p>GID: ${node.graphId}</p>
-            //             <p>CID: ${node.connectedNodeId}</p>
-            //         `
-            // });
-            // infowindow.setPosition({
-            //     lat: rawPosition.toJSON().lat + 0.00001 * ((this.map.getZoom() || 1) / 7),
-            //     lng: rawPosition.toJSON().lng,
-            // });
-            // infowindow.open(this.map);
+            this.nodeUpdater(JSON.parse(JSON.stringify(node)) as EditorNode);
         });
 
         // If right clicked in default mode,
@@ -1405,6 +971,7 @@ class EditorMapGraph {
                             connectedNodeId: null,
                         });
                         this.newEdge.line.setMap(null);
+                        this.lock = true;
                         this.addEdge({
                             edgeId: -1,
                             name: '',
@@ -1412,6 +979,7 @@ class EditorMapGraph {
                             endNodeId: newNode.nodeId,
                             graphId: this.editorGraph.graphId,
                         });
+                        this.lock = false;
                         this.newEdge = null;
                         this.editingState = 'DEFAULT';
                     }
@@ -1437,8 +1005,21 @@ class EditorMapGraph {
 
             console.log('delete node');
             if (this.editingState === 'DEFAULT') {
+                this.lock = true;
+                this.undoStack.push([]);
                 this.deleteNode(node.nodeId);
+                this.lock = false;
             }
+        });
+
+        marker.addListener('dragend', (e: google.maps.MapMouseEvent) => {
+            const rawPosition = e.latLng;
+            if (!rawPosition) return;
+            const newNode = JSON.parse(JSON.stringify(node)) as EditorNode;
+            newNode.lat = rawPosition.toJSON().lat;
+            newNode.lng = rawPosition.toJSON().lng;
+
+            this.updateNode(newNode);
         });
 
         this.nodes.push({
@@ -1461,7 +1042,8 @@ class EditorMapGraph {
                 startNode.marker.getPosition() || {lat: 0, lng: 0},
                 endNode.marker.getPosition() || {lat: 0, lng: 0},
             ],
-            strokeColor: '#0cf',
+            strokeColor: '#00c',
+            strokeWeight: 5,
         });
         line.setMap(this.map);
 
@@ -1481,17 +1063,6 @@ class EditorMapGraph {
                 ]);
             }
         });
-        // Once the drag has ended, update
-        // the node position in the
-        // encapsulator
-        startNode.marker.addListener('dragend', (e: google.maps.MapMouseEvent) => {
-            if (this.editingState === 'DEFAULT') {
-                const rawPosition = e.latLng;
-                if (!rawPosition) return;
-                startNode.data.lat = rawPosition.toJSON().lat;
-                startNode.data.lng = rawPosition.toJSON().lng;
-            }
-        });
 
 
         // If start node dragged, update
@@ -1509,21 +1080,6 @@ class EditorMapGraph {
                 ]);
             }
         });
-        // Once the drag has ended, update
-        // the node position in the
-        // encapsulator
-        endNode.marker.addListener('dragend', (e: google.maps.MapMouseEvent) => {
-            if (this.editingState === 'DEFAULT') {
-                const rawPosition = e.latLng;
-                if (!rawPosition) return;
-                endNode.data.lat = rawPosition.toJSON().lat;
-                endNode.data.lng = rawPosition.toJSON().lng;
-                console.log({
-                    lat: rawPosition.toJSON().lat,
-                    lng: rawPosition.toJSON().lng,
-                })
-            }
-        });
 
         // If line is double-clicked delete it
         line.addListener('dblclick', (e: google.maps.MapMouseEvent) => {
@@ -1537,7 +1093,7 @@ class EditorMapGraph {
 
         line.addListener('click', (e: google.maps.MapMouseEvent) => {
             this.nodeUpdater(null);
-            this.edgeUpdater(edge);
+            this.edgeUpdater(JSON.parse(JSON.stringify(edge)) as EditorEdges);
         })
 
         this.edges.push({
@@ -1547,59 +1103,118 @@ class EditorMapGraph {
     }
 
     addNode(node: EditorNode) {
+        console.log('addNode');
 
         // Give the node an ID that doesn't exist yet
         // Needs improving for efficiency
         let id = 0;
-        for (; id < 10000; id++) {
-            let idExists = false;
-            this.editorEncapsulator.editorGraphs.forEach(graph => {
-                if (graph.Nodes.find(cnode =>
-                    cnode.nodeId === id
-                )) idExists = true;
-            });
-            if (!idExists) {
-                break;
+        if (node.nodeId >= 0) {
+            id = node.nodeId;
+        }
+        else {
+            for (; id < 10000; id++) {
+                let idExists = false;
+                this.editorEncapsulator.editorGraphs.forEach(graph => {
+                    if (graph.Nodes.find(cnode =>
+                        cnode.nodeId === id
+                    )) idExists = true;
+                });
+                if (!idExists) {
+                    break;
+                }
             }
         }
+
 
         node.nodeId = id;
         console.log(id);
         this.editorGraph.Nodes.push(node);
         this.addNodeLocal(node);
 
+        const nodeCopy = JSON.parse(JSON.stringify(node)) as EditorNode;
+
+        if (!this.undoing) {
+            if (!this.lock) {
+                this.undoStack.push([]);
+            }
+            this.undoStack.at(-1)?.push({
+                undo: () => {
+                    this.deleteNode(node.nodeId);
+                },
+                redo: () => {
+                    this.addNode(nodeCopy);
+                },
+            });
+            console.log(this.undoStack);
+            while (this.redoStack.length > 0) {
+                this.redoStack.pop();
+            }
+        }
+
+
         return node;
     }
 
     addEdge(edge: EditorEdges) {
+        console.log('addEdge');
 
         // Give the edge an ID that doesn't exist yet
         // Needs improving for efficiency
         let id = 0;
-        for (; id < 10000; id++) {
-            let idExists = false;
-            this.editorEncapsulator.editorGraphs.forEach(graph => {
-                if (graph.Edges.find(cedge =>
-                    cedge.edgeId === id
-                )) idExists = true;
-            });
-            if (!idExists) {
-                break;
+        if (edge.edgeId >= 0) {
+            id = edge.edgeId;
+        }
+        else {
+            for (; id < 10000; id++) {
+                let idExists = false;
+                this.editorEncapsulator.editorGraphs.forEach(graph => {
+                    if (graph.Edges.find(cedge =>
+                        cedge.edgeId === id
+                    )) idExists = true;
+                });
+                if (!idExists) {
+                    break;
+                }
             }
         }
+
 
         edge.edgeId = id;
         console.log(id);
         this.editorGraph.Edges.push(edge);
         this.addEdgeLocal(edge);
 
+        const edgeCopy = JSON.parse(JSON.stringify(edge)) as EditorEdges;
+
+        if (!this.undoing) {
+            if (!this.lock) {
+                this.undoStack.push([]);
+            }
+            this.undoStack.at(-1)?.push({
+                undo: () => {
+                    this.deleteEdge(edge.edgeId);
+                },
+                redo: () => {
+                    this.addEdge(edgeCopy);
+                },
+            });
+            console.log(this.undoStack);
+            while (this.redoStack.length > 0) {
+                this.redoStack.pop();
+            }
+        }
+
         return edge;
     }
 
     deleteNode(nodeId: number) {
+        console.log('deleteNode');
+
         const nodeIndexLocal = this.nodes.findIndex(cnode =>
             cnode.data.nodeId === nodeId
         );
+
+        const nodeCopy = JSON.parse(JSON.stringify(this.nodes[nodeIndexLocal].data)) as EditorNode;
 
         this.nodes[nodeIndexLocal].marker.setMap(null);
         this.nodes.splice(nodeIndexLocal, 1);
@@ -1618,13 +1233,35 @@ class EditorMapGraph {
         });
         edgesIdsToDelete.forEach(edgeId => {
             this.deleteEdge(edgeId);
-        })
+        });
+
+        if (!this.undoing) {
+            if (!this.lock) {
+                this.undoStack.push([]);
+            }
+            this.undoStack.at(-1)?.push({
+                undo: () => {
+                    this.addNode(nodeCopy);
+                },
+                redo: () => {
+                    this.deleteNode(nodeId);
+                },
+            });
+            console.log(this.undoStack);
+            while (this.redoStack.length > 0) {
+                this.redoStack.pop();
+            }
+        }
     }
 
     deleteEdge(edgeId: number) {
+        console.log('deleteEdge');
+
         const edgeIndexLocal = this.edges.findIndex(cedge =>
             cedge.data.edgeId === edgeId
         );
+
+        const edgeCopy = JSON.parse(JSON.stringify(this.edges[edgeIndexLocal].data)) as EditorEdges;
 
         this.edges[edgeIndexLocal].line.setMap(null);
 
@@ -1635,6 +1272,137 @@ class EditorMapGraph {
         );
 
         this.editorGraph.Edges.splice(edgeIndexEncapsulator, 1);
+
+        if (!this.undoing) {
+            if (!this.lock) {
+                this.undoStack.push([]);
+            }
+            this.undoStack.at(-1)?.push({
+                undo: () => {
+                    this.addEdge(edgeCopy);
+                },
+                redo: () => {
+                    this.deleteEdge(edgeId);
+                }
+            });
+            console.log(this.undoStack);
+            while (this.redoStack.length > 0) {
+                this.redoStack.pop();
+            }
+        }
+    }
+
+    updateNode(nodeCopy: EditorNode) {
+        console.log('updateNode');
+
+        // console.log(nodeCopy);
+
+        const nodeEncapsulator = this.editorGraph.Nodes.find(cnode => cnode.nodeId === nodeCopy.nodeId);
+        const nodeVisual = this.nodes.find(cnode => cnode.data.nodeId === nodeCopy.nodeId);
+
+
+
+        if (nodeEncapsulator && nodeVisual) {
+            const old = JSON.parse(JSON.stringify(nodeEncapsulator)) as EditorNode;
+            // console.log(node.data);
+            const temp = JSON.parse(JSON.stringify(nodeCopy)) as EditorNode;
+            nodeVisual.data = temp;
+            nodeEncapsulator.nodeId = temp.nodeId;
+            nodeEncapsulator.connectedNodeId = temp.connectedNodeId;
+            nodeEncapsulator.lat = temp.lat;
+            nodeEncapsulator.lng = temp.lng;
+            nodeEncapsulator.type = temp.type;
+            nodeEncapsulator.name = temp.name;
+            nodeEncapsulator.graphId = temp.graphId;
+            // console.log(node.data);
+            const icon = nodeVisual.marker.getIcon() as google.maps.Symbol;
+            icon.fillColor = this.getNodeColor(temp.type);
+            icon.strokeColor = this.getNodeStrokeColor(temp.connectedNodeId);
+            nodeVisual.marker.setIcon(icon);
+
+            nodeVisual.marker.setPosition({
+                lat: temp.lat,
+                lng: temp.lng,
+            })
+
+            this.edges.forEach(edge => {
+                if (edge.data.startNodeId === temp.nodeId) {
+                    edge.line.setPath([
+                        {
+                            lat: temp.lat,
+                            lng: temp.lng,
+                        },
+                        edge.line.getPath().getAt(1),
+                    ]);
+                }
+                if (edge.data.endNodeId === temp.nodeId) {
+                    edge.line.setPath([
+                        edge.line.getPath().getAt(0),
+                        {
+                            lat: temp.lat,
+                            lng: temp.lng,
+                        },
+                    ]);
+                }
+            })
+
+            const tempCopy = JSON.parse(JSON.stringify(temp)) as EditorNode;
+
+            if (!this.undoing) {
+                if (!this.lock) {
+                    this.undoStack.push([]);
+                }
+                this.undoStack.at(-1)?.push({
+                    undo: () => {
+                        this.updateNode(old);
+                    },
+                    redo: () => {
+                        this.updateNode(tempCopy);
+                    }
+                });
+                console.log(this.undoStack);
+                while (this.redoStack.length > 0) {
+                    this.redoStack.pop();
+                }
+            }
+        }
+    }
+
+    updateEdge(edgeCopy: EditorEdges) {
+        console.log('updateEdge');
+        const edgeEncapsulator = this.editorGraph.Edges.find(cedge => cedge.edgeId === edgeCopy.edgeId);
+        const edgeVisual = this.edges.find(cedge => cedge.data.edgeId === edgeCopy.edgeId);
+
+        if (edgeEncapsulator && edgeVisual) {
+            const old = JSON.parse(JSON.stringify(edgeEncapsulator)) as EditorEdges;
+            const temp = JSON.parse(JSON.stringify(edgeCopy)) as EditorEdges;
+            edgeVisual.data = temp;
+            edgeEncapsulator.edgeId = temp.edgeId;
+            edgeEncapsulator.graphId = temp.graphId;
+            edgeEncapsulator.name = temp.name;
+            edgeEncapsulator.startNodeId = temp.startNodeId;
+            edgeEncapsulator.endNodeId = temp.endNodeId;
+
+            const tempCopy = JSON.parse(JSON.stringify(temp)) as EditorEdges;
+
+            if (!this.undoing) {
+                if (!this.lock) {
+                    this.undoStack.push([]);
+                }
+                this.undoStack.at(-1)?.push({
+                    undo: () => {
+                        this.updateEdge(old);
+                    },
+                    redo: () => {
+                        this.updateEdge(tempCopy);
+                    },
+                });
+                console.log(this.undoStack);
+                while (this.redoStack.length > 0) {
+                    this.redoStack.pop();
+                }
+            }
+        }
     }
 
     setVisibility(visibility: boolean) {
@@ -1661,6 +1429,42 @@ class EditorMapGraph {
             }
         }
         this.visible = visibility;
+    }
+
+    undo() {
+        this.undoing = true;
+        const steps = this.undoStack.pop();
+        if (steps) {
+            const redo = [];
+            while (steps.length > 0) {
+                const fns = steps.pop();
+                if (fns) {
+                    fns.undo();
+                    redo.push(fns);
+                }
+            }
+            this.redoStack.push(redo);
+        }
+        this.undoing = false;
+    }
+
+    redo() {
+        this.undoing = true;
+        const steps = this.redoStack.pop();
+        if (steps) {
+            const undo = [];
+            while (steps.length > 0) {
+                const fns = steps.pop();
+                if (fns) {
+                    fns.redo();
+                    undo.push(fns);
+                }
+            }
+            this.undoStack.push(undo);
+        }
+
+
+        this.undoing = false;
     }
 }
 
@@ -1702,21 +1506,10 @@ export class EditorMap extends GoogleMap {
         console.log('editor map constructosdfsdfsdr');
         this.graphs = new Map();
 
-        // new google.maps.GroundOverlay(mcf2, {
-        //     north: 42.33694,
-        //     south: 42.33450,
-        //     east: -71.10385,
-        //     west: -71.10915,
-        // }, {
-        //     map: this.map,
-        // });
-        //
+
         this.map.addListener('click', (e: google.maps.MapMouseEvent) => {
             console.log(e.latLng?.toJSON());
         });
-
-        this.map.setZoom(20);
-        this.map.panTo({lat: 42.33694, lng: -71.10895});
     }
 
     changeGraph(graphId: number) {
@@ -1749,16 +1542,30 @@ export class EditorMap extends GoogleMap {
             }
             bounds.extend({lat: node.lat, lng: node.lng});
         });
+        // Account for height of navbar
+        const ne = bounds.getNorthEast();
+        const sw = bounds.getSouthWest();
+        const height = ne.lat() - sw.lat();
+        bounds.extend({
+            lat: sw.lat() - (height * 0.1),
+            lng: sw.lng(),
+        });
         this.map.fitBounds(bounds);
-        this.map.setZoom((this.map.getZoom() || 10) - 1);
+    }
 
-        // if (this.currentGraphId?.toString() && this.editorEncapsulator) {
-        //     const node = this.editorEncapsulator.editorGraphs.find(graph => graph.graphId === this.currentGraphId)?.Nodes[0];
-        //
-        //     if (node) {
-        //         this.map.setCenter({lat: node.lat, lng: node.lng});
-        //         this.map.setZoom(20);
-        //     }
-        // }
+    updateNode(node: EditorNode) {
+        this.currentGraph?.updateNode(node);
+    }
+
+    updateEdge(edge: EditorEdges) {
+        this.currentGraph?.updateEdge(edge);
+    }
+
+    undo() {
+        this.currentGraph?.undo();
+    }
+
+    redo() {
+        this.currentGraph?.redo();
     }
 }

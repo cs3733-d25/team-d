@@ -8,7 +8,6 @@ import axios from "axios";
 import ReturnTranslatorRequest from "@/components/ServiceRequest/TranslatorRequest/ReturnTranslatorRequest.tsx";
 import {ScrollArea} from "@/components/ui/scrollarea.tsx";
 import SubmissionReqPopup from "@/components/SubmissionReqPopup.tsx";
-import ReturnSanitationRequest from "@/components/ServiceRequest/SanitationRequest/ReturnSanitationRequest.tsx";
 import {Department} from "@/routes/Directions.tsx";
 import {Employee} from "@/routes/AllServiceRequests.tsx";
 

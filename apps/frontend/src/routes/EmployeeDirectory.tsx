@@ -24,14 +24,14 @@ export default function ShowAllEmployees() {
 
 
     useEffect(() => {
-       const fetchData = async () => {
+        const fetchData = async () => {
             try {
                 const response = await axios.get('/api/employee'); //the api
                 setEmployeeData(response.data);
                 setSelectedEmployee(response.data[0]); // default selected to first employee
             } catch (error) {
                 console.error('Error fetching employees', error);
-           }
+            }
         };
         fetchData();
     }, []);

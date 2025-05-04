@@ -8,7 +8,6 @@ import {API_ROUTES} from "common/src/constants.ts";
 import axios from "axios";
 import ReturnSecurityRequest from "@/components/ServiceRequest/SecurityRequest/ReturnSecurityRequest.tsx";
 import SubmissionReqPopup from "@/components/SubmissionReqPopup.tsx";
-import ReturnSanitationRequest from "@/components/ServiceRequest/SanitationRequest/ReturnSanitationRequest.tsx";
 import {Department} from "@/routes/Directions.tsx";
 import {Employee} from "@/routes/AllServiceRequests.tsx";
 

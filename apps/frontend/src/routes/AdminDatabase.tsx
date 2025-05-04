@@ -33,7 +33,6 @@ const AdminDatabase: React.FC = () => {
     const [loading, setLoading] = React.useState(false); // true means it needs to reload
     const [selectedHospital, setSelectedHospital] = useState<0 | 1 | 2 | 3 | 4>(4);
 
-
     //getting department data for display
     const getDepartments = async() => {
         try{
@@ -63,31 +62,31 @@ const AdminDatabase: React.FC = () => {
 
                 {/* Hospital selection buttons */}
                 <Button
-                    className={selectedHospital === 0 ? "bg-blue-500 text-white" : "bg-gray-200"}
+                    className={selectedHospital === 0 ? "bg-blue-900 text-white" : "bg-gray-200 text-gray-800 hover:text-white"}
                     onClick={() => setSelectedHospital(0)}
                 >
                     Chestnut Hill
                 </Button>
                 <Button
-                    className={selectedHospital === 1 ? "bg-blue-500 text-white" : "bg-gray-200"}
+                    className={selectedHospital === 1 ? "bg-blue-900 text-white" : "bg-gray-200 text-gray-800 hover:text-white"}
                     onClick={() => setSelectedHospital(1)}
                 >
                     Patriot Place
                 </Button>
                 <Button
-                    className={selectedHospital === 2 ? "bg-blue-500 text-white" : "bg-gray-200"}
+                    className={selectedHospital === 2 ? "bg-blue-900 text-white" : "bg-gray-200 text-gray-800 hover:text-white"}
                     onClick={() => setSelectedHospital(2)}
                 >
                     Faulkner
                 </Button>
                 <Button
-                    className={selectedHospital === 3 ? "bg-blue-500 text-white" : "bg-gray-200"}
+                    className={selectedHospital === 3 ? "bg-blue-900 text-white" : "bg-gray-200 text-gray-800 hover:text-white"}
                     onClick={() => setSelectedHospital(3)}
                 >
                     Main Campus
                 </Button>
                 <Button
-                    className={selectedHospital === 4 ? "bg-blue-500 text-white" : "bg-gray-200"}
+                    className={selectedHospital === 4 ? "bg-blue-900 text-white" : "bg-gray-200 text-gray-800 hover:text-white"}
                     onClick={() => setSelectedHospital(4)}
                 >
                     All
@@ -107,24 +106,24 @@ const AdminDatabase: React.FC = () => {
             </div>
 
             {/* Data table (headers only for now) */}
-            <Table>
-                <TableHeader>
-                    <TableRow>
-                        <TableHead className="px-4 py-2">Department ID</TableHead>
-                        <TableHead className="px-4 py-2">Name</TableHead>
-                        <TableHead className="px-4 py-2">Floor</TableHead>
-                        <TableHead className="px-4 py-2">Room</TableHead>
-                        <TableHead className="px-4 py-2">Building</TableHead>
+            <Table className="border rounded-md">
+                <TableHeader className="bg-blue-900 rounded-md">
+                    <TableRow >
+                        <TableHead className="px-4 py-2 text-white w-40 text-center">Department ID</TableHead>
+                        <TableHead className="px-4 py-2 text-white w-175 text-left">Name</TableHead>
+                        <TableHead className="px-4 py-2 text-white w-40 text-center">Floor</TableHead>
+                        <TableHead className="px-4 py-2 text-white w-40 text-center">Room</TableHead>
+                        <TableHead className="px-4 py-2 text-white w-40 text-center">Building</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
                     {departments.map((department,i) => (
                         <TableRow key={i}>
-                            <TableCell>{department.departmentId}</TableCell>
-                            <TableCell>{department.name}</TableCell>
-                            <TableCell>{department.floorNum}</TableCell>
-                            <TableCell>{department.room}</TableCell>
-                            <TableCell>{department.Building.name}</TableCell>
+                            <TableCell className="text-center">{department.departmentId}</TableCell>
+                            <TableCell className="text-left">{department.name}</TableCell>
+                            <TableCell className="text-center">{department.floorNum}</TableCell>
+                            <TableCell className="text-center">{department.room}</TableCell>
+                            <TableCell className="text-center">{department.Building.name}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>

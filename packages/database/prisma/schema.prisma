@@ -29,6 +29,33 @@ model Employee {
   userType                String
   serviceRequestsAssigned ServiceRequest[] @relation(name: "assignedTo")
   serviceRequestsMade     ServiceRequest[] @relation(name: "requestedBy")
+  dateOfBirth             DateTime
+  phoneNumber             String
+  pronoun                 String
+  poster                  Post[]
+  replier                 Reply[]
+}
+
+model Post {
+  postId        Int           @id @default(autoincrement())
+  title         String
+  content       String
+  createdAt     DateTime      @default(now())
+  posterId      Int?
+  poster        Employee?     @relation(fields: [posterId], references: [employeeId])
+  email         String?
+  replies       Reply[]
+}
+
+model Reply {
+  replyId       Int           @id @default(autoincrement())
+  content       String
+  createdAt     DateTime      @default(now())
+  replierId     Int?
+  replier       Employee?     @relation(fields: [replierId], references: [employeeId])
+  email         String?
+  postId        Int
+  post          Post          @relation(fields: [postId], references: [postId], onDelete: Cascade)
 }
 
 //**
@@ -184,7 +211,7 @@ model Graph {
   graphType    GraphType
   FloorGraph   FloorGraph?
   ParkingGraph ParkingGraph?
-  graphName String
+  graphName    String
 
   Nodes Node[]
   Edges Edge[]
@@ -201,7 +228,7 @@ model FloorGraph {
   imageBoundsSouth Float
   imageBoundsEast  Float
   imageBoundsWest  Float
-  imageRotation Float
+  imageRotation    Float
 
   buildingId Int
   Building   Building @relation(fields: [buildingId], references: [buildingId])

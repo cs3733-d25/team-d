@@ -196,11 +196,15 @@ interface TechCitationPageProps {
 
 const TechCitationPage: React.FC<TechCitationPageProps> = ({ technologies }) => {
     return (
-        <div className="bg-[#F1F1F1] min-h-screen py-8 px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl font-bold text-[#012D5A] mb-6">Technologies Used</h2>
+        <div className="pt-4 bg-[#F1F1F1] min-h-screen">
+            <h2 className="text-3xl bg-[#012D5A] w-full py-4 font-bold text-white text-center">
+                Technologies Used
+            </h2>
+
+            <div className={"p-4"}></div>
 
             <div>
-                <h3 className="text-xl font-semibold text-[#012D5A] mb-2">The PERN Stack</h3>
+                <h3 className="text-xl font-semibold bg-[#012D5A] text-white mb-1 mb-2 rounded-md inline-block px-2 py-2">The PERN Stack</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     {technologies.filter(tech => ['PostgreSQL', 'Express.js', 'React', 'Node.js'].includes(tech.name)).map((tech) => (
                         <TechCitationCard key={tech.name} tech={tech} />
@@ -209,7 +213,7 @@ const TechCitationPage: React.FC<TechCitationPageProps> = ({ technologies }) => 
             </div>
 
             <div className="mt-8">
-                <h3 className="text-xl font-semibold text-[#012D5A] mb-2">Code Management and Development Libraries</h3>
+                <h3 className="text-xl font-semibold bg-[#012D5A] text-white mb-1 mb-2 rounded-md inline-block px-2 py-2">Code Management and Development Libraries</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     {technologies.filter(tech => ['Yarn', 'TurboRepo', 'ESLint', 'Prettier', 'Husky', 'TypeScript'].includes(tech.name)).map((tech) => (
                         <TechCitationCard key={tech.name} tech={tech} />
@@ -218,7 +222,7 @@ const TechCitationPage: React.FC<TechCitationPageProps> = ({ technologies }) => 
             </div>
 
             <div className="mt-8">
-                <h3 className="text-xl font-semibold text-[#012D5A] mb-2">Frontend Technologies</h3>
+                <h3 className="text-xl font-semibold bg-[#012D5A] text-white mb-1 mb-2 rounded-md inline-block px-2 py-2">Frontend Technologies</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     {technologies.filter(tech => ['Shadcn UI', 'Figma', 'Tailwind CSS', 'React', 'Vitest', 'Font Awesome'].includes(tech.name)).map((tech) => (
                         <TechCitationCard key={tech.name} tech={tech} />
@@ -227,7 +231,7 @@ const TechCitationPage: React.FC<TechCitationPageProps> = ({ technologies }) => 
             </div>
 
             <div className="mt-8">
-                <h3 className="text-xl font-semibold text-[#012D5A] mb-2">Backend Technologies</h3>
+                <h3 className="text-xl font-semibold bg-[#012D5A] text-white mb-1 mb-2 rounded-md inline-block px-2 py-2">Backend Technologies</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     {technologies.filter(tech => ['Google Maps API', 'Auth0', 'Prisma','Axios', 'Docker', 'Traefik', 'AWS'].includes(tech.name)).map((tech) => (
                         <TechCitationCard key={tech.name} tech={tech} />
@@ -236,7 +240,7 @@ const TechCitationPage: React.FC<TechCitationPageProps> = ({ technologies }) => 
             </div>
 
             <div className="mt-8">
-                <h3 className="text-xl font-semibold text-[#012D5A] mb-2">Collaboration and Version Control</h3>
+                <h3 className="text-xl font-semibold bg-[#012D5A] text-white mb-1 mb-2 rounded-md inline-block px-2 py-2">Collaboration and Version Control</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     {technologies.filter(tech => ['GitHub', 'Discord'].includes(tech.name)).map((tech) => (
                         <TechCitationCard key={tech.name} tech={tech} />

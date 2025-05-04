@@ -9,6 +9,7 @@ import servicereqsRouter from './routes/servicereqs.ts';
 import directoryRouter from './routes/directory.ts';
 import pathfindRouter from './routes/pathfind.ts';
 import editorRouter from './routes/editor.ts';
+import forumRouter from './routes/forum.ts';
 // import pathfindingRouter from './routes/pathfinding.ts';
 
 import { auth } from 'express-oauth2-jwt-bearer';
@@ -33,6 +34,7 @@ app.use(cookieParser()); // Cookie parser
 /**
  * All routers here should be accessible for both logIned and non-logedIn users
  */
+app.use(API_ROUTES.FORUM, forumRouter);
 app.use(API_ROUTES.PATHFIND, pathfindRouter);
 app.use(API_ROUTES.DEPARTMENT, directoryRouter);
 app.use(API_ROUTES.SERVICEREQS, servicereqsRouter);
@@ -40,19 +42,6 @@ app.use(API_ROUTES.EMPLOYEE, employeeRouter);
 app.use(API_ROUTES.HEALTHCHECK, healthcheckRouter);
 app.use(API_ROUTES.ASSIGNED, assignedRouter);
 app.use(API_ROUTES.EDITOR, editorRouter);
-
-// If we're not in test mode, enable the auth0 enforcement
-if (!process.env['VITETEST']) {
-    // JWT checker to ensure that routes are authorized
-    // Enforce on all endpoints
-    app.use(
-        auth({
-            audience: '/api',
-            issuerBaseURL: 'https://dev-b5d68fi8od5s513y.us.auth0.com/',
-            tokenSigningAlg: 'RS256',
-        })
-    );
-}
 
 /**
  * All routers here should be accessible for both ONLY (!!!) logIned users
@@ -82,6 +71,19 @@ app.use((err: HttpError, req: Request, res: Response) => {
     // Reply with the error
     res.status(err.status || 500);
 });
+
+// If we're not in test mode, enable the auth0 enforcement
+if (!process.env['VITETEST']) {
+    // JWT checker to ensure that routes are authorized
+    // Enforce on all endpoints
+    app.use(
+        auth({
+            audience: '/api',
+            issuerBaseURL: 'https://dev-b5d68fi8od5s513y.us.auth0.com/',
+            tokenSigningAlg: 'RS256',
+        })
+    );
+}
 
 // Export the backend, so that www.ts can start it
 export default app;
