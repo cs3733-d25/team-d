@@ -1,10 +1,8 @@
-import React, { useMemo, useState, useEffect, useRef } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Fuse from "fuse.js";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Mic, MicOff } from "lucide-react";
-import beep from "../components/beep.mp3";
 import axios from "axios";
 
 interface Employee {
@@ -14,9 +12,6 @@ interface Employee {
     middleInitial: string;
     lastName: string;
     occupation: string;
-    dateOfBirth: string;
-    pronoun: string;
-    phoneNumber: string;
 }
 
 
@@ -29,14 +24,14 @@ export default function ShowAllEmployees() {
 
 
     useEffect(() => {
-       const fetchData = async () => {
+        const fetchData = async () => {
             try {
                 const response = await axios.get('/api/employee'); //the api
                 setEmployeeData(response.data);
                 setSelectedEmployee(response.data[0]); // default selected to first employee
             } catch (error) {
                 console.error('Error fetching employees', error);
-           }
+            }
         };
         fetchData();
     }, []);
@@ -65,80 +60,18 @@ export default function ShowAllEmployees() {
         }
     }, [filtered, selectedEmployee]);
 
-    /* Voice search */
-    const recognitionRef = useRef<any>(null);
-    const [listening, setListening] = useState(false);
-
-    useEffect(() => {
-        const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-        if (!SR) {
-            console.warn("Web-Speech API missing → voice search disabled");
-            return;
-        }
-        recognitionRef.current = new SR();
-        recognitionRef.current.lang = "en-US";
-        recognitionRef.current.maxAlternatives = 1;
-
-        recognitionRef.current.onstart = () => setListening(true);
-        recognitionRef.current.onresult = (e: any) => {
-            const spoken = e.results[0][0].transcript;
-            setQuery(spoken);
-        };
-        recognitionRef.current.onerror = (e: any) =>
-            console.error("Speech error:", e.error);
-        recognitionRef.current.onend = () => setListening(false);
-    }, []);
-
-
-    const toggleMic = () => {
-        const rec = recognitionRef.current;
-        if (!rec) return;
-        if (listening) rec.stop();
-        else {
-            try {
-                rec.start();
-            } catch {
-            }
-        }
-    };
-
-    function play() {
-        new Audio(beep).play();
-    }
-
-
     return (
         <div className="min-h-screen bg-white flex flex-col items-center py-8">
             <div className="w-full max-w-6xl h-[80vh] rounded-xl shadow-md border border-gray-200 overflow-hidden flex">
                 {/* ---------- Left column ---------- */}
                 <div className="w-4/12 h-full border-r border-gray-200 flex flex-col p-5 bg-white">
                     {/* search bar */}
-                    {/* search bar + mic */}
-                    <div className="relative mb-4 flex items-center">
-                        <Input
-                            placeholder="Search services or specialties…"
-                            value={query}
-                            onChange={(e) => setQuery(e.target.value)}
-                            className="flex-1 grow border-2 border-[#012D5A] rounded-md shadow-md bg-[#F1F1F1]"
-                        />
-
-                        {/* mic button */}
-                        <button
-                            onClick={() => {
-                                toggleMic();
-                                play();
-                            }}
-                            aria-label="voice search"
-                            className={`absolute top-0.5 right-3 w-8 h-8 flex items-center justify-center rounded-full border transition-colors
-                        ${
-                                listening
-                                    ? "bg-blue-900 text-white border-blue-900"
-                                    : "bg-white text-blue-900 border-blue-900"
-                            }`}
-                        >
-                            {listening ? <MicOff size={18} /> : <Mic size={18} />}
-                        </button>
-                    </div>
+                    <Input
+                        placeholder="Search employees"
+                        value={query}
+                        onChange={(e) => setQuery(e.target.value)}
+                        className="mb-4"
+                    />
 
                     {/* scrollable list */}
                     <div className="flex-1 overflow-y-auto pr-1">
@@ -176,19 +109,6 @@ export default function ShowAllEmployees() {
                             <section className="mb-8">
                                 <h2 className="text-xl font-semibold">Occupation:</h2>
                                 <p>{selectedEmployee.occupation}</p>
-                            </section>
-                            <section className="mb-8">
-                                <h2 className="text-xl font-semibold">Date of Birth:</h2>
-                                <p>{selectedEmployee.dateOfBirth.slice(0, 10)}</p>
-                            </section>
-                            <section className="mb-8">
-                                <h2 className="text-xl font-semibold">Phone Number:</h2>
-                                <p>{selectedEmployee.phoneNumber}</p>
-                            </section>
-
-                            <section className="mb-8">
-                                <h2 className="text-xl font-semibold">Pronouns:</h2>
-                                <p>{selectedEmployee.pronoun}</p>
                             </section>
                             <div>
                                 <h2 className="text-xl font-semibold">Email:</h2>

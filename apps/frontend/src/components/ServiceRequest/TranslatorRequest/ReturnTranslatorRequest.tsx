@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card.tsx';
+import { CardTitle } from '@/components/ui/card.tsx';
 import { ScrollArea} from "@/components/ui/scrollarea.tsx";
 import { Label } from '@/components/ui/label.tsx';
 

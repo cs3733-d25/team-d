@@ -18,6 +18,7 @@ import {
 } from "@tanstack/react-table"
 import {ArrowUpDown, ChevronDown, Funnel, MoreHorizontal, SquarePen, Trash, UserPen} from "lucide-react"
 import { Button } from "@/components/ui/button"
+import DeleteRequest from "@/components/ServiceRequest/DeleteServiceReq.tsx";
 import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
@@ -127,14 +128,24 @@ export const getEmployeesPlusNothing = (): string[] => {
     return employeesPlusNothing;
 };
 
-await loadEmployees();
+// await loadEmployees();
 export default function ShowAllRequests() {
+    // await loadEmployees();
+
     const [data, setData] = useState<ServiceRequest[]>([]);
+    const [departments, setDepartments] = useState<Department[]>([]);
+    const [employees, setEmployees] = useState<Employee[]>([]);
 
     const fetchData = async () => {
         try {
             const dataResponse = await axios.get('/api/servicereqs');
             setData(dataResponse.data);
+            axios.get(API_ROUTES.DEPARTMENT + "/all").then((response) => {
+                setDepartments(response.data)
+            });
+            axios.get(API_ROUTES.EMPLOYEE + "/names").then((response) => {
+                setEmployees(response.data)
+            });
         } catch (error) {
             console.error('Error fetching data:', error);
         }
@@ -341,6 +352,7 @@ export default function ShowAllRequests() {
                     <AssignEmployeeDialog ID={row.original.requestId}
                                           requestType={getRequestType(row.original)}
                                           onUpdate={fetchData}
+                                          employees={employees}
                                           trigger={<div className="pl-4 w-full text-left"><UserPen className="text-gray-500"/></div>}
                     />
                 )
@@ -356,6 +368,8 @@ export default function ShowAllRequests() {
                     <RequestSheet ID={row.original.requestId}
                                   requestType={getRequestType(row.original)}
                                   onUpdate={fetchData}
+                                  departments={departments}
+                                  employees={employees}
                                   trigger={<div className="pl-4 w-full text-left"><SquarePen className="text-gray-500"/></div>}
                     />
                 )
@@ -365,18 +379,55 @@ export default function ShowAllRequests() {
             id: "deleteRequest",
             enableHiding: false,
             cell: ({ row }) => {
-                const request = row.original
+                const request = row.original;
+                const [showDeleteModal, setShowDeleteModal] = useState(false);
+                const [isDeletedOpen, setDeletedOpen] = useState(false); // Popup after deletion
+
+                const handleDelete = async () => {
+                    await axios.delete(`/api/servicereqs/${Number(request.requestId)}`);
+                    setShowDeleteModal(false);
+                    setDeletedOpen(true); // Open deletion success modal
+                    fetchData(); // Refresh data after deletion
+
+                    setTimeout(() => {
+                        setDeletedOpen(false);
+                    }, 3000);
+                };
 
                 return (
-                    <button className="pl-4 w-full text-left"
-                            onClick={async()=> {
-                                const request = row.original as ServiceRequest;
-                                await axios.delete('/api/servicereqs/'+Number(request.requestId));
-                                await fetchData();
-                            }}>
-                        <Trash className="text-gray-500"/>
-                    </button>
-                )
+                    <>
+                        <button className="pl-4 w-full text-left" onClick={() => setShowDeleteModal(true)}>
+                            <Trash className="text-gray-500"/>
+                        </button>
+
+                        {showDeleteModal && (
+                            <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+                                <div className="bg-white p-6 rounded shadow-lg text-center">
+                                    <p className="text-lg">Are you sure you want to delete this request?</p>
+                                    <div className="mt-4 flex justify-evenly">
+                                        <button className="bg-gray-500 text-white px-4 py-2 rounded" onClick={() => setShowDeleteModal(false)}>
+                                            Cancel
+                                        </button>
+                                        <button className="bg-red-500 text-white px-4 py-2 rounded" onClick={handleDelete}>
+                                            Confirm
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {isDeletedOpen && (
+                            <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+                                <div className="bg-white p-6 rounded shadow-lg text-center">
+                                    <p className="text-lg text-green-600">Request successfully deleted.</p>
+                                    <button className="bg-blue-500 text-white px-4 py-2 rounded mt-4" onClick={() => setDeletedOpen(false)}>
+                                        OK
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+                    </>
+                );
             }
         },
     ]
@@ -387,6 +438,7 @@ export default function ShowAllRequests() {
     )
 
     useEffect(() => {
+        loadEmployees();
         fetchData();
     }, []);
 
@@ -518,6 +570,7 @@ export default function ShowAllRequests() {
 }
 
 function Filter({ column }: { column: Column<ServiceRequest, unknown> }) {
+
     const columnFilterValue = column.getFilterValue() as string[] ?? [];
     const meta = column.columnDef.meta;
 

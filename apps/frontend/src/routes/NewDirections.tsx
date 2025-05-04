@@ -17,6 +17,12 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
+import {
+    Tabs,
+    TabsContent,
+    TabsList,
+    TabsTrigger,
+} from "@/components/ui/tabs";
 import axios from "axios";
 import {Separator} from "@/components/ui/separator.tsx";
 import {Label} from "@/components/ui/label.tsx";
@@ -30,8 +36,23 @@ import {
     SelectTrigger,
     SelectValue
 } from "@/components/ui/select.tsx";
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
+} from "@/components/ui/accordion"
 import {Button} from "@/components/ui/button.tsx";
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
+
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+
+import StartLocationImg from "../public/StartLocation.jpg";
+import TransportImg from "../public/Transport.jpg";
+import DestinationImg from "../public/Destination.jpg";
+import DepartmentImg from "../public/Department.jpg";
+import { Checkbox } from '@/components/ui/checkbox.tsx';
+
 
 interface TransportModeOption {
     value: string;
@@ -80,16 +101,49 @@ export default function NewDirections() {
 
     const [currentStep, setCurrentStep] = useState<number>(-1);
 
-    const setPathfindingResultsExternal = (results: PathfindingResults | null) => {
+    /* ────────────── onboarding pop‑up tour ────────────── */
+    const onboardingSteps = [
+        { title: 'choose your current address',         img: StartLocationImg },
+        { title: 'choose your mode of transportation',  img: TransportImg },
+        { title: 'pick your destination hospital',      img: DestinationImg },
+        { title: "once you're here, pick a department", img: DepartmentImg },
+    ];
+
+    const [showOnboarding, setShowOnboarding] = useState(false);
+    const [onboardIdx,    setOnboardIdx]    = useState(0);
+
+    const handleOnboardNext = () => {
+        if (onboardIdx < onboardingSteps.length - 1) {
+            setOnboardIdx(onboardIdx + 1);
+        } else {
+            setShowOnboarding(false);          // “Got it” closes the tour
+        }
+    };
+
+
+    const [currentSection, setCurrentSection] = useState<number>(-1);
+
+    const setPathfindingResultsExternal = (results: PathfindingResults | null, refresh: boolean) => {
         setPathfindingResults(results);
+        console.log(results?.sections[0].directions[0].distance);
         setCurrentStep(-1);
+        if (refresh) {
+            console.log('resetSecton');
+            setCurrentSection(-1);
+        }
+        else {
+            const temp = currentSection;
+            // setCurrentSection(-1);
+            console.log(temp);
+            setCurrentSection(temp);
+        }
     }
 
     useEffect(() => {
         console.log('useEffect NewDirections');
         const fetchMap = async () => {
             if (mapRef.current && autocompleteRef.current ) {
-                setMap(await PathfindingMap.makeMap(mapRef.current, autocompleteRef.current, setPathfindingResultsExternal));
+                setMap(await PathfindingMap.makeMap(mapRef.current, autocompleteRef.current, setPathfindingResultsExternal, setCurrentSection));
             }
         }
         fetchMap().then(() => {
@@ -126,7 +180,7 @@ export default function NewDirections() {
 
 
     const handleNextStep = () => {
-        if (!pathfindingResults || currentStep >= pathfindingResults.directions.length - 1) return;
+        if (!pathfindingResults || currentStep >= pathfindingResults.numSteps - 1) return;
 
         map?.setCurrentStepIdx(currentStep + 1, tts);
         setCurrentStep(currentStep + 1);
@@ -162,6 +216,18 @@ export default function NewDirections() {
         }
     };
 
+    const handleSectionChange = (value: string) => {
+        const val = Number(value) - 1;
+        if (!pathfindingResults) return;
+        if (val === -1) {
+            map?.setCurrentStepIdx(-1, false);
+            setCurrentStep(-1);
+            return;
+        }
+        map?.setCurrentStepIdx(pathfindingResults.sections[val].directions[0].idx, tts);
+        setCurrentStep(pathfindingResults.sections[val].directions[0].idx);
+    }
+
     return (
         <div className="flex flex-row flex-1 h-screen overflow-y-hidden border-2 border-[#012D5A] rounded-md shadow-md bg-[#F1F1F1]">
             <div className="flex-1 p-4 overflow-y-scroll">
@@ -173,29 +239,13 @@ export default function NewDirections() {
                     <div className="relative group">
                         <button
                             type="button"
+                            onClick={() => { setShowOnboarding(true); setOnboardIdx(0); }}
                             className="w-7 h-7 flex items-center justify-center rounded-full
-                 border border-gray-400 bg-white text-gray-600
-                 hover:bg-gray-200 focus:outline-none"
-                        >
+             border border-gray-400 bg-white text-gray-600
+             hover:bg-gray-200 focus:outline-none">
                             ?
                         </button>
 
-                        <div
-                            className="absolute right-0 mt-2 w-64 z-10 p-4 text-sm text-white
-                 bg-gray-800 rounded-lg shadow-lg
-                 opacity-0 pointer-events-none
-                 transition-opacity duration-200
-                 group-hover:opacity-100 group-focus-within:opacity-100"
-                        >
-                            <p className="font-semibold mb-2">Steps for navigation:</p>
-                            <ol className="list-decimal ml-4 space-y-1">
-                                <li>Enter your current address</li>
-                                <li>Choose transportation mode</li>
-                                <li>Choose destination hospital</li>
-                                <li>Once at the hospital, pick a department</li>
-                                <li>You can enable text-to-speech for voice directions!</li>
-                            </ol>
-                        </div>
                     </div>
                 </div>
 
@@ -261,14 +311,14 @@ export default function NewDirections() {
 
 
 
-                                {selectedHospital &&
+                            {selectedHospital &&
                                 <>
                                     {/*<Separator className="mt-4 mb-4" />*/}
 
                                     <Label className="mb-1 mb-2 border-2 border-amber-600 rounded-md inline-block px-2 py-1">Department</Label>
                                     <Select onValueChange={handleDepartmentChange}>
                                         <SelectTrigger className="w-full mt-1 mb-4 border-2 border-[#012D5A] focus:border-[#D47F00] focus:ring-[#D47F00]/50 focus:ring-[3px]">
-                                            <SelectValue placeholder="Choose a department..." />
+                                            <SelectValue placeholder="Choose a department..." className=""/>
                                         </SelectTrigger>
                                         <SelectContent>
                                             <SelectGroup key="0">
@@ -287,55 +337,115 @@ export default function NewDirections() {
                     </Card>
                 </div>
 
-
-
                 {pathfindingResults &&
                     <>
                         <Separator className="mt-4 mb-4" />
-                        <div className="flex flex-row border-4 border-[#012D5A] rounded-md">
-                            <Card className="flex-1 grow">
-                                <CardHeader>
-                                    <div className="flex items-center justify-between">
-                                        <Label className="flex items-center gap-2">
-                                            Text-to-speech
-                                            <Switch className="data-[state=checked]:bg-blue-900" onCheckedChange={setTts} />
-                                        </Label>
-                                        <Button
-                                            onClick={handleRecenter}
-                                            className=" border-2 border-amber-600 flex-1 grow m-2 bg-blue-900 active:scale-95 active:shadow-inner transition-transform"
-                                        >
-                                            <FontAwesomeIcon icon={faCrosshairs} />
-                                            Re-center
+                        <div className="flex flex-row">
+                            <Card className="flex-1 grow border-4 border-[#012D5A] rounded-md shadow-md bg-[#F1F1F1]">
+
+                            {/*</CardHeader>*/}
+                                <CardContent>
+                                    <div className="flex flex-row">
+                                        <div className="flex-1 grow">
+                                            {/*<Label className="mb-1 mb-2 border-2 border-amber-600 rounded-md inline-block px-2 py-1">*/}
+                                            {/*    Text-to-speech?*/}
+                                            {/*</Label>*/}
+                                            <br/>
+                                            <div className="flex items-center space-x-2">
+                                                <Checkbox id="tts" className="border-2 border-amber-600 rounded-xs" onCheckedChange={() => setTts(!tts)}/>
+                                                <Label htmlFor="tts">Text-to-Speech</Label>
+                                            </div>
+                                            <br/>
+                                            {/*<Label className="mb-1 mb-2 border-2 border-amber-600 rounded-md inline-block px-2 py-1">*/}
+                                            {/*    Unit System*/}
+                                            {/*</Label>*/}
+                                            <RadioGroup defaultValue="Imperial" onValueChange={(value: string) => map?.convertUnits(value)}>
+                                                <div className="flex items-center space-x-2">
+                                                    <RadioGroupItem id="imp" value="Imperial" className="border-2 border-amber-600 peer-checked:bg-blue-900"/>
+                                                    <Label htmlFor="imp">Imperial</Label>
+                                                </div>
+                                                <div className="flex items-center space-x-2">
+                                                    <RadioGroupItem id="met" value="Metric" className="border-2 border-amber-600 peer-checked:bg-blue-900"/>
+                                                    <Label htmlFor="met">Metric</Label>
+                                                </div>
+                                            </RadioGroup>
+                                        </div>
+                                        <>
+                                            <Button
+                                                onClick={handleRecenter}
+                                                className=" flex-1 grow border-2 border-amber-600 flex-1 grow m-2 bg-blue-900 active:scale-95 active:shadow-inner transition-transform"
+                                            >
+                                                <FontAwesomeIcon icon={faCrosshairs} />
+                                                Re-center
+                                            </Button>
+                                        </>
+                                    </div>
+                                    {/*<div className="flex items-center justify-between">*/}
+                                    {/*    <Label className="flex items-center gap-2">*/}
+                                    {/*        Text-to-speech*/}
+                                    {/*        <Switch className="data-[state=checked]:bg-blue-900" onCheckedChange={setTts} />*/}
+                                    {/*    </Label>*/}
+                                    {/*    <Button*/}
+                                    {/*        onClick={handleRecenter}*/}
+                                    {/*        className=" border-2 border-amber-600 flex-1 grow m-2 bg-blue-900 active:scale-95 active:shadow-inner transition-transform"*/}
+                                    {/*    >*/}
+                                    {/*        <FontAwesomeIcon icon={faCrosshairs} />*/}
+                                    {/*        Re-center*/}
+                                    {/*    </Button>*/}
+                                    {/*</div>*/}
+                                    {/*<div className="items-center justify-center">*/}
+                                    {/*    <Tabs defaultValue="Metric" onValueChange={(value: string) => map?.convertUnits(value)}>*/}
+                                    {/*        <TabsList>*/}
+                                    {/*            <TabsTrigger className="border-2 border-amber-600 flex-1 grow m-2 bg-blue-900 active:scale-95 active:shadow-inner transition-transform" value="Metric">Metric</TabsTrigger>*/}
+                                    {/*            <TabsTrigger className="border-2 border-amber-600 flex-1 grow m-2 bg-blue-900 active:scale-95 active:shadow-inner transition-transform" value="Imperial">Imperial</TabsTrigger>*/}
+                                    {/*        </TabsList>*/}
+                                    {/*    </Tabs>*/}
+                                    {/*</div>*/}
+                                    <div className="flex flex-row">
+                                        <Button className="border-2 border-amber-600 flex-1 grow m-2 bg-blue-900 active:scale-95 active:shadow-inner transition-transform" onClick={handlePrevStep} disabled={currentStep < 1}>
+                                            <FontAwesomeIcon icon={faArrowLeft} />
+                                            Previous
+                                        </Button>
+                                        <Separator className="mt-4 mb-4" orientation="vertical" />
+                                        <Button className="border-2 border-amber-600 flex-1 grow m-2 bg-blue-900 active:scale-95 active:shadow-inner transition-transform" onClick={handleNextStep} disabled={currentStep >= pathfindingResults.numSteps - 1}>
+                                            Next
+                                            <FontAwesomeIcon icon={faArrowRight} />
                                         </Button>
                                     </div>
-                                    <div className="flex flex-row">
-                                        <Button className="border-2 border-amber-600 flex-1 grow m-2 bg-blue-900 active:scale-95 active:shadow-inner transition-transform" onClick={handlePrevStep} disabled={currentStep < 1}>Previous</Button>
-                                        <Separator className="mt-4 mb-4" orientation="vertical" />
-                                        <Button className="border-2 border-amber-600 flex-1 grow m-2 bg-blue-900 active:scale-95 active:shadow-inner transition-transform" onClick={handleNextStep} disabled={currentStep >= pathfindingResults.directions.length - 1}>Next</Button>
-                                    </div>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="h-[400px] overflow-y-scroll">
-                                        {pathfindingResults.directions.map((step, i) => (
-                                            <div className= {`relative group px-2 ${currentStep === i ? 'bg-gray-200 rounded-md' : 'bg-white'}`}
-                                                 onClick={() => {
-                                                     map?.setCurrentStepIdx(i, tts);
-                                                     setCurrentStep(i);
-                                                     console.log(i);
-                                                 }}>
-                                                {step.icon === "right" ? <FontAwesomeIcon icon={faArrowRight} className="text-amber-600"/>
-                                                    : step.icon === "left" ? <FontAwesomeIcon icon={faArrowLeft} className="text-amber-600"/>
-                                                        : <FontAwesomeIcon icon={faArrowUp} className="text-amber-600"/>}
-                                                <span> </span>
-                                                <span className="text-blue-900">{step.instructions}</span>
-                                                <br/>
-                                                <span className="text-black">{step.time} ({step.distance})</span>
-                                                <span className="absolute bottom-0 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-black ml-30">
-                                        Click to view
-                                    </span>
-                                                <br/><br/>
-                                            </div>
-                                        ))}
+                                    <div className="h-[400px] overflow-y-scroll pr-2" key={currentSection}>
+                                        <Accordion type="single" defaultValue={(currentSection + 1).toString()} collapsible onValueChange={handleSectionChange}>
+                                            {pathfindingResults.sections.map((section, j) => {
+                                                return <AccordionItem value={(j + 1).toString()}>
+                                                    <AccordionTrigger>
+                                                        {section.name}
+                                                    </AccordionTrigger>
+                                                    <AccordionContent>
+                                                        {
+                                                            section.directions.map((step) => (
+                                                                <div className= {`relative group px-2 border-2 rounded-md ${currentStep === step.idx ? 'border-amber-600 bg-[#FAFAFA]' : 'border-transparent'}`}
+                                                                     onClick={() => {
+                                                                         map?.setCurrentStepIdx(step.idx, tts);
+                                                                         setCurrentStep(step.idx);
+                                                                         console.log(step.idx);
+                                                                     }}>
+                                                                    {step.icon === "right" ? <FontAwesomeIcon icon={faArrowRight} className="text-amber-600"/>
+                                                                        : step.icon === "left" ? <FontAwesomeIcon icon={faArrowLeft} className="text-amber-600"/>
+                                                                            : <FontAwesomeIcon icon={faArrowUp} className="text-amber-600"/>}
+                                                                    <span> </span>
+                                                                    <span className="text-blue-900">{step.instructions}</span>
+                                                                    <br/>
+                                                                    <span className="text-black">{step.time} ({step.distance})</span>
+                                                                    <span className="absolute bottom-0 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-black ml-30">
+                                                                        {currentStep !== step.idx && 'Click to view'}
+                                                                    </span>
+                                                                    <br/><br/>
+                                                                </div>
+                                                            ))
+                                                        }
+                                                    </AccordionContent>
+                                                </AccordionItem>
+                                            })}
+                                        </Accordion>
                                     </div>
                                 </CardContent>
                             </Card>
@@ -343,6 +453,46 @@ export default function NewDirections() {
                     </>
                 }
             </div>
+            {showOnboarding && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+                    <div className="relative bg-white w-11/12 max-w-md rounded-xl shadow-lg p-6 text-center">
+                        <button
+                            type="button"
+                            onClick={() => setShowOnboarding(false)}
+                            aria-label="Close"
+                            className="absolute top-4 right-4 text-xl font-semibold text-gray-400
+             hover:text-gray-600 focus:outline-none">
+                            ×
+                        </button>
+
+
+                        <h3 className="text-lg font-bold mb-4 capitalize">
+                            {onboardingSteps[onboardIdx].title}
+                        </h3>
+
+                        {/* Picture area */}
+                        <div className="h-48 flex items-center justify-center mb-6 border border-dashed rounded-lg bg-[#F1F1F1]">
+                            {onboardingSteps[onboardIdx].img ? (
+                                <img
+                                    src={onboardingSteps[onboardIdx].img}
+                                    alt=""
+                                    className="max-h-full max-w-full object-contain"
+                                />
+                            ) : (
+                                <span className="text-gray-400">picture here</span>
+                            )}
+                        </div>
+
+                        <Button
+                            onClick={handleOnboardNext}
+                            className="w-full border-2 border-amber-600 bg-blue-900 active:scale-95 active:shadow-inner transition-transform"
+                        >
+                            {onboardIdx === onboardingSteps.length - 1 ? 'Got it!' : 'Next'}
+                        </Button>
+                    </div>
+                </div>
+            )}
+
             <div ref={mapRef} className="flex-3">
                 {/* Google map will go here */}
             </div>
