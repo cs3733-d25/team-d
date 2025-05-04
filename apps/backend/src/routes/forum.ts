@@ -134,17 +134,18 @@ router.post('/post', async function (req: Request, res: Response) {
 // post request to add a reply to the database
 router.post('/reply/:id', async function (req: Request, res: Response) {
     const postId = Number(req.params.id);
-    const replyDataAttempt: Prisma.ReplyCreateInput = req.body;
+    // const replyDataAttempt: Prisma.ReplyCreateInput = req.body;
+    const data: Prisma.ReplyCreateInput = {
+        ...req.body,
+        postId: postId
+    };
     try {
         const reply = await PrismaClient.reply.create({
-            data: {
-                ...replyDataAttempt,
-                postId: postId,
-            },
+            data: data,
         });
         console.log('Reply created');
     } catch (error) {
-        console.error(`Unable to create a new reply ${replyDataAttempt}: ${error}`);
+        console.error(`Unable to create a new reply ${data}: ${error}`);
         res.sendStatus(400);
         return;
     }
