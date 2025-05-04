@@ -29,7 +29,7 @@ import {
 import {Button} from "@/components/ui/button.tsx";
 import { Input } from '@/components/ui/input.tsx';
 
-import {faCrosshairs, faSave, faUndo, faRedo} from "@fortawesome/free-solid-svg-icons";
+import {faCrosshairs, faSave, faUndo, faRedo, faCheck} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 
@@ -201,25 +201,26 @@ export default function MapEditor() {
                     <>
                         <Separator className="mt-4 mb-4" />
                         <div key={selectedNode.nodeId} className="flex flex-row">
-                            <Card className="flex-1 grow">
+                            <Card className="flex-1 grow flex-1 border-4 border-[#012D5A] rounded-md shadow-md bg-[#F1F1F1]">
                                 <CardContent>
                                     <h2 className="text-xl font-bold">Node ID: {selectedNode.nodeId}</h2>
                                     <p className="mb-4">({selectedNode.lat}, {selectedNode.lng})</p>
 
-                                    <Label className="mt-4 mb-1">
+                                    <Label className="mb-1 mb-2 border-2 border-amber-600 rounded-md inline-block px-2 py-1">
                                         Name
                                     </Label>
                                     <Input
                                         defaultValue={selectedNode.name}
                                         placeholder={'Enter a name'}
                                         onChange={(e) => selectedNode.name = e.target.value}
+                                        className="file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 flex h-9 w-full min-w-0 rounded-md border-2 border-[#012D5A] bg-transparent px-3 py-1 text-base shadow-sm transition-[color,box-shadow] outline-none focus:border-[#D47F00] focus:ring-[#D47F00]/50 focus:ring-[3px] mb-4"
                                     />
 
-                                    <Label className="mt-4 mb-1">
+                                    <Label className="mb-1 mb-2 border-2 border-amber-600 rounded-md inline-block px-2 py-1">
                                         Type
                                     </Label>
                                     <Select onValueChange={(value: string) => selectedNode.type = value as EditorNodeType} defaultValue={selectedNode.type}>
-                                        <SelectTrigger className="w-full mt-1 mb-4">
+                                        <SelectTrigger className="w-full mb-4 placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 flex h-9 w-full min-w-0 rounded-md border-2 border-[#012D5A] bg-transparent px-3 py-1 text-base shadow-sm transition-[color,box-shadow] outline-none focus:border-[#D47F00] focus:ring-[#D47F00]/50 focus:ring-[3px]">
                                             <SelectValue placeholder="Choose a type..." />
                                         </SelectTrigger>
                                         <SelectContent>
@@ -237,13 +238,14 @@ export default function MapEditor() {
                                         </SelectContent>
                                     </Select>
 
-                                    <Label className="mt-4 mb-1">
+                                    <Label className="mb-1 mb-2 border-2 border-amber-600 rounded-md inline-block px-2 py-1">
                                         Connected To Node ID:
                                     </Label>
                                     <Input
                                         defaultValue={selectedNode.connectedNodeId || ''}
                                         placeholder={'(none)'}
                                         onChange={handleUpdateConnectedNodeID}
+                                        className="file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 flex h-9 w-full min-w-0 rounded-md border-2 border-[#012D5A] bg-transparent px-3 py-1 text-base shadow-sm transition-[color,box-shadow] outline-none focus:border-[#D47F00] focus:ring-[#D47F00]/50 focus:ring-[3px] mb-4"
                                     />
                                     {!connectedNodeIdExists && (
                                         <p className={'text-red-600'}>Connected node ID doesn't exist!</p>
@@ -254,7 +256,10 @@ export default function MapEditor() {
                                             map?.updateNode(selectedNode);
                                         }}
                                         disabled={!connectedNodeIdExists}
-                                    >Apply</Button>
+                                    >
+                                        <FontAwesomeIcon icon={faCheck} />
+                                        Apply
+                                    </Button>
                                 </CardContent>
                             </Card>
 
@@ -266,18 +271,19 @@ export default function MapEditor() {
                     <>
                         <Separator className="mt-4 mb-4" />
                         <div key={selectedEdge.edgeId} className="flex flex-row">
-                            <Card className="flex-1 grow">
+                            <Card className="flex-1 grow flex-1 border-4 border-[#012D5A] rounded-md shadow-md bg-[#F1F1F1]">
                                 <CardContent>
                                     <h2 className="text-xl font-bold">Edge ID: {selectedEdge.edgeId}</h2>
                                     <p className="mb-4">(Node ID: {selectedEdge.startNodeId}) {'<-->'} (Node ID: {selectedEdge.endNodeId})</p>
 
-                                    <Label className="mt-4 mb-1">
+                                    <Label className="mb-1 mb-2 border-2 border-amber-600 rounded-md inline-block px-2 py-1">
                                         Name
                                     </Label>
                                     <Input
                                         defaultValue={selectedEdge.name}
                                         placeholder={'Enter a name'}
                                         onChange={(e) => selectedEdge.name = e.target.value}
+                                        className="file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 flex h-9 w-full min-w-0 rounded-md border-2 border-[#012D5A] bg-transparent px-3 py-1 text-base shadow-sm transition-[color,box-shadow] outline-none focus:border-[#D47F00] focus:ring-[#D47F00]/50 focus:ring-[3px] mb-4"
                                     />
                                     <Button
                                         className="mt-4 flex-1 grow m-2 bg-blue-900 border-2 border-amber-600"
@@ -285,7 +291,10 @@ export default function MapEditor() {
                                             map?.updateEdge(selectedEdge);
                                         }}
                                         disabled={!connectedNodeIdExists}
-                                    >Apply</Button>
+                                    >
+                                        <FontAwesomeIcon icon={faCheck} />
+                                        Apply
+                                    </Button>
                                 </CardContent>
                             </Card>
                         </div>
