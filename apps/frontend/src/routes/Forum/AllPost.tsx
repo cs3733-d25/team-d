@@ -11,6 +11,11 @@ import {
 import {useEffect, useState} from "react";
 import {API_ROUTES} from "common/src/constants.ts";
 import axios from "axios";
+import {Button} from "@/components/ui/button.tsx";
+import ForumPostPopup from "@/components/Forum/ForumPostPopup.tsx";
+import AssignEmployeeDialog from "@/components/AssignEmployeeDialog.tsx";
+import {getRequestType} from "@/routes/AllServiceRequests.tsx";
+
 
 
 type PostPreviewProps = {
@@ -34,6 +39,7 @@ export default function AllPost () {
     const [allPosts, setAllPosts] = useState<PostPreviewProps[]>([]);
     const [currentPost, setCurrentPosts] = useState<PostPreviewProps[]>([]);
     const [batchNumber, setBatchNumber] = useState<number>();
+    const [showPopup, setShowPopup] = useState(false);
 
     // useEffect(()=> {
     //
@@ -66,7 +72,8 @@ export default function AllPost () {
 
 
                 <div>
-                    Make a post button
+                    <ForumPostPopup trigger={<div className="pl-4 w-full text-left">Make a Post</div>}
+                    />
                 </div>
             </div>
 

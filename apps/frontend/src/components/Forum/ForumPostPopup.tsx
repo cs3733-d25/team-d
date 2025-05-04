@@ -42,6 +42,29 @@ const ForumPostPopup: React.FC<ForumPostPopupProps> = ({trigger}) => {
 
     const { user } = useAuth0();
     const [open, setOpen] = React.useState(false);
+    const [employeeData, setEmployeeData] = useState<Employee | null>(null);
+    const userEmail = user?.email;
+
+    const fetchData = async () => {
+        if(!user?.email) {
+            return (
+                <div className="flex justify-center items-center h-screen">
+                    <div className="text-lg font-semibold">Loading...</div>
+                </div>
+            );
+        }
+
+        try {
+            const employeeDataResponse = await axios.get(`/api/employee/user/${user?.email}`)
+            setEmployeeData(employeeDataResponse.data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, []);
 
     const onSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -59,15 +82,11 @@ const ForumPostPopup: React.FC<ForumPostPopupProps> = ({trigger}) => {
                 <Dialog open={open} onOpenChange={setOpen}>
                     <DialogTrigger asChild>
                         {trigger ? trigger : (
-                            <Button variant="outline">Assign Employee</Button>
+                            <Button variant="outline">+ Make a Post</Button>
                         )}
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-[425px]">
                         <DialogHeader>
-                            <DialogTitle>Assign Employee</DialogTitle>
-                            <DialogDescription>
-                                Service Request {request?.requestId}
-                            </DialogDescription>
                         </DialogHeader>
                             <div className="flex flex-col items-center gap-4 bg-white">
                                 <div className="bg-blue-900 rounded-md px-6 py-4 max-w-5xl w-full mx-auto">
@@ -77,34 +96,34 @@ const ForumPostPopup: React.FC<ForumPostPopupProps> = ({trigger}) => {
                                 </div>
                                 <form onSubmit={onSubmit}>
                                     {/*employeeId if logged in, else require email*/}
-                                    if (user) {
+                                    {user !== null ? (
                                     <div>
                                         <Label className="pt-4 pb-2" htmlFor="employeeName">
                                             Employee:
                                         </Label>
-                                        <p>
-                                            {user?.firstName} {user?.lastName}
-                                        </p>
+                                        <div>
+                                            {employeeData?.firstName} {employeeData?.lastName}
+                                        </div>
                                     </div>
-                                } else {
-                                    <div>
-                                        <Label className="pt-4 pb-2" htmlFor="email">
-                                            Email
-                                        </Label>
-                                        <Input
-                                            required
-                                            type="text"
-                                            id="email"
-                                            className="w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
-                                            onChange={(e) =>
-                                                setForm({
-                                                    ...form,
-                                                    email: e.target.value,
-                                                })
-                                            }
-                                        />
-                                    </div>
-                                }
+                                    ) : (
+                                        <div>
+                                            <Label className="pt-4 pb-2" htmlFor="email">
+                                                Email
+                                            </Label>
+                                            <Input
+                                                required
+                                                type="text"
+                                                id="email"
+                                                className="w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
+                                                onChange={(e) =>
+                                                    setForm({
+                                                        ...form,
+                                                        email: e.target.value,
+                                                    })
+                                                }
+                                            />
+                                        </div>
+                                    )}
 
                                     <div>
                                         <Label className="pt-4 pb-2" htmlFor="title">
@@ -149,109 +168,15 @@ const ForumPostPopup: React.FC<ForumPostPopupProps> = ({trigger}) => {
                                     </div>
                                 </form>
                             </div>
-                        <DialogFooter>
-                            <Button type="submit"
-                                    onClick={async () => {
-                                        try {
-                                            const updatedRequest = {
-                                                ...request!,
-                                                assignedEmployeeId: Number(assignedEmployeeId),
-                                            };
-                                            await axios.put(`/api/servicereqs/${ID}`, updatedRequest);
-                                            console.log('Assigned employee successfully.');
-                                            if (onUpdate) {
-                                                onUpdate();
-                                            }
-                                            setOpen(false);
-                                        } catch (error) {
-                                            console.error('Failed to assign an employee', error);
-                                        }
-                                    }}
-                            >Save changes</Button>
-                        </DialogFooter>
+                        {/*<DialogFooter>*/}
+                        {/*    <div className="flex flex-row justify-center items-center">*/}
+                        {/*        <Button type="submit" className="mt-6 w-full bg-blue-900">*/}
+                        {/*            Submit*/}
+                        {/*        </Button>*/}
+                        {/*    </div>*/}
+                        {/*</DialogFooter>*/}
                     </DialogContent>
                 </Dialog>
-
-                <div className="flex flex-col items-center gap-4 bg-white">
-                    <div className="bg-blue-900 rounded-md px-6 py-4 max-w-5xl w-full mx-auto">
-                        <h2 className="text-4xl font-bold text-white text-center">
-                            Make a Forum Post
-                        </h2>
-                    </div>
-                    <form onSubmit={onSubmit}>
-                        {/*employeeId if logged in, else require email*/}
-                        if (user) {
-                            <div>
-                                <Label className="pt-4 pb-2" htmlFor="employeeName">
-                                    Employee:
-                                </Label>
-                                <p>
-                                    {user?.firstName} {user?.lastName}
-                                </p>
-                            </div>
-                        } else {
-                            <div>
-                                <Label className="pt-4 pb-2" htmlFor="email">
-                                    Email
-                                </Label>
-                                <Input
-                                    required
-                                    type="text"
-                                    id="email"
-                                    className="w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
-                                    onChange={(e) =>
-                                        setForm({
-                                            ...form,
-                                            email: e.target.value,
-                                        })
-                                    }
-                                />
-                            </div>
-                        }
-
-                        <div>
-                            <Label className="pt-4 pb-2" htmlFor="title">
-                                Title
-                            </Label>
-                            <Input
-                                required
-                                type="text"
-                                id="title"
-                                className="w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
-                                onChange={(e) =>
-                                    setForm({
-                                        ...form,
-                                        title: e.target.value,
-                                    })
-                                }
-                            />
-                        </div>
-
-                        <div>
-                            <Label className="pt-4 pb-2" htmlFor="content">
-                                Content
-                            </Label>
-                            <Input
-                                required
-                                type="text"
-                                id="content"
-                                className="w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
-                                onChange={(e) =>
-                                    setForm({
-                                        ...form,
-                                        content: e.target.value,
-                                    })
-                                }
-                            />
-                        </div>
-
-                        <div className="flex flex-row justify-center items-center">
-                            <Button type="submit" className="mt-6 w-full bg-blue-900">
-                                Submit
-                            </Button>
-                        </div>
-                    </form>
-                </div>
             </ScrollArea>
         </>
     );
