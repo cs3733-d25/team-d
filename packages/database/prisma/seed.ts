@@ -362,7 +362,7 @@ async function main() {
                 buildingId: 0,
                 floorGraphId: 1,
                 services:
-                    "Allergy, (environmental, food, medication, and venoms), asthma, anaphylaxis, angioedema, sinusitis, and immunodeficiency",
+                    "Allergy (environmental, food, medication, and venoms), Asthma, Anaphylaxis, Angioedema, Sinusitis, Immunodeficiency",
                 telephone: "(617) 732–9850",
             },
             {
@@ -376,7 +376,7 @@ async function main() {
                 buildingId: 0,
                 floorGraphId: 1,
                 services:
-                    "Allergy, (environmental, food, medication, and venoms), asthma, anaphylaxis, angioedema, sinusitis, and immunodeficiency",
+                    "Allergy (environmental, food, medication, and venoms), Asthma, Anaphylaxis, Angioedema, Sinusitis, Immunodeficiency",
                 telephone: "(617) 732–9850",
             },
             {
@@ -481,7 +481,7 @@ async function main() {
                 hospitalId: 0,
                 buildingId: 0,
                 floorGraphId: 1,
-                services: "Crohn's disease, inflammatory bowel disease, infusion services, microscopic colitis, pulmonary, rheumatology, ulcerative colitis",
+                services: "Crohn's disease, Inflammatory bowel disease, Infusion services, Microscopic colitis, Pulmonary, Rheumatology, Ulcerative colitis",
                 telephone: "(617) 732–6389",
             },
             {
@@ -494,7 +494,7 @@ async function main() {
                 hospitalId: 0,
                 buildingId: 0,
                 floorGraphId: 1,
-                services: "Bacterial overgrowth breath test, colonoscopy, H. Pylori breath test, lactose malabsorption breath test, upper endoscopy",
+                services: "Bacterial overgrowth breath test, colonoscopy, H. pylori breath test, lactose malabsorption breath test, upper endoscopy",
                 telephone: "(617) 732–7426",
             },
             {
@@ -520,7 +520,7 @@ async function main() {
                 hospitalId: 0,
                 buildingId: 0,
                 floorGraphId: 1,
-                services: "Blood work, lab services",
+                services: "Blood work, Lab services",
                 hours: "Mon–Fri, 7 a.m.–7 p.m.; Sat, 7 a.m.–3 p.m.",
                 telephone: "(617) 732–9841",
             },

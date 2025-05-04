@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Mic, MicOff } from "lucide-react";
 import beep from "../components/beep.mp3";
+import axios from "axios";
+import {API_ROUTES} from "common/src/constants.ts";
 
 /* Browser type helpers */
 declare global {
@@ -14,174 +16,175 @@ declare global {
 }
 
 type Entry = {
-    service: string;
-    specialties: string;
-    floorSuite: string;
-    phone: string;
+    name: string;
+    services: string;
+    room: string;
+    telephone: string;
 };
 
-const chestnutData: Entry[] = [
-    {
-        service: "Allergy and Clinical Immunology",
-        specialties:
-            "Allergy, Environmental, Food, Medication, Venoms, Asthma, Anaphylaxis, Angioedema, Sinusitis, Immunodeficiency",
-        floorSuite: "3rd floor, suite 301 & 5th floor, suite 540",
-        phone: "(617) 732–9850",
-    },
-    {
-        service: "Child Care Center (Mon–Fri, 8 a.m.–4:30 p.m.)",
-        specialties: "Backup childcare for employees",
-        floorSuite: "2nd floor, suite 210",
-        phone: "(617) 732–9543",
-    },
-    {
-        service: "Brigham Dermatology Associates (BDA)",
-        specialties: "Medical and surgical dermatology",
-        floorSuite: "3rd floor, suite 317",
-        phone: "(617) 732–9080",
-    },
-    {
-        service: "Brigham Obstetrics and Gynecology Group (BOGG)",
-        specialties: "Gynecology, Obstetrics",
-        floorSuite: "5th floor, suite 575",
-        phone: "(617) 732–9100",
-    },
-    {
-        service: "Brigham Physicians Group (BPG)",
-        specialties: "Adult Primary Care",
-        floorSuite: "4th floor, suite 428 & 5th floor, suite 530",
-        phone: "(617) 732–9900",
-    },
-    {
-        service: "Brigham Psychiatric Specialities",
-        specialties: "Psychiatry, Psychology, Social Work",
-        floorSuite: "3rd floor, suite 303",
-        phone: "(617) 732–9811",
-    },
-    {
-        service: "Center for Pain Medicine",
-        specialties: "Multidisciplinary pain management",
-        floorSuite: "3rd floor, suite 320",
-        phone: "(617) 732–9060",
-    },
-    {
-        service: "Crohn's and Colitis Center",
-        specialties:
-            "Crohn's disease, Inflammatory bowel disease, Infusion services, Microscopic colitis, Pulmonary, Rheumatology, Ulcerative colitis",
-        floorSuite: "2nd floor, suite 201",
-        phone: "(617) 732–6389",
-    },
-    {
-        service: "Endoscopy Center",
-        specialties:
-            "Bacterial overgrowth breath test, colonoscopy, H. pylori breath test, lactose malabsorption breath test, upper endoscopy",
-        floorSuite: "2nd floor, suite 202",
-        phone: "(617) 732–7426",
-    },
-    {
-        service: "Gretchen S. and Edward A. Fish Center for Women's Health",
-        specialties:
-            "Cardiology, Dermatology (cosmetic, medical, and surgical), Endocrinology, Gastroenterology, Gynecology, Hematology, Infectious Diseases, Mental Health (social work), General neurology, Nutrition, Primary care, Pulmonary, Renal, Rheumatology, Sleep medicine, Women's Health (Menopause and Midlife Clinic, Obstetric Internal Medicine)",
-        floorSuite: "4th floor, suite 402",
-        phone: "(617) 732–9300",
-    },
-    {
-        service: "Laboratory (Mon–Fri, 7 a.m.–7 p.m.; Sat, 7 a.m.–3 p.m.)",
-        specialties: "Blood work, lab services",
-        floorSuite: "1st floor, suite 100",
-        phone: "(617) 732–9841",
-    },
-    {
-        service: "Multi-Specialty Clinic",
-        specialties:
-            "Orthopedic surgery, Vascular surgery, Contact Dermatitis and Occupational Dermatology Program, Pain Medicine and Travel Medicine",
-        floorSuite: "1st floor, suite 130",
-        phone: "(617) 732–9500",
-    },
-    {
-        service: "Osher Clinical Center for Integrative Health",
-        specialties:
-            "Acupuncture, health coaching, chiropractic, craniosacral therapy, integrative medicine, structural massage & movement therapies, neurology (movement disorders and headache), echocardiography, and pulmonary. Educational courses: Integrative wellness courses are also offered.",
-        floorSuite: "4th floor, suite 422",
-        phone: "(617) 732–9700",
-    },
-    {
-        service: "Patient Financial Services",
-        specialties: "Patient financial counselling (Payment, Insurance, Billing questions)",
-        floorSuite: "2nd floor, suite 204-B",
-        phone: "(617) 732–9677",
-    },
-    {
-        service: "Pharmacy (Monday - Friday, 9 am-4 pm excluding holidays)",
-        specialties: "Outpatient Pharmacy Service",
-        floorSuite: "3rd floor, suite 317",
-        phone: "(617) 732–9040",
-    },
-    {
-        service: "Radiology",
-        specialties: "Bone Density, Breast Imaging/Mammography, Ultrasound, X-Ray",
-        floorSuite: "5th floor, suite 560",
-        phone: "(617) 732–9801",
-    },
-    {
-        service: "Radiology, MRI/CT scan",
-        specialties: "CT scan, MRI, X-Ray",
-        floorSuite: "1st floor, suite 102-B",
-        phone: "(617) 732–9821",
-    },
-    {
-        service: "Rehabilitation Services",
-        specialties:
-            "Orthopedic, sports, neurologic and vestibular Physical Therapy, Men's and Women's pelvic floor Physical Therapy. Hand/Occupational, Therapy Speech Language Pathology",
-        floorSuite: "2nd floor, suite 200",
-        phone: "(617) 732–9525",
-    },
-];
+// const chestnutData: Entry[] = [
+//     {
+//         name: "Allergy and Clinical Immunology",
+//         services:
+//             "Allergy, Environmental, Food, Medication, Venoms, Asthma, Anaphylaxis, Angioedema, Sinusitis, Immunodeficiency",
+//         room: "3rd floor, suite 301 & 5th floor, suite 540",
+//         telephone: "(617) 732–9850",
+//     },
+//     {
+//         name: "Child Care Center (Mon–Fri, 8 a.m.–4:30 p.m.)",
+//         services: "Backup childcare for employees",
+//         room: "2nd floor, suite 210",
+//         telephone: "(617) 732–9543",
+//     },
+//     {
+//         name: "Brigham Dermatology Associates (BDA)",
+//         services: "Medical and surgical dermatology",
+//         room: "3rd floor, suite 317",
+//         telephone: "(617) 732–9080",
+//     },
+//     {
+//         name: "Brigham Obstetrics and Gynecology Group (BOGG)",
+//         services: "Gynecology, Obstetrics",
+//         room: "5th floor, suite 575",
+//         telephone: "(617) 732–9100",
+//     },
+//     {
+//         name: "Brigham Physicians Group (BPG)",
+//         services: "Adult Primary Care",
+//         room: "4th floor, suite 428 & 5th floor, suite 530",
+//         telephone: "(617) 732–9900",
+//     },
+//     {
+//         name: "Brigham Psychiatric Specialities",
+//         services: "Psychiatry, Psychology, Social Work",
+//         room: "3rd floor, suite 303",
+//         telephone: "(617) 732–9811",
+//     },
+//     {
+//         name: "Center for Pain Medicine",
+//         services: "Multidisciplinary pain management",
+//         room: "3rd floor, suite 320",
+//         telephone: "(617) 732–9060",
+//     },
+//     {
+//         name: "Crohn's and Colitis Center",
+//         services:
+//             "Crohn's disease, Inflammatory bowel disease, Infusion services, Microscopic colitis, Pulmonary, Rheumatology, Ulcerative colitis",
+//         room: "2nd floor, suite 201",
+//         telephone: "(617) 732–6389",
+//     },
+//     {
+//         name: "Endoscopy Center",
+//         services:
+//             "Bacterial overgrowth breath test, colonoscopy, H. pylori breath test, lactose malabsorption breath test, upper endoscopy",
+//         room: "2nd floor, suite 202",
+//         telephone: "(617) 732–7426",
+//     },
+//     {
+//         name: "Gretchen S. and Edward A. Fish Center for Women's Health",
+//         services:
+//             "Cardiology, Dermatology (cosmetic, medical, and surgical), Endocrinology, Gastroenterology, Gynecology, Hematology, Infectious Diseases, Mental Health (social work), General neurology, Nutrition, Primary care, Pulmonary, Renal, Rheumatology, Sleep medicine, Women's Health (Menopause and Midlife Clinic, Obstetric Internal Medicine)",
+//         room: "4th floor, suite 402",
+//         telephone: "(617) 732–9300",
+//     },
+//     {
+//         name: "Laboratory (Mon–Fri, 7 a.m.–7 p.m.; Sat, 7 a.m.–3 p.m.)",
+//         services: "Blood work, lab services",
+//         room: "1st floor, suite 100",
+//         telephone: "(617) 732–9841",
+//     },
+//     {
+//         name: "Multi-Specialty Clinic",
+//         services:
+//             "Orthopedic surgery, Vascular surgery, Contact Dermatitis and Occupational Dermatology Program, Pain Medicine and Travel Medicine",
+//         room: "1st floor, suite 130",
+//         telephone: "(617) 732–9500",
+//     },
+//     {
+//         name: "Osher Clinical Center for Integrative Health",
+//         services:
+//             "Acupuncture, health coaching, chiropractic, craniosacral therapy, integrative medicine, structural massage & movement therapies, neurology (movement disorders and headache), echocardiography, and pulmonary. Educational courses: Integrative wellness courses are also offered.",
+//         room: "4th floor, suite 422",
+//         telephone: "(617) 732–9700",
+//     },
+//     {
+//         name: "Patient Financial Services",
+//         services: "Patient financial counselling (Payment, Insurance, Billing questions)",
+//         room: "2nd floor, suite 204-B",
+//         telephone: "(617) 732–9677",
+//     },
+//     {
+//         name: "Pharmacy (Monday - Friday, 9 am-4 pm excluding holidays)",
+//         services: "Outpatient Pharmacy Service",
+//         room: "3rd floor, suite 317",
+//         telephone: "(617) 732–9040",
+//     },
+//     {
+//         name: "Radiology",
+//         services: "Bone Density, Breast Imaging/Mammography, Ultrasound, X-Ray",
+//         room: "5th floor, suite 560",
+//         telephone: "(617) 732–9801",
+//     },
+//     {
+//         name: "Radiology, MRI/CT scan",
+//         services: "CT scan, MRI, X-Ray",
+//         room: "1st floor, suite 102-B",
+//         telephone: "(617) 732–9821",
+//     },
+//     {
+//         name: "Rehabilitation Services",
+//         services:
+//             "Orthopedic, sports, neurologic and vestibular Physical Therapy, Men's and Women's pelvic floor Physical Therapy. Hand/Occupational, Therapy Speech Language Pathology",
+//         room: "2nd floor, suite 200",
+//         telephone: "(617) 732–9525",
+//     },
+// ];
+const chestnutData: Entry[] = (await axios.get(API_ROUTES.DEPARTMENT+"/hospital/0")).data;
 
 const patriotData: Entry[] = [
     {
-        service: "Day Surgery Center",
-        specialties:
+        name: "Day Surgery Center",
+        services:
             "Electromyograph(EMG), Nutrion, Pain Medicine, Physiatry, Pulmonary Function Testing, Blood Draw/Phlebotomy, Community Room, Primary",
-        floorSuite: "20 & 22 Patriot Place, 4th floor",
-        phone: "",
+        room: "20 & 22 Patriot Place, 4th floor",
+        telephone: "",
     },
     {
-        service: "Surgical Specialities",
-        specialties: "Audiology, ENT, Genereal and Gastrointestinal Surgery, Plastic Surgery, Thoracic Surgery, Vascular Surgery, Weight Management and Wellness",
-        floorSuite: "20 Patriot Place, 3rd floor",
-        phone: "",
+        name: "Surgical Specialities",
+        services: "Audiology, ENT, Genereal and Gastrointestinal Surgery, Plastic Surgery, Thoracic Surgery, Vascular Surgery, Weight Management and Wellness",
+        room: "20 Patriot Place, 3rd floor",
+        telephone: "",
     },
     {
-        service: "Sports Medicine Center",
-        specialties: "X-Ray Suite",
-        floorSuite: "20 Patriot Place, 3rd floor",
-        phone: "",
+        name: "Sports Medicine Center",
+        services: "X-Ray Suite",
+        room: "20 Patriot Place, 3rd floor",
+        telephone: "",
     },
     {
-        service: "Multi Specialty Clinic",
-        specialties: "Allergy, Cardiac Arrhythmia, Dermatology, Endocrinology, Gastroenterology, Kidney (Renal) Medicine, Neurology, Neurosurgery, Ophthalmology, Optometry, Pulmonology, Rheumatology, Women's Health, Patient Financial Seervices",
-        floorSuite: "22 Patriot Place, 3rd floor",
-        phone: "",
+        name: "Multi Specialty Clinic",
+        services: "Allergy, Cardiac Arrhythmia, Dermatology, Endocrinology, Gastroenterology, Kidney (Renal) Medicine, Neurology, Neurosurgery, Ophthalmology, Optometry, Pulmonology, Rheumatology, Women's Health, Patient Financial Seervices",
+        room: "22 Patriot Place, 3rd floor",
+        telephone: "",
     },
     {
-        service: "Orthopaedics",
-        specialties: "Hand and Upper Extremity, Arthroplasty, Pediatric Trauma, Physiatry, Podiatry",
-        floorSuite: "20 Patriot Place, 2nd floor",
-        phone: "",
+        name: "Orthopaedics",
+        services: "Hand and Upper Extremity, Arthroplasty, Pediatric Trauma, Physiatry, Podiatry",
+        room: "20 Patriot Place, 2nd floor",
+        telephone: "",
     },
     {
-        service: "Rehabilitation Services",
-        specialties: "Cardiac Rehab, Occupational Therapy (Hand and Upper Extremity), Physical Therapy, Speech - Language, Clinical Lab, Surgi-Care",
-        floorSuite: "20 Patriot Place, 2nd floor",
-        phone: "",
+        name: "Rehabilitation Services",
+        services: "Cardiac Rehab, Occupational Therapy (Hand and Upper Extremity), Physical Therapy, Speech - Language, Clinical Lab, Surgi-Care",
+        room: "20 Patriot Place, 2nd floor",
+        telephone: "",
     },
     {
-        service: "Urgent Care Center",
-        specialties:
+        name: "Urgent Care Center",
+        services:
             "Blood Draw/Phlebotomy, Pharmacy, Radiology, Cardiovascular Services, Urology",
-        floorSuite: "20 Patriot Place, 1st floor",
-        phone: "",
+        room: "20 Patriot Place, 1st floor",
+        telephone: "",
     },
 ];
 
@@ -369,17 +372,17 @@ const VoiceDirectory: React.FC = () => {
                     <div className="flex-1 overflow-y-auto pr-1">
                         <ul className="space-y-1">
                             {filtered.map((item) => (
-                                <li key={item.service}>
+                                <li key={item.name}>
                                     <Button
                                         variant="ghost"
                                         className={`w-full justify-start rounded-md px-3 py-2 text-left ${
-                                            selected.service === item.service
+                                            selected.name === item.name
                                                 ? "bg-blue-50 font-semibold text-blue-900"
                                                 : "bg-white text-black hover:bg-blue-900 hover:text-white" // hover
                                         }`}
                                         onClick={() => setSelected(item)}
                                     >
-                                        {item.service}
+                                        {item.name}
                                     </Button>
                                 </li>
                             ))}
@@ -390,13 +393,13 @@ const VoiceDirectory: React.FC = () => {
                 {/* RIGHT column */}
                 <div className="w-8/12 p-10 overflow-y-auto flex-1 grow border-l-4 border-[#012D5A] shadow-md bg-[#F1F1F1]">
                     <h1 className="text-3xl font-bold text-blue-900 mb-6">
-                        {selected.service}
+                        {selected.name}
                     </h1>
 
                     <section className="mb-8">
                         <h2 className="text-xl font-semibold mb-3">Services</h2>
                         <ul className="list-disc list-inside space-y-1">
-                            {selected.specialties.split(/[,•]/).map((s) => (
+                            {selected.services.split(/,\s*(?![^()]*\))/).map((s) => (
                                 <li key={s.trim()}>{s.trim()}</li>
                             ))}
                         </ul>
@@ -407,17 +410,17 @@ const VoiceDirectory: React.FC = () => {
                             <h2 className="text-xl font-semibold mb-1">
                                 Floor&nbsp;&amp;&nbsp;Suite
                             </h2>
-                            <p>{selected.floorSuite}</p>
+                            <p>{selected.room}</p>
                         </div>
 
                         <div>
                             <h2 className="text-xl font-semibold mb-1">Contact</h2>
-                            {selected.phone ? (
+                            {selected.telephone ? (
                                 <a
-                                    href={`tel:${selected.phone.replace(/\D/g, "")}`}
+                                    href={`tel:${selected.telephone.replace(/\D/g, "")}`}
                                     className="text-blue-700 hover:underline"
                                 >
-                                    {selected.phone}
+                                    {selected.telephone}
                                 </a>
                             ) : (
                                 <p className="text-gray-600">N/A</p>
