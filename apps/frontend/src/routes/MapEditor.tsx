@@ -29,6 +29,10 @@ import {
 import {Button} from "@/components/ui/button.tsx";
 import { Input } from '@/components/ui/input.tsx';
 
+import {faCrosshairs, faSave, faUndo, faRedo} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+
 export class EditorEncapsulator {
     editorGraphs: EditorGraph[];
 
@@ -167,19 +171,25 @@ export default function MapEditor() {
                             <Separator className="mt-4 mb-4" />
 
                             <div className="flex flex-wrap">
-                                <Button className="m-2 bg-blue-900 border-2 border-amber-600" onClick={handleZoom}>
-                                    Zoom
+                                <Button className="m-2 flex-1 grow bg-blue-900 border-2 border-amber-600" onClick={handleZoom}>
+                                    <FontAwesomeIcon icon={faCrosshairs} />
+                                    Re-center
                                 </Button>
                                 <Separator className="" orientation="vertical" />
-                                <Button className="m-2 bg-blue-900 border-2 border-amber-600" onClick={handleSave}>
+                                <Button className="m-2 flex-1 grow bg-blue-900 border-2 border-amber-600" onClick={handleSave}>
+                                    <FontAwesomeIcon icon={faSave} />
                                     Save
                                 </Button>
-                                <Separator className="" orientation="vertical" />
-                                <Button className="m-2 bg-blue-900 border-2 border-amber-600" onClick={() => map?.undo()}>
+                            </div>
+                            <Separator className="w-full" orientation="horizontal" />
+                            <div className="flex flex-wrap">
+                                <Button className="m-2 flex-1 grow bg-blue-900 border-2 border-amber-600" onClick={() => map?.undo()}>
+                                    <FontAwesomeIcon icon={faUndo} />
                                     Undo
                                 </Button>
                                 <Separator className="" orientation="vertical" />
-                                <Button className="m-2 bg-blue-900 border-2 border-amber-600" onClick={() => map?.redo()}>
+                                <Button className="m-2 flex-1 grow bg-blue-900 border-2 border-amber-600" onClick={() => map?.redo()}>
+                                    <FontAwesomeIcon icon={faRedo} />
                                     Redo
                                 </Button>
                             </div>

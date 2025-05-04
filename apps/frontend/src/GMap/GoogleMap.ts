@@ -2215,8 +2215,16 @@ export class EditorMap extends GoogleMap {
             }
             bounds.extend({lat: node.lat, lng: node.lng});
         });
+        // Account for height of navbar
+        const ne = bounds.getNorthEast();
+        const sw = bounds.getSouthWest();
+        const height = ne.lat() - sw.lat();
+        bounds.extend({
+            lat: sw.lat() - (height * 0.1),
+            lng: sw.lng(),
+        });
         this.map.fitBounds(bounds);
-        this.map.setZoom((this.map.getZoom() || 10) - 1);
+        // this.map.setZoom((this.map.getZoom() || 10));
 
         // if (this.currentGraphId?.toString() && this.editorEncapsulator) {
         //     const node = this.editorEncapsulator.editorGraphs.find(graph => graph.graphId === this.currentGraphId)?.Nodes[0];

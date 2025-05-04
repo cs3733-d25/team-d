@@ -41,7 +41,6 @@ app.use(API_ROUTES.HEALTHCHECK, healthcheckRouter);
 app.use(API_ROUTES.ASSIGNED, assignedRouter);
 app.use(API_ROUTES.EDITOR, editorRouter);
 
-
 /**
  * All routers here should be accessible for both ONLY (!!!) logIned users
  */
