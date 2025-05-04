@@ -1,6 +1,5 @@
 import '../styles/styles.css';
 import React from 'react';
-import {CardContent, CardTitle} from "@/components/ui/card.tsx";
 import {Label} from "@/components/ui/label.tsx";
 
 
