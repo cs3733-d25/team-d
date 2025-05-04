@@ -25,6 +25,7 @@ import Statistics from "@/routes/Statistics.tsx";
 import DetailPost from '@/routes/Forum/DetailPost.tsx';
 
 import AllPost from "@/routes/Forum/AllPost.tsx";
+import HospitalDirectory from '@/routes/hospitalDirectory.tsx';
 function App() {
     return (
         <div className="h-screen bg-accent flex flex-col parent">
