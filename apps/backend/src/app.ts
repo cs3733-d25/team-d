@@ -9,6 +9,7 @@ import servicereqsRouter from './routes/servicereqs.ts';
 import directoryRouter from './routes/directory.ts';
 import pathfindRouter from './routes/pathfind.ts';
 import editorRouter from './routes/editor.ts';
+import forumRouter from './routes/forum.ts';
 // import pathfindingRouter from './routes/pathfinding.ts';
 
 import { auth } from 'express-oauth2-jwt-bearer';
@@ -33,6 +34,7 @@ app.use(cookieParser()); // Cookie parser
 /**
  * All routers here should be accessible for both logIned and non-logedIn users
  */
+app.use(API_ROUTES.FORUM, forumRouter);
 app.use(API_ROUTES.PATHFIND, pathfindRouter);
 app.use(API_ROUTES.DEPARTMENT, directoryRouter);
 app.use(API_ROUTES.SERVICEREQS, servicereqsRouter);

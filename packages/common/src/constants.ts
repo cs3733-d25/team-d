@@ -7,6 +7,7 @@ export const API_ROUTES = {
     PATHFIND: '/api/pathfind',
     PATHFINDING: '/api/pathfinding',
     EDITOR: '/api/editor',
+    FORUM: '/api/forum',
 };
 
 export type Coordinates = {

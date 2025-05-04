@@ -22,7 +22,9 @@ import MapEditor from "@/routes/MapEditor.tsx";
 import EmployeeDirectory from "@/routes/EmployeeDirectory.tsx";
 import Statistics from "@/routes/Statistics.tsx";
 
+import DetailPost from '@/routes/Forum/DetailPost.tsx';
 
+import AllPost from "@/routes/Forum/AllPost.tsx";
 function App() {
     return (
         <div className="h-screen bg-accent flex flex-col parent">
@@ -36,10 +38,13 @@ function App() {
                         <Route path="directory" element={<NewDirections />} />
                         <Route path="citations" element={<Citations />} />
                         <Route path="servicerequesthub" element={<ServiceRequestHub />} />
+                        <Route path="hospital-directory" element={<HospitalDirectory />} />
                         <Route path="admin-settings" element={<AdminSettings />} />
                         <Route path="employee-page" element={<EmployeeDirectory />} />
                         <Route path="about" element={<About />} />
                         <Route path="voice-directory" element={<VoiceDirectory />} />
+
+                        <Route path="all-post" element={<AllPost />} />
 
 
                         {/* Protected routes wrapped in ProtectedRoute */}
@@ -51,6 +56,8 @@ function App() {
                             <Route path="all-service-requests" element={<AllServiceRequests />} />
                             <Route path="profile" element={<Auth0Profile />} />
                         </Route>
+
+                        <Route path="detailed-post" element={<DetailPost />} />
 
                         <Route path="*" element={<NotFound />} />
                     </Route>

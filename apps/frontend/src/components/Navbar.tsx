@@ -86,6 +86,12 @@ export default function Navbar() {
                                 </NavigationMenuLink>
                             </NavigationMenuItem>
 
+                            <NavigationMenuItem>
+                                <NavigationMenuLink className={'text-base hover:bg-[rgba(0,31,63,0.8)] hover:text-white'}>
+                                    <Link to={`/all-post`}>Forum</Link>
+                                </NavigationMenuLink>
+                            </NavigationMenuItem>
+
                             {isAuthenticated && (
                                 <>
                                     <NavigationMenuItem>
