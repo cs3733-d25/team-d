@@ -66,10 +66,10 @@ router.get('/user/:email', async function (req: Request, res: Response) {
         },
     });
     // If no profiles are found, send 204 and log it
-    // if (employee == null) {
-    //     console.error(`No employee found in database with email ${userEmail}!`);
-    //     res.sendStatus(204);
-    // }
+    if (employee == null) {
+        console.error(`No employee found in database with email ${userEmail}!`);
+        res.sendStatus(204);
+    }
     // Otherwise send 200 and the data
     {
         console.log(employee);

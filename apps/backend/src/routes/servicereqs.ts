@@ -515,6 +515,36 @@ router.get('/:id', async function (req: Request, res: Response) {
     }
 });
 
+// Return all service request under an employee email
+router.get('/employee/:email', async function (req: Request, res: Response) {
+    // parse email into variable
+    const userEmail: string = encodeURI(req.params.email);
+
+    const employee = await PrismaClient.employee.findUnique({
+        where: {
+            email: userEmail,
+        },
+    });
+
+    console.log(userEmail);
+    // find profile with email
+    const requests = await PrismaClient.serviceRequest.findMany({
+        where: {
+            employeeRequestedById: employee?.employeeId,
+        },
+    });
+    // If no profiles are found, send 204 and log it
+    if (employee == null) {
+        console.error(`No employee found in database with email ${userEmail}!`);
+        res.sendStatus(204);
+    }
+    // Otherwise send 200 and the data
+    {
+        console.log(requests);
+        res.json(requests);
+    }
+});
+
 // Update service request with specified id
 router.put('/:id', async function (req: Request, res: Response) {
     // parse id into variable
