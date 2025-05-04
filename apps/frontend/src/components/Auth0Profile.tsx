@@ -3,8 +3,6 @@ import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
 
 import {useNavigate} from "react-router-dom";
-import Directions from "@/routes/Directions.tsx";
-import AdminDatabase from "@/routes/AdminDatabase.tsx";
 
 export type Employee = {
     employeeId: number;

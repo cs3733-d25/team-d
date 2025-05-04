@@ -1,7 +1,6 @@
 import React from 'react';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faFacebook, faInstagram, faLinkedin, faSquareXTwitter, faYoutube} from "@fortawesome/free-brands-svg-icons";
-import {NavigationMenuItem, NavigationMenuLink} from "@/components/ui/navigation-menu.tsx";
 import {Link} from "react-router-dom";
 
 //
@@ -125,6 +124,13 @@ export default function Footer() {
                                 </a>
                             </div>
                         </div>
+                    </div>
+
+                    <div className="text-center border-t border-gray-400 mt-5 pt-3">
+                        <p className="text-sm text-gray-300">
+                            Special thanks to <span className="font-semibold text-gray-100">Brigham and Women’s Hospital</span> and their representative,
+                            <span className="font-semibold text-gray-100"> Andrew Shinn – Senior Planner</span>, for their valuable time and input.
+                        </p>
                     </div>
                 </div>
             </footer>

@@ -45,7 +45,7 @@ const members: Person[] = [
     },
     { name: "Brandon Small",  position: "Front-End & Feature Engineer • Scrum Master", photo: BrandonImg, quote: "\"Sometimes... the journey is umm, sometimes, friends..., real journey is friends along the way\"" },
     { name: "Delia Jasper",   position: "Front-End & Feature Engineer", photo: DeliaImg, quote: "I like Trains" },
-    { name: "Lucien La Rock", position: "Front-End & Feature Engineer • Project Manager", photo: LucienImg, quote: "I like Trains" },
+    { name: "Lucien La Rock", position: "Front-End & Feature Engineer • Project Manager", photo: LucienImg, quote: "\"There's a reason you guys are last\"-Professor Wong" },
     { name: "Christine Ngo",  position: "Back-End Database Engineer & Product Owner", photo: ChristineImg, quote: "I like Trains" },
     { name: "Ali Riad",       position: "Algorithms & Feature Engineer", photo: AliImg, quote: "I like Trains" },
     { name: "Jiaming Du",     position: "Algorithms & Feature Engineer", photo: JiamingImg, quote: "I like Trains" },

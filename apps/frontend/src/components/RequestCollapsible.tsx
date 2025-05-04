@@ -18,24 +18,12 @@ const RequestCollapsible: React.FC<RequestCollapsibleProps> = ({ID,requestType})
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const [translatorRes, equipmentRes, securityRes, sanitationRes] = await Promise.all([
-                    axios.get(API_ROUTES.SERVICEREQS + "/translator"),
-                    axios.get(API_ROUTES.SERVICEREQS + "/equipment"),
-                    axios.get(API_ROUTES.SERVICEREQS + "/security"),
-                    axios.get(API_ROUTES.SERVICEREQS + "/sanitation"),
-                ]);
-                const allRequests: ServiceRequest[] = [
-                    ...translatorRes.data,
-                    ...equipmentRes.data,
-                    ...securityRes.data,
-                    ...sanitationRes.data,
-                ];
-                setRequests(allRequests);
+                const allRequests = await axios.get(API_ROUTES.SERVICEREQS);
+                setRequests(allRequests.data);
             } catch (error) {
                 console.error("Error fetching service requests:", error);
             }
         };
-
         fetchData();
     }, []);
     return (

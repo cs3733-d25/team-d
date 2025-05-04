@@ -1,7 +1,4 @@
 import React from 'react';
-import {Card} from "@/components/ui/card.tsx";
-import Auth0LoginButton from "@/components/Auth0LoginButton.tsx";
-
 
 export default function HeroTextBox(){
     return(

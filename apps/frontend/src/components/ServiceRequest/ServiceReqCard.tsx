@@ -3,7 +3,7 @@ import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog.tsx
 
 type ServiceRequestCardProps = {
     title: string;
-    image: any;
+    image: unknown;
     popupComponent: React.ReactNode;
 };
 

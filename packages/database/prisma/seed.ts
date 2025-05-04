@@ -29,7 +29,10 @@ async function main() {
                 middleInitial: 'L',
                 lastName: 'Smith',
                 occupation: 'Administrator',
-                userType: 'Admin'
+                userType: 'Admin',
+                dateOfBirth: new Date('2000-04-01T00:07:00.639Z'),
+                phoneNumber: '122333444',
+                pronoun: 'they/them'
             }
         }),
         await prisma.employee.upsert({
@@ -41,7 +44,10 @@ async function main() {
                 middleInitial: 'K',
                 lastName: 'Haven',
                 occupation: 'Administrator',
-                userType: 'Admin'
+                userType: 'Admin',
+                dateOfBirth: new Date('2001-05-01T00:00:00.000Z'),
+                phoneNumber: '15556667777',
+                pronoun: 'they/them'
             }
         }),
         await prisma.employee.upsert({
@@ -53,7 +59,10 @@ async function main() {
                 middleInitial: 'A',
                 lastName: 'Long',
                 occupation: 'Nurse',
-                userType: 'Staff'
+                userType: 'Staff',
+                dateOfBirth: new Date('2000-06-01T22:07:00.639Z'),
+                phoneNumber: '18889991637',
+                pronoun: 'they/them'
             }
         }),
         await prisma.employee.upsert({
@@ -65,7 +74,10 @@ async function main() {
                 middleInitial: 'R',
                 lastName: 'Lee',
                 occupation: 'Administrator',
-                userType: 'Staff'
+                userType: 'Staff',
+                dateOfBirth: new Date('2000-07-01T22:07:00.639Z'),
+                phoneNumber: '188899911789',
+                pronoun: 'they/them'
             }
         }),
         await prisma.employee.upsert({
@@ -77,7 +89,10 @@ async function main() {
                 middleInitial: 'K',
                 lastName: 'Ramos',
                 occupation: 'Doctor',
-                userType: 'Staff'
+                userType: 'Staff',
+                dateOfBirth: new Date('2000-08-01T22:07:00.639Z'),
+                phoneNumber: '122345444',
+                pronoun: 'they/them'
             }
         })
     ];
