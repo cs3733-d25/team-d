@@ -1232,7 +1232,7 @@ async function main() {
             },
             {
                 departmentId: 51,
-                name: 'Information',
+                name: 'Information - 1st Floor',
                 floorNum: 1,
                 room: '',
                 lat: 42.30152163246584,
@@ -1540,7 +1540,7 @@ async function main() {
             },
             {
                 departmentId: 79,
-                name: 'Information',
+                name: 'Information - 3rd Floor',
                 floorNum: 3,
                 room: '',
                 lat: 42.30152163246584,
@@ -1705,7 +1705,7 @@ async function main() {
             },
             {
                 departmentId: 94,
-                name: 'Primary Care Physicians',
+                name: 'Primary Care Physicians - 4th Floor',
                 floorNum: 4,
                 room: '',
                 lat: 42.30152163246584,
@@ -1870,7 +1870,7 @@ async function main() {
             },
             {
                 departmentId: 109,
-                name: 'Primary Care Physicians',
+                name: 'Primary Care Physicians - 5th Floor',
                 floorNum: 5,
                 room: '',
                 lat: 42.30152163246584,
