@@ -1,4 +1,5 @@
 import React from "react";
+import { useState } from "react";
 
 import AliImg from "../public/team/Ali.jpg";
 import ChristineImg from "../public/team/Christine.jpg";
@@ -14,58 +15,83 @@ import DeliaImg from "../public/team/Delia.jpg";
 import WongImg from "../public/team/Wong.jpg";
 import KatyImg from "../public/team/Katy.jpg";
 
-
+//for the 1000th Commit
 type Person = {
     name: string;
     position: string;
     photo?: string;
+    quote: string;
 };
 
 const faculty: Person[] = [
-    { name: "Prof. Wilson Wong", position: "Course Instructor", photo: WongImg },
-    { name: "Katy Stuparu",      position: "Team Coach", photo: KatyImg },
+    { name: "Prof. Wilson Wong", position: "Course Instructor", photo: WongImg, quote: "\" You guys are last for a reason \"" },
+    { name: "Katy Stuparu",      position: "Team Coach", photo: KatyImg, quote: "I like Trains" },
 ];
 
 const members: Person[] = [
     // Co-Leads
-    { name: "Jacob Boyle", position: "Co-Lead", photo: JacobImg },
-    { name: "Thanh Ho",    position: "Co-Lead", photo: EmmaImg },
+    { name: "Jacob Boyle", position: "Co-Lead", photo: JacobImg, quote: "I like Trains" },
+    { name: "Thanh Ho",    position: "Co-Lead", photo: EmmaImg, quote: "I like Trains" },
 
     // Assistant Leads
-    { name: "Margareth Hosie",       position: "Assistant Lead for Back-End", photo: MaggieImg },
-    { name: "Keerthana Jayamoorthy", position: "Assistant Lead for Front-End", photo: KeethuImg },
+    { name: "Margareth Hosie",       position: "Assistant Lead for Back-End", photo: MaggieImg, quote: "I like Trains" },
+    { name: "Keerthana Jayamoorthy", position: "Assistant Lead for Front-End", photo: KeethuImg, quote: "I like Trains" },
 
     // Team
     {
         name:     "Stuvat Dash",
         position: "Front-End & Feature Software Engineer",
-        photo:    StuvatImg,
+        photo:    StuvatImg, quote: "I like Trains"
     },
-    { name: "Brandon Small",  position: "Front-End & Feature Engineer • Scrum Master", photo: BrandonImg },
-    { name: "Delia Jasper",   position: "Front-End & Feature Engineer", photo: DeliaImg },
-    { name: "Lucien La Rock", position: "Front-End & Feature Engineer • Project Manager", photo: LucienImg },
-    { name: "Christine Ngo",  position: "Back-End Database Engineer & Product Owner", photo: ChristineImg },
-    { name: "Ali Riad",       position: "Algorithms & Feature Engineer", photo: AliImg },
-    { name: "Jiaming Du",     position: "Algorithms & Feature Engineer", photo: JiamingImg },
+    { name: "Brandon Small",  position: "Front-End & Feature Engineer • Scrum Master", photo: BrandonImg, quote: "\"Sometimes... the journey is umm, sometimes, friends..., real journey is friends along the way\"" },
+    { name: "Delia Jasper",   position: "Front-End & Feature Engineer", photo: DeliaImg, quote: "I like Trains" },
+    { name: "Lucien La Rock", position: "Front-End & Feature Engineer • Project Manager", photo: LucienImg, quote: "\"There's a reason you guys are last\"-Professor Wong" },
+    { name: "Christine Ngo",  position: "Back-End Database Engineer & Product Owner", photo: ChristineImg, quote: "I like Trains" },
+    { name: "Ali Riad",       position: "Algorithms & Feature Engineer", photo: AliImg, quote: "I like Trains" },
+    { name: "Jiaming Du",     position: "Algorithms & Feature Engineer", photo: JiamingImg, quote: "I like Trains" },
 ];
 
-/*  Card component */
-const Card: React.FC<Person> = ({ name, position, photo }) => (
-    <div className="flex flex-col items-center p-4 bg-white rounded-xl shadow-md hover:shadow-lg transition">
-        {photo ? (
-            <img
-                src={photo}
-                alt={name}
-                className="w-24 h-24 rounded-full object-cover mb-3 shrink-0"
-            />
-        ) : (
-            <div className="w-24 h-24 rounded-full bg-gray-200 mb-3 shrink-0" />
-        )}
 
-        <h3 className="text-lg font-semibold text-center">{name}</h3>
-        <p className="text-sm text-gray-600 text-center">{position}</p>
-    </div>
-);
+const FlipCard: React.FC<Person> = ({ name, position, photo, quote }) => {
+    const [flipped, setFlipped] = useState(false);
+
+    return (
+        <div
+            className="w-80 h-48 cusor-pointer "
+            style = {{perspective: "1000px"}}
+            onClick={() => setFlipped(!flipped)}
+        >
+            <div
+                className={`relative w-full h-full duration-700 transition-transform ${
+                    flipped ? "[transform:rotateY(180deg)]" : ""
+                }`}
+                style={{transformStyle: "preserve-3d"}}
+            >
+                <div className="absolute w-full h-full bg-white border rounded-xl shadow-md flex items-center justify-center"
+                     style={{backfaceVisibility: "hidden"}}>
+                    {/*Front*/}
+                    <div className="flex flex-col items-center">
+                        <img
+                            src={photo}
+                            alt={name}
+                            className="w-24 h-24 rounded-full object-cover mb-3 shrink-0"
+                        />
+                        <h3 className="text-lg font-semibold text-center">{name}</h3>
+                        <p className="text-sm text-gray-600 text-center">{position}</p>
+                    </div>
+                </div>
+                {/*Back*/}
+                <div className="absolute w-full h-full bg-white border rounded-xl shadow-md flex items-center justify-center"
+                     style={{
+                         transform: "rotateY(180deg)",
+                         backfaceVisibility: "hidden",
+                     }}>
+                    <p className="text-lg font-semibold">{quote}</p>
+                </div>
+            </div>
+        </div>
+    );
+}
 
 /*  Page component */
 const About: React.FC = () => (
@@ -83,14 +109,14 @@ const About: React.FC = () => (
         {/* Faculty */}
         <section className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-3xl w-full mb-12">
             {faculty.map((p) => (
-                <Card key={p.name} {...p} />
+                <FlipCard key={p.name} {...p} />
             ))}
         </section>
 
         {/* Team-member grid */}
         <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl w-full">
             {members.map((p) => (
-                <Card key={p.name} {...p} />
+                <FlipCard key={p.name} {...p} />
             ))}
         </section>
 

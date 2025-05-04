@@ -274,7 +274,7 @@ const HospitalDirectory: React.FC = () => {
                     </h1>
 
                     <section className="mb-8">
-                        <h2 className="text-xl font-semibold mb-3">Services</h2>
+                        <h2 className="text-xl font-semibold mb-3 b-1 border-2 border-amber-600 rounded-md inline-block ">Services</h2>
                         <ul className="list-disc list-inside space-y-1">
                             {selected.specialties.split(/[,•]/).map((s) => (
                                 <li key={s.trim()}>{s.trim()}</li>
@@ -284,7 +284,7 @@ const HospitalDirectory: React.FC = () => {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
                         <div>
-                            <h2 className="text-xl font-semibold mb-1">Floor&amp;Suite</h2>
+                            <h2 className="text-xl font-semibold mb-1 ">Floor&amp;Suite</h2>
                             <p>{selected.floorSuite}</p>
                         </div>
 

@@ -5,11 +5,15 @@ import { Input } from "@/components/ui/input";
 import { Mic, MicOff } from "lucide-react";
 import beep from "../components/beep.mp3";
 
+// import {SpeechRecognition} from 'dom-speech-recognition';
+// import SpeechRecognition from "react-speech-recognition";
+// import web
 /* Browser type helpers */
+// TODO
 declare global {
     interface Window {
-        webkitSpeechRecognition: any;
-        SpeechRecognition: any;
+        webkitSpeechRecognition: unknown;
+        SpeechRecognition: unknown;
     }
 }
 
@@ -213,7 +217,8 @@ const VoiceDirectory: React.FC = () => {
     }, [filtered, selected]);
 
     /* Voice search */
-    const recognitionRef = useRef<any>(null);
+    // TODO
+    const recognitionRef = useRef<unknown>(null);
     const [listening, setListening] = useState(false);
 
     useEffect(() => {
@@ -226,12 +231,15 @@ const VoiceDirectory: React.FC = () => {
         recognitionRef.current.lang = "en-US";
         recognitionRef.current.maxAlternatives = 1;
 
+        // TODO
         recognitionRef.current.onstart = () => setListening(true);
-        recognitionRef.current.onresult = (e: any) => {
+        recognitionRef.current.onresult = (e: unknown) => {
             const spoken = e.results[0][0].transcript;
             setQuery(spoken);
         };
-        recognitionRef.current.onerror = (e: any) =>
+
+        // TODO
+        recognitionRef.current.onerror = (e: unknown) =>
             console.error("Speech error:", e.error);
         recognitionRef.current.onend = () => setListening(false);
     }, []);
@@ -290,7 +298,7 @@ const VoiceDirectory: React.FC = () => {
                             placeholder="Search services or specialties…"
                             value={query}
                             onChange={(e) => setQuery(e.target.value)}
-                            className="flex-1 grow border-2 border-[#012D5A] rounded-md shadow-md bg-[#F1F1F1]"
+                            className="flex-1 h-12 pt-2 pb-2 grow border-2 border-[#012D5A] rounded-md shadow-md bg-[#F1F1F1]"
                         />
 
                         {/* mic button */}
@@ -300,11 +308,11 @@ const VoiceDirectory: React.FC = () => {
                                 play();
                             }}
                             aria-label="voice search"
-                            className={`absolute top-0.5 right-3 w-8 h-8 flex items-center justify-center rounded-full border transition-colors
+                            className={`absolute top-2 right-3 w-8 h-8 flex items-center justify-center rounded-full border transition-colors
                         ${
                                 listening
-                                    ? "bg-blue-900 text-white border-blue-900"
-                                    : "bg-white text-blue-900 border-blue-900"
+                                    ? "p -2 bg-blue-900 text-white border-blue-900"
+                                    : "p-2 bg-white text-blue-900 border-blue-900"
                             }`}
                         >
                             {listening ? <MicOff size={18} /> : <Mic size={18} />}
@@ -321,7 +329,7 @@ const VoiceDirectory: React.FC = () => {
                                         className={`w-full justify-start rounded-md px-3 py-2 text-left ${
                                             selected.service === item.service
                                                 ? "bg-blue-50 font-semibold text-blue-900"
-                                                : "bg-white text-black hover:bg-blue-900 hover:text-white" // hover
+                                                : "bg-white text-black hover:bg-blue-900 hover:border-amber-600 hover:text-white" // hover
                                         }`}
                                         onClick={() => setSelected(item)}
                                     >
@@ -340,7 +348,7 @@ const VoiceDirectory: React.FC = () => {
                     </h1>
 
                     <section className="mb-8">
-                        <h2 className="text-xl font-semibold mb-3">Services</h2>
+                        <h2 className="text-xl p-2 font-semibold mb-3 b-1 border-2 border-amber-600 rounded-md inline-block">Services</h2>
                         <ul className="list-disc list-inside space-y-1">
                             {selected.specialties.split(/[,•]/).map((s) => (
                                 <li key={s.trim()}>{s.trim()}</li>
@@ -350,21 +358,22 @@ const VoiceDirectory: React.FC = () => {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
                         <div>
-                            <h2 className="text-xl font-semibold mb-1">
+                            <h2 className="text-xl p-2 font-semibold mb-3 b-1 border-2 border-amber-600 rounded-md inline-block">
                                 Floor&nbsp;&amp;&nbsp;Suite
                             </h2>
                             <p>{selected.floorSuite}</p>
                         </div>
 
                         <div>
-                            <h2 className="text-xl font-semibold mb-1">Contact</h2>
+                            <h2 className="text-xl p-2 font-semibold mb-3 b-1 border-2 border-amber-600 rounded-md inline-block">Contact</h2>
                             {selected.phone ? (
-                                <a
+                                <p><a
                                     href={`tel:${selected.phone.replace(/\D/g, "")}`}
                                     className="text-blue-700 hover:underline"
                                 >
                                     {selected.phone}
                                 </a>
+                                </p>
                             ) : (
                                 <p className="text-gray-600">N/A</p>
                             )}
