@@ -62,7 +62,7 @@ export default function Navbar() {
                             {/*</NavigationMenuItem>*/}
 
                             <NavigationMenuItem>
-                                <NavigationMenuLink className={'text-base hover:bg-[rgba(0,31,63,0.8)] hover:border-1 hover:border-amber-600 hover:text-white'}>
+                                <NavigationMenuLink className={'text-base hover:bg-[rgba(0,31,63,0.8)] border-2 border-transparent hover:border-amber-600 hover:text-white'}>
                                     <span
                                         onClick={() => (window.location.href = '/directory')}
                                         className="cursor-pointer"
@@ -75,19 +75,19 @@ export default function Navbar() {
 
 
                             <NavigationMenuItem>
-                                <NavigationMenuLink className={'text-base hover:bg-[rgba(0,31,63,0.8)] hover:border-1 hover:border-amber-600  hover:text-white'}>
+                                <NavigationMenuLink className={'text-base hover:bg-[rgba(0,31,63,0.8)] border-2 border-transparent hover:border-amber-600  hover:text-white'}>
                                     <Link to={`/voice-directory`}>Departments</Link>
                                 </NavigationMenuLink>
                             </NavigationMenuItem>
 
                             <NavigationMenuItem>
-                                <NavigationMenuLink className={'text-base hover:bg-[rgba(0,31,63,0.8)] hover:border-1 hover:border-amber-600 hover:text-white'}>
+                                <NavigationMenuLink className={'text-base hover:bg-[rgba(0,31,63,0.8)] border-2 border-transparent hover:border-amber-600 hover:text-white'}>
                                     <Link to={`/servicerequesthub`}>Request Service</Link>
                                 </NavigationMenuLink>
                             </NavigationMenuItem>
 
                             <NavigationMenuItem>
-                                <NavigationMenuLink className={'text-base hover:bg-[rgba(0,31,63,0.8)] hover:text-white'}>
+                                <NavigationMenuLink className={'text-base hover:bg-[rgba(0,31,63,0.8)] border-2 border-transparent hover:border-amber-600 hover:text-white'}>
                                     <Link to={`/all-post`}>Forum</Link>
                                 </NavigationMenuLink>
                             </NavigationMenuItem>
@@ -95,13 +95,13 @@ export default function Navbar() {
                             {isAuthenticated && (
                                 <>
                                     <NavigationMenuItem>
-                                        <NavigationMenuLink className={'text-base hover:bg-[rgba(0,31,63,0.8)] hover:border-1 hover:border-amber-600 hover:text-white'}>
+                                        <NavigationMenuLink className={'text-base hover:bg-[rgba(0,31,63,0.8)] border-2 border-transparent hover:border-amber-600 hover:text-white'}>
                                             <Link to={`/all-service-requests`}>All Requests</Link>
                                         </NavigationMenuLink>
                                     </NavigationMenuItem>
 
                                     <NavigationMenuItem>
-                                        <NavigationMenuLink className={'text-base hover:bg-[rgba(0,31,63,0.8)] hover:border-1 hover:border-amber-600 hover:text-white'}>
+                                        <NavigationMenuLink className={'text-base hover:bg-[rgba(0,31,63,0.8)] border-2 border-transparent hover:border-amber-600 hover:text-white'}>
                                             <span
                                                 onClick={() => (window.location.href = '/map-editor')}
                                                 className="cursor-pointer"
@@ -112,7 +112,9 @@ export default function Navbar() {
                                     </NavigationMenuItem>
 
                                     <NavigationMenuItem>
-                                        <Auth0LogoutButton />
+                                        <NavigationMenuLink className={'text-base hover:bg-[rgba(0,31,63,0.8)] border-2 border-transparent hover:border-amber-600 hover:text-white'}>
+                                            <Auth0LogoutButton />
+                                        </NavigationMenuLink>
                                     </NavigationMenuItem>
                                 </>
                             )}
