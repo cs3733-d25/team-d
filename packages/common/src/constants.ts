@@ -64,6 +64,8 @@ export type FloorPathResponse = {
     imageRotation: number;
     path: NodePathResponse[];
     direction: string[];
+    lat?: number;
+    lng?: number;
 
 }
 

@@ -18,7 +18,7 @@ import {
     NodePathResponse,
     PathfindingOptions,
     PathfindingResponse,
-    NodePathResponseType
+    NodePathResponseType,
 } from 'common/src/constants.ts';
 
 function getStrategyByName(name: string): PathFindingStrategy {
@@ -209,7 +209,7 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
     topFloorGraph.Graph.Nodes.forEach((node) => {
         const normalizedNode = {
             ...node,
-            type: node.type?.toUpperCase() as NodePathResponseType || 'UNKNOWN'
+            type: (node.type?.toUpperCase() as NodePathResponseType) || 'UNKNOWN',
         };
         topFloorGraphObj.addNode(normalizedNode);
     });
@@ -262,25 +262,52 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
             };
             bottomFloorGraphObj!.addNode(normalizedNode);
         });
+
+        bottomFloorGraphObj.floorNum = bottomFloorGraph.floorNum;
+        bottomFloorGraphObj.image = bottomFloorGraph.image;
+        bottomFloorGraphObj.imageBoundsNorth = bottomFloorGraph.imageBoundsNorth;
+        bottomFloorGraphObj.imageBoundsSouth = bottomFloorGraph.imageBoundsSouth;
+        bottomFloorGraphObj.imageBoundsEast = bottomFloorGraph.imageBoundsEast;
+        bottomFloorGraphObj.imageBoundsWest = bottomFloorGraph.imageBoundsWest;
+        bottomFloorGraphObj.imageRotation = bottomFloorGraph.imageRotation;
     }
 
     const result = await findOptimalFullPath(
         parkingGraphObj,
         bottomFloorGraphObj,
         topFloorGraphObj,
-        { lat: department.lat, lng: department.lng }
+        {
+            floorNum: topFloorGraph.floorNum,
+            image: topFloorGraph.image,
+            imageBoundsNorth: topFloorGraph.imageBoundsNorth,
+            imageBoundsSouth: topFloorGraph.imageBoundsSouth,
+            imageBoundsEast: topFloorGraph.imageBoundsEast,
+            imageBoundsWest: topFloorGraph.imageBoundsWest,
+            imageRotation: topFloorGraph.imageRotation,
+            lat: department.lat,
+            lng: department.lng,
+        }
     );
 
     res.status(200).json(result);
 });
-
 
 //algorithms rewrite:
 async function findOptimalFullPath(
     parkingGraph: Graph,
     bottomFloorGraph: Graph | null,
     topFloorGraph: Graph,
-    department: { lat: number; lng: number }
+    department: {
+        floorNum: number;
+        image: string;
+        imageBoundsNorth: number;
+        imageBoundsSouth: number;
+        imageBoundsEast: number;
+        imageBoundsWest: number;
+        imageRotation: number;
+        lat: number;
+        lng: number;
+    }
 ): Promise<PathfindingResponse> {
     const allPaths: {
         totalDistance: number;
@@ -317,7 +344,11 @@ async function findOptimalFullPath(
                 }
             }
 
-            tempFloorPaths.push(createFloorPath(topPath, topFloorGraph));
+            const topFloorDirection = topFloorGraph.generateDirectionStepsFromNodes(topPath);
+            tempFloorPaths.push(
+                createFloorPath(topPath, topFloorGraph, department.lat, department.lng)
+            );
+
             totalDistance += computeDistance(topPath);
 
             let insideDoorNodeId: number | null = null;
@@ -333,16 +364,19 @@ async function findOptimalFullPath(
                 // From ELEVATOR to DOOR (on bottom floor)
                 const bottomPath = bottomFloorGraph.search('DOOR', connectedNodeId);
                 if (bottomPath.length === 0) continue;
+
+                const bottomFloorDirection =
+                    bottomFloorGraph.generateDirectionStepsFromNodes(bottomPath);
+
                 tempFloorPaths.push(createFloorPath(bottomPath, bottomFloorGraph));
+
                 totalDistance += computeDistance(bottomPath);
 
                 insideDoorNodeId = bottomPath[0].nodeId;
             } else {
-
                 // From CHECKIN to DOOR directly (for single floor buildings)
 
                 insideDoorNodeId = topPath.find((n) => n.type === 'DOOR')?.nodeId ?? null;
-
             }
 
             let insideDoorNode: NodePathResponse | undefined;
@@ -385,7 +419,6 @@ async function findOptimalFullPath(
 }
 
 //
-
 
 router.put('/algorithm/:name', async (req: Request, res: Response) => {
     const name = req.params.name;

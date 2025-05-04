@@ -140,6 +140,14 @@ class Graph {
     private readonly nodesMap: Map<number, GraphNode>;
     private pathFindingStrategy: PathFindingStrategy;
 
+    floorNum?: number;
+    image?: string;
+    imageBoundsNorth?: number;
+    imageBoundsSouth?: number;
+    imageBoundsEast?: number;
+    imageBoundsWest?: number;
+    imageRotation?: number;
+
     constructor(strategy: PathFindingStrategy) {
         this.nodesMap = new Map();
         this.pathFindingStrategy = strategy;
@@ -295,21 +303,26 @@ class Graph {
     }
 }
 
-function createFloorPath(path: NodePathResponse[], graph: Graph): FloorPathResponse {
+export function createFloorPath(
+    path: NodePathResponse[],
+    graph: Graph,
+    lat?: number,
+    lng?: number
+): FloorPathResponse {
     return {
-        floorNum: (graph as any).floorNum,
-        image: (graph as any).image,
-        imageBoundsNorth: (graph as any).imageBoundsNorth,
-        imageBoundsSouth: (graph as any).imageBoundsSouth,
-        imageBoundsEast: (graph as any).imageBoundsEast,
-        imageBoundsWest: (graph as any).imageBoundsWest,
-        imageRotation: (graph as any).imageRotation,
-        path: path,
+        floorNum: graph.floorNum!,
+        image: graph.image!,
+        imageBoundsNorth: graph.imageBoundsNorth!,
+        imageBoundsSouth: graph.imageBoundsSouth!,
+        imageBoundsEast: graph.imageBoundsEast!,
+        imageBoundsWest: graph.imageBoundsWest!,
+        imageRotation: graph.imageRotation!,
+        path,
         direction: graph.generateDirectionStepsFromNodes(path),
+        lat,
+        lng,
     };
 }
-
-export { createFloorPath };
 
 export { Graph };
 export type { PathFindingStrategy };
