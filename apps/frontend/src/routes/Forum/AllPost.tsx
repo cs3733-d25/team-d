@@ -106,18 +106,24 @@ export default function AllPost() {
         <div className=" p-6">
             <div className="border-4 border-[#012D5A] rounded-2xl shadow-lg p-6 bg-white my-6">
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
-                    <h2 className="text-3xl font-bold text-[#012D5A] mb-4 md:mb-0">Help Forum</h2>
+                    <h2 className="text-3xl font-bold text-[#012D5A] mb-4 md:mb-0">
+                        Help Forum
+                    </h2>
 
-                    <div>
-                        <ForumPostPopup trigger={<button
-                                        onClick={handleSearch}
-                                        className="bg-blue-900 text-white px-5 py-2 rounded-xl hover:bg-black transition"
-                        >
-                            + Make a Post
-                        </button>}
+                    <div className="">
+                        <ForumPostPopup
+                            trigger={
+                                <button
+                                    onClick={handleSearch}
+                                    className=" bg-blue-900 text-white px-5 py-2 rounded-xl hover:bg-black"
+                                >
+                                    + Make a Post
+                                </button>
+                            }
                         />
                     </div>
                 </div>
+
 
                 <div className="flex flex-col sm:flex-row items-center gap-3">
                     <input
@@ -165,6 +171,7 @@ export default function AllPost() {
                                 <PaginationLink
                                     isActive={idx === batchNumber}
                                     onClick={() => toThisBatch(idx)}
+                                    className="hover:underline cursor-pointer"
                                 >
                                     {idx + 1}
                                 </PaginationLink>
