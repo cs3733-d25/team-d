@@ -14,8 +14,8 @@ import {API_ROUTES} from "common/src/constants.ts";
 // TODO
 declare global {
     interface Window {
-        webkitSpeechRecognition: unknown;
-        SpeechRecognition: unknown;
+        webkitSpeechRecognition: typeof SpeechRecognition;
+        SpeechRecognition: typeof SpeechRecognition;
     }
 }
 
@@ -88,7 +88,7 @@ const VoiceDirectory: React.FC = () => {
 
     /* Voice search */
     // TODO
-    const recognitionRef = useRef<unknown>(null);
+    const recognitionRef = useRef<SpeechRecognition | null>(null)
     const [listening, setListening] = useState(false);
 
     useEffect(() => {
@@ -103,13 +103,13 @@ const VoiceDirectory: React.FC = () => {
 
         // TODO
         recognitionRef.current.onstart = () => setListening(true);
-        recognitionRef.current.onresult = (e: unknown) => {
+        recognitionRef.current.onresult = (e: SpeechRecognitionEvent) => {
             const spoken = e.results[0][0].transcript;
             setQuery(spoken);
         };
 
         // TODO
-        recognitionRef.current.onerror = (e: unknown) =>
+        recognitionRef.current.onerror = (e: SpeechRecognitionErrorEvent) =>
             console.error("Speech error:", e.error);
         recognitionRef.current.onend = () => setListening(false);
     }, []);
