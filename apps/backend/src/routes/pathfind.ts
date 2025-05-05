@@ -264,25 +264,24 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
             };
             bottomFloorGraphObj!.addNode(normalizedNode);
         });
-//  Add edges
+        //  Add edges
         bottomFloorGraph.Graph.Edges.forEach((edge) => {
             bottomFloorGraphObj!.addEdge(edge.startNodeId, edge.endNodeId);
         });
 
-// Use GraphNode, not NodePathResponse
+        // Use GraphNode, not NodePathResponse
         const elevatorNode = bottomFloorGraphObj.getNode(216);
         if (!elevatorNode) {
         } else {
             const neighbors = elevatorNode.getNeighbors().map((n) => n.data.nodeId);
         }
 
-// Check all DOOR paths
+        // Check all DOOR paths
         const allDoors = bottomFloorGraphObj.getNodesOfType('DOOR').map((n) => n.nodeId);
 
         for (const doorId of allDoors) {
             const path = bottomFloorGraphObj.search('DOOR', doorId);
         }
-
 
         bottomFloorGraphObj.floorNum = bottomFloorGraph.floorNum;
         bottomFloorGraphObj.image = bottomFloorGraph.image;
@@ -460,8 +459,6 @@ async function findOptimalFullPath(
         floorPaths: best.floorPaths.reverse(), // bottom to top
     };
 }
-
-
 
 router.put('/algorithm/:name', async (req: Request, res: Response) => {
     const name = req.params.name;

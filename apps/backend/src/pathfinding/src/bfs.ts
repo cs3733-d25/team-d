@@ -139,8 +139,7 @@ class GraphNode {
 class Graph {
     private readonly nodesMap: Map<number, GraphNode>;
     private pathFindingStrategy: PathFindingStrategy;
-    private edges: { startNodeId: number, endNodeId: number }[] = [];
-
+    private edges: { startNodeId: number; endNodeId: number }[] = [];
 
     floorNum?: number;
     image?: string;
@@ -187,7 +186,6 @@ class Graph {
         }
 
         this.edges.push({ startNodeId: id1, endNodeId: id2 });
-
     }
 
     search(startNodeType: NodePathResponseType, endNodeId: number): NodePathResponse[] {
@@ -205,7 +203,6 @@ class Graph {
     getNodeById(nodeId: number): NodePathResponse | undefined {
         return this.nodesMap.get(nodeId)?.data;
     }
-
 
     getNeighbors(nodeId: number): { data: NodePathResponse }[] {
         const neighbors: { data: NodePathResponse }[] = [];
@@ -229,7 +226,6 @@ class Graph {
 
         return neighbors;
     }
-
 
     generateDirectionStepsFromNodes(path: NodePathResponse[]): string[] {
         if (path.length < 2) return ['Not enough points for directions'];
