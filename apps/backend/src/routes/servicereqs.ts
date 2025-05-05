@@ -228,6 +228,14 @@ router.get('/priorityBreakdown', async function (req: Request, res: Response) {
         typeBreakdown.push({ Priority: request.priority, count: request._count.requestId });
     }
 
+    const priorityOrder = ['low', 'medium', 'high', 'emergency'];
+
+    typeBreakdown.sort(
+        (a, b) =>
+            priorityOrder.indexOf(a.Priority.toLowerCase()) -
+            priorityOrder.indexOf(b.Priority.toLowerCase())
+    );
+
     res.json(typeBreakdown);
 });
 
