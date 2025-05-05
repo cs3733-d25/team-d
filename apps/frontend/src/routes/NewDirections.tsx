@@ -61,7 +61,7 @@ interface TransportModeOption {
 }
 
 //const primaryDarkBlue = "#012D5A";
-//const primaryOrange = "#D47F00";
+
 const transportModes: TransportModeOption[] = [
     { value: "DRIVING", label: "Driving", icon: faCar },
     { value: "WALKING", label: "Walking", icon: faWalking },
@@ -125,6 +125,7 @@ export default function NewDirections() {
 
     const setPathfindingResultsExternal = (results: PathfindingResults | null, refresh: boolean) => {
         setPathfindingResults(results);
+        // console.log(results?.sections[0].directions[0].distance);
         setCurrentStep(-1);
         if (refresh) {
             console.log('resetSecton');
@@ -132,6 +133,7 @@ export default function NewDirections() {
         }
         else {
             const temp = currentSection;
+            // setCurrentSection(-1);
             console.log(temp);
             setCurrentSection(temp);
         }
@@ -165,6 +167,8 @@ export default function NewDirections() {
 
         if (!map) return;
         map.setDepartment(newDepartment);
+
+        // setCurrentStep(-1);
     }
 
     const handleModeChange = (mode: string) => {
@@ -225,8 +229,8 @@ export default function NewDirections() {
     }
 
     return (
-        <div className="flex flex-row flex-1 h-screen overflow-y-hidden bg-white">
-            <div className="flex-1 p-4 overflow-y-scroll pb-[200px]">
+        <div className="flex flex-row flex-1 h-screen overflow-y-hidden border-2 border-[#012D5A] rounded-md shadow-md bg-[#F1F1F1]">
+            <div className="flex-1 p-4 overflow-y-scroll">
                 {/* Header + inline help button */}
                 <div className="flex items-center justify-between">
                     <h2 className="text-3xl font-bold">Get Directions</h2>
@@ -251,19 +255,19 @@ export default function NewDirections() {
                     <Card className="flex-1 grow border-4 border-[#012D5A] rounded-md shadow-md bg-[#F1F1F1]">
                         <CardContent>
                             {/* Start Location */}
-                            <Label className="mb-1 mb-2 border-2 border-amber-600 rounded-md inline-block px-2 py-1">Start Location</Label>
+                            <Label className="mb-1 mb-2 rounded-md inline-block px-2 py-1">Start Location</Label>
                             <input
                                 ref={autocompleteRef}
                                 id="start-input"
                                 type="text"
                                 className={cn(
-                                    "file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 flex h-9 w-full min-w-0 rounded-md border-2 border-[#012D5A] bg-transparent px-3 py-1 text-base shadow-sm transition-[color,box-shadow] outline-none focus:border-[#D47F00] focus:ring-[#D47F00]/50 focus:ring-[3px]",
+                                    "file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 flex h-9 w-full min-w-0 rounded-md border-2 border-[#012D5A] bg-transparent px-3 py-1 text-base shadow-sm transition-[color,box-shadow] outline-none focus:border-yellow-400 focus:ring-yellow-400/50 focus:ring-[3px]",
                                     "mb-4"
                                 )}
                             />
 
                             {/* Transport Mode */}
-                            <Label className="mb-1 mb-2 border-2 border-amber-600 rounded-md inline-block px-2 py-1">Transport Mode</Label>
+                            <Label className="mb-1 mb-2 rounded-md inline-block px-2 py-1">Transport Mode</Label>
                             <div className="flex flex-col items-center justify-center gap-6 rounded-md shadow-md p-4 bg-[#012D5A] mb-4 w-full max-w-lg border-2 border-[#012D5A]">
                                 <div className="flex flex-wrap gap-4 justify-center w-full">
                                     {transportModes.map((mode) => (
@@ -273,8 +277,8 @@ export default function NewDirections() {
                                             className={cn(
                                                 "p-2 rounded-md shadow-sm border w-[30%] min-w-[80px] max-w-[120px] border-2 border-[#012D5A]",
                                                 selectedMode === mode.value
-                                                    ? `bg-[#012D5A] text-[#D47F00] border-[#D47F00]`
-                                                    : `bg-[#F1F1F1] text-[#012D5A] hover:bg-gray-100 hover:border-[#D47F00]`
+                                                    ? `bg-[#012D5A] text-yellow-400 border-yellow-400`
+                                                    : `bg-[#F1F1F1] text-[#012D5A] hover:bg-gray-100 hover:border-yellow-400`
                                             )}
                                         >
                                             <div className="flex flex-col items-center">
@@ -287,9 +291,9 @@ export default function NewDirections() {
                             </div>
 
                             {/* Destination Hospital */}
-                            <Label className="mb-1 mb-2 border-2 border-amber-600 rounded-md inline-block px-2 py-1">Destination Hospital</Label>
+                            <Label className="mb-1 mb-2 rounded-md inline-block px-2 py-1">Destination Hospital</Label>
                             <Select onValueChange={handleHospitalChange}>
-                                <SelectTrigger className="w-full mt-1 mb-4 border-2 border-[#012D5A] focus:border-[#D47F00] focus:ring-[#D47F00]/50 focus:ring-[3px]">
+                                <SelectTrigger className="w-full mt-1 mb-4 border-2 border-[#012D5A] focus:border-yellow-400 focus:ring-yellow-400/50 focus:ring-[3px]">
                                     <SelectValue placeholder="Choose a hospital..." />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -311,9 +315,9 @@ export default function NewDirections() {
                                 <>
                                     {/*<Separator className="mt-4 mb-4" />*/}
 
-                                    <Label className="mb-1 mb-2 border-2 border-amber-600 rounded-md inline-block px-2 py-1">Department</Label>
+                                    <Label className="mb-1 mb-2 rounded-md inline-block px-2 py-1">Department</Label>
                                     <Select onValueChange={handleDepartmentChange}>
-                                        <SelectTrigger className="w-full mt-1 mb-4 border-2 border-[#012D5A] focus:border-[#D47F00] focus:ring-[#D47F00]/50 focus:ring-[3px]">
+                                        <SelectTrigger className="w-full mt-1 mb-4 border-2 border-[#012D5A] focus:border-yellow-400 focus:ring-yellow-400/50 focus:ring-[3px]">
                                             <SelectValue placeholder="Choose a department..." className=""/>
                                         </SelectTrigger>
                                         <SelectContent>
@@ -343,19 +347,25 @@ export default function NewDirections() {
                                 <CardContent>
                                     <div className="flex flex-row">
                                         <div className="flex-1 grow">
+                                            {/*<Label className="mb-1 mb-2 border-2 border-amber-600 rounded-md inline-block px-2 py-1">*/}
+                                            {/*    Text-to-speech?*/}
+                                            {/*</Label>*/}
                                             <br/>
                                             <div className="flex items-center space-x-2">
-                                                <Checkbox id="tts" className="border-2 border-amber-600 rounded-xs" onCheckedChange={() => setTts(!tts)}/>
+                                                <Checkbox id="tts" className="border-2 yellow-400 rounded-xs" onCheckedChange={() => setTts(!tts)}/>
                                                 <Label htmlFor="tts">Text-to-Speech</Label>
                                             </div>
                                             <br/>
+                                            {/*<Label className="mb-1 mb-2 border-2 border-amber-600 rounded-md inline-block px-2 py-1">*/}
+                                            {/*    Unit System*/}
+                                            {/*</Label>*/}
                                             <RadioGroup defaultValue="Imperial" onValueChange={(value: string) => setUnits(value)}>
                                                 <div className="flex items-center space-x-2">
-                                                    <RadioGroupItem id="imp" value="Imperial" className="border-2 border-amber-600 peer-checked:bg-blue-900"/>
+                                                    <RadioGroupItem id="imp" value="Imperial" className="border-2 peer-checked:bg-blue-900"/>
                                                     <Label htmlFor="imp">Imperial</Label>
                                                 </div>
                                                 <div className="flex items-center space-x-2">
-                                                    <RadioGroupItem id="met" value="Metric" className="border-2 border-amber-600 peer-checked:bg-blue-900"/>
+                                                    <RadioGroupItem id="met" value="Metric" className="border-2 peer-checked:bg-blue-900"/>
                                                     <Label htmlFor="met">Metric</Label>
                                                 </div>
                                             </RadioGroup>
@@ -363,20 +373,41 @@ export default function NewDirections() {
                                         <>
                                             <Button
                                                 onClick={handleRecenter}
-                                                className=" flex-1 grow border-2 border-amber-600 flex-1 grow m-2 bg-blue-900 active:scale-95 active:shadow-inner transition-transform"
+                                                className=" flex-1 grow flex-1 grow m-2 bg-blue-900 active:scale-95 active:shadow-inner transition-transform"
                                             >
                                                 <FontAwesomeIcon icon={faCrosshairs} />
                                                 Re-center
                                             </Button>
                                         </>
                                     </div>
+                                    {/*<div className="flex items-center justify-between">*/}
+                                    {/*    <Label className="flex items-center gap-2">*/}
+                                    {/*        Text-to-speech*/}
+                                    {/*        <Switch className="data-[state=checked]:bg-blue-900" onCheckedChange={setTts} />*/}
+                                    {/*    </Label>*/}
+                                    {/*    <Button*/}
+                                    {/*        onClick={handleRecenter}*/}
+                                    {/*        className=" border-2 border-amber-600 flex-1 grow m-2 bg-blue-900 active:scale-95 active:shadow-inner transition-transform"*/}
+                                    {/*    >*/}
+                                    {/*        <FontAwesomeIcon icon={faCrosshairs} />*/}
+                                    {/*        Re-center*/}
+                                    {/*    </Button>*/}
+                                    {/*</div>*/}
+                                    {/*<div className="items-center justify-center">*/}
+                                    {/*    <Tabs defaultValue="Metric" onValueChange={(value: string) => map?.convertUnits(value)}>*/}
+                                    {/*        <TabsList>*/}
+                                    {/*            <TabsTrigger className="border-2 border-amber-600 flex-1 grow m-2 bg-blue-900 active:scale-95 active:shadow-inner transition-transform" value="Metric">Metric</TabsTrigger>*/}
+                                    {/*            <TabsTrigger className="border-2 border-amber-600 flex-1 grow m-2 bg-blue-900 active:scale-95 active:shadow-inner transition-transform" value="Imperial">Imperial</TabsTrigger>*/}
+                                    {/*        </TabsList>*/}
+                                    {/*    </Tabs>*/}
+                                    {/*</div>*/}
                                     <div className="flex flex-row">
-                                        <Button className="border-2 border-amber-600 flex-1 grow m-2 bg-blue-900 active:scale-95 active:shadow-inner transition-transform" onClick={handlePrevStep} disabled={currentStep < 1}>
+                                        <Button className="flex-1 grow m-2 bg-blue-900 active:scale-95 active:shadow-inner transition-transform" onClick={handlePrevStep} disabled={currentStep < 1}>
                                             <FontAwesomeIcon icon={faArrowLeft} />
                                             Previous
                                         </Button>
                                         <Separator className="mt-4 mb-4" orientation="vertical" />
-                                        <Button className="border-2 border-amber-600 flex-1 grow m-2 bg-blue-900 active:scale-95 active:shadow-inner transition-transform" onClick={handleNextStep} disabled={currentStep >= pathfindingResults.numSteps - 1}>
+                                        <Button className="flex-1 grow m-2 bg-blue-900 active:scale-95 active:shadow-inner transition-transform" onClick={handleNextStep} disabled={currentStep >= pathfindingResults.numSteps - 1}>
                                             Next
                                             <FontAwesomeIcon icon={faArrowRight} />
                                         </Button>
@@ -391,15 +422,15 @@ export default function NewDirections() {
                                                     <AccordionContent>
                                                         {
                                                             section.directions.map((step) => (
-                                                                <div className= {`relative group px-2 border-2 rounded-md ${currentStep === step.idx ? 'border-amber-600 bg-[#FAFAFA]' : 'border-transparent'}`}
+                                                                <div className= {`relative group px-2 border-2 rounded-md ${currentStep === step.idx ? 'border-yellow-400 bg-[#FAFAFA]' : 'border-transparent'}`}
                                                                      onClick={() => {
                                                                          map?.setCurrentStepIdx(step.idx, tts);
                                                                          setCurrentStep(step.idx);
                                                                          console.log(step.idx);
                                                                      }}>
-                                                                    {step.icon === "right" ? <FontAwesomeIcon icon={faArrowRight} className="text-amber-600"/>
-                                                                        : step.icon === "left" ? <FontAwesomeIcon icon={faArrowLeft} className="text-amber-600"/>
-                                                                            : <FontAwesomeIcon icon={faArrowUp} className="text-amber-600"/>}
+                                                                    {step.icon === "right" ? <FontAwesomeIcon icon={faArrowRight} className="text-yellow-400"/>
+                                                                        : step.icon === "left" ? <FontAwesomeIcon icon={faArrowLeft} className="text-yellow-400"/>
+                                                                            : <FontAwesomeIcon icon={faArrowUp} className="text-yellow-400"/>}
                                                                     <span> </span>
                                                                     <span className="text-blue-900">{step.instructions}</span>
                                                                     <br/>
@@ -454,7 +485,7 @@ export default function NewDirections() {
 
                         <Button
                             onClick={handleOnboardNext}
-                            className="w-full border-2 border-amber-600 bg-blue-900 active:scale-95 active:shadow-inner transition-transform"
+                            className="w-full border-2 bg-blue-900 active:scale-95 active:shadow-inner transition-transform"
                         >
                             {onboardIdx === onboardingSteps.length - 1 ? 'Got it!' : 'Next'}
                         </Button>
