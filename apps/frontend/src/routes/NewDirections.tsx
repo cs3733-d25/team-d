@@ -354,8 +354,16 @@ export default function NewDirections() {
                                               onValueChange={(value) => setUnits(value)}
                                               className="flex-1 grow">
                                             <TabsList className="w-full h-11 rounded-full bg-white">
-                                                <TabsTrigger value={"Imperial"} className="flex-1  rounded-full hover:bg-gray-400 data-[state=active]:hover:bg-gray-400 bg-blue-900/30 data-[state=active]:bg-blue-900 text-white data-[state=active]:text-white border-2 border-yellow-400 active:shadow-inner active:scale-95">Imperial</TabsTrigger>
-                                                <TabsTrigger value={"Metric"} className="flex-1  rounded-full hover:bg-gray-400 data-[state=active]:hover:bg-gray-400 bg-blue-900/30 data-[state=active]:bg-blue-900 text-white data-[state=active]:text-white border-2 border-yellow-400 active:shadow-inner active:scale-95">Metric</TabsTrigger>
+                                                <TabsTrigger value={"Imperial"} className= {`flex-1  rounded-full hover:bg-gray-500 data-[state=active]:hover:bg-gray-400 data-[state=active]:bg-blue-900 text-white data-[state=active]:text-white active:shadow-inner ${
+                                                units === "Imperial"
+                                                ? "border-2 border-yellow-400 bg-blue-900/30 text-blue-900"
+                                                : "border-2 border-transparent bg-gray-300 text-white" // hover
+                                        }`}>Imperial</TabsTrigger>
+                                                <TabsTrigger value={"Metric"} className={`flex-1  rounded-full hover:bg-gray-500 data-[state=active]:hover:bg-gray-400 data-[state=active]:bg-blue-900 text-white data-[state=active]:text-white active:shadow-inner ${
+                                                    units === "Metric"
+                                                        ? "border-2 border-yellow-400 bg-blue-900/30 text-blue-900"
+                                                        : "border-2 border-transparent bg-gray-300 text-white" // hover
+                                                }`}>Metric</TabsTrigger>
                                             </TabsList>
                                         </Tabs>
                                     </div>
