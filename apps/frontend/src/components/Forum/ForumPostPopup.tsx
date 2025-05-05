@@ -16,21 +16,19 @@ import {
 import {Employee} from "@/routes/AllServiceRequests.tsx";
 
 type Post = {
-    postId: number;
     title: string;
     content: string
-    posterId: number;
     email: string;
 }
 
 type ForumPostPopupProps = {
     trigger?: React.ReactNode;
+    onUpdate?: () => void;
 };
 
-const ForumPostPopup: React.FC<ForumPostPopupProps> = ({trigger}) => {
+const ForumPostPopup: React.FC<ForumPostPopupProps> = ({trigger, onUpdate}) => {
 
     const [form, setForm] = useState<Post>({
-        postId: 0,
         title: '',
         content: '',
         email: '',
@@ -42,11 +40,20 @@ const ForumPostPopup: React.FC<ForumPostPopupProps> = ({trigger}) => {
 
     useEffect(() => {
         if (user?.email) {
-            axios.get(`/api/employee/user/${user?.email}`)
-                .then((res) => setEmployeeData(res.data))
+            axios.get(`/api/employee/user/${user.email}`)
+                .then((res) => {
+                    const emp = res.data;
+                    setEmployeeData(emp);
+                    setForm((form) => ({
+                        ...form,
+                        posterId: emp.employeeId, // Use the response data directly
+                        email: user.email || ""
+                    }));
+                })
                 .catch((err) => console.error('Error fetching data:', err));
         }
     }, [user]);
+
 
     const onSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -54,6 +61,12 @@ const ForumPostPopup: React.FC<ForumPostPopupProps> = ({trigger}) => {
 
         axios
             .post(API_ROUTES.FORUM + "/post", form)
+            .then(() => {
+                if (onUpdate) {
+                    onUpdate();
+                }
+                setOpen(false);
+            })
             .catch((err) => {
                 console.error("Error submitting forum post:", err);
             });
