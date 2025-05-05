@@ -24,11 +24,11 @@ export type DepartmentBreakdown = {
 };
 
 export default function DepartmentBreakdown() {
-    /* ───── state ───── */
+    /* state */
     const [data, setData] = useState<DepartmentBreakdown[]>([]);
     const [zoom, setZoom] = useState(false);
 
-    /* ───── fetch ───── */
+    /* fetch */
     useEffect(() => {
         axios
             .get(`${API_ROUTES.SERVICEREQS}/departmentBreakdown`)
@@ -43,7 +43,7 @@ export default function DepartmentBreakdown() {
             .catch(console.error);
     }, []);
 
-    /* ───── chart config ───── */
+    /* chart */
     const chartConfig: ChartConfig = useMemo(() => {
         const colors = [
             "#1C398E",
@@ -60,7 +60,7 @@ export default function DepartmentBreakdown() {
         return cfg;
     }, [data]);
 
-    /* ───── reusable chart (small) ───── */
+    /* chart */
     const Chart = (
         <ChartContainer
             config={chartConfig}
@@ -131,10 +131,10 @@ export default function DepartmentBreakdown() {
         </ChartContainer>
     );
 
-    /* ───── render ───── */
+    /* render */
     return (
         <>
-            {/* ─── small dashboard card ─── */}
+            {/* small dashboard card */}
             <Card
                 onClick={() => setZoom(true)}
                 className="cursor-pointer shadow-lg rounded-2xl border bg-white w-full h-full"
@@ -146,7 +146,7 @@ export default function DepartmentBreakdown() {
                 <CardFooter />
             </Card>
 
-            {/* ─── enlarged popup ─── */}
+            {/* enlarged popup */}
             {zoom && (
                 <div
                     className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"

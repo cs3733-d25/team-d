@@ -32,11 +32,11 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export default function ReqBreakdown() {
-    /* ───── state ───── */
+    /* state */
     const [data, setData] = useState<ServiceReqBreakdown[]>([]);
     const [zoom, setZoom] = useState(false);
 
-    /* ───── fetch ───── */
+    /* fetch */
     useEffect(() => {
         axios
             .get(`${API_ROUTES.SERVICEREQS}/typeBreakdown`)
@@ -44,7 +44,7 @@ export default function ReqBreakdown() {
             .catch(console.error);
     }, []);
 
-    /* ───── reusable chart (small) ───── */
+    /* chart */
     const Chart = (
         <ChartContainer
             config={chartConfig}
@@ -112,10 +112,10 @@ export default function ReqBreakdown() {
         </ChartContainer>
     );
 
-    /* ───── render ───── */
+    /* render */
     return (
         <>
-            {/* ─── small dashboard card ─── */}
+            {/* small dashboard card */}
             <Card
                 onClick={() => setZoom(true)}
                 className="cursor-pointer shadow-lg rounded-2xl border bg-white w-full h-full"
@@ -127,7 +127,7 @@ export default function ReqBreakdown() {
                 <CardFooter />
             </Card>
 
-            {/* ─── enlarged popup ─── */}
+            {/* enlarged popup */}
             {zoom && (
                 <div
                     className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
