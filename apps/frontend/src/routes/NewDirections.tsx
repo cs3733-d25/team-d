@@ -360,7 +360,7 @@ export default function NewDirections() {
                                         <>
                                             <Button
                                                 onClick={handleRecenter}
-                                                className=" flex-1 grow flex-1 grow m-2 bg-blue-900 active:scale-95 active:shadow-inner transition-transform"
+                                                className=" flex-1 grow flex-1 grow m-2 bg-blue-900 border-2 border-yellow-400 hover:bg-gray-400 active:scale-95 active:shadow-inner transition-transform"
                                             >
                                                 <FontAwesomeIcon icon={faCrosshairs} />
                                                 Re-center
@@ -389,12 +389,12 @@ export default function NewDirections() {
                                     {/*    </Tabs>*/}
                                     {/*</div>*/}
                                     <div className="flex flex-row">
-                                        <Button className="flex-1 grow m-2 bg-blue-900 active:scale-95 active:shadow-inner transition-transform" onClick={handlePrevStep} disabled={currentStep < 1}>
+                                        <Button className="flex-1 grow m-2 bg-blue-900 border-2 border-yellow-400 hover:bg-gray-400 active:scale-95 active:shadow-inner transition-transform" onClick={handlePrevStep} disabled={currentStep < 1}>
                                             <FontAwesomeIcon icon={faArrowLeft} />
                                             Previous
                                         </Button>
                                         <Separator className="mt-4 mb-4" orientation="vertical" />
-                                        <Button className="flex-1 grow m-2 bg-blue-900 active:scale-95 active:shadow-inner transition-transform" onClick={handleNextStep} disabled={currentStep >= pathfindingResults.numSteps - 1}>
+                                        <Button className="flex-1 grow m-2 bg-blue-900 border-2 border-yellow-400 hover:bg-gray-400 active:scale-95 active:shadow-inner transition-transform" onClick={handleNextStep} disabled={currentStep >= pathfindingResults.numSteps - 1}>
                                             Next
                                             <FontAwesomeIcon icon={faArrowRight} />
                                         </Button>

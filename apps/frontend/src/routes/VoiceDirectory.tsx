@@ -142,7 +142,7 @@ const VoiceDirectory: React.FC = () => {
                         <Button
                             className={`${
                                 hospital === 0
-                                    ? "bg-blue-900 text-white border-2 border-amber-600"
+                                    ? "bg-blue-900 text-white border-2 border-yellow-400 hover:bg-gray-400"
                                     : "bg-gray-200"
                             } rounded-md px-2 py-1`}
                             onClick={() => {
@@ -157,7 +157,7 @@ const VoiceDirectory: React.FC = () => {
                         <Button
                             className={`${
                                 hospital === 1
-                                    ? "bg-blue-900 text-white border-2 border-amber-600"
+                                    ? "bg-blue-900 text-white border-2 border-yellow-400 hover:bg-gray-400"
                                     : "bg-gray-200"
                             } rounded-md px-2 py-1`}
                             onClick={() => {
@@ -172,7 +172,7 @@ const VoiceDirectory: React.FC = () => {
                         <Button
                             className={`${
                                 hospital === 2
-                                    ? "bg-blue-900 text-white border-2 border-amber-600"
+                                    ? "bg-blue-900 text-white border-2 border-yellow-400 hover:bg-gray-400"
                                     : "bg-gray-200"
                             } rounded-md px-2 py-1`}
                             onClick={() => {
@@ -187,7 +187,7 @@ const VoiceDirectory: React.FC = () => {
                         <Button
                             className={`${
                                 hospital === 3
-                                    ? "bg-blue-900 text-white border-2 border-amber-600"
+                                    ? "bg-blue-900 text-white border-2 border-yellow-400 hover:bg-gray-400"
                                     : "bg-gray-200"
                             } rounded-md px-2 py-1`}
                             onClick={() => {
@@ -236,7 +236,7 @@ const VoiceDirectory: React.FC = () => {
                                         variant="ghost"
                                         className={`w-full justify-start rounded-md px-3 py-2 text-left border-2 ${
                                             selected.name === item.name
-                                                ? "border-amber-600 bg-blue-50 font-semibold text-blue-900"
+                                                ? "border-yellow-400 bg-blue-50 font-semibold text-blue-900"
                                                 : "border-transparent bg-white text-black hover:bg-blue-900 hover:text-white" // hover
                                         }`}
                                         onClick={() => setSelected(item)}
@@ -256,7 +256,7 @@ const VoiceDirectory: React.FC = () => {
                     </h1>
 
                     <section className="mb-8">
-                        <h2 className="text-xl p-2 font-semibold mb-3 b-1 border-2 border-amber-600 rounded-md inline-block">Services</h2>
+                        <h2 className="text-xl p-2 font-semibold mb-3 b-1 rounded-md inline-block">Services</h2>
                         <ul className="list-disc list-inside space-y-1">
                             {selected.services.split(/,\s*(?![^()]*\))/).map((s) => (
                                 <li key={s.trim()}>{s.trim()}</li>
@@ -266,14 +266,14 @@ const VoiceDirectory: React.FC = () => {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
                         <div>
-                            <h2 className="text-xl p-2 font-semibold mb-3 b-1 border-2 border-amber-600 rounded-md inline-block">
+                            <h2 className="text-xl p-2 font-semibold mb-3 b-1 rounded-md inline-block">
                                 Floor&nbsp;&amp;&nbsp;Suite
                             </h2>
                             <p>Floor {selected.floorNum} Suite {selected.room}</p>
                         </div>
 
                         <div>
-                            <h2 className="text-xl p-2 font-semibold mb-3 b-1 border-2 border-amber-600 rounded-md inline-block">
+                            <h2 className="text-xl p-2 font-semibold mb-3 b-1 rounded-md inline-block">
                                 Contact
                             </h2>
                             {selected.telephone ? (

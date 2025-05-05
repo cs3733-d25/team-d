@@ -484,9 +484,9 @@ export default function ShowAllRequests() {
                     <FontAwesomeIcon icon={faArrowsSpin} />
                 </button>
             </div>
-            <div className="border rounded-md">
+            <div className="border-4 border-[#012D5A] rounded-md">
                 <Table className="rounded-md">
-                    <TableHeader className="bg-blue-900 rounded-md [&_th]:text-white [&_th button]:text-white">
+                    <TableHeader className="bg-blue-900 [&_th]:text-white [&_th button]:text-white">
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
                                 {headerGroup.headers.map((header) => {
@@ -596,7 +596,7 @@ function Filter({ column }: { column: Column<ServiceRequest, unknown> }) {
         };
         return (
             <DropdownMenu>
-                <DropdownMenuTrigger className="bg-blue-900 hover:bg-blue-950 inline rounded-md">
+                <DropdownMenuTrigger className="bg-blue-900 hover:bg-blue-950 inline ">
                     <Button
                         variant="ghost" className="ml-auto bg-blue-900 hover:bg-blue-950"
                     >
