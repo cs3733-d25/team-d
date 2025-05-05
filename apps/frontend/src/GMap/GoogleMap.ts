@@ -563,7 +563,7 @@ export class PathfindingMap extends GoogleMap {
                 map: this.map,
                 path: path,
                 strokeWeight: 10,
-                strokeColor: '#0f4',
+                strokeColor: '#ce1fff',
                 strokeOpacity: 0.9,
                 zIndex: 50,
             });
@@ -592,7 +592,7 @@ export class PathfindingMap extends GoogleMap {
                 map: this.map,
                 path: step.pathFindingData.points,
                 strokeWeight: 10,
-                strokeColor: '#0f4',
+                strokeColor: '#ce1fff',
                 strokeOpacity: 0.9,
                 zIndex: 50,
             });
