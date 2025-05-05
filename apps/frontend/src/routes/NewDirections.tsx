@@ -354,7 +354,7 @@ export default function NewDirections() {
                                               onValueChange={(value) => setUnits(value)}
                                               className="flex-1 grow">
                                             <TabsList className="gap-5 ml-12 w-50 h-11 rounded-full border-2 border-yellow-400 bg-white">
-                                                <TabsTrigger value={"Imperial"} className= {`flex-1 ml-5 rounded-full hover:bg-blue-900 hover:text-white data-[state=active]:bg-blue-900 text-white data-[state=active]:text-white active:shadow-inner ${
+                                                <TabsTrigger value={"Imperial"} className= {`flex-1 ml-5 px-2 rounded-full hover:bg-blue-900 hover:text-white data-[state=active]:bg-blue-900 text-white data-[state=active]:text-white active:shadow-inner ${
                                                 units === "Imperial"
                                                 ? "bg-blue-900/30 text-blue-900"
                                                 : "text-gray-500" // hover
