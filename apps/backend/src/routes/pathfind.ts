@@ -207,9 +207,10 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
     const topFloorGraphObj = new Graph(strategy);
 
     topFloorGraph.Graph.Nodes.forEach((node) => {
-        const normalizedNode = {
+        const normalizedNode: NodePathResponse = {
             ...node,
-            type: (node.type?.toUpperCase() as NodePathResponseType) || 'UNKNOWN',
+            type: (node.type?.toUpperCase() ?? 'UNKNOWN') as NodePathResponseType,
+            connectedNodeId: node.connectedNodeId ?? null,
         };
         topFloorGraphObj.addNode(normalizedNode);
     });
@@ -252,8 +253,9 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
             res.status(500).send({ message: 'Bottom Floor Graph does not exist' });
             return;
         }
-
         bottomFloorGraphObj = new Graph(strategy);
+
+        //  Add nodes
         bottomFloorGraph.Graph.Nodes.forEach((node) => {
             const normalizedNode: NodePathResponse = {
                 ...node,
@@ -262,6 +264,25 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
             };
             bottomFloorGraphObj!.addNode(normalizedNode);
         });
+//  Add edges
+        bottomFloorGraph.Graph.Edges.forEach((edge) => {
+            bottomFloorGraphObj!.addEdge(edge.startNodeId, edge.endNodeId);
+        });
+
+// Use GraphNode, not NodePathResponse
+        const elevatorNode = bottomFloorGraphObj.getNode(216); //
+        if (!elevatorNode) {
+        } else {
+            const neighbors = elevatorNode.getNeighbors().map((n) => n.data.nodeId);
+        }
+
+// Check all DOOR paths
+        const allDoors = bottomFloorGraphObj.getNodesOfType('DOOR').map((n) => n.nodeId);
+
+        for (const doorId of allDoors) {
+            const path = bottomFloorGraphObj.search('DOOR', doorId); // search(doorType, endId)
+        }
+
 
         bottomFloorGraphObj.floorNum = bottomFloorGraph.floorNum;
         bottomFloorGraphObj.image = bottomFloorGraph.image;
@@ -357,7 +378,6 @@ async function findOptimalFullPath(
                 direction: topFloorDirection,
             });
 
-
             totalDistance += computeDistance(topPath);
 
             let insideDoorNodeId: number | null = null;
@@ -367,14 +387,19 @@ async function findOptimalFullPath(
                 const topElevatorNode = topPath[0];
                 const connectedNodeId = topElevatorNode.connectedNodeId;
                 if (!connectedNodeId) {
+                    console.log(`Elevator node ${topElevatorNode.nodeId} has no connectedNodeId.`);
                     continue;
                 }
 
                 // From ELEVATOR to DOOR (on bottom floor)
                 const bottomPath = bottomFloorGraph.search('DOOR', connectedNodeId);
-                if (bottomPath.length === 0) continue;
+                if (bottomPath.length === 0) {
+                    console.log(`No path from bottom floor elevator (${connectedNodeId}) to DOOR.`);
+                    continue;
+                }
 
-                const bottomFloorDirection = bottomFloorGraph.generateDirectionStepsFromNodes(bottomPath);
+                const bottomFloorDirection =
+                    bottomFloorGraph.generateDirectionStepsFromNodes(bottomPath);
 
                 tempFloorPaths.push({
                     floorNum: bottomFloorGraph.floorNum!,
@@ -387,7 +412,6 @@ async function findOptimalFullPath(
                     path: bottomPath,
                     direction: bottomFloorDirection,
                 });
-
 
                 totalDistance += computeDistance(bottomPath);
 

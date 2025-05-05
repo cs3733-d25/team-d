@@ -139,6 +139,8 @@ class GraphNode {
 class Graph {
     private readonly nodesMap: Map<number, GraphNode>;
     private pathFindingStrategy: PathFindingStrategy;
+    private edges: { startNodeId: number, endNodeId: number }[] = [];
+
 
     floorNum?: number;
     image?: string;
@@ -183,6 +185,9 @@ class Graph {
             node1.addNeighbor(node2);
             node2.addNeighbor(node1);
         }
+
+        this.edges.push({ startNodeId: id1, endNodeId: id2 });
+
     }
 
     search(startNodeType: NodePathResponseType, endNodeId: number): NodePathResponse[] {
@@ -200,6 +205,31 @@ class Graph {
     getNodeById(nodeId: number): NodePathResponse | undefined {
         return this.nodesMap.get(nodeId)?.data;
     }
+
+
+    getNeighbors(nodeId: number): { data: NodePathResponse }[] {
+        const neighbors: { data: NodePathResponse }[] = [];
+
+        const currentNode = this.getNodeById(nodeId);
+        if (!currentNode) return neighbors;
+
+        for (const edge of this.edges) {
+            if (edge.startNodeId === nodeId) {
+                const neighbor = this.getNodeById(edge.endNodeId);
+                if (neighbor) {
+                    neighbors.push({ data: neighbor });
+                }
+            } else if (edge.endNodeId === nodeId) {
+                const neighbor = this.getNodeById(edge.startNodeId);
+                if (neighbor) {
+                    neighbors.push({ data: neighbor });
+                }
+            }
+        }
+
+        return neighbors;
+    }
+
 
     generateDirectionStepsFromNodes(path: NodePathResponse[]): string[] {
         if (path.length < 2) return ['Not enough points for directions'];
