@@ -82,7 +82,7 @@ const AssignEmployeeDialog: React.FC<AssignEmployeeDialogProps> = ({ID, requestT
                 </div>
                 <DialogFooter>
                     <Button
-                        className="bg-blue-900"
+                        className="bg-blue-900 border-2 border-yellow-400 hover:bg-gray-400"
                         type="submit"
                             onClick={async () => {
                                 try {
