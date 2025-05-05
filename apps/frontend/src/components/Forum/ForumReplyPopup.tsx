@@ -23,9 +23,10 @@ type Reply = {
 
 type ForumReplyPopupProps = {
     ID: string;
+    onReplySubmit: () => void;
 };
 
-const ForumReplyPopup: React.FC<ForumReplyPopupProps> = ({ID}) => {
+const ForumReplyPopup: React.FC<ForumReplyPopupProps> = ({ID, onReplySubmit}) => {
 
     const [form, setForm] = useState<Reply>({
         content: '',
@@ -34,7 +35,6 @@ const ForumReplyPopup: React.FC<ForumReplyPopupProps> = ({ID}) => {
     });
 
     const { user } = useAuth0();
-    const [open, setOpen] = React.useState(false);
     const [employeeData, setEmployeeData] = useState<Employee | null>(null);
 
     useEffect(() => {
@@ -58,89 +58,84 @@ const ForumReplyPopup: React.FC<ForumReplyPopupProps> = ({ID}) => {
 
     const onSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        // console.log(form);
 
         axios
             .post(API_ROUTES.FORUM + "/reply/" + ID, form)
+            .then(() => {
+                onReplySubmit(); // trigger reload in parent
+                setForm({ content: '', email: '', postId: 0 }); // optional: clear form
+            })
             .catch((err) => {
                 console.error("Error submitting forum reply:", err);
             });
     };
 
+
     return (
         <>
-            <div className="max-h-[95vh] w-115 overflow-y-auto">
-                <div >
-                    <div >
-
-                    </div>
-                    <div className="sm:max-w-[425px]">
-                        <div>
-                        </div>
-                        <div className="flex flex-col items-center gap-4 bg-white">
-                            <div className="bg-blue-900 rounded-md px-6 py-4 max-w-5xl w-full mx-auto">
-                                <h2 className="text-4xl font-bold text-white text-center">
-                                    Make a Forum Post
-                                </h2>
+            <form onSubmit={onSubmit} className="space-y-6">
+                <div className=" md:flex-row gap-6">
+                    {/* Left Column: Email or Employee */}
+                    <div className="">
+                        {user ? (
+                            <div>
+                                <Label className="block pb-1 text-sm font-medium text-gray-700" htmlFor="employeeName">
+                                    Employee
+                                </Label>
+                                <div className="text-gray-900">
+                                    {employeeData?.firstName} {employeeData?.lastName}
+                                </div>
                             </div>
-                            <form onSubmit={onSubmit}>
-                                {user ? (
-                                    <div>
-                                        <Label className="pt-4 pb-2" htmlFor="employeeName">
-                                            Employee:
-                                        </Label>
-                                        <div>
-                                            {employeeData?.firstName} {employeeData?.lastName}
-                                        </div>
-                                    </div>
-                                ) : (
-                                    <div>
-                                        <Label className="pt-4 pb-2" htmlFor="email">
-                                            Email
-                                        </Label>
-                                        <Input
-                                            required
-                                            type="text"
-                                            id="email"
-                                            className="w-80 h-8 rounded-2xl border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
-                                            onChange={(e) =>
-                                                setForm({
-                                                    ...form,
-                                                    email: e.target.value,
-                                                })
-                                            }
-                                        />
-                                    </div>
-                                )}
+                        ) : (
+                            <div>
+                                <Label className="block pb-1 text-sm font-medium text-gray-700" htmlFor="email">
+                                    Email
+                                </Label>
+                                <Input
+                                    required
+                                    type="text"
+                                    id="email"
+                                    className="w-full h-10 rounded-md border border-gray-300 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
+                                    onChange={(e) =>
+                                        setForm({
+                                            ...form,
+                                            email: e.target.value,
+                                        })
+                                    }
+                                />
+                            </div>
+                        )}
+                    </div>
 
-                                <div>
-                                    <Label className="pt-4 pb-2" htmlFor="content">
-                                        Content
-                                    </Label>
-                                    <textarea
-                                        required
-                                        id="content"
-                                        className="w-80 h-30 rounded-md border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
-                                        onChange={(e) =>
-                                            setForm({
-                                                ...form,
-                                                content: e.target.value
-                                            })
-                                        }
-                                    />
-                                </div>
-
-                                <div className="flex flex-row justify-center items-center">
-                                    <Button type="submit" className="mt-6 w-full bg-blue-900">
-                                        Submit
-                                    </Button>
-                                </div>
-                            </form>
-                        </div>
+                    {/* Right Column: Content */}
+                    <br></br>
+                    <div className="">
+                        <Label className="block pb-1 text-sm font-medium text-gray-700" htmlFor="content">
+                            Content
+                        </Label>
+                        <textarea
+                            required
+                            id="content"
+                            className="w-full h-32 rounded-md border border-gray-300 px-4 py-2 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
+                            onChange={(e) =>
+                                setForm({
+                                    ...form,
+                                    content: e.target.value,
+                                })
+                            }
+                        />
                     </div>
                 </div>
-            </div>
+
+                {/* Submit Button */}
+                <div className="flex justify-center">
+                    <Button type="submit" className="w-full md:w-1/2 bg-blue-900 text-white">
+                        Submit
+                    </Button>
+                </div>
+            </form>
         </>
+
     );
 }
 
