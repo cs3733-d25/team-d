@@ -188,7 +188,7 @@ const VoiceDirectory: React.FC = () => {
                             className={`${
                                 hospital === 3
                                     ? "bg-blue-900 text-white border-2 border-yellow-400 hover:bg-gray-400"
-                                    : "bg-gray-200"
+                                    : "bg-gray-200 "
                             } rounded-md px-2 py-1`}
                             onClick={() => {
                                 setHospital(3);
@@ -206,7 +206,7 @@ const VoiceDirectory: React.FC = () => {
                             placeholder="Search services or specialties…"
                             value={query}
                             onChange={(e) => setQuery(e.target.value)}
-                            className="flex-1 grow border-2 border-[#012D5A] rounded-md shadow-md bg-[#F1F1F1]"
+                            className="flex-1 grow border-2 h-13 border-[#012D5A] rounded-md shadow-md bg-[#F1F1F1]"
                         />
 
                         {/* mic button */}
@@ -216,7 +216,7 @@ const VoiceDirectory: React.FC = () => {
                                 play();
                             }}
                             aria-label="voice search"
-                            className={`absolute top-0.5 right-3 w-8 h-8 flex items-center justify-center rounded-full border transition-colors
+                            className={`absolute top-0.3 right-3 w-8 h-8 flex items-center justify-center rounded-full border transition-colors
                         ${
                                 listening
                                     ? "bg-blue-900 text-white border-blue-900"
