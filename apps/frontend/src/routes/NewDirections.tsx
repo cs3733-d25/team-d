@@ -197,19 +197,6 @@ export default function NewDirections() {
 
     const [units, setUnits] = useState<string>('Imperial');
 
-
-    const handleZoom = () => {
-        // if (!pathfindingResponse || !map) return;
-        // map.recenter(
-        //     pathfindingResponse.parkingLotPath.path[0].lat,
-        //     pathfindingResponse.parkingLotPath.path[0].lng, 20
-        // );
-    }
-
-    const handleStepSelect = () => {
-
-    }
-
     const handleRecenter = () => {
         if (map && pathfindingResults) {
             map?.setCurrentStepIdx(currentStep, false);
@@ -229,7 +216,7 @@ export default function NewDirections() {
     }
 
     return (
-        <div className="flex flex-row flex-1 h-screen overflow-y-hidden border-2 border-[#012D5A] rounded-md shadow-md bg-[#F1F1F1]">
+        <div className="flex flex-row flex-1 h-screen overflow-y-hidden border-2 bg-white">
             <div className="flex-1 p-4 overflow-y-scroll">
                 {/* Header + inline help button */}
                 <div className="flex items-center justify-between">
