@@ -62,57 +62,47 @@ export default function Navbar() {
                             {/*</NavigationMenuItem>*/}
 
                             <NavigationMenuItem>
-                                <NavigationMenuLink className={'text-base hover:bg-[rgba(0,31,63,0.8)] border-2 border-transparent hover:border-amber-600 hover:text-white'}>
-                                    <span
-                                        onClick={() => (window.location.href = '/directory')}
-                                        className="cursor-pointer"
-                                    >
+                                <NavigationMenuLink onClick={() => (window.location.href = '/directory')} className={'text-base cursor-pointer hover:bg-[rgba(0,31,63,0.8)] border-2 border-transparent hover:border-amber-600 hover:text-white'}>
                                         Directions
-                                    </span>
                                 </NavigationMenuLink>
                             </NavigationMenuItem>
 
 
 
                             <NavigationMenuItem>
-                                <NavigationMenuLink className={'text-base hover:bg-[rgba(0,31,63,0.8)] border-2 border-transparent hover:border-amber-600  hover:text-white'}>
-                                    <Link to={`/voice-directory`}>Departments</Link>
+                                <NavigationMenuLink onClick={() => (window.location.href = '/voice-directory')} className={'text-base cursor-pointer hover:bg-[rgba(0,31,63,0.8)] border-2 border-transparent hover:border-amber-600 hover:text-white'}>
+                                    Departments
                                 </NavigationMenuLink>
                             </NavigationMenuItem>
 
                             <NavigationMenuItem>
-                                <NavigationMenuLink className={'text-base hover:bg-[rgba(0,31,63,0.8)] border-2 border-transparent hover:border-amber-600 hover:text-white'}>
-                                    <Link to={`/servicerequesthub`}>Request Service</Link>
+                                <NavigationMenuLink onClick={() => (window.location.href = '/servicerequesthub')} className={'text-base cursor-pointer hover:bg-[rgba(0,31,63,0.8)] border-2 border-transparent hover:border-amber-600 hover:text-white'}>
+                                    Request Service
                                 </NavigationMenuLink>
                             </NavigationMenuItem>
 
                             <NavigationMenuItem>
-                                <NavigationMenuLink className={'text-base hover:bg-[rgba(0,31,63,0.8)] border-2 border-transparent hover:border-amber-600 hover:text-white'}>
-                                    <Link to={`/all-post`}>Forum</Link>
+                                <NavigationMenuLink onClick={() => (window.location.href = '/all-post')} className={'text-base cursor-pointer hover:bg-[rgba(0,31,63,0.8)] border-2 border-transparent hover:border-amber-600 hover:text-white'}>
+                                    Forum
                                 </NavigationMenuLink>
                             </NavigationMenuItem>
 
                             {isAuthenticated && (
                                 <>
                                     <NavigationMenuItem>
-                                        <NavigationMenuLink className={'text-base hover:bg-[rgba(0,31,63,0.8)] border-2 border-transparent hover:border-amber-600 hover:text-white'}>
-                                            <Link to={`/all-service-requests`}>All Requests</Link>
+                                        <NavigationMenuLink onClick={() => (window.location.href = '/all-service-requests')} className={'text-base cursor-pointer hover:bg-[rgba(0,31,63,0.8)] border-2 border-transparent hover:border-amber-600 hover:text-white'}>
+                                            All Requests
                                         </NavigationMenuLink>
                                     </NavigationMenuItem>
 
                                     <NavigationMenuItem>
-                                        <NavigationMenuLink className={'text-base hover:bg-[rgba(0,31,63,0.8)] border-2 border-transparent hover:border-amber-600 hover:text-white'}>
-                                            <span
-                                                onClick={() => (window.location.href = '/map-editor')}
-                                                className="cursor-pointer"
-                                            >
+                                        <NavigationMenuLink onClick={() => (window.location.href = '/map-editor')} className={'text-base cursor-pointer hover:bg-[rgba(0,31,63,0.8)] border-2 border-transparent hover:border-amber-600 hover:text-white'}>
                                                 Map Editor
-                                            </span>
                                         </NavigationMenuLink>
                                     </NavigationMenuItem>
 
                                     <NavigationMenuItem>
-                                        <NavigationMenuLink className={'text-base hover:bg-[rgba(0,31,63,0.8)] border-2 border-transparent hover:border-amber-600 hover:text-white'}>
+                                        <NavigationMenuLink className={'text-base cursor-pointer hover:bg-[rgba(0,31,63,0.8)] border-2 border-transparent hover:border-amber-600 hover:text-white'}>
                                             <Auth0LogoutButton />
                                         </NavigationMenuLink>
                                     </NavigationMenuItem>
