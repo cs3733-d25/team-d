@@ -108,7 +108,8 @@ export function PastWeekReqs() {
                             tickMargin={5}
                             minTickGap={32}
                             tickFormatter={(value) => {
-                                const date = new Date(value)
+                                const [year, month, day] = value.split("-").map(Number);
+                                const date = new Date(year, month - 1, day);
                                 return date.toLocaleDateString("en-US", {
                                     month: "short",
                                     day: "numeric",
@@ -120,7 +121,9 @@ export function PastWeekReqs() {
                             content={
                                 <ChartTooltipContent
                                     labelFormatter={(value) => {
-                                        return new Date(value).toLocaleDateString("en-US", {
+                                        const [year, month, day] = value.split("-").map(Number);
+                                        const date = new Date(year, month - 1, day);
+                                        return date.toLocaleDateString("en-US", {
                                             month: "short",
                                             day: "numeric",
                                         })
