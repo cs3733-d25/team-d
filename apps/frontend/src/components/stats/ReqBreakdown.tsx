@@ -44,7 +44,7 @@ export default function ReqBreakdown() {
             .catch(console.error);
     }, []);
 
-    /* reusable chart */
+    /* chart */
     const Chart = (
         <ChartContainer
             config={chartConfig}
@@ -115,7 +115,7 @@ export default function ReqBreakdown() {
     /* render */
     return (
         <>
-            {/* card */}
+            {/* small dashboard card */}
             <Card
                 onClick={() => setZoom(true)}
                 className="cursor-pointer shadow-lg rounded-2xl border bg-white w-full h-full"
@@ -127,20 +127,21 @@ export default function ReqBreakdown() {
                 <CardFooter />
             </Card>
 
-            {/* pop‑up */}
+            {/* enlarged popup */}
             {zoom && (
                 <div
                     className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
                     onClick={() => setZoom(false)}
                 >
                     <div
-                        className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-2xl flex flex-col items-center justify-center gap-8"
+                        className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-4xl flex flex-col items-center justify-center gap-8"
                         onClick={(e) => e.stopPropagation()}
                     >
                         <h2 className="text-xl font-bold">Service Request Type</h2>
 
-                        <div className="flex items-center justify-center h-[500px] w-full flex-1">
-                            <div className="w-[500px]">{Chart}</div>
+                        {/* 700 × 700 canvas for long labels */}
+                        <div className="flex items-center justify-center h-[700px] w-full flex-1">
+                            <div className="w-[700px]">{Chart}</div>
                         </div>
 
                         <button
