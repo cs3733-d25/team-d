@@ -24,11 +24,11 @@ export type DepartmentBreakdown = {
 };
 
 export default function DepartmentBreakdown() {
-    /* state */
+    /* ───── state ───── */
     const [data, setData] = useState<DepartmentBreakdown[]>([]);
     const [zoom, setZoom] = useState(false);
 
-    /* fetch */
+    /* ───── fetch ───── */
     useEffect(() => {
         axios
             .get(`${API_ROUTES.SERVICEREQS}/departmentBreakdown`)
@@ -43,7 +43,7 @@ export default function DepartmentBreakdown() {
             .catch(console.error);
     }, []);
 
-    /* chart config */
+    /* ───── chart config ───── */
     const chartConfig: ChartConfig = useMemo(() => {
         const colors = [
             "#1C398E",
@@ -60,7 +60,7 @@ export default function DepartmentBreakdown() {
         return cfg;
     }, [data]);
 
-    /* reusable chart */
+    /* ───── reusable chart (small) ───── */
     const Chart = (
         <ChartContainer
             config={chartConfig}
@@ -131,10 +131,10 @@ export default function DepartmentBreakdown() {
         </ChartContainer>
     );
 
-    /* render */
+    /* ───── render ───── */
     return (
         <>
-            {/* card */}
+            {/* ─── small dashboard card ─── */}
             <Card
                 onClick={() => setZoom(true)}
                 className="cursor-pointer shadow-lg rounded-2xl border bg-white w-full h-full"
@@ -146,20 +146,21 @@ export default function DepartmentBreakdown() {
                 <CardFooter />
             </Card>
 
-            {/* pop‑up */}
+            {/* ─── enlarged popup ─── */}
             {zoom && (
                 <div
                     className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
                     onClick={() => setZoom(false)}
                 >
                     <div
-                        className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-2xl flex flex-col items-center justify-center gap-8"
+                        className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-4xl flex flex-col items-center justify-center gap-8"
                         onClick={(e) => e.stopPropagation()}
                     >
                         <h2 className="text-xl font-bold">Department Breakdown</h2>
 
-                        <div className="flex items-center justify-center h-[500px] w-full flex-1">
-                            <div className="w-[500px]">{Chart}</div>
+                        {/* 700 × 700 canvas for long labels */}
+                        <div className="flex items-center justify-center h-[700px] w-full flex-1">
+                            <div className="w-[700px]">{Chart}</div>
                         </div>
 
                         <button
