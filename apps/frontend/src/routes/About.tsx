@@ -24,29 +24,29 @@ type Person = {
 };
 
 const faculty: Person[] = [
-    { name: "Prof. Wilson Wong", position: "Course Instructor", photo: WongImg, quote: "\" You guys are last for a reason \"" },
+    { name: "Prof. Wilson Wong", position: "Course Instructor", photo: WongImg, quote: "\"Solid application\" - Professor Wong" },
     { name: "Katy Stuparu",      position: "Team Coach", photo: KatyImg, quote: "I like Trains" },
 ];
 
 const members: Person[] = [
     // Co-Leads
-    { name: "Jacob Boyle", position: "Co-Lead", photo: JacobImg, quote: "I like Trains" },
-    { name: "Thanh Ho",    position: "Co-Lead", photo: EmmaImg, quote: "I like Trains" },
+    { name: "Jacob Boyle", position: "Co-Lead", photo: JacobImg, quote: "\" \"You miss 100% of the shots you don't take\" - Wayne Gretzky\" - Michael Scott " },
+    { name: "Thanh Ho",    position: "Co-Lead", photo: EmmaImg, quote: "\"haribo is love, haribo is life\" - Emma" },
 
     // Assistant Leads
-    { name: "Margareth Hosie",       position: "Assistant Lead for Back-End", photo: MaggieImg, quote: "I like Trains" },
-    { name: "Keerthana Jayamoorthy", position: "Assistant Lead for Front-End", photo: KeethuImg, quote: "I like Trains" },
+    { name: "Margareth Hosie",       position: "Assistant Lead for Back-End", photo: MaggieImg, quote: "\" \"Sorry Im late, I'm afraid I got lost on the path of life\" - Kakashi Sensei\" - Masashi Kishimoto" },
+    { name: "Keerthana Jayamoorthy", position: "Assistant Lead for Front-End", photo: KeethuImg, quote: "\"He who feeds you controls you\" - Thomas Sankara" },
 
     // Team
     {
         name:     "Stuvat Dash",
         position: "Front-End & Feature Software Engineer",
-        photo:    StuvatImg, quote: "I like Trains"
+        photo:    StuvatImg, quote: "\"Something's broken, can you fix it?\" - Maggie & Christine"
     },
     { name: "Brandon Small",  position: "Front-End & Feature Engineer • Scrum Master", photo: BrandonImg, quote: "\"Sometimes... the journey is umm, sometimes, friends..., real journey is friends along the way\"" },
     { name: "Delia Jasper",   position: "Front-End & Feature Engineer", photo: DeliaImg, quote: "I like Trains" },
     { name: "Lucien La Rock", position: "Front-End & Feature Engineer • Project Manager", photo: LucienImg, quote: "\"There's a reason you guys are last\"-Professor Wong" },
-    { name: "Christine Ngo",  position: "Back-End Database Engineer & Product Owner", photo: ChristineImg, quote: "I like Trains" },
+    { name: "Christine Ngo",  position: "Back-End Database Engineer & Product Owner", photo: ChristineImg, quote: "\"Once you meet someone, you never really forget them. It just takes a while for your memory o come back to you.\" - Zeniba, Sprited Away" },
     { name: "Ali Riad",       position: "Algorithms & Feature Engineer", photo: AliImg, quote: "I like Trains" },
     { name: "Jiaming Du",     position: "Algorithms & Feature Engineer", photo: JiamingImg, quote: "I like Trains" },
 ];
@@ -81,7 +81,7 @@ const FlipCard: React.FC<Person> = ({ name, position, photo, quote }) => {
                     </div>
                 </div>
                 {/*Back*/}
-                <div className="absolute w-full h-full bg-white border rounded-xl shadow-md flex items-center justify-center"
+                <div className="absolute w-full h-full bg-white border rounded-xl px-2 shadow-md flex items-center justify-center"
                      style={{
                          transform: "rotateY(180deg)",
                          backfaceVisibility: "hidden",
@@ -100,10 +100,6 @@ const About: React.FC = () => (
         <section className="max-w-5xl w-full text-center mb-10 space-y-1">
             <h1 className="text-3xl font-bold text-blue-900">About This Project</h1>
             <p>WPI Computer Science Department • CS3733-D25 Software Engineering</p>
-            <p>
-                Thank you to Brigham&nbsp;&amp;&nbsp;Women’s Hospital and their
-                representative, <span className="font-medium">Andrew Shinn</span>.
-            </p>
         </section>
 
         {/* Faculty */}
@@ -122,6 +118,10 @@ const About: React.FC = () => (
 
         {/* Footer */}
         <footer className="max-w-4xl w-full mt-12 text-center text-sm text-gray-600">
+            <p>
+                Thank you to Brigham&nbsp;&amp;&nbsp;Women’s Hospital and their
+                representative, <span className="font-medium">Andrew Shinn</span>.
+            </p>
             The Brigham&nbsp;&amp;&nbsp;Women’s Hospital maps and data used in this
             application are copyrighted and provided solely for educational
             purposes.
