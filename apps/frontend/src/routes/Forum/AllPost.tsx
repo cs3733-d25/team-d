@@ -10,6 +10,11 @@ import {
 } from "@/components/ui/pagination";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import {Button} from "@/components/ui/button.tsx";
+import ForumPostPopup from "@/components/Forum/ForumPostPopup.tsx";
+import AssignEmployeeDialog from "@/components/AssignEmployeeDialog.tsx";
+import {getRequestType} from "@/routes/AllServiceRequests.tsx";
+
 
 export type PostPreviewProps = {
     postId: string;
@@ -44,6 +49,7 @@ export default function AllPost() {
         setCurrentPosts(filtered.slice(0, postPerBatch));
         setBatchNumber(0);
     };
+    const [showPopup, setShowPopup] = useState(false);
 
     const resetSearch = () => {
         setSearchQuery("");
@@ -81,7 +87,7 @@ export default function AllPost() {
 
     const fetchData = async () => {
         try {
-            const response = await axios.get<PostPreviewProps[]>("/api/forum/posts");
+            const response = await axios.get<PostPreviewProps[]>("/api/forum/newest");
             const fetchArrays = response.data;
 
             setAllPosts(fetchArrays);
@@ -101,12 +107,16 @@ export default function AllPost() {
             <div className="border-4 border-[#012D5A] rounded-2xl shadow-lg p-6 bg-white my-6">
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
                     <h2 className="text-3xl font-bold text-[#012D5A] mb-4 md:mb-0">Help Forum</h2>
-                    <button
-                        onClick={handleSearch}
-                        className="bg-blue-900 text-white px-5 py-2 rounded-xl hover:bg-black transition"
-                    >
-                        + Make a Post
-                    </button>
+
+                    <div>
+                        <ForumPostPopup onUpdate={fetchData}
+                                        trigger={<button
+                                        onClick={handleSearch}
+                                        className="bg-blue-900 text-white px-5 py-2 rounded-xl hover:bg-black transition">
+                                            + Make a Post
+                        </button>}
+                        />
+                    </div>
                 </div>
 
                 <div className="flex flex-col sm:flex-row items-center gap-3">
@@ -155,6 +165,7 @@ export default function AllPost() {
                                 <PaginationLink
                                     isActive={idx === batchNumber}
                                     onClick={() => toThisBatch(idx)}
+                                    className="hover:underline cursor-pointer"
                                 >
                                     {idx + 1}
                                 </PaginationLink>
