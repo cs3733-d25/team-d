@@ -23,7 +23,7 @@ export type Post = {
 export type Reply = {
     content: string;
     createdAt: string;
-    poster: Employee;
+    replier: Employee;
 };
 
 export default function DetailPost() {
@@ -82,8 +82,8 @@ export default function DetailPost() {
                             post.replies.map((reply, index) => (
                                 <div key={index} className="border border-gray-300 rounded-md shadow-sm bg-white p-4 space-y-1">
                                     <div className="text-sm font-medium text-gray-700">
-                                        {reply.poster?.firstName
-                                            ? `${reply.poster.firstName} ${reply.poster.lastName}`
+                                        {reply.replier?.firstName
+                                            ? `${reply.replier.firstName} ${reply.replier.lastName}`
                                             : 'Anonymous'}
                                     </div>
                                     <div className="text-xs text-gray-500">

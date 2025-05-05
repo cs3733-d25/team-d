@@ -34,7 +34,7 @@ const ServiceRequestHub = () => {
                 <div className="absolute inset-0 bg-yellow-600/10 mix-blend-multiply pointer-events-none"></div>
                 <div className="absolute inset-0 bg-zinc-900/50 pointer-events-none"></div>
                 <div className="relative text-5xl z-10 mb-10 pb-4 flex items-center justify-center justify-top mt-5 h-20 w-full">
-                    <div className="text-5xl bg-blue-900 w-screen py-4 font-bold text-white text-center">
+                    <div className="text-5xl bg-blue-900/50 w-screen py-4 font-bold text-white text-center">
                         Service Requests
                     </div>
                 </div>
