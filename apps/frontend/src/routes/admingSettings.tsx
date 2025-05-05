@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/Textarea"
 import EmployeeInfoSettings from "@/components/EmployeeInfoSettings.tsx";
 import {Label} from "@/components/ui/label.tsx";
 import {Input} from "@/components/ui/input.tsx";
+import AdminDatabase from '@/routes/AdminDatabase.tsx';
 
 const AdminSettings: React.FC = () => {
     const [activePanel, setActivePanel] = useState<Panel>("profile");
@@ -40,17 +41,17 @@ const AdminSettings: React.FC = () => {
                         Change Pathfinding Algorithm
                     </Button>
 
-                    <Button
-                        variant="ghost"
-                        className={`justify-start ${
-                            activePanel === "directory"
-                                ? "bg-blue-900 text-white"
-                                : "bg-gray-200"
-                        }`}
-                        onClick={() => setActivePanel("directory")}
-                    >
-                        Edit Directory
-                    </Button>
+                    {/*<Button*/}
+                    {/*    variant="ghost"*/}
+                    {/*    className={`justify-start ${*/}
+                    {/*        activePanel === "directory"*/}
+                    {/*            ? "bg-blue-900 text-white"*/}
+                    {/*            : "bg-gray-200"*/}
+                    {/*    }`}*/}
+                    {/*    onClick={() => setActivePanel("directory")}*/}
+                    {/*>*/}
+                    {/*    Edit Directory*/}
+                    {/*</Button>*/}
                 </div>
             </aside>
 
@@ -64,11 +65,9 @@ const AdminSettings: React.FC = () => {
                     <AlgorithmSettings />
                 )}
 
-                {activePanel === "directory" && (
-                    <p className="text-xl text-gray-700">
-                        Edit directory functionality coming soon…
-                    </p>
-                )}
+                {/*{activePanel === "directory" && (*/}
+                {/*    <AdminDatabase />*/}
+                {/*)}*/}
             </main>
         </div>
     );
