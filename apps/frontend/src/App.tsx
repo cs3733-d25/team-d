@@ -13,7 +13,6 @@ import VoiceDirectory from "@/routes/VoiceDirectory.tsx";
 import About from "@/routes/About.tsx";
 import Citations from "@/routes/Citations.tsx";
 import NotFound from "@/routes/NotFound.tsx";
-
 import AdminSettings from "@/routes/admingSettings.tsx";
 
 import { ProtectedRoute } from "./components/ProtectedRoute";
@@ -26,6 +25,9 @@ import DetailPost from '@/routes/Forum/DetailPost.tsx';
 
 import AllPost from "@/routes/Forum/AllPost.tsx";
 import HospitalDirectory from '@/routes/hospitalDirectory.tsx';
+
+import RequestsOfAnEmployee from "@/routes/AllServiceRequestsOfAnEmployee.tsx";
+
 function App() {
     return (
         <div className="h-screen bg-accent flex flex-col parent">
@@ -56,6 +58,8 @@ function App() {
                             <Route path="map-editor" element={<MapEditor />} />
                             <Route path="all-service-requests" element={<AllServiceRequests />} />
                             <Route path="profile" element={<Auth0Profile />} />
+                            <Route path="employee-all-requests" element={<RequestsOfAnEmployee/>} />
+
                         </Route>
 
                         <Route path="detailed-post/:postId" element={<DetailPost />} />

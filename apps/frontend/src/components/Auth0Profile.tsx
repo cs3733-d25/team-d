@@ -22,7 +22,7 @@ const Profile = () => {
     const navigate = useNavigate();
 
     const redirectToMyRequest = () => {
-        navigate("/all-service-requests");
+        navigate("/employee-all-requests");
     };
 
     const redirectAdminDatabase = () => {
