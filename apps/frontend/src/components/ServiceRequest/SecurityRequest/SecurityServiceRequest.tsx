@@ -211,10 +211,10 @@ export default function SecurityServiceRequest() {
                         </div>
 
 
-                        <Label className="pt-4 pb-2" htmlFor="comments">Comments</Label>
+                        <Label className="pt-4 pb-2 w-full" htmlFor="comments">Comments</Label>
                         <textarea
                             id="comments"
-                            className="w-80 h-8 rounded-md border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
+                            className="w-80 h-8 text-left rounded-md border border-gray-500 px-4 transition-colors duration-300 focus:border-blue-500 focus:bg-blue-100"
                             onChange={(e) =>
                                 setForm({...form, comments: e.target.value})
                             }
