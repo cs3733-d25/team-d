@@ -59,8 +59,8 @@ export function PastWeekReqs() {
     }, []);
 
     return (
-        <Card className="w-3xl h-110">
-            <CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row ">
+        <Card className="shadow-lg rounded-2xl border bg-white w-full">
+            <CardHeader className="flex flex-col items-center gap-2 space-y-0 border-b py-5">
                 <div className="grid flex-1 gap-1 text-center sm:text-left">
                     <CardTitle>Service Requests Past Week</CardTitle>
                     <CardDescription className="text-center">
@@ -108,7 +108,8 @@ export function PastWeekReqs() {
                             tickMargin={5}
                             minTickGap={32}
                             tickFormatter={(value) => {
-                                const date = new Date(value)
+                                const [year, month, day] = value.split("-").map(Number);
+                                const date = new Date(year, month - 1, day);
                                 return date.toLocaleDateString("en-US", {
                                     month: "short",
                                     day: "numeric",
@@ -120,7 +121,9 @@ export function PastWeekReqs() {
                             content={
                                 <ChartTooltipContent
                                     labelFormatter={(value) => {
-                                        return new Date(value).toLocaleDateString("en-US", {
+                                        const [year, month, day] = value.split("-").map(Number);
+                                        const date = new Date(year, month - 1, day);
+                                        return date.toLocaleDateString("en-US", {
                                             month: "short",
                                             day: "numeric",
                                         })

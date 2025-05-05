@@ -32,6 +32,30 @@ model Employee {
   dateOfBirth             DateTime
   phoneNumber             String
   pronoun                 String
+  poster                  Post[]
+  replier                 Reply[]
+}
+
+model Post {
+  postId        Int           @id @default(autoincrement())
+  title         String
+  content       String
+  createdAt     DateTime      @default(now())
+  posterId      Int?
+  poster        Employee?     @relation(fields: [posterId], references: [employeeId])
+  email         String?
+  replies       Reply[]
+}
+
+model Reply {
+  replyId       Int           @id @default(autoincrement())
+  content       String
+  createdAt     DateTime      @default(now())
+  replierId     Int?
+  replier       Employee?     @relation(fields: [replierId], references: [employeeId])
+  email         String?
+  postId        Int
+  post          Post          @relation(fields: [postId], references: [postId], onDelete: Cascade)
 }
 
 //**
@@ -160,6 +184,9 @@ model Department {
   room     String
   lat      Float
   lng      Float
+  services String?
+  telephone  String?
+  hours    String?
 
   hospitalId Int
   Hospital   Hospital @relation(fields: [hospitalId], references: [hospitalId])

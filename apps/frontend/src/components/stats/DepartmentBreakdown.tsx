@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import {Cell, Label, Pie, PieChart} from "recharts"
+import { Cell, Label, Pie, PieChart } from "recharts";
 
 import {
     Card,
@@ -8,136 +8,167 @@ import {
     CardFooter,
     CardHeader,
     CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 import {
     ChartConfig,
     ChartContainer,
     ChartTooltip,
     ChartTooltipContent,
-} from "@/components/ui/chart"
-import {useEffect, useMemo, useState} from "react";
+} from "@/components/ui/chart";
+import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
-import {API_ROUTES} from "common/src/constants.ts";
+import { API_ROUTES } from "common/src/constants.ts";
+import {Department} from "@/routes/Directions.tsx";
 
 export type DepartmentBreakdown = {
-    Type: string;
-    num: number;
+    Department: string;
+    count: number;
 };
 
-export function DepartmentBreakdown() {
+export default function DepartmentBreakdown() {
+    /* state */
     const [data, setData] = useState<DepartmentBreakdown[]>([]);
+    const [zoom, setZoom] = useState(false);
 
-    const fetchData = async () => {
-        try {
-            const dataResponse = await axios.get(API_ROUTES.SERVICEREQS+'/departmentBreakdown');
-            const normalizedData: DepartmentBreakdown[] = dataResponse.data.map((item: unknown) => ({
-                Type: item.Department,
-                num: item.count
-            }));
-            setData(normalizedData);
-        } catch (error) {
-            console.error('Error fetching data:', error);
-        }
-    };
-
+    /* fetch */
     useEffect(() => {
-        fetchData();
+        axios
+            .get(`${API_ROUTES.SERVICEREQS}/departmentBreakdown`)
+            .then(({ data }) =>
+                setData(
+                    data
+                ),
+            )
+            .catch(console.error);
     }, []);
 
-    useEffect(() => {
-        console.log("fetched data:", data)
+    /* chart config */
+    const chartConfig: ChartConfig = useMemo(() => {
+        const colors = [
+            "#1C398E",
+            "#ADDDE5",
+            "#80ccd1",
+            "#46989E",
+            "#A8C3ED",
+            "#5974c2",
+        ];
+        const cfg: ChartConfig = { num: { label: "Count", color: "" } };
+        data.forEach((d, idx) => {
+            cfg[d.Department] = { label: d.Department, color: colors[idx % colors.length] };
+        });
+        return cfg;
     }, [data]);
 
-    const chartConfig: ChartConfig = useMemo(() => {
-        const colors = ["#1C398E", "#ADDDE5", "#80ccd1", "#46989E", "#A8C3ED", "#5974c2"]
-        const config: ChartConfig = {
-            num: {
-                label: "Count",
-                color: "",
-            }
-        }
-        data.forEach((item, index) => {
-            config[item.Type] = {
-                label: item.Type,
-                color: colors[index % colors.length],
-            }
-        })
-        return config
-    }, [data])
-
-    return (
-        //department breakdown
-        <Card className="inline-flex flex flex-col shadow-md border border-muted bg-white w-700 h-100">
-            <CardHeader className="items-center pb-0">
-                <CardTitle>Department</CardTitle>
-            </CardHeader>
-            <CardContent className="flex-1 pb-0">
-                <ChartContainer
-                    config={chartConfig}
-                    className="mx-auto aspect-square max-h-[250px] w-full [&_.recharts-text]:fill-background"
+    /* chart */
+    const Chart = (
+        <ChartContainer
+            config={chartConfig}
+            className="mx-auto aspect-square max-h-[250px] w-full [&_.recharts-text]:fill-background"
+        >
+            <PieChart>
+                <ChartTooltip
+                    cursor={false}
+                    content={<ChartTooltipContent nameKey="Department" hideLabel />}
+                />
+                <Pie
+                    data={data}
+                    dataKey="count"
+                    labelLine
+                    innerRadius={60}
+                    label={({ payload, ...props }) => (
+                        <text
+                            cx={props.cx}
+                            cy={props.cy}
+                            x={props.x}
+                            y={props.y}
+                            textAnchor={props.textAnchor}
+                            dominantBaseline={props.dominantBaseline}
+                        >
+                            {payload.Department}
+                        </text>
+                    )}
                 >
-                    <PieChart>
-                        <ChartTooltip cursor={false}
-                                      content={<ChartTooltipContent nameKey="Type" hideLabel />}
+                    {data.map((entry, idx) => (
+                        <Cell
+                            key={idx}
+                            fill={chartConfig[entry.Department]?.color || "#ccc"}
                         />
-                        <Pie data={data} dataKey="num" labelLine={true} innerRadius={60}
-                             label={({ payload, ...props }) => {
-                                 return (
-                                     <text
-                                         cx={props.cx}
-                                         cy={props.cy}
-                                         x={props.x}
-                                         y={props.y}
-                                         textAnchor={props.textAnchor}
-                                         dominantBaseline={props.dominantBaseline}
-                                     >
-                                         {payload.Type}
-                                     </text>
-                                 )
-                             }}>
-                            {data.map((entry, index) => (
-                                <Cell
-                                    key={`cell-${index}`}
-                                    fill={chartConfig[entry.Type]?.color || "#ccc"}
-                                />
-                            ))}
-                            <Label
-                                content={({ viewBox }) => {
-                                    if (viewBox && "cx" in viewBox && "cy" in viewBox) {
-                                        return (
-                                            <text
-                                                x={viewBox.cx}
-                                                y={viewBox.cy}
-                                                textAnchor="middle"
-                                                dominantBaseline="middle"
-                                            >
-                                                <tspan
-                                                    x={viewBox.cx}
-                                                    y={(viewBox.cy || 0) - 3}
-                                                    className="fill-foreground text-3xl font-bold"
-                                                >
-                                                    {data.reduce((sum, item) => sum + item.num, 0)}
-                                                </tspan>
-                                                <tspan
-                                                    x={viewBox.cx}
-                                                    y={(viewBox.cy || 0) + 18}
-                                                    className="fill-muted-foreground"
-                                                >
-                                                    Requests
-                                                </tspan>
-                                            </text>
-                                        )
-                                    }
-                                }}
-                            />
-                        </Pie>
-                    </PieChart>
-                </ChartContainer>
-            </CardContent>
-            <CardFooter className="flex-col gap-2 text-sm">
-            </CardFooter>
-        </Card>
-    )
-}
+                    ))}
 
-export default DepartmentBreakdown;
+                    <Label
+                        content={({ viewBox }) => {
+                            if (viewBox && "cx" in viewBox && "cy" in viewBox) {
+                                return (
+                                    <text
+                                        x={viewBox.cx}
+                                        y={viewBox.cy}
+                                        textAnchor="middle"
+                                        dominantBaseline="middle"
+                                    >
+                                        <tspan
+                                            x={viewBox.cx}
+                                            y={(viewBox.cy ?? 0) - 3}
+                                            className="fill-foreground text-3xl font-bold"
+                                        >
+                                            {data.reduce((sum, item) => sum + item.count, 0)}
+                                        </tspan>
+                                        <tspan
+                                            x={viewBox.cx}
+                                            y={(viewBox.cy ?? 0) + 18}
+                                            className="fill-muted-foreground"
+                                        >
+                                            Requests
+                                        </tspan>
+                                    </text>
+                                );
+                            }
+                            return null;
+                        }}
+                    />
+                </Pie>
+            </PieChart>
+        </ChartContainer>
+    );
+
+    /*render */
+    return (
+        <>
+            {/* card */}
+            <Card
+                onClick={() => setZoom(true)}
+                className="cursor-pointer shadow-lg rounded-2xl border bg-white w-full h-full"
+            >
+                <CardHeader className="items-center pb-0">
+                    <CardTitle>Department</CardTitle>
+                </CardHeader>
+
+                <CardContent className="flex-1 pb-0">{Chart}</CardContent>
+                <CardFooter />
+            </Card>
+
+            {/* popup */}
+            {zoom && (
+                <div
+                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
+                    onClick={() => setZoom(false)}
+                >
+                    <div
+                        className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-2xl"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <h2 className="text-xl font-bold mb-4">Department Breakdown</h2>
+
+                        <div className="h-[350px] overflow-auto">{Chart}</div>
+
+                        <button
+                            onClick={() => setZoom(false)}
+                            className="mt-6 px-4 py-2 bg-slate-700 text-white rounded-lg"
+                        >
+                            Close
+                        </button>
+                    </div>
+                </div>
+            )}
+        </>
+    );
+}

@@ -125,7 +125,6 @@ export default function NewDirections() {
 
     const setPathfindingResultsExternal = (results: PathfindingResults | null, refresh: boolean) => {
         setPathfindingResults(results);
-        console.log(results?.sections[0].directions[0].distance);
         setCurrentStep(-1);
         if (refresh) {
             console.log('resetSecton');
@@ -133,7 +132,6 @@ export default function NewDirections() {
         }
         else {
             const temp = currentSection;
-            // setCurrentSection(-1);
             console.log(temp);
             setCurrentSection(temp);
         }
@@ -167,8 +165,6 @@ export default function NewDirections() {
 
         if (!map) return;
         map.setDepartment(newDepartment);
-
-        // setCurrentStep(-1);
     }
 
     const handleModeChange = (mode: string) => {
@@ -195,7 +191,7 @@ export default function NewDirections() {
         console.log(currentStep - 1);
     }
 
-
+    const [units, setUnits] = useState<string>('Imperial');
 
 
     const handleZoom = () => {
@@ -229,8 +225,8 @@ export default function NewDirections() {
     }
 
     return (
-        <div className="flex flex-row flex-1 h-screen overflow-y-hidden border-2 border-[#012D5A] rounded-md shadow-md bg-[#F1F1F1]">
-            <div className="flex-1 p-4 overflow-y-scroll">
+        <div className="flex flex-row flex-1 h-screen overflow-y-hidden bg-white">
+            <div className="flex-1 p-4 overflow-y-scroll pb-[200px]">
                 {/* Header + inline help button */}
                 <div className="flex items-center justify-between">
                     <h2 className="text-3xl font-bold">Get Directions</h2>
@@ -347,19 +343,13 @@ export default function NewDirections() {
                                 <CardContent>
                                     <div className="flex flex-row">
                                         <div className="flex-1 grow">
-                                            {/*<Label className="mb-1 mb-2 border-2 border-amber-600 rounded-md inline-block px-2 py-1">*/}
-                                            {/*    Text-to-speech?*/}
-                                            {/*</Label>*/}
                                             <br/>
                                             <div className="flex items-center space-x-2">
                                                 <Checkbox id="tts" className="border-2 border-amber-600 rounded-xs" onCheckedChange={() => setTts(!tts)}/>
                                                 <Label htmlFor="tts">Text-to-Speech</Label>
                                             </div>
                                             <br/>
-                                            {/*<Label className="mb-1 mb-2 border-2 border-amber-600 rounded-md inline-block px-2 py-1">*/}
-                                            {/*    Unit System*/}
-                                            {/*</Label>*/}
-                                            <RadioGroup defaultValue="Imperial" onValueChange={(value: string) => map?.convertUnits(value)}>
+                                            <RadioGroup defaultValue="Imperial" onValueChange={(value: string) => setUnits(value)}>
                                                 <div className="flex items-center space-x-2">
                                                     <RadioGroupItem id="imp" value="Imperial" className="border-2 border-amber-600 peer-checked:bg-blue-900"/>
                                                     <Label htmlFor="imp">Imperial</Label>
@@ -380,27 +370,6 @@ export default function NewDirections() {
                                             </Button>
                                         </>
                                     </div>
-                                    {/*<div className="flex items-center justify-between">*/}
-                                    {/*    <Label className="flex items-center gap-2">*/}
-                                    {/*        Text-to-speech*/}
-                                    {/*        <Switch className="data-[state=checked]:bg-blue-900" onCheckedChange={setTts} />*/}
-                                    {/*    </Label>*/}
-                                    {/*    <Button*/}
-                                    {/*        onClick={handleRecenter}*/}
-                                    {/*        className=" border-2 border-amber-600 flex-1 grow m-2 bg-blue-900 active:scale-95 active:shadow-inner transition-transform"*/}
-                                    {/*    >*/}
-                                    {/*        <FontAwesomeIcon icon={faCrosshairs} />*/}
-                                    {/*        Re-center*/}
-                                    {/*    </Button>*/}
-                                    {/*</div>*/}
-                                    {/*<div className="items-center justify-center">*/}
-                                    {/*    <Tabs defaultValue="Metric" onValueChange={(value: string) => map?.convertUnits(value)}>*/}
-                                    {/*        <TabsList>*/}
-                                    {/*            <TabsTrigger className="border-2 border-amber-600 flex-1 grow m-2 bg-blue-900 active:scale-95 active:shadow-inner transition-transform" value="Metric">Metric</TabsTrigger>*/}
-                                    {/*            <TabsTrigger className="border-2 border-amber-600 flex-1 grow m-2 bg-blue-900 active:scale-95 active:shadow-inner transition-transform" value="Imperial">Imperial</TabsTrigger>*/}
-                                    {/*        </TabsList>*/}
-                                    {/*    </Tabs>*/}
-                                    {/*</div>*/}
                                     <div className="flex flex-row">
                                         <Button className="border-2 border-amber-600 flex-1 grow m-2 bg-blue-900 active:scale-95 active:shadow-inner transition-transform" onClick={handlePrevStep} disabled={currentStep < 1}>
                                             <FontAwesomeIcon icon={faArrowLeft} />
@@ -434,7 +403,7 @@ export default function NewDirections() {
                                                                     <span> </span>
                                                                     <span className="text-blue-900">{step.instructions}</span>
                                                                     <br/>
-                                                                    <span className="text-black">{step.time} ({step.distance})</span>
+                                                                    <span className="text-black">{step.time} ({units === 'Imperial' ? step.distanceImp : step.distanceMet})</span>
                                                                     <span className="absolute bottom-0 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-black ml-30">
                                                                         {currentStep !== step.idx && 'Click to view'}
                                                                     </span>
