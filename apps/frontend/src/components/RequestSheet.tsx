@@ -385,7 +385,7 @@ const RequestSheet: React.FC<RequestSheetProps> = ({ID, requestType, trigger, on
                         </div>
                             <SheetFooter>
                                 <Button
-                                        className = "bg-blue-500 w-full"
+                                        className = "bg-blue-900 w-full"
                                         type="submit"
                                         onClick={async () => {
                                             try {
