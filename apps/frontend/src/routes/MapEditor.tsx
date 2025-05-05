@@ -49,6 +49,12 @@ export class EditorEncapsulator {
     }
 }
 
+type OnboardingStep = {
+    title: string;
+    img: string | null;
+    description: string;
+}
+
 
 export default function MapEditor() {
 
@@ -116,9 +122,6 @@ export default function MapEditor() {
     }
 
     const handleUpdateConnectedNodeID = (e: ChangeEvent<HTMLInputElement>) => {
-        // if (selectedNode) {
-        //     selectedNode.connectedNodeId = e.target.value.length > 0 ? Number(e.target.value) : null;
-        // }
         if (e.target.value.length === 0) {
             if (selectedNode) {
                 selectedNode.connectedNodeId = null;
@@ -143,8 +146,67 @@ export default function MapEditor() {
 
     }
 
+    /* ────────────── onboarding pop‑up tour ────────────── */
+    const onboardingSteps: OnboardingStep[] = [
+        {
+            title: 'Select a graph',
+            description:
+                'Use the dropdown to select a graph to edit.',
+            img: null,
+        },
+        {
+            title: 'Legend',
+            description:
+                'Colors:\n' +
+                '\tTeal: Normal\n' +
+                '\tBlue: Parking\n' +
+                '\tGreen: Door\n' +
+                '\tYellow: Elevator\n' +
+                '\tRed: Check-in\n' +
+                '\tBlack Border: Node has an external connection.',
+            img: null,
+        },
+        {
+            title: 'External Connections',
+            description:
+                'External Connections provide connections between different graphs. They are intended to be used by indoor door nodes to connect to outdoor door nodes and by upper-floor elevator nodes to connect to ground-floor elevator nodes.',
+            img: null,
+        },
+        {
+            title: 'Mouse Gestures',
+            description:
+                'Left-click a node or edge to view or change its information on the sidebar\n' +
+                'Click and drag a node to change its location\n',
+            img: null,
+        },
+    ];
+
+    // <li>Left-click a node or edge to view or change its information on the sidebar</li>
+    // <li>Click and drag a node to change its location</li>
+    // <li>Right-click the map to add a node at the click location</li>
+    // <li>Right-click a node to start adding an edge
+    //     <ul className="list-disc ml-4">
+    //         <li>Right-click another node to connect both nodes</li>
+    //         <li>Right-click the map to make a new node and connect it to the starting node</li>
+    //         <li>Left-click to cancel adding a new edge</li>
+    //     </ul>
+    // </li>
+    // <li>Double-click an edge to delete it</li>
+    // <li>Double click a node to delete it and any connecting edges</li>
+
+    const [showOnboarding, setShowOnboarding] = useState(false);
+    const [onboardIdx,    setOnboardIdx]    = useState(0);
+
+    const handleOnboardNext = () => {
+        if (onboardIdx < onboardingSteps.length - 1) {
+            setOnboardIdx(onboardIdx + 1);
+        } else {
+            setShowOnboarding(false);          // “Got it” closes the tour
+        }
+    };
+
     return (
-        <div className="flex flex-row flex-1 h-screen overflow-y-hidden">
+        <div className="flex flex-row flex-1 h-screen overflow-y-hidden bg-white">
             <div className="flex-1 p-4 overflow-y-scroll ">
 
                 <h2 className="text-3xl font-bold">Map Editor</h2>
@@ -304,9 +366,6 @@ export default function MapEditor() {
                 <Separator className="mt-4 mb-4" />
                 <div className="flex flex-row">
                     <Card className="flex-1 grow border-4 border-[#012D5A] rounded-md shadow-md bg-[#F1F1F1]">
-                        {/*<CardHeader>*/}
-                        {/*    */}
-                        {/*</CardHeader>*/}
                         <CardContent>
                             <h2 className="text-xl font-bold mb-4 mb-1 mb-2 border-2 border-amber-600 rounded-md inline-block px-2 py-1">Instructions</h2>
                             <ul className="list-disc ml-4">
