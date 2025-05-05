@@ -214,7 +214,7 @@ export default function MapEditor() {
                 <div className="flex flex-row">
                     <Card className="flex-1 grow flex-1 border-4 border-[#012D5A] rounded-md shadow-md bg-[#F1F1F1]">
                         <CardContent>
-                            <Label className="mb-1 mb-2 border-2 border-amber-600 rounded-md inline-block px-2 py-1">Graph</Label>
+                            <Label className="mb-1 mb-2 rounded-md inline-block px-2 py-1">Graph</Label>
                             <Select onValueChange={handleGraphChange}>
                                 <SelectTrigger className="w-full mb-4 placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 flex h-9 w-full min-w-0 rounded-md border-2 border-[#012D5A] bg-transparent px-3 py-1 text-base shadow-sm transition-[color,box-shadow] outline-none focus:border-[#D47F00] focus:ring-[#D47F00]/50 focus:ring-[3px]">
                                     <SelectValue placeholder="Choose a graph..." />
@@ -233,24 +233,24 @@ export default function MapEditor() {
                             <Separator className="mt-4 mb-4" />
 
                             <div className="flex flex-wrap">
-                                <Button className="m-2 flex-1 grow bg-blue-900 border-2 border-amber-600" onClick={handleZoom}>
+                                <Button className="m-2 flex-1 grow bg-blue-900 border-2 hover:bg-gray-400 border-yellow-400" onClick={handleZoom}>
                                     <FontAwesomeIcon icon={faCrosshairs} />
                                     Re-center
                                 </Button>
                                 <Separator className="" orientation="vertical" />
-                                <Button className="m-2 flex-1 grow bg-blue-900 border-2 border-amber-600" onClick={handleSave}>
+                                <Button className="m-2 flex-1 grow bg-blue-900 border-2 hover:bg-gray-400 border-yellow-400" onClick={handleSave}>
                                     <FontAwesomeIcon icon={faSave} />
                                     Save
                                 </Button>
                             </div>
                             <Separator className="w-full" orientation="horizontal" />
                             <div className="flex flex-wrap">
-                                <Button className="m-2 flex-1 grow bg-blue-900 border-2 border-amber-600" onClick={() => map?.undo()}>
+                                <Button className="m-2 flex-1 grow bg-blue-900 hover:bg-gray-400 border-2 border-yellow-400" onClick={() => map?.undo()}>
                                     <FontAwesomeIcon icon={faUndo} />
                                     Undo
                                 </Button>
                                 <Separator className="" orientation="vertical" />
-                                <Button className="m-2 flex-1 grow bg-blue-900 border-2 border-amber-600" onClick={() => map?.redo()}>
+                                <Button className="m-2 flex-1 grow bg-blue-900 hover:bg-gray-400 border-2 border-yellow-400" onClick={() => map?.redo()}>
                                     <FontAwesomeIcon icon={faRedo} />
                                     Redo
                                 </Button>
@@ -268,7 +268,7 @@ export default function MapEditor() {
                                     <h2 className="text-xl font-bold">Node ID: {selectedNode.nodeId}</h2>
                                     <p className="mb-4">({selectedNode.lat}, {selectedNode.lng})</p>
 
-                                    <Label className="mb-1 mb-2 border-2 border-amber-600 rounded-md inline-block px-2 py-1">
+                                    <Label className="mb-1 mb-2 rounded-md inline-block px-2 py-1">
                                         Name
                                     </Label>
                                     <Input
@@ -278,7 +278,7 @@ export default function MapEditor() {
                                         className="file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 flex h-9 w-full min-w-0 rounded-md border-2 border-[#012D5A] bg-transparent px-3 py-1 text-base shadow-sm transition-[color,box-shadow] outline-none focus:border-[#D47F00] focus:ring-[#D47F00]/50 focus:ring-[3px] mb-4"
                                     />
 
-                                    <Label className="mb-1 mb-2 border-2 border-amber-600 rounded-md inline-block px-2 py-1">
+                                    <Label className="mb-1 mb-2 rounded-md inline-block px-2 py-1">
                                         Type
                                     </Label>
                                     <Select onValueChange={(value: string) => selectedNode.type = value as EditorNodeType} defaultValue={selectedNode.type}>
@@ -300,7 +300,7 @@ export default function MapEditor() {
                                         </SelectContent>
                                     </Select>
 
-                                    <Label className="mb-1 mb-2 border-2 border-amber-600 rounded-md inline-block px-2 py-1">
+                                    <Label className="mb-1 mb-2 rounded-md inline-block px-2 py-1">
                                         Connected To Node ID:
                                     </Label>
                                     <Input
@@ -313,7 +313,7 @@ export default function MapEditor() {
                                         <p className={'text-red-600'}>Connected node ID doesn't exist!</p>
                                     )}
                                     <Button
-                                        className="mt-4 flex-1 grow m-2 bg-blue-900 border-2 border-amber-600"
+                                        className="mt-4 flex-1 grow m-2 bg-blue-900 hover:bg-gray-400 border-2 border-yellow-400"
                                         onClick={() => {
                                             map?.updateNode(selectedNode);
                                         }}
@@ -338,7 +338,7 @@ export default function MapEditor() {
                                     <h2 className="text-xl font-bold">Edge ID: {selectedEdge.edgeId}</h2>
                                     <p className="mb-4">(Node ID: {selectedEdge.startNodeId}) {'<-->'} (Node ID: {selectedEdge.endNodeId})</p>
 
-                                    <Label className="mb-1 mb-2 border-2 border-amber-600 rounded-md inline-block px-2 py-1">
+                                    <Label className="mb-1 mb-2 rounded-md inline-block px-2 py-1">
                                         Name
                                     </Label>
                                     <Input
@@ -348,7 +348,7 @@ export default function MapEditor() {
                                         className="file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 flex h-9 w-full min-w-0 rounded-md border-2 border-[#012D5A] bg-transparent px-3 py-1 text-base shadow-sm transition-[color,box-shadow] outline-none focus:border-[#D47F00] focus:ring-[#D47F00]/50 focus:ring-[3px] mb-4"
                                     />
                                     <Button
-                                        className="mt-4 flex-1 grow m-2 bg-blue-900 border-2 border-amber-600"
+                                        className="mt-4 flex-1 grow m-2 bg-blue-900 border-2 hover:bg-gray-400 border-yellow-400"
                                         onClick={() => {
                                             map?.updateEdge(selectedEdge);
                                         }}
@@ -367,7 +367,7 @@ export default function MapEditor() {
                 <div className="flex flex-row">
                     <Card className="flex-1 grow border-4 border-[#012D5A] rounded-md shadow-md bg-[#F1F1F1]">
                         <CardContent>
-                            <h2 className="text-xl font-bold mb-4 mb-1 mb-2 border-2 border-amber-600 rounded-md inline-block px-2 py-1">Instructions</h2>
+                            <h2 className="text-xl font-bold mb-4 mb-1 mb-2 rounded-md inline-block px-2 py-1">Instructions</h2>
                             <ul className="list-disc ml-4">
                                 <li>Left-click a node or edge to view or change its information on the sidebar</li>
                                 <li>Click and drag a node to change its location</li>

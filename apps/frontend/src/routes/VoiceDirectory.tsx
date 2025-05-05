@@ -142,7 +142,7 @@ const VoiceDirectory: React.FC = () => {
                         <Button
                             className={`${
                                 hospital === 0
-                                    ? "bg-blue-900 text-white border-2 border-yellow-400"
+                                    ? "bg-blue-900 text-white border-2 border-yellow-400 hover:bg-gray-400"
                                     : "bg-gray-200"
                             } rounded-md px-2 py-1`}
                             onClick={() => {
@@ -157,7 +157,7 @@ const VoiceDirectory: React.FC = () => {
                         <Button
                             className={`${
                                 hospital === 1
-                                    ? "bg-blue-900 text-white border-2 border-yellow-400"
+                                    ? "bg-blue-900 text-white border-2 border-yellow-400 hover:bg-gray-400"
                                     : "bg-gray-200"
                             } rounded-md px-2 py-1`}
                             onClick={() => {
@@ -172,7 +172,7 @@ const VoiceDirectory: React.FC = () => {
                         <Button
                             className={`${
                                 hospital === 2
-                                    ? "bg-blue-900 text-white border-2 border-yellow-400"
+                                    ? "bg-blue-900 text-white border-2 border-yellow-400 hover:bg-gray-400"
                                     : "bg-gray-200"
                             } rounded-md px-2 py-1`}
                             onClick={() => {
@@ -187,7 +187,7 @@ const VoiceDirectory: React.FC = () => {
                         <Button
                             className={`${
                                 hospital === 3
-                                    ? "bg-blue-900 text-white border-2 border-yellow-400"
+                                    ? "bg-blue-900 text-white border-2 border-yellow-400 hover:bg-gray-400"
                                     : "bg-gray-200"
                             } rounded-md px-2 py-1`}
                             onClick={() => {
