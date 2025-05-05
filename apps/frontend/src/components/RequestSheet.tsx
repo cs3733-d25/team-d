@@ -31,22 +31,12 @@ type RequestSheetProps = {
     onUpdate?: () => void;
     departments: Department[];
     employees: Employee[];
+    serviceReq: ServiceRequest;
 };
 
-const RequestSheet: React.FC<RequestSheetProps> = ({ID, requestType, trigger, onUpdate, departments, employees}) => {
-    const [request, setRequest] = useState<ServiceRequest | null>(null);
+const RequestSheet: React.FC<RequestSheetProps> = ({ID, requestType, trigger, onUpdate, departments, employees, serviceReq}) => {
+    const [request, setRequest] = useState<ServiceRequest | null>(serviceReq);
     const [open, setOpen] = React.useState(false);
-
-    const fetchData = async () => {
-        try {
-            const match = (await axios.get('/api/servicereqs/' + ID)).data;
-            if (match) {
-                setRequest(match);
-            }
-        } catch (error) {
-            console.error("Error fetching service requests:", error);
-        }
-    };
 
     const formattedDate = new Date();
 
@@ -75,10 +65,6 @@ const RequestSheet: React.FC<RequestSheetProps> = ({ID, requestType, trigger, on
     const stopPropagation = (e: React.MouseEvent) => {
         e.stopPropagation();
     }
-
-    useEffect(() => {
-        fetchData();
-    }, []);
 
     useEffect(() => {
         console.log(request);
