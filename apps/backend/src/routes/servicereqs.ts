@@ -532,6 +532,15 @@ router.get('/employee/:email', async function (req: Request, res: Response) {
         where: {
             employeeRequestedById: employee?.employeeId,
         },
+        include: {
+            translatorRequest: true,
+            equipmentRequest: true,
+            securityRequest: true,
+            sanitationRequest: true,
+            employeeRequestedBy: true,
+            assignedEmployee: true,
+            departmentUnder: true,
+        },
     });
     // If no profiles are found, send 204 and log it
     if (employee == null) {
