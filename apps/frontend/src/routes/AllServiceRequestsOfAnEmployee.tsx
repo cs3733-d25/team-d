@@ -474,7 +474,7 @@ export default function RequestsOfAnEmployee() {
     return (
         <div className="min-h-screen w-full p-10 bg-white">
             <div className="flex items-center justify-between mb-2">
-                <h2 className="text-2xl font-bold">Service Request Database</h2>
+                <h2 className="text-2xl font-bold">My Service Requests</h2>
                 <button className="bg-blue-900 text-white rounded-md p-2 hover:bg-blue-950 space-x-2"
                         onClick={()=> {
                             setColumnFilters([]);
