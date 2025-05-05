@@ -495,7 +495,7 @@ async function main() {
                 imageBoundsSouth: 42.32569,
                 imageBoundsEast: -71.14921,
                 imageBoundsWest: -71.15013,
-                imageRotation: 4.444581493,
+                imageRotation: 184.444581493,
                 buildingId: 0,
             },
             {
