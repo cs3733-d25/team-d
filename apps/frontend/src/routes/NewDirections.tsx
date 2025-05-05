@@ -353,16 +353,16 @@ export default function NewDirections() {
                                         <Tabs defaultValue="Imperial"
                                               onValueChange={(value) => setUnits(value)}
                                               className="flex-1 grow">
-                                            <TabsList className="w-full h-11 rounded-full bg-white">
-                                                <TabsTrigger value={"Imperial"} className= {`flex-1  rounded-full hover:bg-gray-500 data-[state=active]:hover:bg-gray-400 data-[state=active]:bg-blue-900 text-white data-[state=active]:text-white active:shadow-inner ${
+                                            <TabsList className="gap-5 ml-12 w-50 h-11 rounded-full border-2 border-yellow-400 bg-white">
+                                                <TabsTrigger value={"Imperial"} className= {`flex-1 ml-5 rounded-full hover:bg-blue-900 hover:text-white data-[state=active]:bg-blue-900 text-white data-[state=active]:text-white active:shadow-inner ${
                                                 units === "Imperial"
-                                                ? "border-2 border-yellow-400 bg-blue-900/30 text-blue-900"
-                                                : "border-2 border-transparent bg-gray-300 text-white" // hover
+                                                ? "bg-blue-900/30 text-blue-900"
+                                                : "text-gray-500" // hover
                                         }`}>Imperial</TabsTrigger>
-                                                <TabsTrigger value={"Metric"} className={`flex-1  rounded-full hover:bg-gray-500 data-[state=active]:hover:bg-gray-400 data-[state=active]:bg-blue-900 text-white data-[state=active]:text-white active:shadow-inner ${
+                                                <TabsTrigger value={"Metric"} className={`flex-1 mr-5 rounded-full hover:bg-blue-900 hover:text-white data-[state=active]:hover:bg-gray-400 data-[state=active]:bg-blue-900 text-white data-[state=active]:text-white active:shadow-inner ${
                                                     units === "Metric"
-                                                        ? "border-2 border-yellow-400 bg-blue-900/30 text-blue-900"
-                                                        : "border-2 border-transparent bg-gray-300 text-white" // hover
+                                                        ? "bg-blue-900/30 text-blue-900"
+                                                        : "text-gray-500" // hover
                                                 }`}>Metric</TabsTrigger>
                                             </TabsList>
                                         </Tabs>
