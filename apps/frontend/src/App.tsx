@@ -39,6 +39,7 @@ function App() {
                         <Route path="directory" element={<NewDirections />} />
                         <Route path="citations" element={<Citations />} />
                         <Route path="servicerequesthub" element={<ServiceRequestHub />} />
+                        <Route path="hospital-directory" element={<HospitalDirectory />} />
                         <Route path="admin-settings" element={<AdminSettings />} />
                         <Route path="employee-page" element={<EmployeeDirectory />} />
                         <Route path="about" element={<About />} />
@@ -57,7 +58,7 @@ function App() {
                             <Route path="profile" element={<Auth0Profile />} />
                         </Route>
 
-                        <Route path="detailed-post" element={<DetailPost />} />
+                        <Route path="detailed-post/:postId" element={<DetailPost />} />
 
                         <Route path="*" element={<NotFound />} />
                     </Route>

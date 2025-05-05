@@ -13,11 +13,11 @@ import serviceRequestBg from "../public/service_request_bg.jpg";
 // import SanitationPopup  from "@/components/ServiceRequest/SanitationRequest/SanitationPopup.tsx";
 // import EquipmentRequestPopup from "@/components/ServiceRequest/EquipmentRequest/EquipmentRequestPopup.tsx";
 // import SecurityRequestPopup from "@/components/ServiceRequest/SecurityRequest/SecurityRequestPopup.tsx";
-import TranslatorServiceRequest from "@/components/ServiceRequest/TranslatorRequest/TranslatorServiceRequest.tsx";
+import TranslatorServiceRequest from "@/components/ServiceRequest/TranslatorRequest/TranslatorButton.tsx";
 
-import SanitationServiceRequest from "@/components/ServiceRequest/SanitationRequest/SanitationServiceRequest.tsx";
-import EquipmentServiceRequest from "@/components/ServiceRequest/EquipmentRequest/EquipmentServiceRequest.tsx";
-import SecurityServiceRequest from "@/components/ServiceRequest/SecurityRequest/SecurityServiceRequest.tsx";
+import SanitationServiceRequest from "@/components/ServiceRequest/SanitationRequest/SanitationButton.tsx";
+import EquipmentServiceRequest from "@/components/ServiceRequest/EquipmentRequest/EquipmentButton.tsx";
+import SecurityServiceRequest from "@/components/ServiceRequest/SecurityRequest/SecurityButton.tsx";
 import ServiceHubBackground from "../public/ServiceHubBackground.png";
 
 
@@ -40,26 +40,12 @@ const ServiceRequestHub = () => {
                 </div>
                 <div className="relative flex items-center justify-center h-auto w-full overflow-hidden p-8">
                     <div className="flex justify-between items-center w-full px-8">
-                        <ServiceRequestCard
-                            title="Translator"
-                            image={translatorImage}
-                            popupComponent={<TranslatorServiceRequest />}
-                        />
-                        <ServiceRequestCard
-                            title="Sanitation"
-                            image={sanitationImage}
-                            popupComponent={<SanitationServiceRequest />}
-                        />
-                        <ServiceRequestCard
-                            title="Equipment"
-                            image={equipmentImage}
-                            popupComponent={<EquipmentServiceRequest />}
-                        />
-                        <ServiceRequestCard
-                            title="Security"
-                            image={securityImage}
-                            popupComponent={<SecurityServiceRequest />}
-                        />
+                        <TranslatorServiceRequest />
+                        <SanitationServiceRequest />
+
+                        <EquipmentServiceRequest />
+
+                        <SecurityServiceRequest />
                     </div>
                 </div>
             </main>

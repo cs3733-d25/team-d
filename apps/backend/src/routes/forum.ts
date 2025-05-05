@@ -28,6 +28,87 @@ router.get('/posts', async function (req: Request, res: Response) {
     }
 });
 
+// Returns all posts by created time order, if any
+router.get('/newest', async function (req: Request, res: Response) {
+    // Query db, store response
+    const posts = await PrismaClient.post.findMany({
+        orderBy: [
+            {
+                createdAt: 'desc',
+            },
+        ],
+        include: {
+            poster: true,
+            replies: {
+                include: {
+                    replier: true,
+                },
+            },
+        },
+    });
+    // If no posts are found, send 204 and log it
+    if (posts == null) {
+        console.error('No posts found in database!');
+        res.sendStatus(204);
+    }
+    // Otherwise send 200 and the data
+    else {
+        console.log(posts);
+        res.json(posts);
+    }
+});
+
+router.get('/post/:pid', async function (req: Request, res: Response) {
+    // Query db, store response
+    const posts = await PrismaClient.post.findUnique({
+        where: {
+            postId: Number(req.params.pid),
+        },
+        include: {
+            poster: true,
+            replies: {
+                include: {
+                    replier: true,
+                },
+            },
+        },
+    });
+    // If no posts are found, send 204 and log it
+    if (posts == null) {
+        console.error('No posts found in database!');
+        res.sendStatus(204);
+    }
+    // Otherwise send 200 and the data
+    else {
+        console.log(posts);
+        res.json(posts);
+    }
+});
+
+router.get('/post', async function (req: Request, res: Response) {
+    // Query db, store response
+    const posts = await PrismaClient.post.findMany({
+        include: {
+            poster: true,
+            replies: {
+                include: {
+                    replier: true,
+                },
+            },
+        },
+    });
+    // If no posts are found, send 204 and log it
+    if (posts == null) {
+        console.error('No posts found in database!');
+        res.sendStatus(204);
+    }
+    // Otherwise send 200 and the data
+    else {
+        console.log(posts);
+        res.json(posts);
+    }
+});
+
 // Returns all replies, if any
 router.get('/replies', async function (req: Request, res: Response) {
     // Query db, store response
@@ -41,28 +122,6 @@ router.get('/replies', async function (req: Request, res: Response) {
     else {
         console.log(replies);
         res.json(replies);
-    }
-});
-
-// Returns all posts by created time order, if any
-router.get('/newest', async function (req: Request, res: Response) {
-    // Query db, store response
-    const posts = await PrismaClient.post.findMany({
-        orderBy: [
-            {
-                createdAt: 'desc',
-            },
-        ],
-    });
-    // If no posts are found, send 204 and log it
-    if (posts == null) {
-        console.error('No posts found in database!');
-        res.sendStatus(204);
-    }
-    // Otherwise send 200 and the data
-    else {
-        console.log(posts);
-        res.json(posts);
     }
 });
 
@@ -81,13 +140,20 @@ router.post('/post', async function (req: Request, res: Response) {
 });
 
 // post request to add a reply to the database
-router.post('/reply', async function (req: Request, res: Response) {
-    const replyDataAttempt: Prisma.ReplyCreateInput = req.body;
+router.post('/reply/:id', async function (req: Request, res: Response) {
+    const postId = Number(req.params.id);
+    // const replyDataAttempt: Prisma.ReplyCreateInput = req.body;
+    const data: Prisma.ReplyCreateInput = {
+        ...req.body,
+        postId: postId,
+    };
     try {
-        await PrismaClient.reply.create({ data: replyDataAttempt });
+        const reply = await PrismaClient.reply.create({
+            data: data,
+        });
         console.log('Reply created');
     } catch (error) {
-        console.error(`Unable to create a new reply ${replyDataAttempt}: ${error}`);
+        console.error(`Unable to create a new reply ${data}: ${error}`);
         res.sendStatus(400);
         return;
     }

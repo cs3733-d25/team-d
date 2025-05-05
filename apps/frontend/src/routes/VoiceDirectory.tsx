@@ -234,10 +234,10 @@ const VoiceDirectory: React.FC = () => {
                                 <li key={item.name}>
                                     <Button
                                         variant="ghost"
-                                        className={`w-full justify-start rounded-md px-3 py-2 text-left ${
+                                        className={`w-full justify-start rounded-md px-3 py-2 text-left border-2 ${
                                             selected.name === item.name
-                                                ? "bg-blue-50 font-semibold text-blue-900"
-                                                : "bg-white text-black hover:bg-blue-900 hover:text-white" // hover
+                                                ? "border-amber-600 bg-blue-50 font-semibold text-blue-900"
+                                                : "border-transparent bg-white text-black hover:bg-blue-900 hover:text-white" // hover
                                         }`}
                                         onClick={() => setSelected(item)}
                                     >
@@ -273,14 +273,19 @@ const VoiceDirectory: React.FC = () => {
                         </div>
 
                         <div>
-                            <h2 className="text-xl font-semibold mb-1">Contact</h2>
+                            <h2 className="text-xl p-2 font-semibold mb-3 b-1 border-2 border-amber-600 rounded-md inline-block">
+                                Contact
+                            </h2>
                             {selected.telephone ? (
-                                <a
-                                    href={`tel:${selected.telephone.replace(/\D/g, "")}`}
-                                    className="text-blue-700 hover:underline"
-                                >
-                                    {selected.telephone}
-                                </a>
+                                <>
+                                    <br/>
+                                    <a
+                                        href={`tel:${selected.telephone.replace(/\D/g, "")}`}
+                                        className="text-blue-700 hover:underline"
+                                    >
+                                        {selected.telephone}
+                                    </a>
+                                </>
                             ) : (
                                 <p className="text-gray-600">N/A</p>
                             )}

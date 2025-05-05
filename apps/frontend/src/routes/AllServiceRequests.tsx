@@ -404,7 +404,7 @@ export default function ShowAllRequests() {
 
                         {showDeleteModal && (
                             <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-                                <div className="bg-white p-6 rounded shadow-lg text-center">
+                                <div className="bg-white border-4 border-blue-900 p-6 rounded shadow-lg text-center">
                                     <p className="text-lg">Are you sure you want to delete this request?</p>
                                     <div className="mt-4 flex justify-evenly">
                                         <button className="bg-gray-500 text-white px-4 py-2 rounded" onClick={() => setShowDeleteModal(false)}>
@@ -420,9 +420,9 @@ export default function ShowAllRequests() {
 
                         {isDeletedOpen && (
                             <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-                                <div className="bg-white p-6 rounded shadow-lg text-center">
+                                <div className="bg-white border-4 border-blue-900 p-6 rounded shadow-lg text-center">
                                     <p className="text-lg text-green-600">Request successfully deleted.</p>
-                                    <button className="bg-blue-500 text-white px-4 py-2 rounded mt-4" onClick={() => setDeletedOpen(false)}>
+                                    <button className="bg-blue-900 text-white px-4 py-2 rounded mt-4" onClick={() => setDeletedOpen(false)}>
                                         OK
                                     </button>
                                 </div>
