@@ -270,7 +270,7 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
         });
 
 // Use GraphNode, not NodePathResponse
-        const elevatorNode = bottomFloorGraphObj.getNode(216); //
+        const elevatorNode = bottomFloorGraphObj.getNode(216);
         if (!elevatorNode) {
         } else {
             const neighbors = elevatorNode.getNeighbors().map((n) => n.data.nodeId);
@@ -280,7 +280,7 @@ router.get('/path-to-dept/:did', async (req: Request, res: Response) => {
         const allDoors = bottomFloorGraphObj.getNodesOfType('DOOR').map((n) => n.nodeId);
 
         for (const doorId of allDoors) {
-            const path = bottomFloorGraphObj.search('DOOR', doorId); // search(doorType, endId)
+            const path = bottomFloorGraphObj.search('DOOR', doorId);
         }
 
 
@@ -461,7 +461,7 @@ async function findOptimalFullPath(
     };
 }
 
-//
+
 
 router.put('/algorithm/:name', async (req: Request, res: Response) => {
     const name = req.params.name;
