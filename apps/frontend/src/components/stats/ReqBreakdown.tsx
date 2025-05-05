@@ -44,7 +44,7 @@ export default function ReqBreakdown() {
             .catch(console.error);
     }, []);
 
-    /* chart */
+    /* reusable chart */
     const Chart = (
         <ChartContainer
             config={chartConfig}
@@ -74,10 +74,7 @@ export default function ReqBreakdown() {
                     )}
                 >
                     {data.map((entry, idx) => (
-                        <Cell
-                            key={idx}
-                            fill={chartConfig[entry.Type]?.color}
-                        />
+                        <Cell key={idx} fill={chartConfig[entry.Type]?.color} />
                     ))}
 
                     <Label
@@ -137,18 +134,18 @@ export default function ReqBreakdown() {
                     onClick={() => setZoom(false)}
                 >
                     <div
-                        className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-2xl"
+                        className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-2xl flex flex-col items-center justify-center gap-8"
                         onClick={(e) => e.stopPropagation()}
                     >
-                        <h2 className="text-xl font-bold mb-4">Service Request Type</h2>
+                        <h2 className="text-xl font-bold">Service Request Type</h2>
 
-                        <div className="h-[350px] overflow-auto">
-                            {Chart}
+                        <div className="flex items-center justify-center h-[500px] w-full flex-1">
+                            <div className="w-[500px]">{Chart}</div>
                         </div>
 
                         <button
                             onClick={() => setZoom(false)}
-                            className="mt-6 px-4 py-2 bg-slate-700 text-white rounded-lg"
+                            className="px-4 py-2 bg-slate-700 text-white rounded-lg self-center"
                         >
                             Close
                         </button>

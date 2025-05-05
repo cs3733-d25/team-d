@@ -1,7 +1,6 @@
 "use client";
 
 import { Cell, Label, Pie, PieChart } from "recharts";
-
 import {
     Card,
     CardContent,
@@ -18,11 +17,10 @@ import {
 import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { API_ROUTES } from "common/src/constants.ts";
-import {Department} from "@/routes/Directions.tsx";
 
 export type DepartmentBreakdown = {
-    Department: string;
-    count: number;
+    Type: string;
+    num: number;
 };
 
 export default function DepartmentBreakdown() {
@@ -36,7 +34,10 @@ export default function DepartmentBreakdown() {
             .get(`${API_ROUTES.SERVICEREQS}/departmentBreakdown`)
             .then(({ data }) =>
                 setData(
-                    data
+                    data.map((d: any) => ({
+                        Type: d.Department,
+                        num: d.count,
+                    })),
                 ),
             )
             .catch(console.error);
@@ -54,12 +55,12 @@ export default function DepartmentBreakdown() {
         ];
         const cfg: ChartConfig = { num: { label: "Count", color: "" } };
         data.forEach((d, idx) => {
-            cfg[d.Department] = { label: d.Department, color: colors[idx % colors.length] };
+            cfg[d.Type] = { label: d.Type, color: colors[idx % colors.length] };
         });
         return cfg;
     }, [data]);
 
-    /* chart */
+    /* reusable chart */
     const Chart = (
         <ChartContainer
             config={chartConfig}
@@ -68,11 +69,11 @@ export default function DepartmentBreakdown() {
             <PieChart>
                 <ChartTooltip
                     cursor={false}
-                    content={<ChartTooltipContent nameKey="Department" hideLabel />}
+                    content={<ChartTooltipContent nameKey="Type" hideLabel />}
                 />
                 <Pie
                     data={data}
-                    dataKey="count"
+                    dataKey="num"
                     labelLine
                     innerRadius={60}
                     label={({ payload, ...props }) => (
@@ -84,14 +85,14 @@ export default function DepartmentBreakdown() {
                             textAnchor={props.textAnchor}
                             dominantBaseline={props.dominantBaseline}
                         >
-                            {payload.Department}
+                            {payload.Type}
                         </text>
                     )}
                 >
                     {data.map((entry, idx) => (
                         <Cell
                             key={idx}
-                            fill={chartConfig[entry.Department]?.color || "#ccc"}
+                            fill={chartConfig[entry.Type]?.color || "#ccc"}
                         />
                     ))}
 
@@ -110,7 +111,7 @@ export default function DepartmentBreakdown() {
                                             y={(viewBox.cy ?? 0) - 3}
                                             className="fill-foreground text-3xl font-bold"
                                         >
-                                            {data.reduce((sum, item) => sum + item.count, 0)}
+                                            {data.reduce((s, i) => s + i.num, 0)}
                                         </tspan>
                                         <tspan
                                             x={viewBox.cx}
@@ -130,7 +131,7 @@ export default function DepartmentBreakdown() {
         </ChartContainer>
     );
 
-    /*render */
+    /* render */
     return (
         <>
             {/* card */}
@@ -141,28 +142,29 @@ export default function DepartmentBreakdown() {
                 <CardHeader className="items-center pb-0">
                     <CardTitle>Department</CardTitle>
                 </CardHeader>
-
                 <CardContent className="flex-1 pb-0">{Chart}</CardContent>
                 <CardFooter />
             </Card>
 
-            {/* popup */}
+            {/* pop‑up */}
             {zoom && (
                 <div
                     className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
                     onClick={() => setZoom(false)}
                 >
                     <div
-                        className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-2xl"
+                        className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-2xl flex flex-col items-center justify-center gap-8"
                         onClick={(e) => e.stopPropagation()}
                     >
-                        <h2 className="text-xl font-bold mb-4">Department Breakdown</h2>
+                        <h2 className="text-xl font-bold">Department Breakdown</h2>
 
-                        <div className="h-[350px] overflow-auto">{Chart}</div>
+                        <div className="flex items-center justify-center h-[500px] w-full flex-1">
+                            <div className="w-[500px]">{Chart}</div>
+                        </div>
 
                         <button
                             onClick={() => setZoom(false)}
-                            className="mt-6 px-4 py-2 bg-slate-700 text-white rounded-lg"
+                            className="px-4 py-2 bg-slate-700 text-white rounded-lg self-center"
                         >
                             Close
                         </button>
