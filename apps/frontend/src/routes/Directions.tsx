@@ -275,7 +275,7 @@ export default function Directions(props: DirectionsProps) {
                 {/*            <strong>Specialties:</strong> {selectedDepartment.specialties}*/}
                 {/*        </p>*/}
                 {/*        <p>*/}
-                {/*            <strong>Floor/Suite:</strong> {selectedDepartment.floorSuite}*/}
+                {/*            <strong>Floor/Suite:</strong> {selectedDepartment.floorNum}*/}
                 {/*        </p>*/}
                 {/*        <p>*/}
                 {/*            <strong>Phone:</strong> {selectedDepartment.phone}*/}
