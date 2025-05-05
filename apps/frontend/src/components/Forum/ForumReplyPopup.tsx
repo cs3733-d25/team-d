@@ -16,24 +16,19 @@ import {
 import {Employee} from "@/routes/AllServiceRequests.tsx";
 
 type Reply = {
-    replyId: number;
     content: string
-    replierId: number;
     email: string;
     postId: number;
 }
 
 type ForumReplyPopupProps = {
-    trigger?: React.ReactNode;
-    ID: number;
+    ID: string;
 };
 
-const ForumReplyPopup: React.FC<ForumReplyPopupProps> = ({ID, trigger}) => {
+const ForumReplyPopup: React.FC<ForumReplyPopupProps> = ({ID}) => {
 
     const [form, setForm] = useState<Reply>({
-        replyId: 0,
         content: '',
-        replierId: 0,
         email: '',
         postId: 0,
     });
@@ -44,18 +39,29 @@ const ForumReplyPopup: React.FC<ForumReplyPopupProps> = ({ID, trigger}) => {
 
     useEffect(() => {
         if (user?.email) {
-            axios.get(`/api/employee/user/${user?.email}`)
-                .then((res) => setEmployeeData(res.data))
-                .catch((err) => console.error('Error fetching data:', err));
+            axios
+                .get(`/api/employee/user/${user.email}`)
+                .then((res) => {
+                    const emp = res.data;
+                    setEmployeeData(emp);
+                    setForm((reply) => ({
+                        ...reply,
+                        email: user.email || "",
+                        replierId: emp.employeeId,
+                    }));
+                })
+                .catch((err) => console.error("Error fetching employee data:", err));
         }
     }, [user]);
+
+
 
     const onSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         // console.log(form);
 
         axios
-            .post(API_ROUTES.FORUM + "/reply/${ID}", form)
+            .post(API_ROUTES.FORUM + "/reply/" + ID, form)
             .catch((err) => {
                 console.error("Error submitting forum reply:", err);
             });
@@ -63,16 +69,14 @@ const ForumReplyPopup: React.FC<ForumReplyPopupProps> = ({ID, trigger}) => {
 
     return (
         <>
-            <ScrollArea className="max-h-[95vh] w-115 overflow-y-auto">
-                <Dialog open={open} onOpenChange={setOpen}>
-                    <DialogTrigger asChild>
-                        {trigger ? trigger : (
-                            <Button variant="outline">Reply</Button>
-                        )}
-                    </DialogTrigger>
-                    <DialogContent className="sm:max-w-[425px]">
-                        <DialogHeader>
-                        </DialogHeader>
+            <div className="max-h-[95vh] w-115 overflow-y-auto">
+                <div >
+                    <div >
+
+                    </div>
+                    <div className="sm:max-w-[425px]">
+                        <div>
+                        </div>
                         <div className="flex flex-col items-center gap-4 bg-white">
                             <div className="bg-blue-900 rounded-md px-6 py-4 max-w-5xl w-full mx-auto">
                                 <h2 className="text-4xl font-bold text-white text-center">
@@ -133,9 +137,9 @@ const ForumReplyPopup: React.FC<ForumReplyPopupProps> = ({ID, trigger}) => {
                                 </div>
                             </form>
                         </div>
-                    </DialogContent>
-                </Dialog>
-            </ScrollArea>
+                    </div>
+                </div>
+            </div>
         </>
     );
 }

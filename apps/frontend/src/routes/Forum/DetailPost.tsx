@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-
+// import ForumReplyPopup from '@/components/Forum/ForumReplyPopup.tsx'
 import FullPost from '@/components/Forum/FullPost.tsx';
 
 import {
@@ -13,13 +13,14 @@ import ReplyCard from '@/components/Forum/ReplyCard.tsx';
 import { API_ROUTES } from 'common/src/constants.ts';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-
+import ForumReplyPopup from "@/components/Forum/ForumReplyPopup.tsx";
 export type Employee = {
     firstName: string;
     lastName: string;
 }
 
 export type Post = {
+    postId: string;
     title: string;
     content: string;
     createdAt: string;
@@ -68,7 +69,11 @@ export default function DetailPost() {
                             </CardContent>
                         </Card>
                     </div>
+
+                    <ForumReplyPopup ID={post.postId}></ForumReplyPopup>
                 </>
+
+
             ) : (
                 <div>
                     Loading...

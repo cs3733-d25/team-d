@@ -40,19 +40,20 @@ const ForumPostPopup: React.FC<ForumPostPopupProps> = ({trigger, onUpdate}) => {
 
     useEffect(() => {
         if (user?.email) {
-            axios.get(`/api/employee/user/${user?.email}`)
+            axios.get(`/api/employee/user/${user.email}`)
                 .then((res) => {
-                    setEmployeeData(res.data);
-                    if (employeeData?.employeeId) {
-                        setForm((form) => ({
-                            ...form,
-                            posterId: employeeData?.employeeId,
-                        }));
-                    }
+                    const emp = res.data;
+                    setEmployeeData(emp);
+                    setForm((form) => ({
+                        ...form,
+                        posterId: emp.employeeId, // Use the response data directly
+                        email: user.email || ""
+                    }));
                 })
                 .catch((err) => console.error('Error fetching data:', err));
         }
     }, [user]);
+
 
     const onSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
