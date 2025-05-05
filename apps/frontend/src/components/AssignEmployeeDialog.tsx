@@ -31,6 +31,9 @@ const AssignEmployeeDialog: React.FC<AssignEmployeeDialogProps> = ({ID, requestT
     const [assignedEmployeeId, setAssignedEmployeeId] = useState("");
     const [assignedEmployeeFirstName, setAssignedEmployeeFirstName] = useState("");
     const [assignedEmployeeLastName, setAssignedEmployeeLastName] = useState("");
+    const stopPropagation = (e: React.MouseEvent) => {
+        e.stopPropagation();
+    }
 
 
     useEffect(() => {
@@ -44,6 +47,7 @@ const AssignEmployeeDialog: React.FC<AssignEmployeeDialogProps> = ({ID, requestT
     }, [request]);
 
     return (
+        <div onClick={stopPropagation}>
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 {trigger ? trigger : (
@@ -98,6 +102,7 @@ const AssignEmployeeDialog: React.FC<AssignEmployeeDialogProps> = ({ID, requestT
                 </DialogFooter>
             </DialogContent>
         </Dialog>
+        </div>
     )
 }
 
