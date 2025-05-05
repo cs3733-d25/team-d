@@ -353,6 +353,7 @@ export default function ShowAllRequests() {
                                           requestType={getRequestType(row.original)}
                                           onUpdate={fetchData}
                                           employees={employees}
+                                          serviceReq={request}
                                           trigger={<div className="pl-4 w-full text-left"><UserPen className="text-gray-500"/></div>}
                     />
                 )
@@ -370,6 +371,7 @@ export default function ShowAllRequests() {
                                   onUpdate={fetchData}
                                   departments={departments}
                                   employees={employees}
+                                  serviceReq={request}
                                   trigger={<div className="pl-4 w-full text-left"><SquarePen className="text-gray-500"/></div>}
                     />
                 )

@@ -21,30 +21,17 @@ type AssignEmployeeDialogProps = {
     trigger?: React.ReactNode;
     onUpdate?: () => void;
     employees: Employee[];
+    serviceReq: ServiceRequest;
 };
 
-const AssignEmployeeDialog: React.FC<AssignEmployeeDialogProps> = ({ID, requestType, trigger, onUpdate, employees}) => {
-    const [request, setRequest] = useState<ServiceRequest | null>(null);
+const AssignEmployeeDialog: React.FC<AssignEmployeeDialogProps> = ({ID, requestType, trigger, onUpdate, employees, serviceReq}) => {
+    const [request, setRequest] = useState<ServiceRequest | null>(serviceReq);
     const [open, setOpen] = React.useState(false);
     const [assignedEmployee, setAssignedEmployee] = useState("");
     const [assignedEmployeeId, setAssignedEmployeeId] = useState("");
     const [assignedEmployeeFirstName, setAssignedEmployeeFirstName] = useState("");
     const [assignedEmployeeLastName, setAssignedEmployeeLastName] = useState("");
 
-    const fetchData = async () => {
-        try {
-            const match = (await axios.get('/api/servicereqs/' + ID)).data;
-            if (match) {
-                setRequest(match);
-            }
-        } catch (error) {
-            console.error("Error fetching service requests:", error);
-        }
-    };
-
-    useEffect(() => {
-        fetchData();
-    }, []);
 
     useEffect(() => {
         if (request?.assignedEmployeeId) {
