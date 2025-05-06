@@ -27,27 +27,27 @@ type Entry = {
     telephone: string;
 };
 
-const chestnutData: Entry[] = (await axios.get(API_ROUTES.DEPARTMENT+"/hospital/0")).data;
-
-const patriotData: Entry[] = (await axios.get(API_ROUTES.DEPARTMENT+"/hospital/1")).data.map((entry: Entry) => ({
-    ...entry,
-    services: entry.services ?? "",
-    telephone: entry.telephone ?? ""
-}));
-
-/* Faulkner Hospital */
-const faulknerData: Entry[] = (await axios.get(API_ROUTES.DEPARTMENT+"/hospital/2")).data.map((entry: Entry) => ({
-    ...entry,
-    services: entry.services ?? "",
-    telephone: entry.telephone ?? ""
-}));
-
-/* Brigham Main Campus */
-const mainCampusData: Entry[] = (await axios.get(API_ROUTES.DEPARTMENT+"/hospital/3")).data.map((entry: Entry) => ({
-    ...entry,
-    services: entry.services ?? "",
-    telephone: entry.telephone ?? ""
-}));
+// const chestnutData: Entry[] = (await axios.get(API_ROUTES.DEPARTMENT+"/hospital/0")).data;
+//
+// const patriotData: Entry[] = (await axios.get(API_ROUTES.DEPARTMENT+"/hospital/1")).data.map((entry: Entry) => ({
+//     ...entry,
+//     services: entry.services ?? "",
+//     telephone: entry.telephone ?? ""
+// }));
+//
+// /* Faulkner Hospital */
+// const faulknerData: Entry[] = (await axios.get(API_ROUTES.DEPARTMENT+"/hospital/2")).data.map((entry: Entry) => ({
+//     ...entry,
+//     services: entry.services ?? "",
+//     telephone: entry.telephone ?? ""
+// }));
+//
+// /* Brigham Main Campus */
+// const mainCampusData: Entry[] = (await axios.get(API_ROUTES.DEPARTMENT+"/hospital/3")).data.map((entry: Entry) => ({
+//     ...entry,
+//     services: entry.services ?? "",
+//     telephone: entry.telephone ?? ""
+// }));
 
 
 /* Fuse helper  */
@@ -59,6 +59,40 @@ const createFuse = (data: Entry[]) =>
     });
 
 const VoiceDirectory: React.FC = () => {
+
+    const [chestnutData, setChestnutData] = useState<Entry[]>([]);
+    const [patriotData, setPatriotData] = useState<Entry[]>([]);
+    const [faulknerData, setFaulknerData] = useState<Entry[]>([]);
+    const [mainCampusData, setMainCampusData] = useState<Entry[]>([]);
+
+    useEffect(() => {
+        axios.get(API_ROUTES.DEPARTMENT+"/hospital/0").then(response => setChestnutData(response.data.map((entry: Entry) => ({
+            ...entry,
+            services: entry.services ?? "",
+            telephone: entry.telephone ?? ""
+        }))));
+
+        axios.get(API_ROUTES.DEPARTMENT+"/hospital/1").then(response => setPatriotData(response.data.map((entry: Entry) => ({
+            ...entry,
+            services: entry.services ?? "",
+            telephone: entry.telephone ?? ""
+        }))));
+
+        axios.get(API_ROUTES.DEPARTMENT+"/hospital/2").then(response => setFaulknerData(response.data.map((entry: Entry) => ({
+            ...entry,
+            services: entry.services ?? "",
+            telephone: entry.telephone ?? ""
+        }))));
+
+        axios.get(API_ROUTES.DEPARTMENT+"/hospital/3").then(response => setMainCampusData(response.data.map((entry: Entry) => ({
+            ...entry,
+            services: entry.services ?? "",
+            telephone: entry.telephone ?? ""
+        }))));
+    }, []);
+
+
+
     /* directory state */
     const [hospital, setHospital] = useState<0 | 1 | 2 | 3>(0);   // 0‑CH 1‑PP 2‑F 3‑MC
     const data = useMemo(() => {
@@ -69,10 +103,10 @@ const VoiceDirectory: React.FC = () => {
             case 3: return mainCampusData;
             default: return [];
         }
-    }, [hospital]);
+    }, [hospital, chestnutData, patriotData, faulknerData, mainCampusData]);
 
     const [query, setQuery] = useState("");
-    const [selected, setSelected] = useState<Entry>(data[0]);
+    const [selected, setSelected] = useState<Entry | null>(data[0]);
 
     const fuse = useMemo(() => createFuse(data), [data]);
     const filtered = useMemo(
@@ -81,7 +115,7 @@ const VoiceDirectory: React.FC = () => {
     );
 
     useEffect(() => {
-        if (filtered.length && !filtered.includes(selected)) {
+        if (selected && filtered.length && !filtered.includes(selected)) {
             setSelected(filtered[0]);
         }
     }, [filtered, selected]);
@@ -235,7 +269,7 @@ const VoiceDirectory: React.FC = () => {
                                     <Button
                                         variant="ghost"
                                         className={`w-full justify-start rounded-md px-3 py-2 text-left border-2 ${
-                                            selected.name === item.name
+                                            selected && selected.name === item.name
                                                 ? "border-yellow-400 bg-blue-50 font-semibold text-blue-900"
                                                 : "border-transparent bg-white text-black hover:bg-blue-900 hover:text-white" // hover
                                         }`}
@@ -251,46 +285,51 @@ const VoiceDirectory: React.FC = () => {
 
                 {/* RIGHT column */}
                 <div className="w-8/12 p-10 overflow-y-auto flex-1 grow border-l-4 border-[#012D5A] shadow-md bg-[#F1F1F1]">
-                    <h1 className="text-3xl font-bold text-blue-900 mb-6">
-                        {selected.name}
-                    </h1>
+                    {selected &&
+                        <>
+                            <h1 className="text-3xl font-bold text-blue-900 mb-6">
+                                {selected.name}
+                            </h1>
 
-                    <section className="mb-8">
-                        <h2 className="text-xl p-2 font-semibold mb-3 b-1 rounded-md inline-block">Services</h2>
-                        <ul className="list-disc list-inside space-y-1">
-                            {selected.services.split(/,\s*(?![^()]*\))/).map((s) => (
-                                <li key={s.trim()}>{s.trim()}</li>
-                            ))}
-                        </ul>
-                    </section>
+                            <section className="mb-8">
+                                <h2 className="text-xl p-2 font-semibold mb-3 b-1 rounded-md inline-block">Services</h2>
+                                <ul className="list-disc list-inside space-y-1">
+                                    {selected.services.split(/,\s*(?![^()]*\))/).map((s) => (
+                                        <li key={s.trim()}>{s.trim()}</li>
+                                    ))}
+                                </ul>
+                            </section>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-                        <div>
-                            <h2 className="text-xl p-2 font-semibold mb-3 b-1 rounded-md inline-block">
-                                Floor&nbsp;&amp;&nbsp;Suite
-                            </h2>
-                            <p>Floor {selected.floorNum} Suite {selected.room}</p>
-                        </div>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                                <div>
+                                    <h2 className="text-xl p-2 font-semibold mb-3 b-1 rounded-md inline-block">
+                                        Floor&nbsp;&amp;&nbsp;Suite
+                                    </h2>
+                                    <p>Floor {selected.floorNum} Suite {selected.room}</p>
+                                </div>
 
-                        <div>
-                            <h2 className="text-xl p-2 font-semibold mb-3 b-1 rounded-md inline-block">
-                                Contact
-                            </h2>
-                            {selected.telephone ? (
-                                <>
-                                    <br/>
-                                    <a
-                                        href={`tel:${selected.telephone.replace(/\D/g, "")}`}
-                                        className="text-blue-700 hover:underline"
-                                    >
-                                        {selected.telephone}
-                                    </a>
-                                </>
-                            ) : (
-                                <p className="text-gray-600">N/A</p>
-                            )}
-                        </div>
-                    </div>
+                                <div>
+                                    <h2 className="text-xl p-2 font-semibold mb-3 b-1 rounded-md inline-block">
+                                        Contact
+                                    </h2>
+                                    {selected.telephone ? (
+                                        <>
+                                            <br/>
+                                            <a
+                                                href={`tel:${selected.telephone.replace(/\D/g, "")}`}
+                                                className="text-blue-700 hover:underline"
+                                            >
+                                                {selected.telephone}
+                                            </a>
+                                        </>
+                                    ) : (
+                                        <p className="text-gray-600">N/A</p>
+                                    )}
+                                </div>
+                            </div>
+                        </>
+                    }
+
                 </div>
             </div>
         </div>
