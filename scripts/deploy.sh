@@ -19,6 +19,12 @@ docker build --platform=linux/amd64 --provenance=false --no-cache --target produ
   --build-arg BACKEND_PORT=$BACKEND_PORT \
   --build-arg BACKEND_SOURCE=$BACKEND_SOURCE \
   --build-arg BACKEND_URL=$BACKEND_URL \
+  --build-arg POSTGRES_USER=postgres \
+  --build-arg POSTGRES_PASSWORD=MAzl1dukOGzZ1SAaPxZ6 \
+  --build-arg POSTGRES_PORT=5432 \
+  --build-arg POSTGRES_DB=postgres \
+  --build-arg VITE_GOOGLE_MAPS_API_KEY=$VITE_GOOGLE_MAPS_API_KEY \
+  --build-arg POSTGRES_HOST=softeng-db-1.cf6ck0meqqck.us-east-2.rds.amazonaws.com \
   -t $REPOSITORY_URI:$GIT_COMMIT_HASH \
   -f ./docker/Dockerfile .
 
