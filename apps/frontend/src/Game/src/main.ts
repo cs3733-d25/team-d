@@ -1,9 +1,9 @@
 // use for long comments
 /**/
-import Player from './Player';
-import Ground from './Ground';
-import EnemyController from "./EnemyController";
-import Score from './Score';
+import Player from './Player.ts';
+import Ground from './Ground.ts';
+import EnemyController from "./EnemyController.ts";
+import Score from './Score.ts';
 
 let backgroundMusic = new Audio('./sounds/bgmusic.mp3');
 backgroundMusic.loop = true;

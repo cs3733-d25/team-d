@@ -1,8 +1,15 @@
+import StartLocationImg from "../public/StartLocation.jpg";
+import stillImage from '@/Game/public/images/still_doc.png.png'
+import docRunImage_1 from '@/Game/public/images/doc_run1.png.png'
+import docRunImage_2 from '@/Game/public/images/doc_run2.png.png'
+import deadDoc from '@/Game/public/images/dead_doc.png.png'
+
+
 export default class Player {
     // Walk Variables
     WALK_ANIMATION_TIMER = 200;
     walkAnimationTimer = this.WALK_ANIMATION_TIMER;
-    docRunImages = [];
+    private docRunImages: HTMLImageElement[] = [];
 
     // Jumping Variables
     jumpPressed = false;
@@ -40,22 +47,21 @@ export default class Player {
         this.yStandingPosition = this.y;
 
         this.standingStillImage = new Image();
-        this.standingStillImage.src = "/images/still_doc.png.png";
+        this.standingStillImage.src = stillImage;
         this.image = this.standingStillImage;
 
         const docRunImage1 = new Image();
-        docRunImage1.src = "./images/doc_run1.png.png"
+        docRunImage1.src = docRunImage_1;
 
         const docRunImage2 = new Image();
-        docRunImage2.src = "/images/doc_run2.png.png"
+        docRunImage2.src = docRunImage_2;
 
         this.deathImage = new Image();
-        this.deathImage.src = "/images/dead_doc.png.png"
+        this.deathImage.src = deadDoc;
         this.dead = false;
 
 
-        this.docRunImages.push(docRunImage1);
-        this.docRunImages.push(docRunImage2);
+        this.docRunImages.push(docRunImage1, docRunImage2);
 
         //Keyboard functionality
         window.removeEventListener('keydown', this.keydown)

@@ -1,4 +1,4 @@
-import Enemy from './Enemy'
+import Enemy from './Enemy.ts'
 
 export default class EnemyController {
     ENEMY_INTERVAL_MIN = 500;

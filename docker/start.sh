@@ -19,9 +19,9 @@ yarn workspace database seed
 
 
 # Build the frontend
-echo "Building frontend..."
-cd /app/apps/frontend
-yarn build
+#echo "Building frontend..."
+#cd /app/apps/frontend
+#yarn build
 
 # Start the backend server in the background
 echo "Starting backend..."
