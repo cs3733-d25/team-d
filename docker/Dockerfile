@@ -24,6 +24,34 @@ RUN yarn install
 # Generate Prisma client
 RUN yarn workspace database generate
 
+
+# Accept build-time variables
+ARG NODE_ENV
+ARG FRONTEND_PORT
+ARG BACKEND_PORT
+ARG BACKEND_SOURCE
+ARG BACKEND_URL
+ARG POSTGRES_USER
+ARG POSTGRES_PASSWORD
+ARG POSTGRES_PORT
+ARG POSTGRES_DB
+ARG VITE_GOOGLE_MAPS_API_KEY
+ARG POSTGRES_HOST
+
+# Make them available at runtime
+ENV NODE_ENV=$NODE_ENV \
+    FRONTEND_PORT=$FRONTEND_PORT \
+    BACKEND_PORT=$BACKEND_PORT \
+    BACKEND_SOURCE=$BACKEND_SOURCE \
+    BACKEND_URL=$BACKEND_URL \
+    POSTGRES_USER=postgres \
+    POSTGRES_PASSWORD=MAzl1dukOGzZ1SAaPxZ6 \
+    POSTGRES_PORT=5432 \
+    POSTGRES_DB=postgres \
+    VITE_GOOGLE_MAPS_API_KEY=$VITE_GOOGLE_MAPS_API_KEY \
+    POSTGRES_HOST=softeng-db-1.cf6ck0meqqck.us-east-2.rds.amazonaws.com
+
+
 # Build the application
 RUN yarn build
 

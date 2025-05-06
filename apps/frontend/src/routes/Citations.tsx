@@ -89,21 +89,21 @@ const technologiesUsed: Tech[] = [
     {
         name: 'Shadcn UI',
         logoSrc: 'https://suhelmakkad.gallerycdn.vsassets.io/extensions/suhelmakkad/shadcn-ui/0.1.1/1695843310552/Microsoft.VisualStudio.Services.Icons.Default',
-        projectUsage: 'Provides a set of reusable and accessible UI components built with Radix UI and styled with Tailwind CSS, accelerating frontend development.',
+        projectUsage: 'Used as a basis for some of our components to reduce less meaningful labor.',
         generalPurpose: 'A collection of beautifully designed and accessible UI components that you can copy and paste into your React apps.',
         documentationLink: 'https://shadcn-ui.com/',
     },
     {
         name: 'Figma',
         logoSrc: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Figma-logo.svg/1200px-Figma-logo.svg.png',
-        projectUsage: 'Used for UI/UX design and collaboration on the application interface.',
+        projectUsage: 'Used to prototype our UI/UX design before we started building our application. ',
         generalPurpose: 'A web-based design and prototyping tool for creating user interfaces and experiences.',
         documentationLink: 'https://www.figma.com/',
     },
     {
         name: 'Tailwind CSS',
         logoSrc: 'https://upload.wikimedia.org/wikipedia/commons/d/d5/Tailwind_CSS_Logo.svg',
-        projectUsage: 'A utility-first CSS framework used for styling the application with speed and consistency.',
+        projectUsage: 'Used to style our website consistently with tags.',
         generalPurpose: 'A utility-first CSS framework packed with classes like `flex`, `pt-4`, `bg-red-500`, `text-center` that let you build custom designs right in your HTML.',
         documentationLink: 'https://tailwindcss.com/',
     },
@@ -126,7 +126,7 @@ const technologiesUsed: Tech[] = [
     {
         name: 'Google Maps API',
         logoSrc: 'https://logodownload.org/wp-content/uploads/2018/01/google-maps-logo-2-1.png',
-        projectUsage: 'Integrated for providing map functionalities and location-based services within the application.',
+        projectUsage: 'Integrated in our directions page and map editor page to provide an accurate map and transportation routes.',
         generalPurpose: 'A suite of APIs that allows developers to embed Google Maps into web and mobile applications, offering features like maps, routes, and places.',
         documentationLink: 'https://developers.google.com/maps/documentation',
     },

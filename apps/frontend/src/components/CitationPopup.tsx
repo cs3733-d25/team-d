@@ -37,7 +37,7 @@ export const TechPopup: React.FC<TechPopupProps> = ({ tech, onClose }) => {
                     href={tech.documentationLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="bg-[#012D5A] hover:bg-[#012140] text-[#F1F1F1] font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-[#D47F00] focus:ring-offset-2"
+                    className="bg-[#012D5A] hover:bg-[#012140] text-[#F1F1F1] font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2"
                 >
                     Learn More
                 </a>

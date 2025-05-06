@@ -14,14 +14,9 @@ echo "POSTGRES_URL: ${POSTGRES_URL}"
 
 # Push schema to DB
 yarn workspace database migrate:reset
-yarn workspace database push
+yarn workspace database push:force
 yarn workspace database seed
 
-
-# Build the frontend
-#echo "Building frontend..."
-#cd /app/apps/frontend
-#yarn build
 
 # Start the backend server in the background
 echo "Starting backend..."
