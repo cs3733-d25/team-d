@@ -145,7 +145,7 @@ export default function startGame() {
         ctx.fillStyle = "black";
         const x = docGame.width / 4.5;
         const y = docGame.height / 2;
-        ctx.fillText("Press Space or Tap the Screen to Start", x, y);
+        ctx.fillText("Press Space to Start", x, y);
     }
 
 
