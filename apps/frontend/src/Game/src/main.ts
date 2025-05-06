@@ -4,8 +4,10 @@ import Player from './Player.ts';
 import Ground from './Ground.ts';
 import EnemyController from "./EnemyController.ts";
 import Score from './Score.ts';
+import virus_1 from '@/Game/public/images/virus_1.png'
+import virus_2 from '@/Game/public/images/virus_2.png'
 
-let backgroundMusic = new Audio('./sounds/bgmusic.mp3');
+const backgroundMusic = new Audio('./sounds/bgmusic.mp3');
 backgroundMusic.loop = true;
 
 
@@ -27,22 +29,22 @@ const GROUND_HEIGHT = 24;
 const GROUND_AND_ENEMIES_SPEED = 0.5;
 
 const ENEMY_CONFIG = [
-     {width:48 / 1.5, height: 100 / 1.5, image:"/images/virus_1.png" },
-    { width:98 / 1.5, height: 100 / 1.5, image:"/images/virus_2.png" },
+    {width:48 / 1.5, height: 100 / 1.5, image:virus_1 },
+    { width:98 / 1.5, height: 100 / 1.5, image:virus_2 },
     { width:68 / 1.5, height: 70 / 1.5, image:"/images/cactus_3.png" },
 ]
 
 
 //Game Objects
-let player = null;
-let ground = null;
-let enemyController = null;
-let score = null;
+let player: Player | null = null;
+let ground: Ground | null = null;
+let enemyController: EnemyController | null = null;
+let score: Score | null = null;
 let hasPlayedStartSound = false;
 let bgMusic = false;
 
-let scaleRatio = null;
-let previousTime = null;
+let scaleRatio: number;
+let previousTime: number | null = null;
 let gameSpeed = GAME_SPEED_START;
 let gameOver = false;
 let hasAddedEventListenersForRestart = false;
@@ -99,9 +101,9 @@ function createSprites() {
 
 
 
- /* Used to scale the screen width and height of the game
-    based on the type of device used */
-function setScreen() {
+/* Used to scale the screen width and height of the game
+   based on the type of device used */
+export function setScreen() {
     scaleRatio = getScaleRatio();
     docGame.width = GAME_WIDTH * scaleRatio;
     docGame.height = GAME_HEIGHT * scaleRatio;
@@ -211,11 +213,12 @@ function reset() { // Reset everything
     hasAddedEventListenersForRestart = false;
     gameOver = false;
     waitingToStart = false;
-    player.dead = false;
-    player.image = player.standingStillImage;
-    ground.reset();
-    enemyController.reset();
-    score.reset();
+    if (player) {}
+    player!.dead = false;
+    player!.image = player!.standingStillImage;
+    ground!.reset();
+    enemyController!.reset();
+    score!.reset();
     gameSpeed = GAME_SPEED_START;
 
     // Start the music again if game is reset
@@ -240,7 +243,7 @@ function clearScreen() {
 }
 
 
-function gameLoop(currentTime: number) {
+export function gameLoop(currentTime: number) {
     if (previousTime == null) {
         previousTime = currentTime;
         requestAnimationFrame(gameLoop);
@@ -253,27 +256,27 @@ function gameLoop(currentTime: number) {
 
     if (!gameOver && !waitingToStart) {
         //Update game objects
-        ground.update(gameSpeed, frameTimeDelta);
-        enemyController.update(gameSpeed, frameTimeDelta);
-        player.update(gameSpeed, frameTimeDelta);
-        score.update(frameTimeDelta);
+        ground?.update(gameSpeed, frameTimeDelta);
+        enemyController?.update(gameSpeed, frameTimeDelta);
+        player?.update(gameSpeed, frameTimeDelta);
+        score?.update(frameTimeDelta);
         updateGameSpeed(frameTimeDelta);
     }
 
-    if (!gameOver && enemyController.collideWith(player)) {
+    if (!gameOver && player && enemyController?.collideWith(player)) {
         gameOver = true;
         player.die();
         backgroundMusic.pause();
         backgroundMusic.currentTime = 0; //rewinds the bg music
         bgMusic = false;
         setupGameReset();
-        score.setHighScore();
+        score?.setHighScore();
     }
     //Draw game objects
-    ground.draw();
-    enemyController.draw();
-    player.draw();
-    score.draw();
+    ground?.draw();
+    enemyController?.draw();
+    player?.draw();
+    score?.draw();
 
     if(gameOver) {
         showGameOver();

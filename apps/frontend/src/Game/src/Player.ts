@@ -18,22 +18,29 @@ export default class Player {
     JUMP_SPEED = 0.6;
     GRAVITY = 0.4;
 
-    private ctx: CanvasRenderingContext2D;
-    private canvas: HTMLCanvasElement;
-    private width: number;
-    private height: number;
-    private minJumpHeight: number;
-    private maxJumpHeight: number;
-    private scaleRatio: number;
-    private x: number;
-    private y: number;
-    private image: HTMLImageElement;
-    private standingStillImage: HTMLImageElement;
-    private yStandingPosition: number;
-    private deathImage: HTMLImageElement;
-    private dead: boolean;
+    ctx: CanvasRenderingContext2D;
+    canvas: HTMLCanvasElement;
+    width: number;
+    height: number;
+    minJumpHeight: number;
+    maxJumpHeight: number;
+    scaleRatio: number;
+    x: number;
+    y: number;
+    image: HTMLImageElement;
+    standingStillImage: HTMLImageElement;
+    yStandingPosition: number;
+    deathImage: HTMLImageElement;
+    dead: boolean;
 
-    constructor(ctx: CanvasRenderingContext2D, width: number, height: number, minJumpHeight: number, maxJumpHeight: number, scaleRatio: number) {
+    constructor(
+        ctx: CanvasRenderingContext2D,
+        width: number,
+        height: number,
+        minJumpHeight: number,
+        maxJumpHeight: number,
+        scaleRatio: number
+    ) {
         this.ctx = ctx;
         this.canvas = ctx.canvas;
         this.width = width;
@@ -60,15 +67,14 @@ export default class Player {
         this.deathImage.src = deadDoc;
         this.dead = false;
 
-
         this.docRunImages.push(docRunImage1, docRunImage2);
 
         //Keyboard functionality
-        window.removeEventListener('keydown', this.keydown)
-        window.removeEventListener('keyup', this.keyup)
+        window.removeEventListener('keydown', this.keydown);
+        window.removeEventListener('keyup', this.keyup);
 
-        window.addEventListener('keydown', this.keydown)
-        window.addEventListener('keyup', this.keyup)
+        window.addEventListener('keydown', this.keydown);
+        window.addEventListener('keyup', this.keyup);
 
         //Touch events
         window.removeEventListener('touchstart', this.touchstart);
@@ -79,24 +85,24 @@ export default class Player {
     }
 
     // Jump events
-    touchstart = ()=>{
+    touchstart = () => {
         this.jumpPressed = true;
     };
 
-    touchend = ()=>{
+    touchend = () => {
         this.jumpPressed = false;
     };
 
-    keydown = (event: { code: string; })=>{
-        if(event.code === "Space") {
+    keydown = (event: { code: string }) => {
+        if (event.code === 'Space') {
             this.jumpPressed = true;
-            const jumpSound = new Audio("/sounds/jump-up.mp3");
+            const jumpSound = new Audio('/sounds/jump-up.mp3');
             jumpSound.play();
         }
     };
 
-    keyup = (event)=>{
-        if(event.code === "Space") {
+    keyup = (event: { code: string }) => {
+        if (event.code === 'Space') {
             this.jumpPressed = false;
         }
     };
@@ -108,7 +114,7 @@ export default class Player {
 
         this.run(gameSpeed, frameTimeDelta);
 
-        if(this.jumpInProgress) {
+        if (this.jumpInProgress) {
             this.image = this.standingStillImage;
         }
 
@@ -122,7 +128,8 @@ export default class Player {
 
         // Jump conditions
         if (this.jumpInProgress && !this.falling) {
-            if (this.y > this.canvas.height - this.minJumpHeight ||
+            if (
+                this.y > this.canvas.height - this.minJumpHeight ||
                 (this.y > this.canvas.height - this.maxJumpHeight && this.jumpPressed)
             ) {
                 this.y -= this.JUMP_SPEED * frameTimeDelta * this.scaleRatio;
@@ -132,27 +139,26 @@ export default class Player {
         } else {
             if (this.y < this.yStandingPosition) {
                 this.y += this.GRAVITY * frameTimeDelta * this.scaleRatio;
-                if(this.y + this.height > this.canvas.height) {
+                if (this.y + this.height > this.canvas.height) {
                     this.y = this.yStandingPosition;
                 }
-            } else{
+            } else {
                 this.falling = false;
                 this.jumpInProgress = false;
             }
         }
     }
 
-
     run(gameSpeed: number, frameTimeDelta: number) {
-        if(this.walkAnimationTimer <= 0) {
-            if(this.image === this.docRunImages[0]) {
+        if (this.walkAnimationTimer <= 0) {
+            if (this.image === this.docRunImages[0]) {
                 this.image = this.docRunImages[1];
             } else {
-                this.image = this.docRunImages[0]
+                this.image = this.docRunImages[0];
             }
             this.walkAnimationTimer = this.WALK_ANIMATION_TIMER;
         }
-        this.walkAnimationTimer -= frameTimeDelta * gameSpeed ;
+        this.walkAnimationTimer -= frameTimeDelta * gameSpeed;
     }
 
     die() {

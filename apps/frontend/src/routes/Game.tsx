@@ -14,7 +14,7 @@ const Game = () => {
         const ctx = canvas.getContext('2d');
         if (!ctx) return;
 
-        let backgroundMusic = new Audio('@/Game/public/sounds/bgmusic.mp3');
+        const backgroundMusic = new Audio('@/Game/public/sounds/bgmusic.mp3');
         backgroundMusic.loop = true;
 
         const GAME_SPEED_START = 1;

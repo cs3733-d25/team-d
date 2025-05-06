@@ -36,7 +36,7 @@ var EnemyController = /** @class */ (function () {
         }
         this.nextEnemyInterval -= frameTimeDelta * gameSpeed;
         this.enemies.forEach(function (enemy) {
-            enemy.update(_this.speed, gameSpeed, frameTimeDelta, _this.scaleRatio);
+            enemy.update(_this.speed, gameSpeed, frameTimeDelta, this.scaleRatio);
         });
         this.enemies = this.enemies.filter(function (enemy) { return enemy.x > -enemy.width; });
     };

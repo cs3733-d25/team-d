@@ -1,21 +1,31 @@
-import Enemy from './Enemy.ts'
+import Enemy from './Enemy';
+import Player from './Player';
+
+interface EnemyImageData {
+    image: HTMLImageElement;
+    width: number;
+    height: number;
+}
 
 export default class EnemyController {
     ENEMY_INTERVAL_MIN = 500;
     ENEMY_INTERVAL_MAX = 2000;
 
-    nextEnemyInterval = null;
-    enemies = [];
+    nextEnemyInterval: number = 0;
+    enemies: Enemy[] = [];
 
-    private ctx: CanvasRenderingContext2D;
-    private canvas: HTMLCanvasElement;
-    private enemyImages = HTMLImageElement;
-    private speed: number;
-    private scaleRatio: number;
+    ctx: CanvasRenderingContext2D;
+    canvas: HTMLCanvasElement;
+    enemyImages: EnemyImageData[];
+    speed: number;
+    scaleRatio: number;
 
-    constructor(ctx, enemyImages, scaleRatio, speed) {
-
-
+    constructor(
+        ctx: CanvasRenderingContext2D,
+        enemyImages: EnemyImageData[],
+        scaleRatio: number,
+        speed: number
+    ) {
         this.ctx = ctx;
         this.canvas = ctx.canvas;
         this.enemyImages = enemyImages;
@@ -55,33 +65,33 @@ export default class EnemyController {
     }
 
     // noinspection JSUnusedGlobalSymbols
-    update(gameSpeed, frameTimeDelta) {
-        if(this.nextEnemyInterval <= 0) {
+    update(gameSpeed: number, frameTimeDelta: number) {
+        if (this.nextEnemyInterval <= 0) {
             //create enemy
             this.createEnemy();
             this.setNextEnemyTime();
         }
         this.nextEnemyInterval -= frameTimeDelta * gameSpeed;
 
-        this.enemies.forEach((enemy)=>{
+        this.enemies.forEach((enemy) => {
             enemy.update(this.speed, gameSpeed, frameTimeDelta, this.scaleRatio);
         });
 
         this.enemies = this.enemies.filter((enemy) => enemy.x > -enemy.width);
     }
 
-    // noinspection JSUnusedGlobalSymbols
+
     draw() {
-        this.enemies.forEach(enemy => enemy.draw());
+        this.enemies.forEach((enemy) => enemy.draw());
     }
 
     // noinspection JSUnusedGlobalSymbols
-    collideWith(sprite) {
-        return this.enemies.some(enemy => enemy.collideWith(sprite));
+    collideWith(sprite: Player) {
+        return this.enemies.some((enemy) => enemy.collideWith(sprite));
     }
 
-    // noinspection JSUnusedGlobalSymbols
-    reset(){
+
+    public reset() {
         this.enemies = [];
     }
 }

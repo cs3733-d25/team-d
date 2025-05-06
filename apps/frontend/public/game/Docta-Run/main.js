@@ -185,10 +185,18 @@ function gameLoop(currentTime) {
     clearScreen();
     if (!gameOver && !waitingToStart) {
         //Update game objects
-        ground === null || ground === void 0 ? void 0 : ground.update(gameSpeed, frameTimeDelta);
-        enemyController === null || enemyController === void 0 ? void 0 : enemyController.update(gameSpeed, frameTimeDelta);
-        player === null || player === void 0 ? void 0 : player.update(gameSpeed, frameTimeDelta);
-        score === null || score === void 0 ? void 0 : score.update(frameTimeDelta);
+        ground === null || ground === void 0
+            ? void 0
+            : ground.update(gameSpeed, frameTimeDelta, undefined, this.scaleRatio);
+        enemyController === null || enemyController === void 0
+            ? void 0
+            : enemyController.update(gameSpeed, frameTimeDelta, undefined, this.scaleRatio);
+        player === null || player === void 0
+            ? void 0
+            : player.update(gameSpeed, frameTimeDelta, undefined, this.scaleRatio);
+        score === null || score === void 0
+            ? void 0
+            : score.update(frameTimeDelta, undefined, undefined, this.scaleRatio);
         updateGameSpeed(frameTimeDelta);
     }
     if (!gameOver && player && (enemyController === null || enemyController === void 0 ? void 0 : enemyController.collideWith(player))) {

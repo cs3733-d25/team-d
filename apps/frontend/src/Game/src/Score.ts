@@ -1,25 +1,25 @@
 export default class Score {
-    private ctx: CanvasRenderingContext2D;
-    private canvas: HTMLCanvasElement;
-    private scaleRatio: number;
-
+    ctx: CanvasRenderingContext2D;
+    canvas: HTMLCanvasElement;
+    scaleRatio: number;
 
     score = 0;
-    HIGH_SCORE_KEY = "highScore";
+    HIGH_SCORE_KEY = 'highScore';
 
     // For score popup effect
-    popupValue = null;
+    private popupValue: number | null = null;
     popupY = 0;
     popupAlpha = 1;
 
-    constructor(ctx, scaleRatio) {
+    constructor(ctx: CanvasRenderingContext2D, scaleRatio: number) {
         this.ctx = ctx;
         this.canvas = ctx.canvas;
         this.scaleRatio = scaleRatio;
+        this.score = 0;
     }
 
     // noinspection JSUnusedGlobalSymbols
-    update(frameTimeDelta) {
+    update(frameTimeDelta: number) {
         this.score += Math.max(1, Math.round(frameTimeDelta * 0.01));
 
         if (this.score % 1000 === 0 && this.popupValue !== this.score) {
@@ -28,7 +28,7 @@ export default class Score {
             this.popupAlpha = 1;
 
             // Play sound when reached
-            const milestoneSound = new Audio("/sounds/milestone.mp3");
+            const milestoneSound = new Audio('/sounds/milestone.mp3');
             milestoneSound.play();
         }
 
@@ -39,8 +39,8 @@ export default class Score {
         }
     }
 
-    // noinspection JSUnusedGlobalSymbols
-    reset() {
+
+    public reset() {
         this.score = 0;
     }
 
@@ -58,19 +58,18 @@ export default class Score {
         const rawHighScore = localStorage.getItem(this.HIGH_SCORE_KEY);
         const highScore = rawHighScore ? Number(rawHighScore) : 0;
 
-
         const y = 20 * this.scaleRatio;
         const fontSize = 20 * this.scaleRatio;
         this.ctx.font = `${fontSize}px serif`;
-        this.ctx.fillStyle = "#525250";
+        this.ctx.fillStyle = '#525250';
         const scoreX = this.canvas.width - 75 * this.scaleRatio;
         const highScoreX = scoreX - 125 * this.scaleRatio;
 
         const scorePadded = Math.floor(this.score).toString().padStart(6, '0');
-        const highScorePadded = Math.floor(highScore).toString().padStart(6,'0');
+        const highScorePadded = Math.floor(highScore).toString().padStart(6, '0');
 
         this.ctx.fillText(scorePadded, scoreX, y);
-        this.ctx.fillText(`HIGH ${highScorePadded}`, highScoreX, y)
+        this.ctx.fillText(`HIGH ${highScorePadded}`, highScoreX, y);
 
         // Draw animated popup for milestone
         if (this.popupAlpha > 0 && this.popupValue !== null) {
