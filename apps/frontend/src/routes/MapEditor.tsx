@@ -367,6 +367,16 @@ export default function MapEditor() {
                 <div className="flex flex-row">
                     <Card className="flex-1 grow border-4 border-[#012D5A] rounded-md shadow-md bg-[#F1F1F1]">
                         <CardContent>
+                            <h2 className="text-xl font-bold mb-4 mb-1 mb-2 rounded-md inline-block px-2 py-1">Legend</h2>
+                            <ul className="list-disc ml-4">
+                                <li className="marker:text-[#c5facf] marker">Teal: Normal</li>
+                                <li className="marker:text-[#4285F4] marker">Blue: Parking</li>
+                                <li className="marker:text-[#34A853] marker">Green: Door</li>
+                                <li className="marker:text-[#FBBC05] marker">Yellow: Elevator</li>
+                                <li className="marker:text-[#EA4335] marker">Red: Check-in</li>
+                                <li className="marker:text-[#000000] marker">Black Outline: Node has an external connection</li>
+                            </ul>
+                            <br/>
                             <h2 className="text-xl font-bold mb-4 mb-1 mb-2 rounded-md inline-block px-2 py-1">Instructions</h2>
                             <ul className="list-disc ml-4">
                                 <li>Left-click a node or edge to view or change its information on the sidebar</li>
