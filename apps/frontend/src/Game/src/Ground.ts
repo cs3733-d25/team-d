@@ -2,14 +2,14 @@
 import groundImg from '@/Game/public/images/tile_ground.png'
 
 export default class Ground {
-    private ctx: CanvasRenderingContext2D;
-    private canvas: HTMLCanvasElement;
-    private width: number;
-    private height: number;
-    private speed: number;
-    private scaleRatio: number;
-    private x: number;
-    private y: number;
+    ctx: CanvasRenderingContext2D;
+    canvas: HTMLCanvasElement;
+    width: number;
+    height: number;
+    speed: number;
+    scaleRatio: number;
+    x: number;
+    y: number;
     public groundImage: HTMLImageElement;
 
     constructor(ctx: CanvasRenderingContext2D, width: number, height: number, speed: number, scaleRatio: number) {
