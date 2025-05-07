@@ -14,7 +14,7 @@ import About from "@/routes/About.tsx";
 import Citations from "@/routes/Citations.tsx";
 import NotFound from "@/routes/NotFound.tsx";
 import AdminSettings from "@/routes/admingSettings.tsx";
-
+import Game from "@/routes/Game.tsx";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import NewDirections from "@/routes/NewDirections.tsx";
 import MapEditor from "@/routes/MapEditor.tsx";
@@ -48,6 +48,7 @@ function App() {
                         <Route path="voice-directory" element={<VoiceDirectory />} />
 
                         <Route path="all-post" element={<AllPost />} />
+                        <Route path="game" element={<Game />} />
 
 
                         {/* Protected routes wrapped in ProtectedRoute */}
